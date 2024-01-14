@@ -3,9 +3,17 @@
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
+#include <QtGlobal>
 
 int main(int argc, char *argv[])
 {
+#ifdef Q_OS_LINUX
+    // FMI: https://doc.qt.io/qt-5/qtglobal.html
+    //
+    // Ensures application runs on Xwayland on Linux.
+    qputenv("QT_QPA_PLATFORM", "xcb");
+#endif
+
     QApplication a(argc, argv);
 
     QTranslator translator;
