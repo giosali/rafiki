@@ -22,6 +22,8 @@ set(PROJECT_SOURCES
         ${TS_FILES}
 )
 
+add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(rafiki
         MANUAL_FINALIZATION
