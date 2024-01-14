@@ -12,13 +12,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
-set(TS_FILES rafiki_en_US.ts)
+set(TS_FILES src/rafiki_en_US.ts)
 
 set(PROJECT_SOURCES
-        main.cpp
-        mainwindow.cpp
-        mainwindow.h
-        mainwindow.ui
+        src/argumentparser.h
+        src/main.cpp
+        src/mainwindow.cpp
+        src/mainwindow.h
+        src/mainwindow.ui
         ${TS_FILES}
 )
 
