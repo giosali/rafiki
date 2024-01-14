@@ -18,10 +18,10 @@
     <item row="0" column="0">
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <widget class="QListView" name="listView"/>
+       <widget class="QPlainTextEdit" name="plainTextEdit"/>
       </item>
       <item>
-       <widget class="QPlainTextEdit" name="plainTextEdit"/>
+       <widget class="QListView" name="listView"/>
       </item>
      </layout>
     </item>
