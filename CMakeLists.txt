@@ -15,11 +15,14 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 set(TS_FILES src/rafiki_en_US.ts)
 
 set(PROJECT_SOURCES
+        src/argumentparser.cpp
         src/argumentparser.h
         src/main.cpp
         src/mainwindow.cpp
         src/mainwindow.h
         src/mainwindow.ui
+        src/messagereceiver.cpp
+        src/messagereceiver.h
         ${TS_FILES}
 )
 
