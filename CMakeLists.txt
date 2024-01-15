@@ -54,6 +54,11 @@ endif()
 
 target_link_libraries(rafiki PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 
+# Includes SingleApplication subdirectory.
+set(QAPPLICATION_CLASS QApplication CACHE STRING "Inheritance class for SingleApplication")
+add_subdirectory(singleapplication)
+target_link_libraries(${PROJECT_NAME} PRIVATE SingleApplication::SingleApplication)
+
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.
