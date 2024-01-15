@@ -30,8 +30,7 @@ int main(int argc, char *argv[])
     // It then quits the secondary instance.
     if (a.isSecondary()) {
         a.sendMessage(message);
-        a.exit();
-        // return 0;
+        return 0;
     }
 
     // Sets application to listen for and process commandline arguments.
