@@ -1,10 +1,15 @@
+#include "argumentparser.h"
 #include "mainwindow.h"
+#include "messagereceiver.h"
 
 #include <QApplication>
 #include <QCoreApplication>
 #include <QLocale>
+#include <QObject>
 #include <QTranslator>
 #include <QtGlobal>
+
+#include <singleapplication.h>
 
 int main(int argc, char *argv[])
 {
@@ -14,8 +19,26 @@ int main(int argc, char *argv[])
     qputenv("QT_QPA_PLATFORM", "xcb");
 #endif
 
-    QApplication a(argc, argv);
+    SingleApplication a(argc, argv, true);
     QCoreApplication::setApplicationVersion(PROJECT_VERSION);
+
+    QByteArray message = QCoreApplication::arguments().join(" ").toUtf8();
+    MessageReceiver mr;
+
+    // Sends commandline arguments to the primary instance of the application from the secondary
+    // instance of the application.
+    // It then quits the secondary instance.
+    if (a.isSecondary()) {
+        a.sendMessage(message);
+        a.exit();
+        // return 0;
+    }
+
+    // Sets application to listen for and process commandline arguments.
+    QObject::connect(&a, &SingleApplication::receivedMessage, &mr, &MessageReceiver::receivedMessage);
+
+    ArgumentParser argumentParser;
+    argumentParser.parse(message);
 
     QTranslator translator;
     const QStringList uiLanguages = QLocale::system().uiLanguages();
@@ -29,5 +52,6 @@ int main(int argc, char *argv[])
 
     MainWindow w;
     w.show();
+
     return a.exec();
 }
