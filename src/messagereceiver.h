@@ -1,16 +1,17 @@
 #ifndef MESSAGERECEIVER_H
 #define MESSAGERECEIVER_H
 
+#include <QByteArray>
 #include <QObject>
 
 class MessageReceiver : public QObject {
-    Q_OBJECT
+  Q_OBJECT
 
-public:
-    explicit MessageReceiver(QObject* parent = 0);
+ public:
+  explicit MessageReceiver(QObject *parent = nullptr);
 
-public slots:
-    void receivedMessage(const int instanceId, const QByteArray &message);
+ public slots:
+  void receivedMessage(const int instanceId, const QByteArray &message);
 };
 
-#endif // MESSAGERECEIVER_H
+#endif  // MESSAGERECEIVER_H
