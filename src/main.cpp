@@ -35,7 +35,7 @@ int main(int argc, char *argv[]) {
   // Sets application to listen for and process commandline arguments.
   MessageReceiver mr;
   QObject::connect(&a, &SingleApplication::receivedMessage, &mr,
-                   &MessageReceiver::receivedMessage);
+                   &MessageReceiver::ReceivedMessage);
 
   CommandLine command_line;
   command_line.Parse(message);

@@ -11,7 +11,7 @@ class MessageReceiver : public QObject {
   explicit MessageReceiver(QObject *parent = nullptr);
 
  public slots:
-  void receivedMessage(const int instanceId, const QByteArray &message);
+  void ReceivedMessage(const int instance_id, const QByteArray &message) const;
 };
 
 #endif  // MESSAGERECEIVER_H

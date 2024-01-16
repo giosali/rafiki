@@ -5,8 +5,8 @@
 
 MessageReceiver::MessageReceiver(QObject *parent) : QObject(parent) {}
 
-void MessageReceiver::receivedMessage(const int instanceId,
-                                      const QByteArray &message) {
+void MessageReceiver::ReceivedMessage(const int instance_id,
+                                      const QByteArray &message) const {
   CommandLine command_line;
   command_line.Parse(message);
 }
