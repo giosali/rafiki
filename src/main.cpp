@@ -1,6 +1,5 @@
 #include <singleapplication.h>
 
-#include <QApplication>
 #include <QCoreApplication>
 #include <QLocale>
 #include <QObject>
