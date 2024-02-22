@@ -11,6 +11,7 @@ class CommandLine {
 
  private:
   void HandleToggle() const;
+  void HandleQuit() const;
 };
 
 #endif  // COMMANDLINE_H
