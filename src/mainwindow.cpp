@@ -17,6 +17,8 @@ MainWindow::MainWindow(QWidget* parent)
   // -> FMI: https://stackoverflow.com/a/24240025/18831815
   centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
   statusBar()->hide();
+
+  setWindowFlag(Qt::WindowStaysOnTopHint);
 }
 
 MainWindow::~MainWindow() { delete ui; }

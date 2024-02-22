@@ -32,9 +32,6 @@ int main(int argc, char *argv[]) {
     return 0;
   }
 
-  MainWindow w;
-  w.setWindowFlag(Qt::WindowStaysOnTopHint);
-
   // Sets application to listen for and process commandline arguments.
   MessageReceiver mr;
   QObject::connect(&a, &SingleApplication::receivedMessage, &mr,
@@ -53,6 +50,7 @@ int main(int argc, char *argv[]) {
     }
   }
 
+  MainWindow w;
   w.show();
 
   return a.exec();
