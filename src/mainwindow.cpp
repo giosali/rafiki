@@ -1,8 +1,10 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QEvent>
 #include <QObject>
 #include <QScreen>
+#include <QtGlobal>
 
 #include "./ui_mainwindow.h"
 
@@ -32,4 +34,15 @@ QMainWindow* MainWindow::FindMainWindow() {
   }
 
   return nullptr;
+}
+
+bool MainWindow::event(QEvent* event) {
+  switch (event->type()) {
+    case QEvent::WindowDeactivate:
+      qDebug() << "Lost focus";
+      hide();
+      break;
+  }
+
+  return QMainWindow::event(event);
 }

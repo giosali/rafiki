@@ -20,6 +20,9 @@ class MainWindow : public QMainWindow
 
   static QMainWindow *FindMainWindow();
 
+ protected:
+  bool event(QEvent *event) override;
+
  private:
   Ui::MainWindow *ui;
 };
