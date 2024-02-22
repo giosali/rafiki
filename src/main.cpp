@@ -4,6 +4,7 @@
 #include <QLocale>
 #include <QObject>
 #include <QTranslator>
+#include <Qt>
 #include <QtGlobal>
 
 #include "commandline.h"
@@ -26,11 +27,13 @@ int main(int argc, char *argv[]) {
   // the secondary instance of the application. It then quits the secondary
   // instance.
   if (a.isSecondary()) {
+    qDebug() << "Secondary instance: sending message and quitting";
     a.sendMessage(message);
     return 0;
   }
 
   MainWindow w;
+  w.setWindowFlag(Qt::WindowStaysOnTopHint);
 
   // Sets application to listen for and process commandline arguments.
   MessageReceiver mr;
