@@ -14,6 +14,8 @@
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
+  setWindowFlag(Qt::WindowStaysOnTopHint);
+  centralWidget()->layout()->setSpacing(0);
 
   // Centers the window. On Linux, this will only work on X11 or XWayland.
   move(screen()->geometry().center() - frameGeometry().center());
@@ -22,8 +24,6 @@ MainWindow::MainWindow(QWidget* parent)
   // -> FMI: https://stackoverflow.com/a/24240025/18831815
   centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
   statusBar()->hide();
-
-  setWindowFlag(Qt::WindowStaysOnTopHint);
 
   std::unique_ptr<MainLineEdit> mainLineEdit = std::make_unique<MainLineEdit>();
   centralWidget()->layout()->addWidget(mainLineEdit.release());
