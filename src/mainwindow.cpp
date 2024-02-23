@@ -21,6 +21,14 @@ MainWindow::MainWindow(QWidget* parent)
   statusBar()->hide();
 
   setWindowFlag(Qt::WindowStaysOnTopHint);
+
+  // Hides the QListViewsince it will be empty on initialization.
+  findChild<QListView*>("listView")->hide();
+
+  // Resizes the MainWindow to the initial width of the MainWindow and the
+  // height of the MainWindow's layout.
+  QRect layoutGeometry = this->centralWidget()->layout()->contentsRect();
+  resize(geometry().width(), layoutGeometry.height());
 }
 
 MainWindow::~MainWindow() { delete ui; }
