@@ -27,6 +27,12 @@
           <pointsize>20</pointsize>
          </font>
         </property>
+        <property name="styleSheet">
+         <string notr="true">QLineEdit {
+	border: none;
+	padding: 10px;
+}</string>
+        </property>
        </widget>
       </item>
       <item>
