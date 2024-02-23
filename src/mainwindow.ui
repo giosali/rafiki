@@ -20,24 +20,6 @@
       <property name="spacing">
        <number>0</number>
       </property>
-      <item>
-       <widget class="QLineEdit" name="lineEdit">
-        <property name="font">
-         <font>
-          <pointsize>20</pointsize>
-         </font>
-        </property>
-        <property name="styleSheet">
-         <string notr="true">QLineEdit {
-	border: none;
-	padding: 10px;
-}</string>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QListView" name="listView"/>
-      </item>
      </layout>
     </item>
    </layout>

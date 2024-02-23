@@ -18,6 +18,10 @@ set(PROJECT_SOURCES
         src/commandline.cpp
         src/commandline.h
         src/main.cpp
+        src/mainlineedit.cpp
+        src/mainlineedit.h
+        src/mainlistview.cpp
+        src/mainlistview.h
         src/mainwindow.cpp
         src/mainwindow.h
         src/mainwindow.ui

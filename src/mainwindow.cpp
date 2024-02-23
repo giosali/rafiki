@@ -5,8 +5,11 @@
 #include <QObject>
 #include <QScreen>
 #include <QtGlobal>
+#include <memory>
 
 #include "./ui_mainwindow.h"
+#include "mainlineedit.h"
+#include "mainlistview.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -22,8 +25,11 @@ MainWindow::MainWindow(QWidget* parent)
 
   setWindowFlag(Qt::WindowStaysOnTopHint);
 
-  // Hides the QListViewsince it will be empty on initialization.
-  findChild<QListView*>("listView")->hide();
+  std::unique_ptr<MainLineEdit> mainLineEdit = std::make_unique<MainLineEdit>();
+  centralWidget()->layout()->addWidget(mainLineEdit.release());
+
+  std::unique_ptr<MainListView> mainListView = std::make_unique<MainListView>();
+  centralWidget()->layout()->addWidget(mainListView.release());
 
   // Sets the height of MainWindow to the height of MainWindow's layout.
   // Leaves the width unchanged by setting it to its own width.
