@@ -28,8 +28,8 @@ MainWindow::MainWindow(QWidget* parent)
   auto searchBox = std::make_unique<SearchBox>(this);
   centralWidget()->layout()->addWidget(searchBox.release());
 
-  auto mainListWidget = std::make_unique<SearchResultList>(this);
-  centralWidget()->layout()->addWidget(mainListWidget.release());
+  auto searchResultList = std::make_unique<SearchResultList>(this);
+  centralWidget()->layout()->addWidget(searchResultList.release());
 
   // Sets the height of MainWindow to the height of MainWindow's layout.
   // Leaves the width unchanged by setting it to its own width.
