@@ -25,6 +25,7 @@ set(PROJECT_SOURCES
         src/messagereceiver.h
         src/searchbox.cpp
         src/searchbox.h
+        src/searchbox.ui
         src/searchresult.cpp
         src/searchresult.h
         src/searchresult.ui
