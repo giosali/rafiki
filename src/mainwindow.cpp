@@ -31,10 +31,7 @@ MainWindow::MainWindow(QWidget* parent)
   auto searchResultList = std::make_unique<SearchResultList>(this);
   centralWidget()->layout()->addWidget(searchResultList.release());
 
-  // Sets the height of MainWindow to the height of MainWindow's layout.
-  // Leaves the width unchanged by setting it to its own width.
-  resize(geometry().width(),
-         centralWidget()->layout()->contentsRect().height());
+  AdjustSize();
 }
 
 MainWindow::~MainWindow() { delete ui; }
@@ -48,6 +45,14 @@ QMainWindow* MainWindow::FindMainWindow() {
   }
 
   return nullptr;
+}
+
+void MainWindow::AdjustSize() {
+  // Sets the height of MainWindow to the height of MainWindow's layout.
+  // Leaves the width unchanged by essentially setting it to its own width.
+  int windowWidth = geometry().width();
+  int layoutHeight = centralWidget()->layout()->contentsRect().height();
+  resize(windowWidth, layoutHeight);
 }
 
 bool MainWindow::event(QEvent* event) {

@@ -23,6 +23,8 @@ class MainWindow : public QMainWindow {
   bool event(QEvent *event) override;
 
  private:
+  void AdjustSize();
+
   Ui::MainWindow *ui;
 };
 #endif // MAINWINDOW_H
