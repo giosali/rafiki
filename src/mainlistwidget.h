@@ -8,6 +8,8 @@ class MainListWidget : public QListWidget {
 
  public:
   MainListWidget(QWidget *parent = nullptr);
+
+  void AddItem(const QString& text);
 };
 
 #endif  // MAINLISTWIDGET_H
