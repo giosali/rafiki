@@ -1,18 +1,18 @@
-#include "mainlistwidget.h"
+#include "searchresultlist.h"
 
 #include <QListWidgetItem>
 #include <memory>
 
-#include "mainlistwidgetitem.h"
+#include "searchresult.h"
 
-MainListWidget::MainListWidget(QWidget* parent) : QListWidget(parent) {
+SearchResultList::SearchResultList(QWidget* parent) : QListWidget(parent) {
   // Component should be hidden on initialization.
   hide();
 }
 
-void MainListWidget::AddItem(const QString& text) {
+void SearchResultList::AddItem(const QString& text) {
   auto item = std::make_unique<QListWidgetItem>();
-  auto widget = std::make_unique<MainListWidgetItem>();
+  auto widget = std::make_unique<SearchResult>();
   widget->SetIcon(text);
 
   item->setSizeHint(widget->sizeHint());

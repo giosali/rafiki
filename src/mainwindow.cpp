@@ -8,8 +8,8 @@
 #include <memory>
 
 #include "./ui_mainwindow.h"
-#include "mainlineedit.h"
-#include "mainlistwidget.h"
+#include "searchbox.h"
+#include "searchresultlist.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -25,12 +25,10 @@ MainWindow::MainWindow(QWidget* parent)
   centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
   statusBar()->hide();
 
-  std::unique_ptr<MainLineEdit> mainLineEdit =
-      std::make_unique<MainLineEdit>(this);
-  centralWidget()->layout()->addWidget(mainLineEdit.release());
+  auto searchBox = std::make_unique<SearchBox>(this);
+  centralWidget()->layout()->addWidget(searchBox.release());
 
-  std::unique_ptr<MainListWidget> mainListWidget =
-      std::make_unique<MainListWidget>(this);
+  auto mainListWidget = std::make_unique<SearchResultList>(this);
   centralWidget()->layout()->addWidget(mainListWidget.release());
 
   // Sets the height of MainWindow to the height of MainWindow's layout.

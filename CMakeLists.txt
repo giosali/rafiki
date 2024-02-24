@@ -18,18 +18,18 @@ set(PROJECT_SOURCES
         src/commandline.cpp
         src/commandline.h
         src/main.cpp
-        src/mainlineedit.cpp
-        src/mainlineedit.h
-        src/mainlistwidget.cpp
-        src/mainlistwidget.h
-        src/mainlistwidgetitem.cpp
-        src/mainlistwidgetitem.h
-        src/mainlistwidgetitem.ui
         src/mainwindow.cpp
         src/mainwindow.h
         src/mainwindow.ui
         src/messagereceiver.cpp
         src/messagereceiver.h
+        src/searchbox.cpp
+        src/searchbox.h
+        src/searchresult.cpp
+        src/searchresult.h
+        src/searchresult.ui
+        src/searchresultlist.cpp
+        src/searchresultlist.h
         ${TS_FILES}
 )
 
