@@ -20,8 +20,8 @@ set(PROJECT_SOURCES
         src/main.cpp
         src/mainlineedit.cpp
         src/mainlineedit.h
-        src/mainlistview.cpp
-        src/mainlistview.h
+        src/mainlistwidget.cpp
+        src/mainlistwidget.h
         src/mainwindow.cpp
         src/mainwindow.h
         src/mainwindow.ui
