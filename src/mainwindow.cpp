@@ -35,8 +35,8 @@ MainWindow::MainWindow(QWidget* parent)
 
   // Sets the height of MainWindow to the height of MainWindow's layout.
   // Leaves the width unchanged by setting it to its own width.
-  QRect layoutGeometry = this->centralWidget()->layout()->contentsRect();
-  resize(geometry().width(), layoutGeometry.height());
+  resize(geometry().width(),
+         centralWidget()->layout()->contentsRect().height());
 }
 
 MainWindow::~MainWindow() { delete ui; }
