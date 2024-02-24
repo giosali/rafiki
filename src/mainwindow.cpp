@@ -9,7 +9,6 @@
 
 #include "./ui_mainwindow.h"
 #include "mainlineedit.h"
-#include "mainlistview.h"
 #include "mainlistwidget.h"
 
 MainWindow::MainWindow(QWidget* parent)
@@ -26,11 +25,12 @@ MainWindow::MainWindow(QWidget* parent)
   centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
   statusBar()->hide();
 
-  std::unique_ptr<MainLineEdit> mainLineEdit = std::make_unique<MainLineEdit>();
+  std::unique_ptr<MainLineEdit> mainLineEdit =
+      std::make_unique<MainLineEdit>(this);
   centralWidget()->layout()->addWidget(mainLineEdit.release());
 
   std::unique_ptr<MainListWidget> mainListWidget =
-      std::make_unique<MainListWidget>();
+      std::make_unique<MainListWidget>(this);
   centralWidget()->layout()->addWidget(mainListWidget.release());
 
   // Sets the height of MainWindow to the height of MainWindow's layout.
