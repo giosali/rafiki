@@ -15,7 +15,19 @@
   </property>
   <layout class="QHBoxLayout" name="layout">
    <item>
-    <widget class="QLineEdit" name="searchBox" />
+    <widget class="QLineEdit" name="searchBox">
+     <property name="font">
+      <font>
+       <pointsize>26</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">QLineEdit {
+	border: none;
+	padding: 12px 8px;
+}</string>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
