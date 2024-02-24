@@ -9,7 +9,7 @@ MainListWidgetItem::MainListWidgetItem(QWidget* parent)
 
 MainListWidgetItem::~MainListWidgetItem() {}
 
-void MainListWidgetItem::setIcon(const QString& text) const {
+void MainListWidgetItem::SetIcon(const QString& text) const {
   // Setter
   ui->icon->setText(text);
 }

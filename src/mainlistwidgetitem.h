@@ -18,7 +18,7 @@ class MainListWidgetItem : public QWidget {
 
   ~MainListWidgetItem();
 
-  void setIcon(const QString& text) const;
+  void SetIcon(const QString& text) const;
 
  private:
   std::unique_ptr<Ui::MainListWidgetItem> ui;
