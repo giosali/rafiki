@@ -18,7 +18,7 @@ class SearchResult : public QWidget {
 
   ~SearchResult();
 
-  void SetIcon(const QString& text) const;
+  void SetIcon(const QString& path) const;
 
  private:
   std::unique_ptr<Ui::SearchResult> ui;

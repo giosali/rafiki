@@ -1,5 +1,8 @@
 #include "searchresult.h"
 
+#include <QPixmap>
+#include <Qt>
+
 #include "./ui_searchresult.h"
 
 SearchResult::SearchResult(QWidget* parent)
@@ -9,7 +12,9 @@ SearchResult::SearchResult(QWidget* parent)
 
 SearchResult::~SearchResult() {}
 
-void SearchResult::SetIcon(const QString& text) const {
-  // Setter
-  ui->icon->setText(text);
+void SearchResult::SetIcon(const QString& path) const {
+  auto pixmap = QPixmap(path);
+  uint32_t size = 48;
+  ui->icon->setPixmap(pixmap.scaled(size, size, Qt::IgnoreAspectRatio,
+                                    Qt::SmoothTransformation));
 }
