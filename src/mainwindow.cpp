@@ -9,7 +9,6 @@
 
 #include "./ui_mainwindow.h"
 #include "searchbox.h"
-#include "searchresultlist.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
@@ -21,14 +20,19 @@ MainWindow::MainWindow(QWidget* parent)
   move(screen()->geometry().center() - frameGeometry().center());
 
   // Removes space between Central Widget and the window.
-  // -> FMI: https://stackoverflow.com/a/24240025/18831815
+  // See: https://stackoverflow.com/a/24240025/18831815
   centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
   statusBar()->hide();
 
   auto searchBox = std::make_unique<SearchBox>(this);
-  centralWidget()->layout()->addWidget(searchBox.release());
 
   auto searchResultList = std::make_unique<SearchResultList>(this);
+  QObject::connect(searchResultList.get(), &SearchResultList::ItemsAdded, this,
+                   &MainWindow::SetHeight);
+  QObject::connect(searchBox.get(), &SearchBox::TextChanged,
+                   searchResultList.get(), &SearchResultList::CreateItems);
+
+  centralWidget()->layout()->addWidget(searchBox.release());
   centralWidget()->layout()->addWidget(searchResultList.release());
 
   AdjustSize();
@@ -45,6 +49,13 @@ QMainWindow* MainWindow::FindMainWindow() {
   }
 
   return nullptr;
+}
+
+void MainWindow::SetHeight(SearchResultList* list) {
+  auto window_width = geometry().width();
+  auto list_height = list->Height();
+  SearchBox* search_box = findChild<SearchBox*>("SearchBox");
+  resize(window_width, list_height + search_box->height());
 }
 
 bool MainWindow::event(QEvent* event) {

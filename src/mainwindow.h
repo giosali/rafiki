@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 
+#include "searchresultlist.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -18,6 +20,9 @@ class MainWindow : public QMainWindow {
   ~MainWindow();
 
   static QMainWindow *FindMainWindow();
+
+ public slots:
+  void SetHeight(SearchResultList *list);
 
  protected:
   bool event(QEvent *event) override;
