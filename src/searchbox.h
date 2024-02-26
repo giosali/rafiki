@@ -1,6 +1,7 @@
 #ifndef SEARCHBOX_H
 #define SEARCHBOX_H
 
+#include <QString>
 #include <QWidget>
 #include <memory>
 
@@ -19,10 +20,14 @@ class SearchBox : public QWidget {
   ~SearchBox();
 
  public slots:
+  void SetText(const QString& text);
+
+ signals:
   void TextChanged(const QString& text);
 
  private:
   std::unique_ptr<Ui::SearchBox> ui;
+  QString text_;
 };
 
 #endif  // SEARCHBOX_H

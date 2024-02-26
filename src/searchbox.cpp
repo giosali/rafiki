@@ -14,11 +14,17 @@ SearchBox::SearchBox(QWidget* parent)
   ui->layout->setContentsMargins(0, 0, 0, 0);
 
   QObject::connect(ui->searchBox, &QLineEdit::textChanged, this,
-                   &SearchBox::TextChanged);
+                   &SearchBox::SetText);
 }
 
 SearchBox::~SearchBox() {}
 
-void SearchBox::TextChanged(const QString& text) {
-  qDebug() << "Text changed: " << text;
+void SearchBox::SetText(const QString& text) {
+  if (text == text_) {
+    return;
+  }
+
+  text_ = text;
+  qDebug() << "text: " << text;
+  emit TextChanged(text);
 }
