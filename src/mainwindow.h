@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <memory>
 
 #include "searchresultlist.h"
 
@@ -30,6 +31,6 @@ class MainWindow : public QMainWindow {
  private:
   void AdjustSize();
 
-  Ui::MainWindow *ui;
+  std::unique_ptr<Ui::MainWindow> ui_;
 };
 #endif // MAINWINDOW_H

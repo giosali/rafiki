@@ -7,12 +7,12 @@
 #include "./ui_searchresult.h"
 
 SearchResult::SearchResult(QWidget* parent)
-    : QWidget(parent), ui(std::make_unique<Ui::SearchResult>()) {
-  ui->setupUi(this);
-  ui->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
-                                           kHorizontalMargin, kVerticalMargin);
+    : QWidget(parent), ui_(std::make_unique<Ui::SearchResult>()) {
+  ui_->setupUi(this);
+  ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
+                                            kHorizontalMargin, kVerticalMargin);
   setFixedHeight(kFixedHeight);
-  ui->horizontalLayout->setSizeConstraint(QLayout::SetFixedSize);
+  ui_->horizontalLayout->setSizeConstraint(QLayout::SetFixedSize);
 }
 
 SearchResult::~SearchResult() {}
@@ -26,7 +26,7 @@ void SearchResult::SetIcon(const QString& path) const {
   // result, the icon height will take precedence over the fixed height, thus
   // overriding the fixed height.
   auto pixmap = QPixmap(path);
-  ui->icon->setPixmap(pixmap.scaled(kFixedHeight, kFixedHeight,
-                                    Qt::IgnoreAspectRatio,
-                                    Qt::SmoothTransformation));
+  ui_->icon->setPixmap(pixmap.scaled(kFixedHeight, kFixedHeight,
+                                     Qt::IgnoreAspectRatio,
+                                     Qt::SmoothTransformation));
 }

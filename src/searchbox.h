@@ -26,7 +26,7 @@ class SearchBox : public QWidget {
   void TextChanged(const QString& text);
 
  private:
-  std::unique_ptr<Ui::SearchBox> ui;
+  std::unique_ptr<Ui::SearchBox> ui_;
   QString text_;
 };
 

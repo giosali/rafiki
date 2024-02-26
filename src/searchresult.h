@@ -27,7 +27,7 @@ class SearchResult : public QWidget {
   static constexpr int kHorizontalMargin = 6;
   static constexpr int kVerticalMargin = 6;
 
-  std::unique_ptr<Ui::SearchResult> ui;
+  std::unique_ptr<Ui::SearchResult> ui_;
 };
 
 #endif  // SEARCHRESULT_H
