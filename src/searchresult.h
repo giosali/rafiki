@@ -2,6 +2,7 @@
 #define SEARCHRESULT_H
 
 #include <QWidget>
+#include <cstdint>
 #include <memory>
 
 QT_BEGIN_NAMESPACE
@@ -18,9 +19,14 @@ class SearchResult : public QWidget {
 
   ~SearchResult();
 
+  constexpr int Height() const;
   void SetIcon(const QString& path) const;
 
  private:
+  static constexpr int kFixedHeight = 44;
+  static constexpr int kHorizontalMargin = 6;
+  static constexpr int kVerticalMargin = 6;
+
   std::unique_ptr<Ui::SearchResult> ui;
 };
 
