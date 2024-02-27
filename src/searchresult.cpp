@@ -1,5 +1,6 @@
 #include "searchresult.h"
 
+#include <QIcon>
 #include <QLayout>
 #include <QPixmap>
 #include <Qt>
@@ -25,8 +26,6 @@ void SearchResult::SetIcon(const QString& path) const {
   // If the height of the icon is greater than the fixed height of the search
   // result, the icon height will take precedence over the fixed height, thus
   // overriding the fixed height.
-  auto pixmap = QPixmap(path);
-  ui_->icon->setPixmap(pixmap.scaled(kFixedHeight, kFixedHeight,
-                                     Qt::IgnoreAspectRatio,
-                                     Qt::SmoothTransformation));
+  auto icon = QIcon(path);
+  ui_->icon->setPixmap(icon.pixmap(kFixedHeight));
 }
