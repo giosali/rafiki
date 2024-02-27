@@ -44,7 +44,7 @@ void SearchResultList::CreateItems(const QString& text) {
   show();
   auto num_items_to_create = 7;
   for (size_t i = 0; i < num_items_to_create; i++) {
-    AddItem("/path/to/file");
+    AddItem("://images/question-mark.png");
   }
 
   emit ItemsAdded(this);
