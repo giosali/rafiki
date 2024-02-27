@@ -27,7 +27,7 @@ void SearchResultList::AddItem(const QString& icon_path) {
   auto widget = std::make_unique<SearchResult>();
   widget->SetIcon(icon_path);
 
-  auto item = std::make_unique<QListWidgetItem>();
+  auto item = std::make_unique<QListWidgetItem>(this);
   item->setSizeHint(widget->sizeHint());
 
   addItem(item.get());
