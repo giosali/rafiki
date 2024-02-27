@@ -31,6 +31,7 @@ set(PROJECT_SOURCES
         src/searchresult.ui
         src/searchresultlist.cpp
         src/searchresultlist.h
+        src/resources.qrc
         ${TS_FILES}
 )
 
