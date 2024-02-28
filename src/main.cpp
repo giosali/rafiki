@@ -44,10 +44,12 @@ int main(int argc, char *argv[]) {
   auto translator = QTranslator();
   for (const auto &locale : QLocale::system().uiLanguages()) {
     const auto base_name = QString(PROJECT_NAME) + "_" + QLocale(locale).name();
-    if (translator.load(":/i18n/" + base_name)) {
-      a.installTranslator(&translator);
-      break;
+    if (!translator.load(":/i18n/" + base_name)) {
+      continue;
     }
+
+    a.installTranslator(&translator);
+    break;
   }
 
   auto w = MainWindow();
