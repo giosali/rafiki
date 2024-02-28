@@ -41,6 +41,13 @@ int main(int argc, char *argv[]) {
   auto command_line = CommandLine();
   command_line.Parse(message);
 
+  // QTranslator opens translation files, for example, in the following order:
+  // 1. /opt/foolib/foo.fr_ca.qm
+  // 2. /opt/foolib/foo.fr_ca
+  // 3. /opt/foolib/foo.fr.qm
+  // 4. /opt/foolib/foo.fr
+  // 5. /opt/foolib/foo.qm
+  // 6. /opt/foolib/foo
   auto translator = QTranslator();
   for (const auto &locale : QLocale::system().uiLanguages()) {
     const auto base_name = QString(PROJECT_NAME) + "_" + QLocale(locale).name();
