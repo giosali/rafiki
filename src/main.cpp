@@ -3,6 +3,7 @@
 #include <QCoreApplication>
 #include <QLocale>
 #include <QObject>
+#include <QString>
 #include <QTranslator>
 #include <Qt>
 #include <QtGlobal>
@@ -18,10 +19,10 @@ int main(int argc, char *argv[]) {
   qputenv("QT_QPA_PLATFORM", "xcb");
 #endif
 
-  SingleApplication a(argc, argv, true);
+  auto a = SingleApplication(argc, argv, true);
   QCoreApplication::setApplicationVersion(PROJECT_VERSION);
 
-  QByteArray message = QCoreApplication::arguments().join(" ").toUtf8();
+  auto message = QCoreApplication::arguments().join(" ").toUtf8();
 
   // Sends commandline arguments to the primary instance of the application from
   // the secondary instance of the application. It then quits the secondary
@@ -33,24 +34,23 @@ int main(int argc, char *argv[]) {
   }
 
   // Sets application to listen for and process commandline arguments.
-  MessageReceiver mr;
+  auto mr = MessageReceiver();
   QObject::connect(&a, &SingleApplication::receivedMessage, &mr,
                    &MessageReceiver::ReceivedMessage);
 
-  CommandLine command_line;
+  auto command_line = CommandLine();
   command_line.Parse(message);
 
-  QTranslator translator;
-  const QStringList uiLanguages = QLocale::system().uiLanguages();
-  for (const QString &locale : uiLanguages) {
-    const QString baseName = "rafiki_" + QLocale(locale).name();
-    if (translator.load(":/i18n/" + baseName)) {
+  auto translator = QTranslator();
+  for (const auto &locale : QLocale::system().uiLanguages()) {
+    const auto base_name = QString(PROJECT_NAME) + "_" + QLocale(locale).name();
+    if (translator.load(":/i18n/" + base_name)) {
       a.installTranslator(&translator);
       break;
     }
   }
 
-  MainWindow w;
+  auto w = MainWindow();
   w.show();
 
   return a.exec();
