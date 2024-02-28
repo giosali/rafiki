@@ -1,0 +1,197 @@
+[
+  {
+    "id": 0,
+    "key": "google",
+    "icon": "://images/google.svg",
+    "url": "https://google.com/search?q={0}",
+    "title": "Search Google for '{0}'",
+    "placeholder": "...",
+    "description": "Google",
+    "alt": {
+      "url": "https://google.com",
+      "title": "Visit the Google homepage"
+    }
+  },
+  {
+    "id": 1,
+    "key": "duck",
+    "icon": "://images/duckduckgo.svg",
+    "url": "https://duckduckgo.com/?q={0}",
+    "title": "Search DuckDuckGo for '{0}'",
+    "placeholder": "...",
+    "description": "DuckDuckGo",
+    "alt": {
+      "url": "https://duckduckgo.com",
+      "title": "Visit the DuckDuckGo homepage"
+    }
+  },
+  {
+    "id": 2,
+    "key": "amazon",
+    "icon": "://images/amazon.svg",
+    "url": "https://amazon.com/s?k={0}",
+    "title": "Search Amazon for '{0}'",
+    "placeholder": "...",
+    "description": "Aamzon",
+    "alt": {
+      "url": "https://amazon.com",
+      "title": "Visit the Amazon homepage"
+    }
+  },
+  {
+    "id": 3,
+    "key": "ebay",
+    "icon": "://images/ebay.svg",
+    "url": "https://ebay.com/sch/i.html?_nkw={0}",
+    "title": "Search eBay for '{0}'",
+    "placeholder": "...",
+    "description": "eBay",
+    "alt": {
+      "url": "https://ebay.com",
+      "title": "Visit the eBay homepage"
+    }
+  },
+  {
+    "id": 4,
+    "key": "facebook",
+    "icon": "://images/facebook.svg",
+    "url": "https://facebook.com/search/top?q={0}",
+    "title": "Search Facebook for '{0}'",
+    "placeholder": "...",
+    "description": "Facebook",
+    "alt": {
+      "url": "https://facebook.com",
+      "title": "Visit the Facebook homepage"
+    }
+  },
+  {
+    "id": 5,
+    "key": "github",
+    "icon": "://images/github.svg",
+    "url": "https://github.com/search?q={0}",
+    "title": "Search GitHub for '{0}'",
+    "placeholder": "...",
+    "description": "GitHub",
+    "alt": {
+      "url": "https://github.com",
+      "title": "Visit the GitHub homepage"
+    }
+  },
+  {
+    "id": 6,
+    "key": "ig",
+    "icon": "://images/instagram.svg",
+    "url": "https://instagram.com/{0}",
+    "title": "Visit {0}'s profile",
+    "placeholder": "_",
+    "description": "Instagram",
+    "alt": {
+      "url": "https://instagram.com",
+      "title": "Visit the Instagram homepage"
+    }
+  },
+  {
+    "id": 7,
+    "key": "pinterest",
+    "icon": "://images/pinterest.svg",
+    "url": "https://pinterest.com/search/pins/?q={0}",
+    "title": "Search Pinterest for '{0}'",
+    "placeholder": "...",
+    "description": "Pinterest",
+    "alt": {
+      "url": "https://pinterest.com",
+      "title": "Visit the Pinterest homepage"
+    }
+  },
+  {
+    "id": 8,
+    "key": "r/",
+    "icon": "://images/reddit.svg",
+    "url": "https://reddit.com/r/{0}",
+    "title": "Visit r/{0}",
+    "placeholder": "",
+    "description": "Reddit",
+    "alt": {
+      "url": "https://reddit.com",
+      "title": "Visit the Reddit front page"
+    }
+  },
+  {
+    "id": 9,
+    "key": "tiktok",
+    "icon": "://images/tiktok.svg",
+    "url": "https://tiktok.com/@{0}",
+    "title": "Visit {0}'s profile",
+    "placeholder": "_",
+    "description": "TikTok",
+    "alt": {
+      "url": "https://tiktok.com",
+      "title": "Visit your TikTok FYP"
+    }
+  },
+  {
+    "id": 10,
+    "key": "twitch",
+    "icon": "://images/twitch.svg",
+    "url": "https://twitch.tv/{0}",
+    "title": "Visit {0}'s channel",
+    "placeholder": "_",
+    "description": "Twitch",
+    "alt": {
+      "url": "https://twitch.tv",
+      "title": "Visit the Twitch homepage"
+    }
+  },
+  {
+    "id": 11,
+    "key": "twitter",
+    "icon": "://images/twitter.svg",
+    "url": "https://twitter.com/{0}",
+    "title": "Visit {0}'s profile",
+    "placeholder": "_",
+    "description": "Twitter",
+    "alt": {
+      "url": "https://twitter.com",
+      "title": "Visit the Twitter homepage"
+    }
+  },
+  {
+    "id": 12,
+    "key": "twitter",
+    "icon": "://images/twitter.svg",
+    "url": "https://twitter.com/search?q={0}",
+    "title": "Search Twitter for '{0}'",
+    "placeholder": "...",
+    "description": "Twitter",
+    "alt": {
+      "url": "https://twitter.com",
+      "title": "Visit the Twitter homepage"
+    }
+  },
+  {
+    "id": 13,
+    "key": "wiki",
+    "icon": "://images/wikipedia.svg",
+    "url": "https://wikipedia.org/wiki/Special:Search?search={0}",
+    "title": "Search Wikipedia for '{0}'",
+    "placeholder": "...",
+    "description": "Wikipedia",
+    "alt": {
+      "url": "https://wikipedia.org",
+      "title": "Visit the Wikipedia homepage"
+    }
+  },
+  {
+    "id": 14,
+    "key": "youtube",
+    "icon": "://images/youtube.svg",
+    "url": "https://youtube.com/results?search_query={0}",
+    "title": "Search YouTube for '{0}'",
+    "placeholder": "...",
+    "description": "YouTube",
+    "alt": {
+      "url": "https://youtube.com",
+      "title": "Visit the YouTube homepage"
+    }
+  }
+]

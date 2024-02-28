@@ -12,7 +12,10 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 
-set(RES_FILES images/resources.qrc)
+set(RES_FILES
+    data/resources.qrc
+    images/resources.qrc
+)
 set(TS_FILES translations/${CMAKE_PROJECT_NAME}_en.ts)
 
 set(PROJECT_SOURCES
@@ -32,6 +35,8 @@ set(PROJECT_SOURCES
         src/searchresult.ui
         src/searchresultlist.cpp
         src/searchresultlist.h
+        src/websearch.cpp
+        src/websearch.h
         ${RES_FILES}
         ${TS_FILES}
 )
