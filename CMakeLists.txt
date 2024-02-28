@@ -36,7 +36,10 @@ set(PROJECT_SOURCES
         ${TS_FILES}
 )
 
-add_definitions(-DPROJECT_VERSION="${PROJECT_VERSION}")
+add_definitions(
+    -DPROJECT_VERSION="${PROJECT_VERSION}"
+    -DPROJECT_NAME="${CMAKE_PROJECT_NAME}"
+)
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(${CMAKE_PROJECT_NAME}
