@@ -22,6 +22,10 @@ constexpr int SearchResult::Height() const {
   return kFixedHeight + kVerticalMargin * 2;
 }
 
+void SearchResult::SetDescription(const QString& description) const {
+  ui_->description->setText(description);
+}
+
 void SearchResult::SetIcon(const QString& path) const {
   // If the height of the icon is greater than the fixed height of the search
   // result, the icon height will take precedence over the fixed height, thus
@@ -31,4 +35,12 @@ void SearchResult::SetIcon(const QString& path) const {
   // https://github.com/qbittorrent/qBittorrent/issues/8841#issuecomment-387179854
   auto icon = QIcon(path);
   ui_->icon->setPixmap(icon.pixmap(kFixedHeight));
+}
+
+void SearchResult::SetShortcut(const QString& shortcut) const {
+  ui_->shortcut->setText(shortcut);
+}
+
+void SearchResult::SetTitle(const QString& title) const {
+  ui_->title->setText(title);
 }
