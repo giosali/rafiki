@@ -1,6 +1,6 @@
 [
   {
-    "id": 0,
+    "id": 1,
     "key": "google",
     "icon": "://images/google.svg",
     "url": "https://google.com/search?q={0}",
@@ -13,7 +13,7 @@
     }
   },
   {
-    "id": 1,
+    "id": 2,
     "key": "duck",
     "icon": "://images/duckduckgo.svg",
     "url": "https://duckduckgo.com/?q={0}",
@@ -26,7 +26,7 @@
     }
   },
   {
-    "id": 2,
+    "id": 3,
     "key": "amazon",
     "icon": "://images/amazon.svg",
     "url": "https://amazon.com/s?k={0}",
@@ -39,7 +39,7 @@
     }
   },
   {
-    "id": 3,
+    "id": 4,
     "key": "ebay",
     "icon": "://images/ebay.svg",
     "url": "https://ebay.com/sch/i.html?_nkw={0}",
@@ -52,7 +52,7 @@
     }
   },
   {
-    "id": 4,
+    "id": 5,
     "key": "facebook",
     "icon": "://images/facebook.svg",
     "url": "https://facebook.com/search/top?q={0}",
@@ -65,7 +65,7 @@
     }
   },
   {
-    "id": 5,
+    "id": 6,
     "key": "github",
     "icon": "://images/github.svg",
     "url": "https://github.com/search?q={0}",
@@ -78,7 +78,7 @@
     }
   },
   {
-    "id": 6,
+    "id": 7,
     "key": "ig",
     "icon": "://images/instagram.svg",
     "url": "https://instagram.com/{0}",
@@ -91,7 +91,7 @@
     }
   },
   {
-    "id": 7,
+    "id": 8,
     "key": "pinterest",
     "icon": "://images/pinterest.svg",
     "url": "https://pinterest.com/search/pins/?q={0}",
@@ -104,7 +104,7 @@
     }
   },
   {
-    "id": 8,
+    "id": 9,
     "key": "r/",
     "icon": "://images/reddit.svg",
     "url": "https://reddit.com/r/{0}",
@@ -117,7 +117,7 @@
     }
   },
   {
-    "id": 9,
+    "id": 10,
     "key": "tiktok",
     "icon": "://images/tiktok.svg",
     "url": "https://tiktok.com/@{0}",
@@ -130,7 +130,7 @@
     }
   },
   {
-    "id": 10,
+    "id": 11,
     "key": "twitch",
     "icon": "://images/twitch.svg",
     "url": "https://twitch.tv/{0}",
@@ -143,7 +143,7 @@
     }
   },
   {
-    "id": 11,
+    "id": 12,
     "key": "twitter",
     "icon": "://images/twitter.svg",
     "url": "https://twitter.com/{0}",
@@ -156,7 +156,7 @@
     }
   },
   {
-    "id": 12,
+    "id": 13,
     "key": "twitter",
     "icon": "://images/twitter.svg",
     "url": "https://twitter.com/search?q={0}",
@@ -169,7 +169,7 @@
     }
   },
   {
-    "id": 13,
+    "id": 14,
     "key": "wiki",
     "icon": "://images/wikipedia.svg",
     "url": "https://wikipedia.org/wiki/Special:Search?search={0}",
@@ -182,7 +182,7 @@
     }
   },
   {
-    "id": 14,
+    "id": 15,
     "key": "youtube",
     "icon": "://images/youtube.svg",
     "url": "https://youtube.com/results?search_query={0}",
