@@ -19,6 +19,8 @@ class SearchBox : public QWidget {
 
   ~SearchBox();
 
+  int Height() const;
+
  public slots:
   void SetText(const QString& text);
 
@@ -26,8 +28,8 @@ class SearchBox : public QWidget {
   void TextChanged(const QString& text);
 
  private:
-  std::unique_ptr<Ui::SearchBox> ui_;
   QString text_;
+  std::unique_ptr<Ui::SearchBox> ui_;
 };
 
 #endif  // SEARCHBOX_H

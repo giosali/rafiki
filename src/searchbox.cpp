@@ -19,6 +19,8 @@ SearchBox::SearchBox(QWidget* parent)
 
 SearchBox::~SearchBox() {}
 
+int SearchBox::Height() const { return ui_->searchBox->height(); }
+
 void SearchBox::SetText(const QString& text) {
   if (text == text_) {
     return;
