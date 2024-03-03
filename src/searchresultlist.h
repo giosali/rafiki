@@ -19,6 +19,7 @@ class SearchResultList : public QListWidget {
 
  signals:
   void ItemsAdded(SearchResultList* list);
+  void ItemsCleared(SearchResultList* list);
 
  private:
   static constexpr int kMaxCount = 6;

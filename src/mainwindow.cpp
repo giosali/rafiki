@@ -1,10 +1,12 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QDebug>
 #include <QEvent>
 #include <QObject>
 #include <QScreen>
 #include <QtGlobal>
+#include <utility>
 
 #include "./ui_mainwindow.h"
 #include "searchbox.h"
@@ -27,6 +29,8 @@ MainWindow::MainWindow(QWidget* parent)
   auto list = std::make_unique<SearchResultList>(this);
 
   QObject::connect(list.get(), &SearchResultList::ItemsAdded, this,
+                   &MainWindow::SetHeight);
+  QObject::connect(list.get(), &SearchResultList::ItemsCleared, this,
                    &MainWindow::SetHeight);
   QObject::connect(search_box.get(), &SearchBox::TextChanged, list.get(),
                    &SearchResultList::ProcessInput);
@@ -53,8 +57,14 @@ QMainWindow* MainWindow::FindMainWindow() {
 }
 
 void MainWindow::SetHeight(SearchResultList* list) {
-  auto window_width = geometry().width();
   auto list_height = list->Height();
+  if (list_height == 0) {
+    AdjustSize();
+    qDebug() << "list_height: zero";
+    return;
+  }
+
+  auto window_width = geometry().width();
   auto search_box = findChild<SearchBox*>("SearchBox");
   resize(window_width, list_height + search_box->height());
 }
@@ -73,6 +83,11 @@ void MainWindow::AdjustSize() {
   // Sets the height of MainWindow to the height of MainWindow's layout.
   // Leaves the width unchanged by essentially setting it to its own width.
   auto window_width = geometry().width();
-  auto layout_height = centralWidget()->layout()->contentsRect().height();
-  resize(window_width, layout_height);
+  auto search_box = findChild<SearchBox*>("SearchBox");
+  auto search_box_height = search_box->Height();
+  search_box->resize(window_width, search_box_height);
+  qDebug() << "search_box inner height = " << search_box_height;
+  // auto layout_height = centralWidget()->layout()->contentsRect().height();
+  // qDebug() << "LAYOUT_HEIGHT = " << layout_height;
+  resize(window_width, 0);
 }

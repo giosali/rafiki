@@ -1,5 +1,6 @@
 #include "searchresultlist.h"
 
+#include <QDebug>
 #include <QFrame>
 #include <QListWidgetItem>
 #include <algorithm>
@@ -21,6 +22,7 @@ int SearchResultList::Height() const {
   auto row_height = sizeHintForRow(0);
   auto min_num_rows = std::min(count(), kMaxCount);
   auto total_height = min_num_rows * row_height;
+  qDebug() << "SearchResultList::Height() = " << total_height;
   return total_height;
 }
 
@@ -29,6 +31,7 @@ void SearchResultList::ProcessInput(const QString& input) {
 
   if (input.length() == 0) {
     hide();
+    emit ItemsCleared(this);
     return;
   }
 
@@ -42,6 +45,7 @@ void SearchResultList::ProcessInput(const QString& input) {
   if (count() == 0) {
     // TODO: add default results to list.
     hide();
+    emit ItemsCleared(this);
     return;
   }
 
