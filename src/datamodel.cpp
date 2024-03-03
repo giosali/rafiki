@@ -1,5 +1,9 @@
 #include "datamodel.h"
 
+#include <QFile>
+
+#include "projectio.h"
+
 QString DataModel::GetDescription() { return description_; }
 
 QString DataModel::GetIcon() { return icon_; }
@@ -17,7 +21,12 @@ QString DataModel::GetTitle(const QString &input) {
 
 void DataModel::SetDescription(const QString &text) { description_ = text; }
 
-void DataModel::SetIcon(const QString &path) { icon_ = path; }
+void DataModel::SetIcon(const QString &path) {
+  icon_ =
+      QFile::exists(path)
+          ? path
+          : ProjectIO::GetImageFilePath(ProjectIO::ImageFile::kQuestionMark);
+}
 
 void DataModel::SetKey(const QString &text) { key_ = text; }
 
