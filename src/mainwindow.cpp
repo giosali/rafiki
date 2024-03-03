@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 
 #include <QApplication>
-#include <QDebug>
 #include <QEvent>
 #include <QObject>
 #include <QScreen>
@@ -63,7 +62,6 @@ void MainWindow::SetHeight(SearchResultList* list) {
 bool MainWindow::event(QEvent* event) {
   switch (event->type()) {
     case QEvent::WindowDeactivate:
-      qDebug() << "Lost focus";
       hide();
       break;
   }
