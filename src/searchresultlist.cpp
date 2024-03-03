@@ -32,8 +32,6 @@ void SearchResultList::ProcessInput(const QString& input) {
     return;
   }
 
-  show();
-
   auto models = project_io_.FindDataModels(input);
   for (std::move_iterator it{models.begin()}, end{models.end()}; it != end;
        ++it) {
@@ -41,6 +39,13 @@ void SearchResultList::ProcessInput(const QString& input) {
     AddItem(value->GetIcon(), value->GetTitle(input), value->GetDescription());
   }
 
+  if (count() == 0) {
+    // TODO: add default results to list.
+    hide();
+    return;
+  }
+
+  show();
   emit ItemsAdded(this);
 }
 
