@@ -1,8 +1,8 @@
 #ifndef SEARCHRESULT_H
 #define SEARCHRESULT_H
 
+#include <QString>
 #include <QWidget>
-#include <cstdint>
 #include <memory>
 
 QT_BEGIN_NAMESPACE
@@ -15,20 +15,23 @@ class SearchResult : public QWidget {
   Q_OBJECT
 
  public:
-  explicit SearchResult(QWidget* parent = nullptr);
+  explicit SearchResult(const QString& icon, const QString& title,
+                        const QString& description = (const char*)0,
+                        QWidget* parent = nullptr);
 
   ~SearchResult();
 
   constexpr int Height() const;
-  void SetDescription(const QString& description) const;
-  void SetIcon(const QString& path) const;
-  void SetShortcut(const QString& shortcut) const;
-  void SetTitle(const QString& title) const;
 
  private:
   static constexpr int kFixedHeight = 44;
   static constexpr int kHorizontalMargin = 6;
   static constexpr int kVerticalMargin = 6;
+
+  void SetDescription(const QString& description) const;
+  void SetIcon(const QString& path) const;
+  void SetShortcut(const QString& shortcut) const;
+  void SetTitle(const QString& title) const;
 
   std::unique_ptr<Ui::SearchResult> ui_;
 };

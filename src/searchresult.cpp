@@ -7,13 +7,18 @@
 
 #include "./ui_searchresult.h"
 
-SearchResult::SearchResult(QWidget* parent)
+SearchResult::SearchResult(const QString& icon, const QString& title,
+                           const QString& description, QWidget* parent)
     : QWidget(parent), ui_(std::make_unique<Ui::SearchResult>()) {
   ui_->setupUi(this);
   ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
                                             kHorizontalMargin, kVerticalMargin);
   setFixedHeight(kFixedHeight);
   ui_->horizontalLayout->setSizeConstraint(QLayout::SetFixedSize);
+
+  SetIcon(icon);
+  SetTitle(title);
+  SetDescription(description);
 }
 
 SearchResult::~SearchResult() {}
