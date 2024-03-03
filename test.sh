@@ -7,7 +7,7 @@ cd build
 
 # Specifies that the CMakeLists.txt file to be used is the
 # one in ../test
-cmake -DCMAKE_BUILD_TYPE=Release ../test
+cmake -DCMAKE_PREFIX_PATH="~/Qt/6.6.1/gcc_64/lib/cmake" -DCMAKE_BUILD_TYPE=Release ../test
 
 cmake --build .
 cd ..
