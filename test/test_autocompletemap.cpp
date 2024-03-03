@@ -1,7 +1,7 @@
+#include <QString>
 #include <algorithm>
 #include <cstdlib>
 #include <set>
-#include <string>
 
 #include "../src/autocompletemap.h"
 #include "utest.h"
@@ -10,13 +10,13 @@ UTEST_MAIN();
 
 UTEST(Find, return_matching_sets) {
   auto autocomplete_map = AutocompleteMap();
-  auto term = std::string("hello");
+  auto term = QString("hello");
   autocomplete_map.Insert(term);
 
-  auto expected = std::set<std::string>();
+  auto expected = std::set<QString>();
   expected.insert(term);
 
-  auto key = std::string();
+  auto key = QString();
   for (const auto ch : term) {
     key += ch;
     auto actual = autocomplete_map.Find(key);
@@ -26,7 +26,7 @@ UTEST(Find, return_matching_sets) {
 
 UTEST(Find, return_empty_set) {
   auto autocomplete_map = AutocompleteMap();
-  auto term = std::string("hello");
+  auto term = QString("hello");
   autocomplete_map.Insert(term);
 
   auto actual = autocomplete_map.Find("bye");
@@ -35,7 +35,7 @@ UTEST(Find, return_empty_set) {
 
 UTEST(Insert, no_duplicates) {
   auto autocomplete_map = AutocompleteMap();
-  auto term = "hello";
+  auto term = QString("hello");
   for (size_t i = 1; i < 3; i++) {
     autocomplete_map.Insert(term);
   }

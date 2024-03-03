@@ -5,6 +5,10 @@ project(test LANGUAGES CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(Qt6 REQUIRED COMPONENTS Test)
+
+include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../src)
+
 set(PROJECT_SOURCES
         ../src/autocompletemap.cpp
         ../src/autocompletemap.h
@@ -13,6 +17,9 @@ set(PROJECT_SOURCES
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${PROJECT_SOURCES})
+
+# `target_link_libraries` must appear after `add_executable`.
+target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Test)
 
 add_custom_target(run ALL
     COMMAND ./test
