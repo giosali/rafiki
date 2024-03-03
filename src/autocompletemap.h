@@ -1,6 +1,8 @@
 #ifndef AUTOCOMPLETEMAP_H
 #define AUTOCOMPLETEMAP_H
 
+#include <QHash>
+#include <QString>
 #include <set>
 #include <string>
 #include <unordered_map>
@@ -9,11 +11,11 @@ class AutocompleteMap {
  public:
   explicit AutocompleteMap() = default;
 
-  std::set<std::string> Find(const std::string& text) const;
-  void Insert(const std::string& text);
+  std::set<QString> Find(const QString& text) const;
+  void Insert(const QString& text);
 
  private:
-  std::unordered_map<std::string, std::set<std::string>> map_;
+  std::unordered_map<QString, std::set<QString>> map_;
 };
 
 #endif  // AUTOCOMPLETEMAP_H

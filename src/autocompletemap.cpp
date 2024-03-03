@@ -1,15 +1,15 @@
 #include "autocompletemap.h"
 
-std::set<std::string> AutocompleteMap::Find(const std::string& text) const {
-  if (auto search = map_.find(text); search != map_.end()) {
-    return search->second;
+std::set<QString> AutocompleteMap::Find(const QString& text) const {
+  if (auto it = map_.find(text); it != map_.end()) {
+    return it->second;
   }
 
-  return std::set<std::string>();
+  return std::set<QString>();
 }
 
-void AutocompleteMap::Insert(const std::string& text) {
-  auto key = std::string();
+void AutocompleteMap::Insert(const QString& text) {
+  auto key = QString();
   for (const auto ch : text) {
     key += ch;
 
