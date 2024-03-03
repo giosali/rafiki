@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QDebug>
 #include <QEvent>
 #include <QObject>
 #include <QScreen>
@@ -24,12 +25,12 @@ MainWindow::MainWindow(QWidget* parent)
   statusBar()->hide();
 
   auto search_box = std::make_unique<SearchBox>(this);
-
   auto list = std::make_unique<SearchResultList>(this);
+
   QObject::connect(list.get(), &SearchResultList::ItemsAdded, this,
                    &MainWindow::SetHeight);
   QObject::connect(search_box.get(), &SearchBox::TextChanged, list.get(),
-                   &SearchResultList::CreateItems);
+                   &SearchResultList::ProcessInput);
 
   centralWidget()->layout()->addWidget(search_box.release());
   centralWidget()->layout()->addWidget(list.release());
