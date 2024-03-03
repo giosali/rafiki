@@ -13,7 +13,31 @@
 #include "websearch.h"
 
 ProjectIO::ProjectIO() {
-  ParseDataFile<WebSearch>(kDataDir + kWebSearchesFile);
+  ParseDataFile<WebSearch>(GetDataFilePath(DataFile::kWebSearches));
+}
+
+QString ProjectIO::GetDataFilePath(DataFile file) {
+  auto filename = QString();
+  switch (file) {
+    case DataFile::kWebSearches:
+      filename = "web-searches.json";
+      break;
+  }
+
+  auto dir = QString("://data/");
+  return dir + filename;
+}
+
+QString ProjectIO::GetImageFilePath(ImageFile file) {
+  auto filename = QString();
+  switch (file) {
+    case ImageFile::kQuestionMark:
+      filename = "question-mark.png";
+      break;
+  }
+
+  auto dir = QString("://images/");
+  return dir + filename;
 }
 
 std::vector<std::unique_ptr<DataModel>> ProjectIO::FindDataModels(
@@ -32,10 +56,6 @@ std::vector<std::unique_ptr<DataModel>> ProjectIO::FindDataModels(
   }
 
   return data_models;
-  // auto value = data_model_map_.find(key);
-  // return value == data_model_map_.end()
-  //            ? std::vector<std::unique_ptr<DataModel>>()
-  //            : std::move(value->second);
 }
 
 template <typename T>

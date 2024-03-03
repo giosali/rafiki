@@ -11,11 +11,13 @@
 
 class ProjectIO {
  public:
-  const QString kDataDir = "://data/";
-  const QString kWebSearchesFile = "web-searches.json";
+  enum class DataFile { kWebSearches };
+  enum class ImageFile { kQuestionMark };
 
   explicit ProjectIO();
 
+  static QString GetDataFilePath(DataFile file);
+  static QString GetImageFilePath(ImageFile file);
   std::vector<std::unique_ptr<DataModel>> FindDataModels(const QString& input);
 
  private:
