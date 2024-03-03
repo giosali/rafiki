@@ -3,7 +3,8 @@
 
 #include <QListWidget>
 #include <QString>
-#include <cstdint>
+
+#include "projectio.h"
 
 class SearchResultList : public QListWidget {
   Q_OBJECT
@@ -11,17 +12,21 @@ class SearchResultList : public QListWidget {
  public:
   SearchResultList(QWidget* parent = nullptr);
 
-  int Height();
+  int Height() const;
 
  public slots:
-  void AddItem(const QString& icon_path);
-  void CreateItems(const QString& text);
+  void ProcessInput(const QString& input);
 
  signals:
   void ItemsAdded(SearchResultList* list);
 
  private:
   static constexpr int kMaxCount = 6;
+
+  void AddItem(const QString& icon, const QString& title,
+               const QString& description);
+
+  ProjectIO project_io_;
 };
 
 #endif  // SEARCHRESULTLIST_H

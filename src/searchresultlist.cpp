@@ -3,49 +3,54 @@
 #include <QFrame>
 #include <QListWidgetItem>
 #include <algorithm>
-#include <cstdlib>
+#include <iterator>
 #include <memory>
 
 #include "searchresult.h"
 
-SearchResultList::SearchResultList(QWidget* parent) : QListWidget(parent) {
+SearchResultList::SearchResultList(QWidget* parent)
+    : QListWidget(parent), project_io_() {
   // Component should be hidden on initialization.
   hide();
 
-  // Removes slight border around component.
+  // Removes thin border around component.
   setFrameStyle(QFrame::NoFrame);
 }
 
-int SearchResultList::Height() {
+int SearchResultList::Height() const {
   auto row_height = sizeHintForRow(0);
   auto min_num_rows = std::min(count(), kMaxCount);
   auto total_height = min_num_rows * row_height;
   return total_height;
 }
 
-void SearchResultList::AddItem(const QString& icon_path) {
-  auto widget = std::make_unique<SearchResult>();
-  widget->SetIcon(icon_path);
+void SearchResultList::ProcessInput(const QString& input) {
+  clear();
+
+  if (input.length() == 0) {
+    hide();
+    return;
+  }
+
+  show();
+
+  auto models = project_io_.FindDataModels(input);
+  for (std::move_iterator it{models.begin()}, end{models.end()}; it != end;
+       ++it) {
+    auto value = *it;
+    AddItem(value->GetIcon(), value->GetTitle(input), value->GetDescription());
+  }
+
+  emit ItemsAdded(this);
+}
+
+void SearchResultList::AddItem(const QString& icon, const QString& title,
+                               const QString& description) {
+  auto widget = std::make_unique<SearchResult>(icon, title, description, this);
 
   auto item = std::make_unique<QListWidgetItem>(this);
   item->setSizeHint(widget->sizeHint());
 
   addItem(item.get());
   setItemWidget(item.release(), widget.release());
-}
-
-void SearchResultList::CreateItems(const QString& text) {
-  clear();
-  if (text.length() == 0) {
-    hide();
-    return;
-  }
-
-  show();
-  auto num_items_to_create = 7;
-  for (size_t i = 0; i < num_items_to_create; i++) {
-    AddItem("://images/question-mark.png");
-  }
-
-  emit ItemsAdded(this);
 }
