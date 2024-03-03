@@ -1,6 +1,7 @@
 #include <singleapplication.h>
 
 #include <QCoreApplication>
+#include <QDebug>
 #include <QLocale>
 #include <QObject>
 #include <QString>
