@@ -4,6 +4,7 @@
 #include <QListWidgetItem>
 #include <QObject>
 #include <algorithm>
+#include <cstdlib>
 #include <iterator>
 #include <memory>
 
@@ -51,8 +52,12 @@ void SearchResultList::ProcessInput(const QString& input) {
   }
 
   auto models = project_io_.FindDataModels(input);
+  size_t index = 0;
   for (const auto& model : models) {
-    AddItem(model->GetIcon(), model->GetTitle(input), model->GetDescription());
+    auto shortcut_key =
+        index < kMaxCount ? QString::number(++index) : (const char*)0;
+    AddItem(model->GetIcon(), model->GetTitle(input), model->GetDescription(),
+            shortcut_key);
   }
 
   if (count() == 0) {
@@ -65,8 +70,10 @@ void SearchResultList::ProcessInput(const QString& input) {
 }
 
 void SearchResultList::AddItem(const QString& icon, const QString& title,
-                               const QString& description) {
-  auto widget = std::make_unique<SearchResult>(icon, title, description, this);
+                               const QString& description,
+                               const QString& shortcut_key) {
+  auto widget = std::make_unique<SearchResult>(icon, title, description,
+                                               shortcut_key, this);
 
   auto item = std::make_unique<QListWidgetItem>(this);
   item->setSizeHint(widget->sizeHint());

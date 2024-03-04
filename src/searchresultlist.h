@@ -26,7 +26,7 @@ class SearchResultList : public QListWidget {
   static constexpr int kMaxCount = 6;
 
   void AddItem(const QString& icon, const QString& title,
-               const QString& description);
+               const QString& description, const QString& shortcut_key);
 
   ProjectIO project_io_;
 };

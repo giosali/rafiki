@@ -8,7 +8,8 @@
 #include "./ui_searchresult.h"
 
 SearchResult::SearchResult(const QString& icon, const QString& title,
-                           const QString& description, QWidget* parent)
+                           const QString& description,
+                           const QString& shortcut_key, QWidget* parent)
     : QWidget(parent), ui_(std::make_unique<Ui::SearchResult>()) {
   ui_->setupUi(this);
   ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
@@ -18,6 +19,7 @@ SearchResult::SearchResult(const QString& icon, const QString& title,
   SetIcon(icon);
   SetTitle(title);
   SetDescription(description);
+  SetShortcut(shortcut_key);
 }
 
 SearchResult::~SearchResult() {}
@@ -41,7 +43,13 @@ void SearchResult::SetIcon(const QString& path) const {
   ui_->icon->setPixmap(icon.pixmap(kFixedHeight));
 }
 
-void SearchResult::SetShortcut(const QString& shortcut) const {
+void SearchResult::SetShortcut(const QString& shortcut_key) const {
+  if (shortcut_key.isNull()) {
+    ui_->shortcut->hide();
+    return;
+  }
+
+  auto shortcut = kShortcutModifierKey + shortcut_key;
   ui_->shortcut->setText(shortcut);
 }
 
