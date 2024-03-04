@@ -29,8 +29,6 @@ class MainWindow : public QMainWindow {
   bool event(QEvent *event) override;
 
  private:
-  void AdjustSize();
-
   std::unique_ptr<Ui::MainWindow> ui_;
 };
 #endif // MAINWINDOW_H

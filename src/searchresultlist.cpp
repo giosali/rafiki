@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QFrame>
 #include <QListWidgetItem>
+#include <QObject>
 #include <algorithm>
 #include <iterator>
 #include <memory>
@@ -12,25 +13,40 @@
 SearchResultList::SearchResultList(QWidget* parent)
     : QListWidget(parent), project_io_() {
   // Component should be hidden on initialization.
-  hide();
+  if (parent == nullptr) {
+    setFixedHeight(0);
+  } else {
+    setFixedSize(parent->width(), 0);
+  }
 
   // Removes thin border around component.
   setFrameStyle(QFrame::NoFrame);
+
+  QObject::connect(this, &SearchResultList::ItemsAdded, this,
+                   &SearchResultList::AdjustSize);
+  QObject::connect(this, &SearchResultList::ItemsCleared, this,
+                   &SearchResultList::AdjustSize);
 }
 
 int SearchResultList::Height() const {
   auto row_height = sizeHintForRow(0);
+  if (row_height == -1) {
+    return 0;
+  }
+
   auto min_num_rows = std::min(count(), kMaxCount);
   auto total_height = min_num_rows * row_height;
-  qDebug() << "SearchResultList::Height() = " << total_height;
   return total_height;
+}
+
+void SearchResultList::AdjustSize(SearchResultList* list) {
+  setFixedHeight(Height());
 }
 
 void SearchResultList::ProcessInput(const QString& input) {
   clear();
 
   if (input.length() == 0) {
-    hide();
     emit ItemsCleared(this);
     return;
   }
@@ -42,12 +58,10 @@ void SearchResultList::ProcessInput(const QString& input) {
 
   if (count() == 0) {
     // TODO: add default results to list.
-    hide();
     emit ItemsCleared(this);
     return;
   }
 
-  show();
   emit ItemsAdded(this);
 }
 
