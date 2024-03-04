@@ -1,6 +1,5 @@
 #include "searchresultlist.h"
 
-#include <QDebug>
 #include <QFrame>
 #include <QListWidgetItem>
 #include <QObject>
