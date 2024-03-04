@@ -23,17 +23,16 @@ class SearchResult : public QWidget {
   ~SearchResult();
 
   constexpr int Height() const;
+  void SetDescription(const QString& description) const;
+  void SetIcon(const QString& path) const;
+  void SetShortcut(const QString& shortcut_key) const;
+  void SetTitle(const QString& title) const;
 
  private:
   static constexpr int kFixedHeight = 44;
   static constexpr int kHorizontalMargin = 6;
   static constexpr int kVerticalMargin = 6;
   const QString kShortcutModifierKey = "CTRL + ";
-
-  void SetDescription(const QString& description) const;
-  void SetIcon(const QString& path) const;
-  void SetShortcut(const QString& shortcut_key) const;
-  void SetTitle(const QString& title) const;
 
   std::unique_ptr<Ui::SearchResult> ui_;
 };
