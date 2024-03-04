@@ -1,6 +1,5 @@
 #include "projectio.h"
 
-#include <QDebug>
 #include <QFile>
 #include <QIODevice>
 #include <QJsonArray>
@@ -40,22 +39,22 @@ QString ProjectIO::GetImageFilePath(ImageFile file) {
   return dir + filename;
 }
 
-std::vector<std::unique_ptr<DataModel>> ProjectIO::FindDataModels(
+std::vector<std::shared_ptr<DataModel>> ProjectIO::FindDataModels(
     const QString& input) {
+  auto data_models_concat = std::vector<std::shared_ptr<DataModel>>();
   auto suggestions = autocomplete_map_.Find(input);
-  auto data_models = std::vector<std::unique_ptr<DataModel>>();
   for (const auto& suggestion : suggestions) {
-    auto data_model_it = data_model_map_.find(suggestion);
-    if (data_model_it == data_model_map_.end()) {
+    auto data_models_it = data_models_map_.find(suggestion);
+    if (data_models_it == data_models_map_.end()) {
       continue;
     }
 
-    auto dms = std::move(data_model_it->second);
-    data_models.insert(data_models.end(), std::make_move_iterator(dms.begin()),
-                       std::make_move_iterator(dms.end()));
+    auto data_models = data_models_it->second;
+    data_models_concat.insert(data_models_concat.end(), data_models.begin(),
+                              data_models.end());
   }
 
-  return data_models;
+  return data_models_concat;
 }
 
 template <typename T>
@@ -71,6 +70,6 @@ void ProjectIO::ParseDataFile(const QString& path) {
 
     auto key = data_model->GetKey();
     autocomplete_map_.Insert(key);
-    data_model_map_[key].push_back(std::move(data_model));
+    data_models_map_[key].push_back(std::move(data_model));
   }
 }

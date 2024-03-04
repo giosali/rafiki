@@ -36,10 +36,8 @@ void SearchResultList::ProcessInput(const QString& input) {
   }
 
   auto models = project_io_.FindDataModels(input);
-  for (std::move_iterator it{models.begin()}, end{models.end()}; it != end;
-       ++it) {
-    auto value = *it;
-    AddItem(value->GetIcon(), value->GetTitle(input), value->GetDescription());
+  for (const auto& model : models) {
+    AddItem(model->GetIcon(), model->GetTitle(input), model->GetDescription());
   }
 
   if (count() == 0) {
