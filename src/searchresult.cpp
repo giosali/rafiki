@@ -13,8 +13,7 @@ SearchResult::SearchResult(const QString& icon, const QString& title,
   ui_->setupUi(this);
   ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
                                             kHorizontalMargin, kVerticalMargin);
-  setFixedHeight(kFixedHeight);
-  ui_->horizontalLayout->setSizeConstraint(QLayout::SetFixedSize);
+  setFixedHeight(Height());
 
   SetIcon(icon);
   SetTitle(title);
