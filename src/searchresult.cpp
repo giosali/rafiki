@@ -51,6 +51,9 @@ void SearchResult::SetShortcut(const QString& shortcut_key) const {
 
   auto shortcut = kShortcutModifierKey + shortcut_key;
   ui_->shortcut->setText(shortcut);
+  if (ui_->shortcut->isHidden()) {
+    ui_->shortcut->show();
+  }
 }
 
 void SearchResult::SetTitle(const QString& title) const {
