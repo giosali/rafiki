@@ -17,6 +17,7 @@ class SearchResultList : public QListWidget {
  public slots:
   void AdjustSize(SearchResultList* list);
   void ProcessInput(const QString& input);
+  void UpdateShortcuts(int value);
 
  signals:
   void ItemsAdded(SearchResultList* list);

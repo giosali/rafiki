@@ -3,6 +3,7 @@
 #include <QFrame>
 #include <QListWidgetItem>
 #include <QObject>
+#include <QScrollBar>
 #include <algorithm>
 #include <cstdlib>
 #include <iterator>
@@ -26,6 +27,8 @@ SearchResultList::SearchResultList(QWidget* parent)
                    &SearchResultList::AdjustSize);
   QObject::connect(this, &SearchResultList::ItemsCleared, this,
                    &SearchResultList::AdjustSize);
+  QObject::connect(verticalScrollBar(), &QScrollBar::valueChanged, this,
+                   &SearchResultList::UpdateShortcuts);
 }
 
 int SearchResultList::Height() const {
@@ -67,6 +70,19 @@ void SearchResultList::ProcessInput(const QString& input) {
   }
 
   emit ItemsAdded(this);
+}
+
+void SearchResultList::UpdateShortcuts(int value) {
+  for (size_t i = 0, j = 0; i < count() && j < kMaxCount; ++i) {
+    if (i < value) {
+      continue;
+    }
+
+    auto list_item = item(i);
+    auto widget = itemWidget(list_item);
+    auto search_result = dynamic_cast<SearchResult*>(widget);
+    search_result->SetShortcut(QString::number(++j));
+  }
 }
 
 void SearchResultList::AddItem(const QString& icon, const QString& title,
