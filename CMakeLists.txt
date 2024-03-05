@@ -41,6 +41,7 @@ set(PROJECT_SOURCES
         src/searchresult.ui
         src/searchresultlist.cpp
         src/searchresultlist.h
+        src/utils.h
         src/websearch.cpp
         src/websearch.h
         ${RES_FILES}
