@@ -1,7 +1,7 @@
 [
   {
     "id": 1,
-    "key": "google",
+    "command": "google",
     "icon": "://images/google.png",
     "url": "https://google.com/search?q={}",
     "title": "Search Google for '{}'",
@@ -14,7 +14,7 @@
   },
   {
     "id": 2,
-    "key": "duck",
+    "command": "duck",
     "icon": "://images/duckduckgo.svg",
     "url": "https://duckduckgo.com/?q={}",
     "title": "Search DuckDuckGo for '{}'",
@@ -27,7 +27,7 @@
   },
   {
     "id": 3,
-    "key": "amazon",
+    "command": "amazon",
     "icon": "://images/amazon.svg",
     "url": "https://amazon.com/s?k={}",
     "title": "Search Amazon for '{}'",
@@ -40,7 +40,7 @@
   },
   {
     "id": 4,
-    "key": "ebay",
+    "command": "ebay",
     "icon": "://images/ebay.png",
     "url": "https://ebay.com/sch/i.html?_nkw={}",
     "title": "Search eBay for '{}'",
@@ -53,7 +53,7 @@
   },
   {
     "id": 5,
-    "key": "facebook",
+    "command": "facebook",
     "icon": "://images/facebook.png",
     "url": "https://facebook.com/search/top?q={}",
     "title": "Search Facebook for '{}'",
@@ -66,7 +66,7 @@
   },
   {
     "id": 6,
-    "key": "github",
+    "command": "github",
     "icon": "://images/github.svg",
     "url": "https://github.com/search?q={}",
     "title": "Search GitHub for '{}'",
@@ -79,7 +79,7 @@
   },
   {
     "id": 7,
-    "key": "ig",
+    "command": "ig",
     "icon": "://images/instagram.png",
     "url": "https://instagram.com/{}",
     "title": "Visit {}'s profile",
@@ -92,7 +92,7 @@
   },
   {
     "id": 8,
-    "key": "pinterest",
+    "command": "pinterest",
     "icon": "://images/pinterest.svg",
     "url": "https://pinterest.com/search/pins/?q={}",
     "title": "Search Pinterest for '{}'",
@@ -105,7 +105,7 @@
   },
   {
     "id": 9,
-    "key": "r/",
+    "command": "r/",
     "icon": "://images/reddit.svg",
     "url": "https://reddit.com/r/{}",
     "title": "Visit r/{}",
@@ -118,7 +118,7 @@
   },
   {
     "id": 10,
-    "key": "tiktok",
+    "command": "tiktok",
     "icon": "://images/tiktok.png",
     "url": "https://tiktok.com/@{}",
     "title": "Visit {}'s profile",
@@ -131,7 +131,7 @@
   },
   {
     "id": 11,
-    "key": "twitch",
+    "command": "twitch",
     "icon": "://images/twitch.svg",
     "url": "https://twitch.tv/{}",
     "title": "Visit {}'s channel",
@@ -144,7 +144,7 @@
   },
   {
     "id": 12,
-    "key": "twitter",
+    "command": "twitter",
     "icon": "://images/x.svg",
     "url": "https://twitter.com/{}",
     "title": "Visit {}'s profile",
@@ -157,7 +157,7 @@
   },
   {
     "id": 13,
-    "key": "twitter",
+    "command": "twitter",
     "icon": "://images/x.svg",
     "url": "https://twitter.com/search?q={}",
     "title": "Search Twitter for '{}'",
@@ -170,7 +170,7 @@
   },
   {
     "id": 14,
-    "key": "wiki",
+    "command": "wiki",
     "icon": "://images/wikipedia.svg",
     "url": "https://wikipedia.org/wiki/Special:Search?search={}",
     "title": "Search Wikipedia for '{}'",
@@ -183,7 +183,7 @@
   },
   {
     "id": 15,
-    "key": "youtube",
+    "command": "youtube",
     "icon": "://images/youtube.png",
     "url": "https://youtube.com/results?search_query={}",
     "title": "Search YouTube for '{}'",

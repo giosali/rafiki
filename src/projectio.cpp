@@ -68,8 +68,8 @@ void ProjectIO::ParseDataFile(const QString& path) {
     auto data_model = std::make_unique<T>();
     data_model->Populate(it->toObject());
 
-    auto key = data_model->GetKey(true);
-    autocomplete_map_.Insert(key);
-    data_models_map_[key].push_back(std::move(data_model));
+    auto cmd = data_model->GetCommand(true);
+    autocomplete_map_.Insert(cmd);
+    data_models_map_[cmd].push_back(std::move(data_model));
   }
 }

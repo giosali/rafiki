@@ -11,25 +11,25 @@ class DataModel {
   virtual ~DataModel() = default;
 
   virtual void Populate(const QJsonObject& object) = 0;
+  QString GetCommand(bool try_append_space);
   QString GetDescription();
   QString GetIcon();
-  QString GetKey(bool try_append_space);
   QString GetTitle(const QString& arg);
 
  protected:
+  void SetCommand(const QString& text);
   void SetDescription(const QString& text);
   void SetIcon(const QString& path);
-  void SetKey(const QString& text);
   void SetPlaceholder(const QString& text);
   void SetTitle(const QString& text);
 
  private:
   const QString kFormat = "{}";
 
+  QString command_;
   QString description_;
   QString icon_;
   bool is_title_formattable_;
-  QString key_;
   QString placeholder_;
   QString title_;
 };

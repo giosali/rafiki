@@ -7,9 +7,9 @@ void WebSearch::Populate(const QJsonObject& object) {
   auto id = id_val.toInt();
   id_ = id;
 
-  auto key_val = object["key"];
-  auto key = key_val.toString();
-  SetKey(key);
+  auto cmd_val = object["command"];
+  auto cmd = cmd_val.toString();
+  SetCommand(cmd);
 
   auto icon_val = object["icon"];
   auto icon = icon_val.toString();

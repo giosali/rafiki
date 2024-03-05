@@ -9,8 +9,8 @@ QString DataModel::GetDescription() { return description_; }
 
 QString DataModel::GetIcon() { return icon_; }
 
-QString DataModel::GetKey(bool try_append_space) {
-  return try_append_space && is_title_formattable_ ? key_ + " " : key_;
+QString DataModel::GetCommand(bool try_append_space) {
+  return try_append_space && is_title_formattable_ ? command_ + " " : command_;
 }
 
 QString DataModel::GetTitle(const QString &arg) {
@@ -18,6 +18,8 @@ QString DataModel::GetTitle(const QString &arg) {
              ? utils::Format(title_, arg.isEmpty() ? placeholder_ : arg)
              : title_;
 }
+
+void DataModel::SetCommand(const QString &text) { command_ = text; }
 
 void DataModel::SetDescription(const QString &text) { description_ = text; }
 
@@ -27,8 +29,6 @@ void DataModel::SetIcon(const QString &path) {
           ? path
           : ProjectIO::GetImageFilePath(ProjectIO::ImageFile::kQuestionMark);
 }
-
-void DataModel::SetKey(const QString &text) { key_ = text; }
 
 void DataModel::SetPlaceholder(const QString &text) { placeholder_ = text; }
 
