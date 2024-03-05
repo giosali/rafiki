@@ -81,6 +81,10 @@ void SearchResultList::UpdateShortcuts(int value) {
     auto list_item = item(i);
     auto widget = itemWidget(list_item);
     auto search_result = dynamic_cast<SearchResult*>(widget);
+    if (search_result == nullptr) {
+      continue;
+    }
+
     search_result->SetShortcut(QString::number(++j));
   }
 }
