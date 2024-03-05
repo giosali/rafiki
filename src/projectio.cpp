@@ -40,9 +40,9 @@ QString ProjectIO::GetImageFilePath(ImageFile file) {
 }
 
 std::vector<std::shared_ptr<DataModel>> ProjectIO::FindDataModels(
-    const QString& input) {
+    const QString& cmd) {
   auto data_models_concat = std::vector<std::shared_ptr<DataModel>>();
-  auto suggestions = autocomplete_map_.Find(input);
+  auto suggestions = autocomplete_map_.Find(cmd);
   for (const auto& suggestion : suggestions) {
     auto data_models_it = data_models_map_.find(suggestion);
     if (data_models_it == data_models_map_.end()) {
@@ -68,7 +68,7 @@ void ProjectIO::ParseDataFile(const QString& path) {
     auto data_model = std::make_unique<T>();
     data_model->Populate(it->toObject());
 
-    auto key = data_model->GetKey();
+    auto key = data_model->GetKey(true);
     autocomplete_map_.Insert(key);
     data_models_map_[key].push_back(std::move(data_model));
   }

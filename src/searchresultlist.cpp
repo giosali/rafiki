@@ -78,12 +78,22 @@ void SearchResultList::ProcessInput(const QString& input) {
     return;
   }
 
-  auto models = project_io_.FindDataModels(input);
+  auto cmd = input;
+  auto arg = QString();
+  auto space_index = input.indexOf(" ");
+
+  // Increments in order to include the space when slicing.
+  if (space_index++ != -1) {
+    cmd = input.sliced(0, space_index);
+    arg = input.sliced(space_index);
+  }
+
+  auto models = project_io_.FindDataModels(cmd);
   size_t index = 0;
   for (const auto& model : models) {
     auto shortcut_key =
         index < kMaxCount ? QString::number(++index) : (const char*)0;
-    AddItem(model->GetIcon(), model->GetTitle(input), model->GetDescription(),
+    AddItem(model->GetIcon(), model->GetTitle(arg), model->GetDescription(),
             shortcut_key);
   }
 
