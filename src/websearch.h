@@ -18,8 +18,6 @@ class WebSearch : public DataModel {
   QString alt_url_;
   QString alt_title_;
   int id_;
-  QString key_;
-  QString placeholder_;
   QString url_;
 };
 
