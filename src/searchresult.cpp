@@ -44,16 +44,9 @@ void SearchResult::SetIcon(const QString& path) const {
 }
 
 void SearchResult::SetShortcut(const QString& shortcut_key) const {
-  if (shortcut_key.isNull()) {
-    ui_->shortcut->hide();
-    return;
-  }
-
-  auto shortcut = kShortcutModifierKey + shortcut_key;
+  auto shortcut = shortcut_key.isNull() ? shortcut_key
+                                        : kShortcutModifierKey + shortcut_key;
   ui_->shortcut->setText(shortcut);
-  if (ui_->shortcut->isHidden()) {
-    ui_->shortcut->show();
-  }
 }
 
 void SearchResult::SetTitle(const QString& title) const {
