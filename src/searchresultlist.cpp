@@ -25,6 +25,8 @@ SearchResultList::SearchResultList(QWidget* parent)
 
   QObject::connect(this, &SearchResultList::ItemsAdded, this,
                    &SearchResultList::AdjustSize);
+  QObject::connect(this, &SearchResultList::ItemsAdded, this,
+                   &SearchResultList::SetCurrentItem);
   QObject::connect(this, &SearchResultList::ItemsCleared, this,
                    &SearchResultList::AdjustSize);
   QObject::connect(verticalScrollBar(), &QScrollBar::valueChanged, this,
@@ -70,6 +72,15 @@ void SearchResultList::ProcessInput(const QString& input) {
   }
 
   emit ItemsAdded(this);
+}
+
+void SearchResultList::SetCurrentItem(SearchResultList* list) {
+  auto first_item = item(0);
+  if (first_item == nullptr) {
+    return;
+  }
+
+  setCurrentItem(first_item);
 }
 
 void SearchResultList::UpdateShortcuts(int value) {
