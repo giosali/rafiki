@@ -14,7 +14,6 @@ SearchResult::SearchResult(const QString& icon, const QString& title,
   ui_->setupUi(this);
   ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
                                             kHorizontalMargin, kVerticalMargin);
-  setFixedHeight(Height());
 
   SetIcon(icon);
   SetTitle(title);
@@ -24,9 +23,7 @@ SearchResult::SearchResult(const QString& icon, const QString& title,
 
 SearchResult::~SearchResult() {}
 
-constexpr int SearchResult::Height() const {
-  return kFixedHeight + kVerticalMargin * 2;
-}
+int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }
 
 void SearchResult::SetDescription(const QString& description) const {
   ui_->description->setText(description);

@@ -22,7 +22,7 @@ class SearchResult : public QWidget {
 
   ~SearchResult();
 
-  constexpr int Height() const;
+  int Height() const;
   void SetDescription(const QString& description) const;
   void SetIcon(const QString& path) const;
   void SetShortcut(const QString& shortcut_key) const;

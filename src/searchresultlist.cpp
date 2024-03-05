@@ -4,6 +4,7 @@
 #include <QListWidgetItem>
 #include <QObject>
 #include <QScrollBar>
+#include <QSize>
 #include <Qt>
 #include <algorithm>
 #include <cstdlib>
@@ -123,7 +124,11 @@ void SearchResultList::AddItem(const QString& icon, const QString& title,
                                                shortcut_key, this);
 
   auto item = std::make_unique<QListWidgetItem>(this);
-  item->setSizeHint(widget->sizeHint());
+
+  // Sets the actual height of search result items and prevents unusual sizing
+  // differences between items.
+  auto size_hint = QSize(widget->sizeHint().width(), widget->Height());
+  item->setSizeHint(size_hint);
 
   addItem(item.get());
   setItemWidget(item.release(), widget.release());
