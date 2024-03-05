@@ -4,6 +4,7 @@
 #include <QListWidgetItem>
 #include <QObject>
 #include <QScrollBar>
+#include <Qt>
 #include <algorithm>
 #include <cstdlib>
 #include <iterator>
@@ -48,6 +49,26 @@ void SearchResultList::AdjustSize(SearchResultList* list) {
   setFixedHeight(Height());
 }
 
+void SearchResultList::ChangeCurrentItem(int arrow_key) {
+  auto current_row = currentRow();
+  auto operand = 0;
+  switch (arrow_key) {
+    case Qt::Key::Key_Up:
+      operand = -1;
+      break;
+    case Qt::Key::Key_Down:
+      operand = 1;
+      break;
+  }
+
+  auto new_current_row = current_row + operand;
+  if (new_current_row < 0 || new_current_row >= count()) {
+    return;
+  }
+
+  setCurrentRow(new_current_row);
+}
+
 void SearchResultList::ProcessInput(const QString& input) {
   clear();
 
@@ -75,12 +96,7 @@ void SearchResultList::ProcessInput(const QString& input) {
 }
 
 void SearchResultList::SetCurrentItem(SearchResultList* list) {
-  auto first_item = item(0);
-  if (first_item == nullptr) {
-    return;
-  }
-
-  setCurrentItem(first_item);
+  setCurrentRow(0);
 }
 
 void SearchResultList::UpdateShortcuts(int value) {
