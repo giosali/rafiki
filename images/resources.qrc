@@ -1,5 +1,19 @@
 <RCC>
     <qresource prefix="/images">
+        <file>amazon.svg</file>
+        <file>duckduckgo.svg</file>
+        <file>ebay.png</file>
+        <file>facebook.png</file>
+        <file>github.svg</file>
+        <file>google.png</file>
+        <file>instagram.png</file>
+        <file>pinterest.svg</file>
         <file>question-mark.png</file>
+        <file>reddit.svg</file>
+        <file>tiktok.png</file>
+        <file>twitch.svg</file>
+        <file>wikipedia.svg</file>
+        <file>x.svg</file>
+        <file>youtube.png</file>
     </qresource>
 </RCC>

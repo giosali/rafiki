@@ -2,7 +2,7 @@
   {
     "id": 1,
     "key": "google",
-    "icon": "://images/google.svg",
+    "icon": "://images/google.png",
     "url": "https://google.com/search?q={}",
     "title": "Search Google for '{}'",
     "placeholder": "...",
@@ -41,7 +41,7 @@
   {
     "id": 4,
     "key": "ebay",
-    "icon": "://images/ebay.svg",
+    "icon": "://images/ebay.png",
     "url": "https://ebay.com/sch/i.html?_nkw={}",
     "title": "Search eBay for '{}'",
     "placeholder": "...",
@@ -54,7 +54,7 @@
   {
     "id": 5,
     "key": "facebook",
-    "icon": "://images/facebook.svg",
+    "icon": "://images/facebook.png",
     "url": "https://facebook.com/search/top?q={}",
     "title": "Search Facebook for '{}'",
     "placeholder": "...",
@@ -80,7 +80,7 @@
   {
     "id": 7,
     "key": "ig",
-    "icon": "://images/instagram.svg",
+    "icon": "://images/instagram.png",
     "url": "https://instagram.com/{}",
     "title": "Visit {}'s profile",
     "placeholder": "_",
@@ -119,7 +119,7 @@
   {
     "id": 10,
     "key": "tiktok",
-    "icon": "://images/tiktok.svg",
+    "icon": "://images/tiktok.png",
     "url": "https://tiktok.com/@{}",
     "title": "Visit {}'s profile",
     "placeholder": "_",
@@ -145,7 +145,7 @@
   {
     "id": 12,
     "key": "twitter",
-    "icon": "://images/twitter.svg",
+    "icon": "://images/x.svg",
     "url": "https://twitter.com/{}",
     "title": "Visit {}'s profile",
     "placeholder": "_",
@@ -158,7 +158,7 @@
   {
     "id": 13,
     "key": "twitter",
-    "icon": "://images/twitter.svg",
+    "icon": "://images/x.svg",
     "url": "https://twitter.com/search?q={}",
     "title": "Search Twitter for '{}'",
     "placeholder": "...",
@@ -184,7 +184,7 @@
   {
     "id": 15,
     "key": "youtube",
-    "icon": "://images/youtube.svg",
+    "icon": "://images/youtube.png",
     "url": "https://youtube.com/results?search_query={}",
     "title": "Search YouTube for '{}'",
     "placeholder": "...",
