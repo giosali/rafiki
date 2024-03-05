@@ -23,6 +23,10 @@ void WebSearch::Populate(const QJsonObject& object) {
   auto title = title_val.toString();
   SetTitle(title);
 
+  auto placeholder_val = object["placeholder"];
+  auto placeholder = placeholder_val.toString();
+  SetPlaceholder(placeholder);
+
   auto description_val = object["description"];
   auto description = description_val.toString();
   SetDescription(description);
