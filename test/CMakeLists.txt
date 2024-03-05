@@ -14,7 +14,9 @@ include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../src)
 set(PROJECT_SOURCES
         ../src/autocompletemap.cpp
         ../src/autocompletemap.h
+        ../src/utils.h
         test_autocompletemap.cpp
+        test_utils.cpp
         utest.h
 )
 
