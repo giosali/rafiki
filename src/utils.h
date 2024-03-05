@@ -4,6 +4,7 @@
 #include <QString>
 
 namespace utils {
+
 inline QString Format(QString fmt, const QString& arg) {
   return fmt.replace(fmt.indexOf("{}"), 2, arg);
 }
