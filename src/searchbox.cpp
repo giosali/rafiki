@@ -34,9 +34,10 @@ void SearchBox::SetText(const QString& text) {
 void SearchBox::keyPressEvent(QKeyEvent* event) {
   auto key = event->key();
   switch (key) {
+    case Qt::Key::Key_Return:
     case Qt::Key::Key_Up:
     case Qt::Key::Key_Down:
-      emit ArrowKeyPressed(key);
+      emit KeyPressed(key);
       break;
   }
 }

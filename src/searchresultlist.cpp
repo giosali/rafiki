@@ -1,6 +1,5 @@
 #include "searchresultlist.h"
 
-#include <QDebug>
 #include <QFrame>
 #include <QListWidgetItem>
 #include <QObject>
@@ -32,8 +31,6 @@ SearchResultList::SearchResultList(QWidget* parent)
                    &SearchResultList::SetCurrentItem);
   QObject::connect(this, &SearchResultList::ItemsCleared, this,
                    &SearchResultList::AdjustSize);
-  QObject::connect(this, &SearchResultList::itemActivated, this,
-                   &SearchResultList::ActivateItem);
 }
 
 int SearchResultList::Height() const {
@@ -47,36 +44,8 @@ int SearchResultList::Height() const {
   return total_height;
 }
 
-void SearchResultList::ActivateItem() {
-  if (count() == 0) {
-    return;
-  }
-
-  // auto item = currentItem();
-}
-
 void SearchResultList::AdjustSize(SearchResultList* list) {
   setFixedHeight(Height());
-}
-
-void SearchResultList::ChangeCurrentItem(int arrow_key) {
-  auto current_row = currentRow();
-  auto operand = 0;
-  switch (arrow_key) {
-    case Qt::Key::Key_Up:
-      operand = -1;
-      break;
-    case Qt::Key::Key_Down:
-      operand = 1;
-      break;
-  }
-
-  auto new_current_row = current_row + operand;
-  if (new_current_row < 0 || new_current_row >= count()) {
-    return;
-  }
-
-  setCurrentRow(new_current_row);
 }
 
 void SearchResultList::ProcessInput(const QString& input) {
@@ -109,6 +78,29 @@ void SearchResultList::ProcessInput(const QString& input) {
   }
 
   emit ItemsAdded(this);
+}
+
+void SearchResultList::ProcessKeyPress(int key) {
+  switch (key) {
+    case Qt::Key::Key_Up: {
+      auto new_current_row = currentRow() - 1;
+      if (new_current_row < 0) {
+        break;
+      }
+
+      setCurrentRow(new_current_row);
+      break;
+    }
+    case Qt::Key::Key_Down: {
+      auto new_current_row = currentRow() + 1;
+      if (new_current_row >= count()) {
+        break;
+      }
+
+      setCurrentRow(new_current_row);
+      break;
+    }
+  }
 }
 
 void SearchResultList::SetCurrentItem(SearchResultList* list) {

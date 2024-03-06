@@ -39,8 +39,8 @@ MainWindow::MainWindow(QWidget* parent)
                    &MainWindow::SetHeight);
   QObject::connect(search_box.get(), &SearchBox::TextChanged, list.get(),
                    &SearchResultList::ProcessInput);
-  QObject::connect(search_box.get(), &SearchBox::ArrowKeyPressed, list.get(),
-                   &SearchResultList::ChangeCurrentItem);
+  QObject::connect(search_box.get(), &SearchBox::KeyPressed, list.get(),
+                   &SearchResultList::ProcessKeyPress);
 
   centralWidget()->layout()->addWidget(search_box.release());
   centralWidget()->layout()->addWidget(list.release());

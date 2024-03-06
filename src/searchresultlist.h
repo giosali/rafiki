@@ -17,10 +17,9 @@ class SearchResultList : public QListWidget {
   int Height() const;
 
  public slots:
-  void ActivateItem();
   void AdjustSize(SearchResultList* list);
-  void ChangeCurrentItem(int arrow_key);
   void ProcessInput(const QString& input);
+  void ProcessKeyPress(int key);
   void SetCurrentItem(SearchResultList* list);
 
  signals:
