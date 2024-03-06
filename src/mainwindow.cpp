@@ -66,15 +66,10 @@ QMainWindow* MainWindow::FindMainWindow() {
 }
 
 void MainWindow::SetHeight(SearchResultList* list) {
+  // The minimum height of the window being already set prevents the window from
+  // shrinking down all the way to 0, which is a good thing.
   auto list_height = list->Height();
-  if (list_height == 0) {
-    // Setting the minimum height prevents the window from shrinking to 0, which
-    // is a good thing.
-    resize(width(), 0);
-    return;
-  }
-
-  resize(width(), minimumHeight() + list_height);
+  resize(width(), list_height == 0 ? 0 : minimumHeight() + list_height);
 }
 
 bool MainWindow::event(QEvent* event) {
