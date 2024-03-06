@@ -17,7 +17,6 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), ui_(std::make_unique<Ui::MainWindow>()) {
   ui_->setupUi(this);
   setWindowFlag(Qt::WindowStaysOnTopHint);
-  centralWidget()->layout()->setSpacing(0);
 
   // Prevents child widgets from changing the width of the window.
   setFixedWidth(width());
