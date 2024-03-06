@@ -1,12 +1,12 @@
 #include "mainwindow.h"
 
 #include <QApplication>
-#include <QDebug>
 #include <QEvent>
 #include <QObject>
 #include <QPoint>
 #include <QRect>
 #include <QScreen>
+#include <Qt>
 #include <QtGlobal>
 #include <utility>
 
