@@ -25,7 +25,6 @@ MainWindow::MainWindow(QWidget* parent)
   // Removes space between Central Widget and the window.
   // See: https://stackoverflow.com/a/24240025/18831815
   centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
-  statusBar()->hide();
 
   auto search_box = std::make_unique<SearchBox>(this);
   auto list = std::make_unique<SearchResultList>(this);
