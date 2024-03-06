@@ -1,5 +1,6 @@
 #include "searchresultlist.h"
 
+#include <QDebug>
 #include <QFrame>
 #include <QListWidgetItem>
 #include <QObject>
@@ -31,8 +32,8 @@ SearchResultList::SearchResultList(QWidget* parent)
                    &SearchResultList::SetCurrentItem);
   QObject::connect(this, &SearchResultList::ItemsCleared, this,
                    &SearchResultList::AdjustSize);
-  QObject::connect(verticalScrollBar(), &QScrollBar::valueChanged, this,
-                   &SearchResultList::UpdateShortcuts);
+  QObject::connect(this, &SearchResultList::itemActivated, this,
+                   &SearchResultList::ActivateItem);
 }
 
 int SearchResultList::Height() const {
@@ -44,6 +45,14 @@ int SearchResultList::Height() const {
   auto min_num_rows = std::min(count(), kMaxCount);
   auto total_height = min_num_rows * row_height;
   return total_height;
+}
+
+void SearchResultList::ActivateItem() {
+  if (count() == 0) {
+    return;
+  }
+
+  // auto item = currentItem();
 }
 
 void SearchResultList::AdjustSize(SearchResultList* list) {
@@ -89,12 +98,8 @@ void SearchResultList::ProcessInput(const QString& input) {
   }
 
   auto models = project_io_.FindDataModels(cmd);
-  size_t index = 0;
-  for (const auto& model : models) {
-    auto shortcut_key =
-        index < kMaxCount ? QString::number(++index) : (const char*)0;
-    AddItem(model->GetIcon(), model->GetTitle(arg), model->GetDescription(),
-            shortcut_key);
+  for (size_t i = 0; i < models.size(); ++i) {
+    AddItem(models[i], arg, i);
   }
 
   if (count() == 0) {
@@ -110,28 +115,11 @@ void SearchResultList::SetCurrentItem(SearchResultList* list) {
   setCurrentRow(0);
 }
 
-void SearchResultList::UpdateShortcuts(int value) {
-  for (size_t i = 0, j = 0; i < count() && j < kMaxCount; ++i) {
-    if (i < value) {
-      continue;
-    }
-
-    auto list_item = item(i);
-    auto widget = itemWidget(list_item);
-    auto search_result = dynamic_cast<SearchResult*>(widget);
-    if (search_result == nullptr) {
-      continue;
-    }
-
-    search_result->SetShortcut(QString::number(++j));
-  }
-}
-
-void SearchResultList::AddItem(const QString& icon, const QString& title,
-                               const QString& description,
-                               const QString& shortcut_key) {
-  auto widget = std::make_unique<SearchResult>(icon, title, description,
-                                               shortcut_key, this);
+void SearchResultList::AddItem(std::shared_ptr<DataModel> data_model,
+                               const QString& arg, int row) {
+  auto widget = std::make_unique<SearchResult>(data_model, arg, row, this);
+  QObject::connect(verticalScrollBar(), SIGNAL(valueChanged(int)), widget.get(),
+                   SLOT(SetShortcut(int)));
 
   auto item = std::make_unique<QListWidgetItem>(this);
 

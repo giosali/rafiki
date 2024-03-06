@@ -10,26 +10,26 @@ class SearchResultList : public QListWidget {
   Q_OBJECT
 
  public:
+  static constexpr int kMaxCount = 6;
+
   SearchResultList(QWidget* parent = nullptr);
 
   int Height() const;
 
  public slots:
+  void ActivateItem();
   void AdjustSize(SearchResultList* list);
   void ChangeCurrentItem(int arrow_key);
   void ProcessInput(const QString& input);
   void SetCurrentItem(SearchResultList* list);
-  void UpdateShortcuts(int value);
 
  signals:
   void ItemsAdded(SearchResultList* list);
   void ItemsCleared(SearchResultList* list);
 
  private:
-  static constexpr int kMaxCount = 6;
-
-  void AddItem(const QString& icon, const QString& title,
-               const QString& description, const QString& shortcut_key);
+  void AddItem(std::shared_ptr<DataModel> data_model, const QString& arg,
+               int row);
 
   ProjectIO project_io_;
 };

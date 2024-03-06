@@ -5,6 +5,8 @@
 #include <QWidget>
 #include <memory>
 
+#include "datamodel.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class SearchResult;
@@ -15,18 +17,15 @@ class SearchResult : public QWidget {
   Q_OBJECT
 
  public:
-  explicit SearchResult(const QString& icon, const QString& title,
-                        const QString& description = (const char*)0,
-                        const QString& shortcut_key = (const char*)0,
-                        QWidget* parent = nullptr);
+  explicit SearchResult(std::shared_ptr<DataModel> data_model,
+                        const QString& arg, int row, QWidget* parent = nullptr);
 
   ~SearchResult();
 
   int Height() const;
-  void SetDescription(const QString& description) const;
-  void SetIcon(const QString& path) const;
-  void SetShortcut(const QString& shortcut_key) const;
-  void SetTitle(const QString& title) const;
+
+ public slots:
+  void SetShortcut(int scroll_value) const;
 
  private:
   static constexpr int kFixedHeight = 44;
@@ -34,6 +33,13 @@ class SearchResult : public QWidget {
   static constexpr int kVerticalMargin = 6;
   const QString kShortcutModifierKey = "CTRL + ";
 
+  void SetDescription(const QString& description) const;
+  void SetIcon(const QString& path) const;
+  void SetShortcut(const QString& shortcut_key) const;
+  void SetTitle(const QString& title) const;
+
+  std::shared_ptr<DataModel> data_model_;
+  int row_;
   std::unique_ptr<Ui::SearchResult> ui_;
 };
 
