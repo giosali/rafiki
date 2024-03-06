@@ -22,10 +22,6 @@ MainWindow::MainWindow(QWidget* parent)
   // Centers the window. On Linux, this will only work on X11 or XWayland.
   move(screen()->geometry().center() - frameGeometry().center());
 
-  // Removes space between Central Widget and the window.
-  // See: https://stackoverflow.com/a/24240025/18831815
-  centralWidget()->layout()->setContentsMargins(0, 0, 0, 0);
-
   auto search_box = std::make_unique<SearchBox>(this);
   auto list = std::make_unique<SearchResultList>(this);
 
