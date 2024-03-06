@@ -1,8 +1,11 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QDebug>
 #include <QEvent>
 #include <QObject>
+#include <QPoint>
+#include <QRect>
 #include <QScreen>
 #include <QtGlobal>
 #include <utility>
@@ -19,8 +22,15 @@ MainWindow::MainWindow(QWidget* parent)
   // Prevents child widgets from changing the width of the window.
   setFixedWidth(width());
 
-  // Centers the window. On Linux, this will only work on X11 or XWayland.
-  move(screen()->geometry().center() - frameGeometry().center());
+  // Sets opening window size to just the SearchBox.
+  resize(width(), 0);
+
+  // Horizontally centers and properly vertically aligns the window. On Linux,
+  // this will only work on X11 or XWayland.
+  auto screen_geometry = screen()->geometry();
+  auto p = screen_geometry.center() - frameGeometry().center();
+  p.setY(static_cast<int>(screen_geometry.height() * 0.175));
+  move(p);
 
   auto search_box = std::make_unique<SearchBox>(this);
   auto list = std::make_unique<SearchResultList>(this);
@@ -39,9 +49,6 @@ MainWindow::MainWindow(QWidget* parent)
 
   centralWidget()->layout()->addWidget(search_box.release());
   centralWidget()->layout()->addWidget(list.release());
-
-  // Sets opening window size to just the SearchBox.
-  resize(width(), 0);
 }
 
 MainWindow::~MainWindow() {}
