@@ -21,6 +21,8 @@ SearchResultList::SearchResultList(QWidget* parent)
   // Removes thin border around component.
   setFrameStyle(QFrame::NoFrame);
 
+  setFocusPolicy(Qt::NoFocus);
+
   QObject::connect(verticalScrollBar(), &QScrollBar::valueChanged, this,
                    &SearchResultList::UpdateShortcuts);
   QObject::connect(this, &SearchResultList::ItemsChanged, this,
