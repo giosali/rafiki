@@ -8,7 +8,7 @@
 
 QString WebSearch::GetAltTitle() { return alt_title_; }
 
-DataModel::Action WebSearch::Return(const QString& arg) {
+DataModel::Action WebSearch::Go(const QString& arg) {
   if (!url_.contains("{}")) {
     auto url = QUrl(url_);
     QDesktopServices::openUrl(url);

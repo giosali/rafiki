@@ -26,19 +26,19 @@ SearchResult::SearchResult(std::shared_ptr<DataModel> data_model,
 
 SearchResult::~SearchResult() {}
 
-void SearchResult::Alt() {
-  auto alt_title = data_model_->GetAltTitle();
-  SetTitle(alt_title);
-}
-
 QString SearchResult::GetCommand() const {
   return data_model_->GetCommand(true);
 }
 
 int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }
 
-DataModel::Action SearchResult::Return(const QString& arg) const {
-  return data_model_->Return(arg);
+void SearchResult::PressAlt() {
+  auto alt_title = data_model_->GetAltTitle();
+  SetTitle(alt_title);
+}
+
+DataModel::Action SearchResult::PressReturn(const QString& arg) const {
+  return data_model_->Go(arg);
 }
 
 void SearchResult::SetShortcut(const QString& shortcut_key) const {

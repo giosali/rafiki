@@ -124,7 +124,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
         break;
       }
 
-      search_result->Alt();
+      search_result->PressAlt();
       break;
     }
     case Qt::Key_1:
@@ -196,7 +196,7 @@ void SearchResultList::ReturnSearchResult(SearchResult* search_result) {
     return;
   }
 
-  auto action = search_result->Return(arg_);
+  auto action = search_result->PressReturn(arg_);
   switch (action) {
     case DataModel::Action::Nothing:
       break;

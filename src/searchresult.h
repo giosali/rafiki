@@ -23,10 +23,10 @@ class SearchResult : public QWidget {
 
   ~SearchResult();
 
-  void Alt();
   QString GetCommand() const;
   int Height() const;
-  DataModel::Action Return(const QString& arg) const;
+  void PressAlt();
+  DataModel::Action PressReturn(const QString& arg) const;
   void SetShortcut(const QString& shortcut_key) const;
 
  private:
