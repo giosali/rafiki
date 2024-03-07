@@ -24,8 +24,6 @@ class SearchResult : public QWidget {
   ~SearchResult();
 
   int Height() const;
-
- public slots:
   void SetShortcut(const QString& shortcut_key) const;
 
  private:
