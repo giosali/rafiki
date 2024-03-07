@@ -25,9 +25,9 @@ class SearchResult : public QWidget {
 
   QString GetCommand() const;
   int Height() const;
-  void PressAlt();
+  void PressAlt() const;
   DataModel::Action PressReturn(const QString& arg) const;
-  void ReleaseAlt(const QString& arg);
+  void ReleaseAlt(const QString& arg) const;
   void SetShortcut(const QString& shortcut_key) const;
 
  private:

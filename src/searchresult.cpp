@@ -32,7 +32,7 @@ QString SearchResult::GetCommand() const {
 
 int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }
 
-void SearchResult::PressAlt() {
+void SearchResult::PressAlt() const {
   auto alt_title = data_model_->GetAltTitle();
   SetTitle(alt_title);
 }
@@ -41,7 +41,7 @@ DataModel::Action SearchResult::PressReturn(const QString& arg) const {
   return data_model_->Go(arg);
 }
 
-void SearchResult::ReleaseAlt(const QString& arg) {
+void SearchResult::ReleaseAlt(const QString& arg) const {
   SetTitle(data_model_->GetTitle(arg));
 }
 
