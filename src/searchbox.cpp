@@ -20,6 +20,8 @@ int SearchBox::Height() const { return ui_->layout->sizeHint().height(); }
 
 void SearchBox::EmitTextChanged(const QString& text) { emit TextChanged(text); }
 
+void SearchBox::SetText(const QString& text) { ui_->searchBox->setText(text); }
+
 void SearchBox::keyPressEvent(QKeyEvent* event) {
   auto key = event->key();
   switch (key) {
