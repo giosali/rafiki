@@ -93,6 +93,10 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
     }
     case Qt::Key_Return: {
       auto search_result = SearchResultAt(currentRow());
+      if (search_result == nullptr) {
+        break;
+      }
+
       ReturnSearchResult(search_result);
       break;
     }
@@ -116,6 +120,10 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
     }
     case Qt::Key_Alt: {
       auto search_result = SearchResultAt(currentRow());
+      if (search_result == nullptr) {
+        break;
+      }
+
       search_result->Alt();
       break;
     }
@@ -126,9 +134,12 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
     case Qt::Key_5:
     case Qt::Key_6: {
       if (key_combination.keyboardModifiers() & Qt::ControlModifier) {
-        auto value = verticalScrollBar()->value();
-        auto row = key - Qt::Key_1 + value;
+        auto row = key - Qt::Key_1 + verticalScrollBar()->value();
         auto search_result = SearchResultAt(row);
+        if (search_result == nullptr) {
+          break;
+        }
+
         ReturnSearchResult(search_result);
       }
 
