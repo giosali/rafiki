@@ -82,6 +82,29 @@ void SearchResultList::ProcessInput(const QString& input) {
 
 void SearchResultList::ProcessKeyPress(int key) {
   switch (key) {
+    case Qt::Key::Key_Return: {
+      auto current_row = currentRow();
+      if (current_row == -1) {
+        break;
+      }
+
+      auto list_item = item(current_row);
+      auto widget = itemWidget(list_item);
+      auto search_result = dynamic_cast<SearchResult*>(widget);
+      if (search_result == nullptr) {
+        break;
+      }
+
+      auto action = search_result->Activate();
+      switch (action) {
+        case DataModel::Action::Nothing:
+          break;
+        case DataModel::Action::SetTextToArg:
+          break;
+      }
+
+      break;
+    }
     case Qt::Key::Key_Up: {
       auto new_current_row = currentRow() - 1;
       if (new_current_row < 0) {
