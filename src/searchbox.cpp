@@ -11,14 +11,14 @@ SearchBox::SearchBox(QWidget* parent)
   setFixedHeight(Height());
 
   QObject::connect(ui_->searchBox, &QLineEdit::textChanged, this,
-                   &SearchBox::SetText);
+                   &SearchBox::EmitTextChanged);
 }
 
 SearchBox::~SearchBox() {}
 
 int SearchBox::Height() const { return ui_->layout->sizeHint().height(); }
 
-void SearchBox::SetText(const QString& text) { emit TextChanged(text); }
+void SearchBox::EmitTextChanged(const QString& text) { emit TextChanged(text); }
 
 void SearchBox::keyPressEvent(QKeyEvent* event) {
   auto key = event->key();

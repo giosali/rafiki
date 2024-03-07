@@ -23,7 +23,7 @@ class SearchBox : public QWidget {
   int Height() const;
 
  public slots:
-  void SetText(const QString& text);
+  void EmitTextChanged(const QString& text);
 
  signals:
   void KeyPressed(int key);
