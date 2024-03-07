@@ -6,10 +6,13 @@
 
 class DataModel {
  public:
+  enum class Action { Autocomplete, Nothing };
+
   explicit DataModel() = default;
 
   virtual ~DataModel() = default;
 
+  virtual Action Go(const QString& arg) = 0;
   virtual void Populate(const QJsonObject& object) = 0;
   QString GetCommand(bool try_append_space);
   QString GetDescription();
