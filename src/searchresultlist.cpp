@@ -16,11 +16,7 @@
 SearchResultList::SearchResultList(QWidget* parent)
     : QListWidget(parent), project_io_() {
   // Component should be hidden on initialization.
-  if (parent == nullptr) {
-    setFixedHeight(0);
-  } else {
-    setFixedSize(parent->width(), 0);
-  }
+  parent == nullptr ? setFixedHeight(0) : setFixedSize(parent->width(), 0);
 
   // Removes thin border around component.
   setFrameStyle(QFrame::NoFrame);
