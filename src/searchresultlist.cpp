@@ -100,7 +100,7 @@ void SearchResultList::ProcessKeyPress(int key) {
       switch (action) {
         case DataModel::Action::Nothing:
           break;
-        case DataModel::Action::SetTextToArg:
+        case DataModel::Action::SetTextToCommand:
           break;
       }
 

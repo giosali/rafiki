@@ -6,7 +6,7 @@
 
 class DataModel {
  public:
-  enum class Action { Nothing, SetTextToArg };
+  enum class Action { Nothing, SetTextToCommand };
 
   explicit DataModel() = default;
 
