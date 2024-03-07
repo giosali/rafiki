@@ -25,6 +25,7 @@ class SearchResultList : public QListWidget {
 
  signals:
   void ItemsChanged(SearchResultList* list);
+  void SetTextRequested(const QString& text);
 
  private:
   void AddItem(std::shared_ptr<DataModel> data_model, const QString& arg,
