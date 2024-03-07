@@ -12,6 +12,7 @@ class WebSearch : public DataModel {
 
   ~WebSearch() = default;
 
+  Action Go(const QString& arg) override;
   void Populate(const QJsonObject& object) override;
 
  private:

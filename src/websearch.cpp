@@ -1,6 +1,32 @@
 #include "websearch.h"
 
+#include <QDesktopServices>
 #include <QJsonValue>
+#include <QUrl>
+
+#include "utils.h"
+
+DataModel::Action WebSearch::Go(const QString& arg) {
+  if (!url_.contains("{}")) {
+    auto url = QUrl(url_);
+    QDesktopServices::openUrl(url);
+    return Action::Nothing;
+  }
+
+  // Means that arg is equal to: QString().
+  if (arg.isNull()) {
+    return Action::SetTextToCommand;
+  }
+
+  // Means that arg is equal to: QString("")
+  if (arg.isEmpty()) {
+    return Action::Nothing;
+  }
+
+  auto url = QUrl(utils::Format(url_, arg));
+  QDesktopServices::openUrl(url);
+  return Action::Nothing;
+}
 
 void WebSearch::Populate(const QJsonObject& object) {
   auto id_val = object["id"];
