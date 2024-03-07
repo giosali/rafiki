@@ -9,11 +9,11 @@
 #include "searchresultlist.h"
 
 SearchResult::SearchResult(std::shared_ptr<DataModel> data_model,
-                           const QString& arg, int row, QWidget* parent)
+                           const QString& arg, const QString& shortcut_key,
+                           QWidget* parent)
     : QWidget(parent),
       arg_(arg),
       data_model_(data_model),
-      row_(row),
       ui_(std::make_unique<Ui::SearchResult>()) {
   ui_->setupUi(this);
   ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
@@ -22,8 +22,7 @@ SearchResult::SearchResult(std::shared_ptr<DataModel> data_model,
   SetIcon(data_model->GetIcon());
   SetTitle(data_model->GetTitle(arg));
   SetDescription(data_model->GetDescription());
-  SetShortcut(row < SearchResultList::kMaxCount ? QString::number(row + 1)
-                                                : (const char*)0);
+  SetShortcut(shortcut_key);
 }
 
 SearchResult::~SearchResult() {}

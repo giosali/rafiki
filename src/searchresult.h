@@ -18,7 +18,8 @@ class SearchResult : public QWidget {
 
  public:
   explicit SearchResult(std::shared_ptr<DataModel> data_model,
-                        const QString& arg, int row, QWidget* parent = nullptr);
+                        const QString& arg, const QString& shortcut_key,
+                        QWidget* parent = nullptr);
 
   ~SearchResult();
 
@@ -39,7 +40,6 @@ class SearchResult : public QWidget {
 
   QString arg_;
   std::shared_ptr<DataModel> data_model_;
-  int row_;
   std::unique_ptr<Ui::SearchResult> ui_;
 };
 

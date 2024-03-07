@@ -126,7 +126,8 @@ void SearchResultList::UpdateShortcuts(int value) {
 
 void SearchResultList::AddItem(std::shared_ptr<DataModel> data_model,
                                const QString& arg, int row) {
-  auto widget = std::make_unique<SearchResult>(data_model, arg, row, this);
+  auto key = row < kMaxCount ? QString::number(row + 1) : (const char*)0;
+  auto widget = std::make_unique<SearchResult>(data_model, arg, key, this);
   auto item = std::make_unique<QListWidgetItem>(this);
 
   // Sets the actual height of search result items and prevents unusual sizing
