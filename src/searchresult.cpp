@@ -30,6 +30,10 @@ DataModel::Action SearchResult::Activate(const QString& arg) const {
   return data_model_->Go(arg);
 }
 
+QString SearchResult::GetCommand() const {
+  return data_model_->GetCommand(true);
+}
+
 int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }
 
 void SearchResult::SetShortcut(const QString& shortcut_key) const {
