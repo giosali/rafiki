@@ -25,6 +25,7 @@ class SearchResult : public QWidget {
   int Height() const;
 
  public slots:
+  void SetShortcut(const QString& shortcut_key) const;
   void SetShortcut(int scroll_value) const;
 
  private:
@@ -35,9 +36,9 @@ class SearchResult : public QWidget {
 
   void SetDescription(const QString& description) const;
   void SetIcon(const QString& path) const;
-  void SetShortcut(const QString& shortcut_key) const;
   void SetTitle(const QString& title) const;
 
+  QString arg_;
   std::shared_ptr<DataModel> data_model_;
   int row_;
   std::unique_ptr<Ui::SearchResult> ui_;

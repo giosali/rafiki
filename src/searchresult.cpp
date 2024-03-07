@@ -11,6 +11,7 @@
 SearchResult::SearchResult(std::shared_ptr<DataModel> data_model,
                            const QString& arg, int row, QWidget* parent)
     : QWidget(parent),
+      arg_(arg),
       data_model_(data_model),
       row_(row),
       ui_(std::make_unique<Ui::SearchResult>()) {
@@ -18,9 +19,9 @@ SearchResult::SearchResult(std::shared_ptr<DataModel> data_model,
   ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
                                             kHorizontalMargin, kVerticalMargin);
 
-  SetIcon(data_model_->GetIcon());
-  SetTitle(data_model_->GetTitle(arg));
-  SetDescription(data_model_->GetDescription());
+  SetIcon(data_model->GetIcon());
+  SetTitle(data_model->GetTitle(arg));
+  SetDescription(data_model->GetDescription());
   SetShortcut(row < SearchResultList::kMaxCount ? QString::number(row + 1)
                                                 : (const char*)0);
 }
