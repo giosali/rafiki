@@ -137,6 +137,15 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
   }
 }
 
+void SearchResultList::ProcessKeyRelease(
+    const QKeyCombination& key_combination) {
+  auto key = key_combination.key();
+  switch (key) {
+    case Qt::Key_Alt:
+      break;
+  }
+}
+
 void SearchResultList::SetCurrentItem(SearchResultList* list) {
   setCurrentRow(0);
 }
