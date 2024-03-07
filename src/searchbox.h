@@ -29,10 +29,12 @@ class SearchBox : public QWidget {
 
  signals:
   void KeyPressed(const QKeyCombination& key_combination);
+  void KeyReleased(const QKeyCombination& key_combination);
   void TextChanged(const QString& text);
 
  protected:
   void keyPressEvent(QKeyEvent* event) override;
+  void keyReleaseEvent(QKeyEvent* event) override;
 
  private:
   std::unique_ptr<Ui::SearchBox> ui_;

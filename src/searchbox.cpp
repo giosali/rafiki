@@ -40,3 +40,12 @@ void SearchBox::keyPressEvent(QKeyEvent* event) {
       break;
   }
 }
+
+void SearchBox::keyReleaseEvent(QKeyEvent* event) {
+  auto key_combination = event->keyCombination();
+  switch (key_combination.key()) {
+    case Qt::Key_Alt:
+      emit KeyReleased(key_combination);
+      break;
+  }
+}
