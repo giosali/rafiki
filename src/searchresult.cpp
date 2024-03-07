@@ -36,17 +36,6 @@ void SearchResult::SetShortcut(const QString& shortcut_key) const {
                              : kShortcutModifierKey + shortcut_key);
 }
 
-void SearchResult::SetShortcut(int scroll_value) const {
-  if (row_ < scroll_value ||
-      row_ >= scroll_value + SearchResultList::kMaxCount) {
-    SetShortcut((const char*)0);
-    return;
-  }
-
-  auto shortcut_key = QString::number(row_ + 1 - scroll_value);
-  SetShortcut(shortcut_key);
-}
-
 void SearchResult::SetDescription(const QString& description) const {
   ui_->description->setText(description);
 }

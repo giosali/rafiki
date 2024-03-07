@@ -26,7 +26,6 @@ class SearchResult : public QWidget {
 
  public slots:
   void SetShortcut(const QString& shortcut_key) const;
-  void SetShortcut(int scroll_value) const;
 
  private:
   static constexpr int kFixedHeight = 44;
