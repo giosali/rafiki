@@ -6,6 +6,8 @@
 
 #include "utils.h"
 
+QString WebSearch::GetAltTitle() { return alt_title_; }
+
 DataModel::Action WebSearch::Return(const QString& arg) {
   if (!url_.contains("{}")) {
     auto url = QUrl(url_);
