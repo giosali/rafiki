@@ -97,7 +97,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
         break;
       }
 
-      auto action = search_result->Activate(arg_);
+      auto action = search_result->Return(arg_);
       switch (action) {
         case DataModel::Action::Nothing:
           break;
@@ -140,7 +140,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
           break;
         }
 
-        auto action = search_result->Activate(arg_);
+        auto action = search_result->Return(arg_);
         switch (action) {
           case DataModel::Action::Nothing:
             break;

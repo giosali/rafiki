@@ -26,10 +26,6 @@ SearchResult::SearchResult(std::shared_ptr<DataModel> data_model,
 
 SearchResult::~SearchResult() {}
 
-DataModel::Action SearchResult::Activate(const QString& arg) const {
-  return data_model_->Return(arg);
-}
-
 QString SearchResult::GetCommand() const {
   return data_model_->GetCommand(true);
 }
@@ -40,6 +36,10 @@ void SearchResult::SetShortcut(const QString& shortcut_key) const {
   ui_->shortcut->setText(shortcut_key.isNull()
                              ? shortcut_key
                              : kShortcutModifierKey + shortcut_key);
+}
+
+DataModel::Action SearchResult::Return(const QString& arg) const {
+  return data_model_->Return(arg);
 }
 
 void SearchResult::SetDescription(const QString& description) const {
