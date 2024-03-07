@@ -82,14 +82,7 @@ void SearchResultList::ProcessInput(const QString& input) {
 void SearchResultList::ProcessKeyPress(int key) {
   switch (key) {
     case Qt::Key::Key_Tab: {
-      auto current_row = currentRow();
-      if (current_row == -1) {
-        break;
-      }
-
-      auto list_item = item(current_row);
-      auto widget = itemWidget(list_item);
-      auto search_result = dynamic_cast<SearchResult*>(widget);
+      auto search_result = SearchResultAt(currentRow());
       if (search_result == nullptr) {
         break;
       }
@@ -98,14 +91,7 @@ void SearchResultList::ProcessKeyPress(int key) {
       break;
     }
     case Qt::Key::Key_Return: {
-      auto current_row = currentRow();
-      if (current_row == -1) {
-        break;
-      }
-
-      auto list_item = item(current_row);
-      auto widget = itemWidget(list_item);
-      auto search_result = dynamic_cast<SearchResult*>(widget);
+      auto search_result = SearchResultAt(currentRow());
       if (search_result == nullptr) {
         break;
       }
@@ -152,9 +138,7 @@ void SearchResultList::UpdateShortcuts(int value) {
       continue;
     }
 
-    auto list_item = item(i);
-    auto widget = itemWidget(list_item);
-    auto search_result = dynamic_cast<SearchResult*>(widget);
+    auto search_result = SearchResultAt(i);
     if (search_result == nullptr) {
       continue;
     }
@@ -176,4 +160,14 @@ void SearchResultList::AddItem(std::shared_ptr<DataModel> data_model,
 
   addItem(item.get());
   setItemWidget(item.release(), widget.release());
+}
+
+SearchResult* SearchResultList::SearchResultAt(int row) {
+  auto list_item = item(row);
+  if (list_item == nullptr) {
+    return nullptr;
+  }
+
+  auto widget = itemWidget(list_item);
+  return static_cast<SearchResult*>(widget);
 }

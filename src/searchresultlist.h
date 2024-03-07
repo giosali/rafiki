@@ -5,6 +5,7 @@
 #include <QString>
 
 #include "projectio.h"
+#include "searchresult.h"
 
 class SearchResultList : public QListWidget {
   Q_OBJECT
@@ -30,6 +31,7 @@ class SearchResultList : public QListWidget {
  private:
   void AddItem(std::shared_ptr<DataModel> data_model, const QString& arg,
                int row);
+  SearchResult* SearchResultAt(int row);
 
   QString arg_;
   ProjectIO project_io_;
