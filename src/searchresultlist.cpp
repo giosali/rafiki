@@ -25,12 +25,10 @@ SearchResultList::SearchResultList(QWidget* parent)
   // Removes thin border around component.
   setFrameStyle(QFrame::NoFrame);
 
-  QObject::connect(this, &SearchResultList::ItemsAdded, this,
+  QObject::connect(this, &SearchResultList::ItemsChanged, this,
                    &SearchResultList::AdjustSize);
-  QObject::connect(this, &SearchResultList::ItemsAdded, this,
+  QObject::connect(this, &SearchResultList::ItemsChanged, this,
                    &SearchResultList::SetCurrentItem);
-  QObject::connect(this, &SearchResultList::ItemsCleared, this,
-                   &SearchResultList::AdjustSize);
 }
 
 int SearchResultList::Height() const {
@@ -52,7 +50,7 @@ void SearchResultList::ProcessInput(const QString& input) {
   clear();
 
   if (input.length() == 0) {
-    emit ItemsCleared(this);
+    emit ItemsChanged(this);
     return;
   }
 
@@ -73,11 +71,11 @@ void SearchResultList::ProcessInput(const QString& input) {
 
   if (count() == 0) {
     // TODO: add default results to list.
-    emit ItemsCleared(this);
+    emit ItemsChanged(this);
     return;
   }
 
-  emit ItemsAdded(this);
+  emit ItemsChanged(this);
 }
 
 void SearchResultList::ProcessKeyPress(int key) {

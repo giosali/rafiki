@@ -37,9 +37,7 @@ MainWindow::MainWindow(QWidget* parent)
   // Prevents the window height from strangely expanding when input is cleared.
   setMinimumHeight(search_box->Height());
 
-  QObject::connect(list.get(), &SearchResultList::ItemsAdded, this,
-                   &MainWindow::SetHeight);
-  QObject::connect(list.get(), &SearchResultList::ItemsCleared, this,
+  QObject::connect(list.get(), &SearchResultList::ItemsChanged, this,
                    &MainWindow::SetHeight);
   QObject::connect(search_box.get(), &SearchBox::TextChanged, list.get(),
                    &SearchResultList::ProcessInput);

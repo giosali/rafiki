@@ -23,8 +23,7 @@ class SearchResultList : public QListWidget {
   void SetCurrentItem(SearchResultList* list);
 
  signals:
-  void ItemsAdded(SearchResultList* list);
-  void ItemsCleared(SearchResultList* list);
+  void ItemsChanged(SearchResultList* list);
 
  private:
   void AddItem(std::shared_ptr<DataModel> data_model, const QString& arg,
