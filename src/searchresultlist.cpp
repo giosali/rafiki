@@ -79,9 +79,10 @@ void SearchResultList::ProcessInput(const QString& input) {
   emit ItemsChanged(this);
 }
 
-void SearchResultList::ProcessKeyPress(int key) {
+void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
+  auto key = key_combination.key();
   switch (key) {
-    case Qt::Key::Key_Tab: {
+    case Qt::Key_Tab: {
       auto search_result = SearchResultAt(currentRow());
       if (search_result == nullptr) {
         break;
@@ -90,7 +91,7 @@ void SearchResultList::ProcessKeyPress(int key) {
       emit SetTextRequested(search_result->GetCommand());
       break;
     }
-    case Qt::Key::Key_Return: {
+    case Qt::Key_Return: {
       auto search_result = SearchResultAt(currentRow());
       if (search_result == nullptr) {
         break;
@@ -107,7 +108,7 @@ void SearchResultList::ProcessKeyPress(int key) {
 
       break;
     }
-    case Qt::Key::Key_Up: {
+    case Qt::Key_Up: {
       auto new_current_row = currentRow() - 1;
       if (new_current_row < 0) {
         break;
@@ -116,7 +117,7 @@ void SearchResultList::ProcessKeyPress(int key) {
       setCurrentRow(new_current_row);
       break;
     }
-    case Qt::Key::Key_Down: {
+    case Qt::Key_Down: {
       auto new_current_row = currentRow() + 1;
       if (new_current_row >= count()) {
         break;
@@ -125,6 +126,31 @@ void SearchResultList::ProcessKeyPress(int key) {
       setCurrentRow(new_current_row);
       break;
     }
+    case Qt::Key_1:
+    case Qt::Key_2:
+    case Qt::Key_3:
+    case Qt::Key_4:
+    case Qt::Key_5:
+    case Qt::Key_6:
+      if (key_combination.keyboardModifiers() & Qt::ControlModifier) {
+        auto value = verticalScrollBar()->value();
+        auto row = key - Qt::Key_1 + value;
+        auto search_result = SearchResultAt(row);
+        if (search_result == nullptr) {
+          break;
+        }
+
+        auto action = search_result->Activate(arg_);
+        switch (action) {
+          case DataModel::Action::Nothing:
+            break;
+          case DataModel::Action::SetTextToCommand:
+            emit SetTextRequested(search_result->GetCommand());
+            break;
+        }
+      }
+
+      break;
   }
 }
 

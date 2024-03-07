@@ -1,6 +1,7 @@
 #ifndef SEARCHRESULTLIST_H
 #define SEARCHRESULTLIST_H
 
+#include <QKeyCombination>
 #include <QListWidget>
 #include <QString>
 
@@ -20,7 +21,7 @@ class SearchResultList : public QListWidget {
  public slots:
   void AdjustSize(SearchResultList* list);
   void ProcessInput(const QString& input);
-  void ProcessKeyPress(int key);
+  void ProcessKeyPress(const QKeyCombination& key_combination);
   void SetCurrentItem(SearchResultList* list);
   void UpdateShortcuts(int value);
 
