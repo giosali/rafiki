@@ -45,6 +45,8 @@ MainWindow::MainWindow(QWidget* parent)
                    &SearchResultList::ProcessInput);
   QObject::connect(search_box.get(), &SearchBox::KeyPressed, list.get(),
                    &SearchResultList::ProcessKeyPress);
+  QObject::connect(search_box.get(), &SearchBox::KeyReleased, list.get(),
+                   &SearchResultList::ProcessKeyRelease);
 
   centralWidget()->layout()->addWidget(search_box.release());
   centralWidget()->layout()->addWidget(list.release());
