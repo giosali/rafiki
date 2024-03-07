@@ -21,6 +21,7 @@ class SearchResultList : public QListWidget {
   void ProcessInput(const QString& input);
   void ProcessKeyPress(int key);
   void SetCurrentItem(SearchResultList* list);
+  void UpdateShortcuts(int value);
 
  signals:
   void ItemsChanged(SearchResultList* list);

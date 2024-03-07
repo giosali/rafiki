@@ -25,6 +25,8 @@ SearchResultList::SearchResultList(QWidget* parent)
   // Removes thin border around component.
   setFrameStyle(QFrame::NoFrame);
 
+  QObject::connect(verticalScrollBar(), &QScrollBar::valueChanged, this,
+                   &SearchResultList::UpdateShortcuts);
   QObject::connect(this, &SearchResultList::ItemsChanged, this,
                    &SearchResultList::AdjustSize);
   QObject::connect(this, &SearchResultList::ItemsChanged, this,
@@ -105,12 +107,26 @@ void SearchResultList::SetCurrentItem(SearchResultList* list) {
   setCurrentRow(0);
 }
 
+void SearchResultList::UpdateShortcuts(int value) {
+  for (size_t i = 0, j = 0; i < count() && j < kMaxCount; ++i) {
+    if (i < value) {
+      continue;
+    }
+
+    auto list_item = item(i);
+    auto widget = itemWidget(list_item);
+    auto search_result = dynamic_cast<SearchResult*>(widget);
+    if (search_result == nullptr) {
+      continue;
+    }
+
+    search_result->SetShortcut(QString::number(++j));
+  }
+}
+
 void SearchResultList::AddItem(std::shared_ptr<DataModel> data_model,
                                const QString& arg, int row) {
   auto widget = std::make_unique<SearchResult>(data_model, arg, row, this);
-  QObject::connect(verticalScrollBar(), SIGNAL(valueChanged(int)), widget.get(),
-                   SLOT(SetShortcut(int)));
-
   auto item = std::make_unique<QListWidgetItem>(this);
 
   // Sets the actual height of search result items and prevents unusual sizing
