@@ -32,6 +32,7 @@ class SearchResultList : public QListWidget {
  private:
   void AddItem(std::shared_ptr<DataModel> data_model, const QString& arg,
                int row);
+  void ReturnSearchResult(SearchResult* search_result);
   SearchResult* SearchResultAt(int row);
 
   QString arg_;

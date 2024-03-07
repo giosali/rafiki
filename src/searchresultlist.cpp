@@ -93,19 +93,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
     }
     case Qt::Key_Return: {
       auto search_result = SearchResultAt(currentRow());
-      if (search_result == nullptr) {
-        break;
-      }
-
-      auto action = search_result->Return(arg_);
-      switch (action) {
-        case DataModel::Action::Nothing:
-          break;
-        case DataModel::Action::SetTextToCommand:
-          emit SetTextRequested(search_result->GetCommand());
-          break;
-      }
-
+      ReturnSearchResult(search_result);
       break;
     }
     case Qt::Key_Up: {
@@ -136,18 +124,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
         auto value = verticalScrollBar()->value();
         auto row = key - Qt::Key_1 + value;
         auto search_result = SearchResultAt(row);
-        if (search_result == nullptr) {
-          break;
-        }
-
-        auto action = search_result->Return(arg_);
-        switch (action) {
-          case DataModel::Action::Nothing:
-            break;
-          case DataModel::Action::SetTextToCommand:
-            emit SetTextRequested(search_result->GetCommand());
-            break;
-        }
+        ReturnSearchResult(search_result);
       }
 
       break;
@@ -186,6 +163,21 @@ void SearchResultList::AddItem(std::shared_ptr<DataModel> data_model,
 
   addItem(item.get());
   setItemWidget(item.release(), widget.release());
+}
+
+void SearchResultList::ReturnSearchResult(SearchResult* search_result) {
+  if (search_result == nullptr) {
+    return;
+  }
+
+  auto action = search_result->Return(arg_);
+  switch (action) {
+    case DataModel::Action::Nothing:
+      break;
+    case DataModel::Action::SetTextToCommand:
+      emit SetTextRequested(search_result->GetCommand());
+      break;
+  }
 }
 
 SearchResult* SearchResultList::SearchResultAt(int row) {
