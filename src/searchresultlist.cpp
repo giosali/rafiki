@@ -101,6 +101,7 @@ void SearchResultList::ProcessKeyPress(int key) {
         case DataModel::Action::Nothing:
           break;
         case DataModel::Action::SetTextToCommand:
+          emit SetTextRequested(search_result->GetCommand());
           break;
       }
 
