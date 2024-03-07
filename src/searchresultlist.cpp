@@ -66,6 +66,7 @@ void SearchResultList::ProcessInput(const QString& input) {
     arg = input.sliced(space_index);
   }
 
+  arg_ = arg;
   auto models = project_io_.FindDataModels(cmd);
   for (size_t i = 0; i < models.size(); ++i) {
     AddItem(models[i], arg, i);
@@ -95,7 +96,7 @@ void SearchResultList::ProcessKeyPress(int key) {
         break;
       }
 
-      auto action = search_result->Activate();
+      auto action = search_result->Activate(arg_);
       switch (action) {
         case DataModel::Action::Nothing:
           break;

@@ -30,6 +30,7 @@ class SearchResultList : public QListWidget {
   void AddItem(std::shared_ptr<DataModel> data_model, const QString& arg,
                int row);
 
+  QString arg_;
   ProjectIO project_io_;
 };
 
