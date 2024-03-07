@@ -27,7 +27,7 @@ SearchResult::SearchResult(std::shared_ptr<DataModel> data_model,
 SearchResult::~SearchResult() {}
 
 DataModel::Action SearchResult::Activate(const QString& arg) const {
-  return data_model_->Go(arg);
+  return data_model_->Return(arg);
 }
 
 QString SearchResult::GetCommand() const {

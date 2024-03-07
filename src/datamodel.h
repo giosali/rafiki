@@ -12,8 +12,8 @@ class DataModel {
 
   virtual ~DataModel() = default;
 
-  virtual Action Go(const QString& arg) = 0;
   virtual void Populate(const QJsonObject& object) = 0;
+  virtual Action Return(const QString& arg) = 0;
   QString GetCommand(bool try_append_space);
   QString GetDescription();
   QString GetIcon();
