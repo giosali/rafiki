@@ -29,6 +29,12 @@ void SearchBox::keyPressEvent(QKeyEvent* event) {
     case Qt::Key_Return:
     case Qt::Key_Up:
     case Qt::Key_Down:
+    case Qt::Key_1:
+    case Qt::Key_2:
+    case Qt::Key_3:
+    case Qt::Key_4:
+    case Qt::Key_5:
+    case Qt::Key_6:
       emit KeyPressed(key_combination);
       break;
   }
