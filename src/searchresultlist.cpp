@@ -152,8 +152,15 @@ void SearchResultList::ProcessKeyRelease(
     const QKeyCombination& key_combination) {
   auto key = key_combination.key();
   switch (key) {
-    case Qt::Key_Alt:
+    case Qt::Key_Alt: {
+      auto search_result = SearchResultAt(currentRow());
+      if (search_result == nullptr) {
+        break;
+      }
+
+      search_result->ReleaseAlt(arg_);
       break;
+    }
   }
 }
 
