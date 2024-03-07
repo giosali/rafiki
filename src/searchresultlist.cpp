@@ -114,12 +114,17 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
       setCurrentRow(new_current_row);
       break;
     }
+    case Qt::Key_Alt: {
+      auto search_result = SearchResultAt(currentRow());
+      search_result->Alt();
+      break;
+    }
     case Qt::Key_1:
     case Qt::Key_2:
     case Qt::Key_3:
     case Qt::Key_4:
     case Qt::Key_5:
-    case Qt::Key_6:
+    case Qt::Key_6: {
       if (key_combination.keyboardModifiers() & Qt::ControlModifier) {
         auto value = verticalScrollBar()->value();
         auto row = key - Qt::Key_1 + value;
@@ -128,6 +133,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
       }
 
       break;
+    }
   }
 }
 
