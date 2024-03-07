@@ -41,6 +41,10 @@ DataModel::Action SearchResult::PressReturn(const QString& arg) const {
   return data_model_->Go(arg);
 }
 
+void SearchResult::ReleaseAlt(const QString& arg) {
+  SetTitle(data_model_->GetTitle(arg));
+}
+
 void SearchResult::SetShortcut(const QString& shortcut_key) const {
   ui_->shortcut->setText(shortcut_key.isNull()
                              ? shortcut_key
