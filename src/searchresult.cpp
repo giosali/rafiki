@@ -27,6 +27,10 @@ SearchResult::SearchResult(std::shared_ptr<DataModel> data_model,
 
 SearchResult::~SearchResult() {}
 
+DataModel::Action SearchResult::Activate() const {
+  return data_model_->Go(arg_);
+}
+
 int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }
 
 void SearchResult::SetShortcut(const QString& shortcut_key) const {
