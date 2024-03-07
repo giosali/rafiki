@@ -33,7 +33,6 @@ class SearchBox : public QWidget {
   void keyPressEvent(QKeyEvent* event) override;
 
  private:
-  QString text_;
   std::unique_ptr<Ui::SearchBox> ui_;
 };
 

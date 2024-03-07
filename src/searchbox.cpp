@@ -22,14 +22,7 @@ SearchBox::~SearchBox() {}
 
 int SearchBox::Height() const { return ui_->layout->sizeHint().height(); }
 
-void SearchBox::SetText(const QString& text) {
-  if (text == text_) {
-    return;
-  }
-
-  text_ = text;
-  emit TextChanged(text);
-}
+void SearchBox::SetText(const QString& text) { emit TextChanged(text); }
 
 void SearchBox::keyPressEvent(QKeyEvent* event) {
   auto key = event->key();
