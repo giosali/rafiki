@@ -1,6 +1,7 @@
 #ifndef SEARCHBOX_H
 #define SEARCHBOX_H
 
+#include <QKeyCombination>
 #include <QKeyEvent>
 #include <QString>
 #include <QWidget>
@@ -27,7 +28,7 @@ class SearchBox : public QWidget {
   void SetText(const QString& text);
 
  signals:
-  void KeyPressed(int key);
+  void KeyPressed(const QKeyCombination& key_combination);
   void TextChanged(const QString& text);
 
  protected:

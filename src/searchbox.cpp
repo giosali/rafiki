@@ -23,13 +23,13 @@ void SearchBox::EmitTextChanged(const QString& text) { emit TextChanged(text); }
 void SearchBox::SetText(const QString& text) { ui_->searchBox->setText(text); }
 
 void SearchBox::keyPressEvent(QKeyEvent* event) {
-  auto key = event->key();
-  switch (key) {
-    case Qt::Key::Key_Tab:
-    case Qt::Key::Key_Return:
-    case Qt::Key::Key_Up:
-    case Qt::Key::Key_Down:
-      emit KeyPressed(key);
+  auto key_combination = event->keyCombination();
+  switch (key_combination.key()) {
+    case Qt::Key_Tab:
+    case Qt::Key_Return:
+    case Qt::Key_Up:
+    case Qt::Key_Down:
+      emit KeyPressed(key_combination);
       break;
   }
 }
