@@ -12,7 +12,6 @@ SearchResult::SearchResult(std::shared_ptr<DataModel> data_model,
                            const QString& arg, const QString& shortcut_key,
                            QWidget* parent)
     : QWidget(parent),
-      arg_(arg),
       data_model_(data_model),
       ui_(std::make_unique<Ui::SearchResult>()) {
   ui_->setupUi(this);
@@ -27,8 +26,8 @@ SearchResult::SearchResult(std::shared_ptr<DataModel> data_model,
 
 SearchResult::~SearchResult() {}
 
-DataModel::Action SearchResult::Activate() const {
-  return data_model_->Go(arg_);
+DataModel::Action SearchResult::Activate(const QString& arg) const {
+  return data_model_->Go(arg);
 }
 
 int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }

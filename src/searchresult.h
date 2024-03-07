@@ -23,7 +23,7 @@ class SearchResult : public QWidget {
 
   ~SearchResult();
 
-  DataModel::Action Activate() const;
+  DataModel::Action Activate(const QString& arg) const;
   int Height() const;
   void SetShortcut(const QString& shortcut_key) const;
 
@@ -37,7 +37,6 @@ class SearchResult : public QWidget {
   void SetIcon(const QString& path) const;
   void SetTitle(const QString& title) const;
 
-  QString arg_;
   std::shared_ptr<DataModel> data_model_;
   std::unique_ptr<Ui::SearchResult> ui_;
 };
