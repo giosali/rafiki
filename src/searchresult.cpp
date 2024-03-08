@@ -36,7 +36,7 @@ void SearchResult::PressAlt() const {
   SetTitle(alt_title);
 }
 
-DataModel::Action SearchResult::PressAltEnter() const {
+DataModel::Action SearchResult::PressAltReturn() const {
   return data_model_->AltGo((const char*)0);
 }
 
