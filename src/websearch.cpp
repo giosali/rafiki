@@ -59,7 +59,7 @@ defs::Action WebSearch::ProcessUrl(const QString& url,
                                    const QString& arg) const {
   if (!url.contains("{}")) {
     QDesktopServices::openUrl(QUrl(url));
-    return defs::Action::Nothing;
+    return defs::Action::HideWindow;
   }
 
   // Means that arg is equal to: QString().
@@ -73,5 +73,5 @@ defs::Action WebSearch::ProcessUrl(const QString& url,
   }
 
   QDesktopServices::openUrl(QUrl(utils::Format(url_, arg)));
-  return defs::Action::Nothing;
+  return defs::Action::HideWindow;
 }
