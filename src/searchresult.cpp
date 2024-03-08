@@ -8,7 +8,7 @@
 #include "./ui_searchresult.h"
 #include "searchresultlist.h"
 
-SearchResult::SearchResult(std::shared_ptr<DataModel> data_model,
+SearchResult::SearchResult(const std::shared_ptr<DataModel>& data_model,
                            const QString& arg, const QString& shortcut_key,
                            QWidget* parent)
     : QWidget(parent),

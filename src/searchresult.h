@@ -17,7 +17,7 @@ class SearchResult : public QWidget {
   Q_OBJECT
 
  public:
-  explicit SearchResult(std::shared_ptr<DataModel> data_model,
+  explicit SearchResult(const std::shared_ptr<DataModel>& data_model,
                         const QString& arg, const QString& shortcut_key,
                         QWidget* parent = nullptr);
 
