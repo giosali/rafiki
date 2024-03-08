@@ -12,6 +12,7 @@ class DataModel {
 
   virtual ~DataModel() = default;
 
+  virtual Action AltGo(const QString& arg) = 0;
   virtual QString GetAltTitle() = 0;
   virtual Action Go(const QString& arg) = 0;
   virtual void Populate(const QJsonObject& object) = 0;

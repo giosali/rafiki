@@ -6,28 +6,14 @@
 
 #include "utils.h"
 
+DataModel::Action WebSearch::AltGo(const QString& arg) {
+  return ProcessUrl(alt_url_, arg);
+}
+
 QString WebSearch::GetAltTitle() { return alt_title_; }
 
 DataModel::Action WebSearch::Go(const QString& arg) {
-  if (!url_.contains("{}")) {
-    auto url = QUrl(url_);
-    QDesktopServices::openUrl(url);
-    return Action::Nothing;
-  }
-
-  // Means that arg is equal to: QString().
-  if (arg.isNull()) {
-    return Action::SetTextToCommand;
-  }
-
-  // Means that arg is equal to: QString("")
-  if (arg.isEmpty()) {
-    return Action::Nothing;
-  }
-
-  auto url = QUrl(utils::Format(url_, arg));
-  QDesktopServices::openUrl(url);
-  return Action::Nothing;
+  return ProcessUrl(url_, arg);
 }
 
 void WebSearch::Populate(const QJsonObject& object) {
@@ -69,4 +55,25 @@ void WebSearch::Populate(const QJsonObject& object) {
   auto alt_title_val = alt["title"];
   auto alt_title = alt_title_val.toString();
   alt_title_ = alt_title;
+}
+
+DataModel::Action WebSearch::ProcessUrl(const QString& url,
+                                        const QString& arg) const {
+  if (!url.contains("{}")) {
+    QDesktopServices::openUrl(QUrl(url));
+    return Action::Nothing;
+  }
+
+  // Means that arg is equal to: QString().
+  if (arg.isNull()) {
+    return Action::SetTextToCommand;
+  }
+
+  // Means that arg is equal to: QString("").
+  if (arg.isEmpty()) {
+    return Action::Nothing;
+  }
+
+  QDesktopServices::openUrl(QUrl(utils::Format(url_, arg)));
+  return Action::Nothing;
 }
