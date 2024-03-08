@@ -18,6 +18,8 @@ SearchBox::~SearchBox() {}
 
 int SearchBox::Height() const { return ui_->layout->sizeHint().height(); }
 
+void SearchBox::Clear() { ui_->searchBox->clear(); }
+
 void SearchBox::EmitTextChanged(const QString& text) { emit TextChanged(text); }
 
 void SearchBox::SetText(const QString& text) { ui_->searchBox->setText(text); }

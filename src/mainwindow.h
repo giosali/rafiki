@@ -25,6 +25,9 @@ class MainWindow : public QMainWindow {
  public slots:
   void SetHeight(SearchResultList *list);
 
+ signals:
+  void Deactivated();
+
  protected:
   bool event(QEvent *event) override;
 

@@ -24,6 +24,7 @@ class SearchBox : public QWidget {
   int Height() const;
 
  public slots:
+  void Clear();
   void EmitTextChanged(const QString& text);
   void SetText(const QString& text);
 
