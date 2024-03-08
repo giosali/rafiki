@@ -25,6 +25,7 @@ set(PROJECT_SOURCES
         src/commandline.h
         src/datamodel.cpp
         src/datamodel.h
+        src/definitions.h
         src/main.cpp
         src/mainwindow.cpp
         src/mainwindow.h

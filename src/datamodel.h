@@ -4,17 +4,17 @@
 #include <QJsonObject>
 #include <QString>
 
+#include "definitions.h"
+
 class DataModel {
  public:
-  enum class Action { Nothing, SetTextToCommand };
-
   explicit DataModel() = default;
 
   virtual ~DataModel() = default;
 
-  virtual Action AltGo(const QString& arg) = 0;
+  virtual defs::Action AltGo(const QString& arg) = 0;
   virtual QString GetAltTitle() = 0;
-  virtual Action Go(const QString& arg) = 0;
+  virtual defs::Action Go(const QString& arg) = 0;
   virtual void Populate(const QJsonObject& object) = 0;
   QString GetCommand(bool try_append_space);
   QString GetDescription();
