@@ -24,7 +24,6 @@ class SearchResult : public QWidget {
   ~SearchResult();
 
   QString GetCommand() const;
-  int Height() const;
   void PressAlt() const;
   DataModel::Action PressReturn(const QString& arg) const;
   void ReleaseAlt(const QString& arg) const;
@@ -36,6 +35,7 @@ class SearchResult : public QWidget {
   static constexpr int kVerticalMargin = 6;
   const QString kShortcutModifierKey = "CTRL + ";
 
+  int Height() const;
   void SetDescription(const QString& description) const;
   void SetIcon(const QString& path) const;
   void SetTitle(const QString& title) const;

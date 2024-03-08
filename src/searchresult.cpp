@@ -31,8 +31,6 @@ QString SearchResult::GetCommand() const {
   return data_model_->GetCommand(true);
 }
 
-int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }
-
 void SearchResult::PressAlt() const {
   auto alt_title = data_model_->GetAltTitle();
   SetTitle(alt_title);
@@ -51,6 +49,8 @@ void SearchResult::SetShortcut(const QString& shortcut_key) const {
                              ? shortcut_key
                              : kShortcutModifierKey + shortcut_key);
 }
+
+int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }
 
 void SearchResult::SetDescription(const QString& description) const {
   ui_->description->setText(description);
