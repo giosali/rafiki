@@ -191,10 +191,8 @@ void SearchResultList::AddItem(const std::shared_ptr<DataModel>& data_model,
 
   // Sets the actual height of search result items and prevents unusual sizing
   // differences between items.
-  auto size_hint = QSize(widget->sizeHint().width(), widget->Height());
-  item->setSizeHint(size_hint);
+  item->setSizeHint(widget->sizeHint());
 
-  addItem(item.get());
   setItemWidget(item.release(), widget.release());
 }
 
