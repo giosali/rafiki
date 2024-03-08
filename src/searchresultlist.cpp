@@ -205,7 +205,7 @@ void SearchResultList::AddItem(const std::shared_ptr<DataModel>& data_model,
 void SearchResultList::ProcessAction(defs::Action action,
                                      SearchResult* search_result) {
   switch (action) {
-    case defs::Action::DeactivateMainWindow:
+    case defs::Action::DeactivateWindow:
       emit DeactivateWindowRequested();
       break;
     case defs::Action::Nothing:
