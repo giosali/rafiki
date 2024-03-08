@@ -8,7 +8,6 @@
 #include <Qt>
 #include <algorithm>
 #include <cstdlib>
-#include <iterator>
 #include <memory>
 
 #include "searchresult.h"
