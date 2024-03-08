@@ -28,7 +28,7 @@ class SearchResultList : public QListWidget {
   void UpdateShortcuts(int value);
 
  signals:
-  void DeactivateWindowRequested();
+  void HideWindowRequested();
   void ItemsChanged(SearchResultList* list);
   void SetTextRequested(const QString& text);
 

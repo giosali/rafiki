@@ -2,7 +2,7 @@
 #define DEFINITIONS_H
 
 namespace defs {
-enum class Action { DeactivateWindow, Nothing, SetTextToCommand };
+enum class Action { HideWindow, Nothing, SetTextToCommand };
 }
 
 #endif  // DEFINITIONS_H
