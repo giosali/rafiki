@@ -99,11 +99,11 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
       }
 
       if (modifiers & Qt::AltModifier) {
-        search_result->PressAltReturn();
+        ProcessAction(search_result->PressAltReturn(), search_result);
         break;
       }
 
-      ReturnSearchResult(search_result);
+      ProcessAction(search_result->PressReturn(arg_), search_result);
       break;
     }
     case Qt::Key_Up: {
@@ -146,7 +146,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
           break;
         }
 
-        ReturnSearchResult(search_result);
+        ProcessAction(search_result->PressReturn(arg_), search_result);
       }
 
       break;
@@ -202,12 +202,8 @@ void SearchResultList::AddItem(const std::shared_ptr<DataModel>& data_model,
   setItemWidget(item.release(), widget.release());
 }
 
-void SearchResultList::ReturnSearchResult(SearchResult* search_result) {
-  if (search_result == nullptr) {
-    return;
-  }
-
-  auto action = search_result->PressReturn(arg_);
+void SearchResultList::ProcessAction(DataModel::Action action,
+                                     SearchResult* search_result) {
   switch (action) {
     case DataModel::Action::Nothing:
       break;
