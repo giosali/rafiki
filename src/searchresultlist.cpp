@@ -183,7 +183,7 @@ void SearchResultList::UpdateShortcuts(int value) {
   }
 }
 
-void SearchResultList::AddItem(std::shared_ptr<DataModel> data_model,
+void SearchResultList::AddItem(const std::shared_ptr<DataModel>& data_model,
                                const QString& arg, int row) {
   auto key = row < kMaxCount ? QString::number(row + 1) : (const char*)0;
   auto widget = std::make_unique<SearchResult>(data_model, arg, key, this);
