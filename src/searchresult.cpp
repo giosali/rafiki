@@ -17,6 +17,7 @@ SearchResult::SearchResult(const std::shared_ptr<DataModel>& data_model,
   ui_->setupUi(this);
   ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
                                             kHorizontalMargin, kVerticalMargin);
+  setFixedHeight(Height());
 
   SetIcon(data_model->GetIcon());
   SetTitle(data_model->GetTitle(arg));
