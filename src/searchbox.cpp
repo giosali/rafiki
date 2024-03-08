@@ -23,6 +23,10 @@ void SearchBox::EmitTextChanged(const QString& text) { emit TextChanged(text); }
 void SearchBox::SetText(const QString& text) { ui_->searchBox->setText(text); }
 
 void SearchBox::keyPressEvent(QKeyEvent* event) {
+  if (event->isAutoRepeat()) {
+    return;
+  }
+
   auto key_combination = event->keyCombination();
   switch (key_combination.key()) {
     case Qt::Key_Tab:
