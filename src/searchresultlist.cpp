@@ -202,12 +202,12 @@ void SearchResultList::AddItem(const std::shared_ptr<DataModel>& data_model,
   setItemWidget(item.release(), widget.release());
 }
 
-void SearchResultList::ProcessAction(DataModel::Action action,
+void SearchResultList::ProcessAction(defs::Action action,
                                      SearchResult* search_result) {
   switch (action) {
-    case DataModel::Action::Nothing:
+    case defs::Action::Nothing:
       break;
-    case DataModel::Action::SetTextToCommand:
+    case defs::Action::SetTextToCommand:
       emit SetTextRequested(search_result->GetCommand());
       break;
   }

@@ -36,11 +36,11 @@ void SearchResult::PressAlt() const {
   SetTitle(alt_title);
 }
 
-DataModel::Action SearchResult::PressAltReturn() const {
+defs::Action SearchResult::PressAltReturn() const {
   return data_model_->AltGo((const char*)0);
 }
 
-DataModel::Action SearchResult::PressReturn(const QString& arg) const {
+defs::Action SearchResult::PressReturn(const QString& arg) const {
   return data_model_->Go(arg);
 }
 

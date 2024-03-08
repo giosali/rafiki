@@ -6,6 +6,7 @@
 #include <memory>
 
 #include "datamodel.h"
+#include "definitions.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,8 +26,8 @@ class SearchResult : public QWidget {
 
   QString GetCommand() const;
   void PressAlt() const;
-  DataModel::Action PressAltReturn() const;
-  DataModel::Action PressReturn(const QString& arg) const;
+  defs::Action PressAltReturn() const;
+  defs::Action PressReturn(const QString& arg) const;
   void ReleaseAlt(const QString& arg) const;
   void SetShortcut(const QString& shortcut_key) const;
 

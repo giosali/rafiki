@@ -6,15 +6,13 @@
 
 #include "utils.h"
 
-DataModel::Action WebSearch::AltGo(const QString& arg) {
+defs::Action WebSearch::AltGo(const QString& arg) {
   return ProcessUrl(alt_url_, arg);
 }
 
 QString WebSearch::GetAltTitle() { return alt_title_; }
 
-DataModel::Action WebSearch::Go(const QString& arg) {
-  return ProcessUrl(url_, arg);
-}
+defs::Action WebSearch::Go(const QString& arg) { return ProcessUrl(url_, arg); }
 
 void WebSearch::Populate(const QJsonObject& object) {
   auto id_val = object["id"];
@@ -57,23 +55,23 @@ void WebSearch::Populate(const QJsonObject& object) {
   alt_title_ = alt_title;
 }
 
-DataModel::Action WebSearch::ProcessUrl(const QString& url,
-                                        const QString& arg) const {
+defs::Action WebSearch::ProcessUrl(const QString& url,
+                                   const QString& arg) const {
   if (!url.contains("{}")) {
     QDesktopServices::openUrl(QUrl(url));
-    return Action::Nothing;
+    return defs::Action::Nothing;
   }
 
   // Means that arg is equal to: QString().
   if (arg.isNull()) {
-    return Action::SetTextToCommand;
+    return defs::Action::SetTextToCommand;
   }
 
   // Means that arg is equal to: QString("").
   if (arg.isEmpty()) {
-    return Action::Nothing;
+    return defs::Action::Nothing;
   }
 
   QDesktopServices::openUrl(QUrl(utils::Format(url_, arg)));
-  return Action::Nothing;
+  return defs::Action::Nothing;
 }
