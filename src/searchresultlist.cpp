@@ -22,12 +22,17 @@ SearchResultList::SearchResultList(QWidget* parent)
 
   setFocusPolicy(Qt::NoFocus);
 
+  // This is required to properly enable mouse events.
+  setMouseTracking(true);
+
   QObject::connect(verticalScrollBar(), &QScrollBar::valueChanged, this,
                    &SearchResultList::UpdateShortcuts);
   QObject::connect(this, &SearchResultList::ItemsChanged, this,
                    &SearchResultList::AdjustSize);
-  QObject::connect(this, &SearchResultList::ItemsChanged, this,
-                   &SearchResultList::SetCurrentItem);
+  QObject::connect(this, SIGNAL(itemEntered(QListWidgetItem*)), this,
+                   SLOT(SetCurrentItem(QListWidgetItem*)));
+  QObject::connect(this, SIGNAL(ItemsChanged(SearchResultList*)), this,
+                   SLOT(SetCurrentItem(SearchResultList*)));
 }
 
 int SearchResultList::Height() const {
@@ -167,6 +172,10 @@ void SearchResultList::ProcessKeyRelease(
       break;
     }
   }
+}
+
+void SearchResultList::SetCurrentItem(QListWidgetItem* item) {
+  setCurrentItem(item);
 }
 
 void SearchResultList::SetCurrentItem(SearchResultList* list) {
