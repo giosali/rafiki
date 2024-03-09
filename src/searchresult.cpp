@@ -19,6 +19,9 @@ SearchResult::SearchResult(const std::shared_ptr<DataModel>& data_model,
                                             kHorizontalMargin, kVerticalMargin);
   setFixedHeight(Height());
 
+  // This is required to allow QListWidget to receive mouse move events.
+  setMouseTracking(true);
+
   SetIcon(data_model->GetIcon());
   SetTitle(data_model->GetTitle(arg));
   SetDescription(data_model->GetDescription());
