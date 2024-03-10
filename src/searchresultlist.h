@@ -4,6 +4,8 @@
 #include <QKeyCombination>
 #include <QListWidget>
 #include <QListWidgetItem>
+#include <QMouseEvent>
+#include <QPoint>
 #include <QString>
 
 #include "definitions.h"
@@ -34,6 +36,10 @@ class SearchResultList : public QListWidget {
   void ItemsChanged(SearchResultList* list);
   void SetTextRequested(const QString& text);
 
+ protected:
+  void mouseMoveEvent(QMouseEvent* event) override;
+  void mousePressEvent(QMouseEvent* event) override;
+
  private:
   void AddItem(const std::shared_ptr<DataModel>& data_model, const QString& arg,
                int row);
@@ -42,6 +48,7 @@ class SearchResultList : public QListWidget {
 
   QString arg_;
   ProjectIO project_io_;
+  QPoint starting_drag_position_;
 };
 
 #endif  // SEARCHRESULTLIST_H

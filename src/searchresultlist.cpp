@@ -1,10 +1,15 @@
 #include "searchresultlist.h"
 
+#include <QApplication>
+#include <QDrag>
 #include <QFrame>
-#include <QListWidgetItem>
+#include <QIcon>
+#include <QList>
+#include <QMimeData>
 #include <QObject>
 #include <QScrollBar>
 #include <QSize>
+#include <QUrl>
 #include <Qt>
 #include <algorithm>
 #include <cstdlib>
@@ -194,6 +199,59 @@ void SearchResultList::UpdateShortcuts(int value) {
     }
 
     search_result->SetShortcut(QString::number(++j));
+  }
+}
+
+void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
+  // Exits if left mouse button isn't down while dragging.
+  if (!(event->buttons() & Qt::LeftButton)) {
+    return;
+  }
+
+  // Exits if the distance traveled is less than the recommended drag distance
+  // to start a drop and drag operation.
+  auto current_drag_position = event->pos();
+  auto drag_distance =
+      (current_drag_position - starting_drag_position_).manhattanLength();
+  if (drag_distance < QApplication::startDragDistance()) {
+    return;
+  }
+
+  auto search_result = SearchResultAt(currentRow());
+  if (search_result == nullptr) {
+    return;
+  }
+
+  // Drag and drop will only apply to local files on user's machine.
+  auto url = QUrl::fromLocalFile(search_result->DragAndDrop());
+  if (url.isEmpty()) {
+    return;
+  }
+
+  // Takes the icon from the current search result and uses it as the icon for
+  // the drop and drag action.
+  auto drag = std::make_unique<QDrag>(this);
+  auto icon = QIcon(search_result->GetIcon());
+  drag->setPixmap(icon.pixmap(22));
+
+  auto mime_data = std::make_unique<QMimeData>();
+  mime_data->setUrls(QList<QUrl>({url}));
+
+  drag->setMimeData(mime_data.release());
+  auto drop_action = drag->exec(Qt::CopyAction | Qt::MoveAction);
+  switch (drop_action) {
+    case Qt::CopyAction:
+    case Qt::MoveAction:
+      emit HideWindowRequested();
+      break;
+  }
+}
+
+void SearchResultList::mousePressEvent(QMouseEvent* event) {
+  switch (event->button()) {
+    case Qt::LeftButton:
+      starting_drag_position_ = event->pos();
+      break;
   }
 }
 
