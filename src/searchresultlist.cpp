@@ -270,6 +270,12 @@ void SearchResultList::mousePressEvent(QMouseEvent* event) {
   switch (event->button()) {
     case Qt::LeftButton:
       starting_drag_position_ = event->pos();
+
+      // Prevents user from deselecting an item by control-clicking it.
+      if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
+        return;
+      }
+
       break;
   }
 
