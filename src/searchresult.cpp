@@ -30,6 +30,8 @@ SearchResult::SearchResult(const std::shared_ptr<DataModel>& data_model,
 
 SearchResult::~SearchResult() {}
 
+QString SearchResult::DragAndDrop() const { return (const char*)0; }
+
 QString SearchResult::GetCommand() const {
   return data_model_->GetCommand(true);
 }

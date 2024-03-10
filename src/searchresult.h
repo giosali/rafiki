@@ -25,6 +25,7 @@ class SearchResult : public QWidget {
 
   ~SearchResult();
 
+  QString DragAndDrop() const;
   QString GetCommand() const;
   QPixmap GetIcon() const;
   void PressAlt() const;
