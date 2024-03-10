@@ -1,6 +1,7 @@
 #ifndef SEARCHRESULT_H
 #define SEARCHRESULT_H
 
+#include <QPixmap>
 #include <QString>
 #include <QWidget>
 #include <memory>
@@ -25,6 +26,7 @@ class SearchResult : public QWidget {
   ~SearchResult();
 
   QString GetCommand() const;
+  QPixmap GetIcon() const;
   void PressAlt() const;
   defs::Action PressAltReturn() const;
   defs::Action PressReturn(const QString& arg) const;

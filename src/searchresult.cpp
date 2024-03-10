@@ -34,6 +34,8 @@ QString SearchResult::GetCommand() const {
   return data_model_->GetCommand(true);
 }
 
+QPixmap SearchResult::GetIcon() const { return ui_->icon->pixmap(); }
+
 void SearchResult::PressAlt() const {
   auto alt_title = data_model_->GetAltTitle();
   SetTitle(alt_title);
