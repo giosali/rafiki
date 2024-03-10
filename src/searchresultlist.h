@@ -1,12 +1,14 @@
 #ifndef SEARCHRESULTLIST_H
 #define SEARCHRESULTLIST_H
 
+#include <QEvent>
 #include <QKeyCombination>
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QMouseEvent>
 #include <QPoint>
 #include <QString>
+#include <memory>
 
 #include "definitions.h"
 #include "projectio.h"
@@ -23,6 +25,7 @@ class SearchResultList : public QListWidget {
   int Height() const;
 
  public slots:
+  void ActivateItem(QListWidgetItem* item);
   void AdjustSize(SearchResultList* list);
   void ProcessInput(const QString& input);
   void ProcessKeyPress(const QKeyCombination& key_combination);
@@ -32,6 +35,7 @@ class SearchResultList : public QListWidget {
   void UpdateShortcuts(int value);
 
  signals:
+  void EventSent(QEvent* event);
   void HideWindowRequested();
   void ItemsChanged(SearchResultList* list);
   void SetTextRequested(const QString& text);

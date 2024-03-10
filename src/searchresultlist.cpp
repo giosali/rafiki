@@ -1,9 +1,11 @@
 #include "searchresultlist.h"
 
 #include <QApplication>
+#include <QCursor>
 #include <QDrag>
 #include <QFrame>
 #include <QIcon>
+#include <QKeyEvent>
 #include <QList>
 #include <QMimeData>
 #include <QObject>
@@ -13,7 +15,6 @@
 #include <Qt>
 #include <algorithm>
 #include <cstdlib>
-#include <memory>
 
 #include "searchresult.h"
 
@@ -32,6 +33,8 @@ SearchResultList::SearchResultList(QWidget* parent)
 
   QObject::connect(verticalScrollBar(), &QScrollBar::valueChanged, this,
                    &SearchResultList::UpdateShortcuts);
+  QObject::connect(this, &QListWidget::itemClicked, this,
+                   &SearchResultList::ActivateItem);
   QObject::connect(this, &SearchResultList::ItemsChanged, this,
                    &SearchResultList::AdjustSize);
   QObject::connect(this, SIGNAL(itemEntered(QListWidgetItem*)), this,
@@ -49,6 +52,21 @@ int SearchResultList::Height() const {
   auto min_num_rows = std::min(count(), kMaxCount);
   auto total_height = min_num_rows * row_height;
   return total_height;
+}
+
+void SearchResultList::ActivateItem(QListWidgetItem* item) {
+  if (starting_drag_position_ != mapFromGlobal(QCursor::pos())) {
+    return;
+  }
+
+  auto search_result = SearchResultAt(row(item));
+  if (search_result == nullptr) {
+    return;
+  }
+
+  auto key_event = std::make_unique<QKeyEvent>(
+      QEvent::KeyPress, Qt::Key_Return, QApplication::keyboardModifiers());
+  emit EventSent(key_event.get());
 }
 
 void SearchResultList::AdjustSize(SearchResultList* list) {
@@ -205,6 +223,7 @@ void SearchResultList::UpdateShortcuts(int value) {
 void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
   // Exits if left mouse button isn't down while dragging.
   if (!(event->buttons() & Qt::LeftButton)) {
+    QListWidget::mouseMoveEvent(event);
     return;
   }
 
@@ -253,6 +272,8 @@ void SearchResultList::mousePressEvent(QMouseEvent* event) {
       starting_drag_position_ = event->pos();
       break;
   }
+
+  QListWidget::mousePressEvent(event);
 }
 
 void SearchResultList::AddItem(const std::shared_ptr<DataModel>& data_model,
