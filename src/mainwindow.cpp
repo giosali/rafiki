@@ -18,6 +18,9 @@ MainWindow::MainWindow(QWidget* parent)
   ui_->setupUi(this);
   setWindowFlag(Qt::WindowStaysOnTopHint);
 
+  // TODO: uncomment this when a proper exit method has been developed.
+  // setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+
   // Prevents child widgets from changing the width of the window.
   setFixedWidth(width());
 
