@@ -6,8 +6,7 @@
 #include <QObject>
 #include <QString>
 #include <QTranslator>
-#include <Qt>
-#include <QtGlobal>
+#include <QtEnvironmentVariables>
 
 #include "commandline.h"
 #include "mainwindow.h"
