@@ -21,8 +21,6 @@ class MainWindow : public QMainWindow {
 
   ~MainWindow();
 
-  static QMainWindow *FindMainWindow();
-
  public slots:
   void ProcessCommandLineArguments(const QString &args);
   void SetHeight(SearchResultList *list);

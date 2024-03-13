@@ -64,19 +64,6 @@ MainWindow::MainWindow(QWidget* parent)
 
 MainWindow::~MainWindow() {}
 
-QMainWindow* MainWindow::FindMainWindow() {
-  for (const auto& widget : QApplication::topLevelWidgets()) {
-    auto main_window = qobject_cast<QMainWindow*>(widget);
-    if (main_window == nullptr) {
-      continue;
-    }
-
-    return main_window;
-  }
-
-  return nullptr;
-}
-
 void MainWindow::ProcessCommandLineArguments(const QString& args) {
   auto parser = QCommandLineParser{};
 
