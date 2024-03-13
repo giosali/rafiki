@@ -7,7 +7,6 @@
 #include <memory>
 
 #include "client.h"
-#include "commandline.h"
 #include "mainwindow.h"
 #include "server.h"
 
@@ -21,9 +20,13 @@ int main(int argc, char *argv[]) {
   auto a = QApplication(argc, argv);
   QApplication::setApplicationVersion(PROJECT_VERSION);
 
+  auto w = MainWindow();
+
   auto server = Server(&a);
   auto client = std::make_unique<Client>(&a);
 
+  QObject::connect(&server, &Server::MessageReceived, &w,
+                   &MainWindow::ProcessCommandLineArguments);
   // Handles unexpected crashes/forcequits.
   QObject::connect(client.get(), &Client::ConnectionRefused, &server,
                    &Server::Remove);
@@ -32,7 +35,7 @@ int main(int argc, char *argv[]) {
   // error is processed indicating that the application unexpectedly quit, then
   // the previous server will be removed.
   // This is intended to always produce a socket error.
-  client->Connect();
+  client->Connect(QApplication::arguments().join(" "));
 
   // Attempts to start the server.
   if (!server.Listen()) {
@@ -40,10 +43,6 @@ int main(int argc, char *argv[]) {
   }
 
   client.reset();
-
-  auto message = QApplication::arguments().join(" ").toUtf8();
-  auto command_line = CommandLine();
-  command_line.Parse(message);
 
   // QTranslator opens translation files, for example, in the following order:
   // 1. /opt/foolib/foo.fr_ca.qm
@@ -63,8 +62,6 @@ int main(int argc, char *argv[]) {
     break;
   }
 
-  auto w = MainWindow();
   w.show();
-
   return a.exec();
 }
