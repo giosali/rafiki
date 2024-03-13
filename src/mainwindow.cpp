@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QCommandLineParser>
 #include <QEvent>
 #include <QObject>
 #include <QPoint>
@@ -74,6 +75,39 @@ QMainWindow* MainWindow::FindMainWindow() {
   }
 
   return nullptr;
+}
+
+void MainWindow::ProcessCommandLineArguments(const QString& args) {
+  auto parser = QCommandLineParser();
+
+  // Sets up builtin options.
+  parser.addHelpOption();
+  parser.addVersionOption();
+
+  // Sets up custom options.
+  QCommandLineOption toggleOption(
+      "toggle", "Toggles the visibility of the main input window.");
+  parser.addOption(toggleOption);
+  QCommandLineOption quitOption("quit", "Quits the application.");
+  parser.addOption(quitOption);
+
+  auto arg_list = args.split(" ");
+  if (!parser.parse(arg_list)) {
+    return;
+  }
+
+  if (parser.isSet(toggleOption)) {
+    if (isVisible()) {
+      hide();
+    } else {
+      show();
+      activateWindow();
+    }
+  }
+
+  if (parser.isSet(quitOption)) {
+    QApplication::quit();
+  }
 }
 
 void MainWindow::SetHeight(SearchResultList* list) {

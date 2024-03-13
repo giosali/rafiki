@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QString>
 #include <memory>
 
 #include "searchresultlist.h"
@@ -23,6 +24,7 @@ class MainWindow : public QMainWindow {
   static QMainWindow *FindMainWindow();
 
  public slots:
+  void ProcessCommandLineArguments(const QString &args);
   void SetHeight(SearchResultList *list);
 
  signals:
