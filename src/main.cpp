@@ -1,43 +1,47 @@
-#include <singleapplication.h>
-
-#include <QCoreApplication>
-#include <QDebug>
+#include <QApplication>
 #include <QLocale>
 #include <QObject>
 #include <QString>
 #include <QTranslator>
 #include <QtEnvironmentVariables>
+#include <memory>
 
+#include "client.h"
 #include "commandline.h"
 #include "mainwindow.h"
-#include "messagereceiver.h"
+#include "server.h"
 
 int main(int argc, char *argv[]) {
-  // FMI: https://doc.qt.io/qt-5/qtglobal.html
+  // https://doc.qt.io/qt-5/qtglobal.html
 #ifdef Q_OS_LINUX
-  // Ensures application runs on Xwayland on Linux.
+  // Ensures application runs on XWayland on Linux.
   qputenv("QT_QPA_PLATFORM", "xcb");
 #endif
 
-  auto a = SingleApplication(argc, argv, true);
-  QCoreApplication::setApplicationVersion(PROJECT_VERSION);
+  auto a = QApplication(argc, argv);
+  QApplication::setApplicationVersion(PROJECT_VERSION);
 
-  auto message = QCoreApplication::arguments().join(" ").toUtf8();
+  auto server = Server(&a);
+  auto client = std::make_unique<Client>(&a);
 
-  // Sends commandline arguments to the primary instance of the application from
-  // the secondary instance of the application. It then quits the secondary
-  // instance.
-  if (a.isSecondary()) {
-    qDebug() << "Secondary instance: sending message and quitting";
-    a.sendMessage(message);
+  // Handles unexpected crashes/forcequits.
+  QObject::connect(client.get(), &Client::ConnectionRefused, &server,
+                   &Server::Remove);
+
+  // Pings the server to deliberately check for a socket error. If a socket
+  // error is processed indicating that the application unexpectedly quit, then
+  // the previous server will be removed.
+  // This is intended to always produce a socket error.
+  client->Connect();
+
+  // Attempts to start the server.
+  if (!server.Listen()) {
     return 0;
   }
 
-  // Sets application to listen for and process commandline arguments.
-  auto mr = MessageReceiver();
-  QObject::connect(&a, &SingleApplication::receivedMessage, &mr,
-                   &MessageReceiver::ReceivedMessage);
+  client.reset();
 
+  auto message = QApplication::arguments().join(" ").toUtf8();
   auto command_line = CommandLine();
   command_line.Parse(message);
 
