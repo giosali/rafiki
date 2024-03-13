@@ -23,8 +23,6 @@ set(PROJECT_SOURCES
         src/autocompletemap.h
         src/client.cpp
         src/client.h
-        src/commandline.cpp
-        src/commandline.h
         src/datamodel.cpp
         src/datamodel.h
         src/definitions.h
@@ -32,8 +30,6 @@ set(PROJECT_SOURCES
         src/mainwindow.cpp
         src/mainwindow.h
         src/mainwindow.ui
-        src/messagereceiver.cpp
-        src/messagereceiver.h
         src/projectio.cpp
         src/projectio.h
         src/searchbox.cpp
