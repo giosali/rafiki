@@ -5,21 +5,28 @@
 #include "server.h"
 
 Client::Client(QObject* parent) : QObject(parent), socket_(this) {
-  in_.setDevice(&socket_);
+  out_.setDevice(&socket_);
 
-  QObject::connect(&socket_, &QLocalSocket::readyRead, this,
-                   &Client::ReadTimestamp);
   QObject::connect(&socket_, &QLocalSocket::errorOccurred, this,
                    &Client::ProcessError);
 }
 
-void Client::Connect() {
+void Client::Connect(const QString& message) {
   socket_.abort();
-  socket_.connectToServer(Server::kServerName, QIODeviceBase::ReadOnly);
+  socket_.connectToServer(Server::kServerName, QIODeviceBase::WriteOnly);
+  if (!socket_.waitForConnected(1000)) {
+    return;
+  }
+
+  auto block = QByteArray();
+  auto out = QDataStream(&block, QIODeviceBase::WriteOnly);
+  out << message;
+  out.device()->seek(0);
+  socket_.write(block);
+  socket_.flush();
 }
 
 void Client::ProcessError(QLocalSocket::LocalSocketError socket_error) {
-  qDebug() << socket_error;
   switch (socket_error) {
     // Encountered after a crash/forcequit.
     case QLocalSocket::ConnectionRefusedError:
@@ -34,15 +41,4 @@ void Client::ProcessError(QLocalSocket::LocalSocketError socket_error) {
     case QLocalSocket::ServerNotFoundError:
       break;
   }
-}
-
-void Client::ReadTimestamp() {
-  in_.startTransaction();
-  qint64 timestamp;
-  in_ >> timestamp;
-  if (!in_.commitTransaction()) {
-    return;
-  }
-
-  qDebug() << "timestamp =" << timestamp;
 }

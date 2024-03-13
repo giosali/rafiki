@@ -16,12 +16,13 @@ class Server : public QObject {
   bool Listen();
 
  public slots:
+  void ReadMessage();
   void Remove();
-  void SendTimestamp();
+
+ signals:
+  void MessageReceived(const QString& message);
 
  private:
-  qint64 GetTimestamp() const;
-
   QLocalServer server_;
 };
 

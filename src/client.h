@@ -4,6 +4,7 @@
 #include <QDataStream>
 #include <QLocalSocket>
 #include <QObject>
+#include <QString>
 
 class Client : public QObject {
   Q_OBJECT
@@ -12,16 +13,16 @@ class Client : public QObject {
   explicit Client(QObject* parent = nullptr);
 
   void Connect();
+  void Connect(const QString& message);
 
  public slots:
   void ProcessError(QLocalSocket::LocalSocketError socket_error);
-  void ReadTimestamp();
 
  signals:
   void ConnectionRefused();
 
  private:
-  QDataStream in_;
+  QDataStream out_;
   QLocalSocket socket_;
 };
 
