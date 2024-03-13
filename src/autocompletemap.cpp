@@ -5,11 +5,11 @@ std::set<QString> AutocompleteMap::Find(const QString& text) const {
     return it->second;
   }
 
-  return std::set<QString>();
+  return std::set<QString>{};
 }
 
 void AutocompleteMap::Insert(const QString& text) {
-  auto key = QString();
+  auto key = QString{};
   for (const auto ch : text) {
     key += ch;
 

@@ -4,7 +4,7 @@
 
 #include "server.h"
 
-Client::Client(QObject* parent) : QObject(parent), socket_(this) {
+Client::Client(QObject* parent) : QObject{parent}, socket_{this} {
   out_.setDevice(&socket_);
 
   QObject::connect(&socket_, &QLocalSocket::errorOccurred, this,
@@ -18,8 +18,8 @@ void Client::Connect(const QString& message) {
     return;
   }
 
-  auto block = QByteArray();
-  auto out = QDataStream(&block, QIODeviceBase::WriteOnly);
+  auto block = QByteArray{};
+  auto out = QDataStream{&block, QIODeviceBase::WriteOnly};
   out << message;
   out.device()->seek(0);
   socket_.write(block);

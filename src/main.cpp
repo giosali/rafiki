@@ -17,12 +17,12 @@ int main(int argc, char *argv[]) {
   qputenv("QT_QPA_PLATFORM", "xcb");
 #endif
 
-  auto a = QApplication(argc, argv);
+  auto a = QApplication{argc, argv};
   QApplication::setApplicationVersion(PROJECT_VERSION);
 
-  auto w = MainWindow();
+  auto w = MainWindow{};
 
-  auto server = Server(&a);
+  auto server = Server{&a};
   auto client = std::make_unique<Client>(&a);
 
   QObject::connect(&server, &Server::MessageReceived, &w,
@@ -51,7 +51,7 @@ int main(int argc, char *argv[]) {
   // 4. /opt/foolib/foo.fr
   // 5. /opt/foolib/foo.qm
   // 6. /opt/foolib/foo
-  auto translator = QTranslator();
+  auto translator = QTranslator{};
   for (const auto &locale : QLocale::system().uiLanguages()) {
     const auto base_name = QString(PROJECT_NAME) + "_" + QLocale(locale).name();
     if (!translator.load(":/i18n/" + base_name)) {

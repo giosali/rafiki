@@ -19,7 +19,7 @@
 #include "searchresult.h"
 
 SearchResultList::SearchResultList(QWidget* parent)
-    : QListWidget(parent), project_io_() {
+    : QListWidget{parent}, project_io_{} {
   // Component should be hidden on initialization.
   parent == nullptr ? setFixedHeight(0) : setFixedSize(parent->width(), 0);
 
@@ -82,7 +82,7 @@ void SearchResultList::ProcessInput(const QString& input) {
   }
 
   auto cmd = input;
-  auto arg = QString();
+  auto arg = QString{};
   auto space_index = input.indexOf(" ");
 
   // Increments in order to include the space when slicing.

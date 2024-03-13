@@ -5,7 +5,7 @@
 
 QString Server::kServerName = QStringLiteral("rafiki");
 
-Server::Server(QObject* parent) : QObject(parent), server_(this) {
+Server::Server(QObject* parent) : QObject{parent}, server_{this} {
   QObject::connect(&server_, &QLocalServer::newConnection, this,
                    &Server::ReadMessage);
 }
@@ -22,8 +22,8 @@ void Server::ReadMessage() {
   QObject::connect(client_connection, &QLocalSocket::disconnected,
                    client_connection, &QLocalSocket::deleteLater);
 
-  auto in = QDataStream(client_connection);
-  auto message = QString();
+  auto in = QDataStream{client_connection};
+  auto message = QString{};
   in >> message;
   emit MessageReceived(message);
 

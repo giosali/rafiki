@@ -16,32 +16,32 @@ ProjectIO::ProjectIO() {
 }
 
 QString ProjectIO::GetDataFilePath(DataFile file) {
-  auto filename = QString();
+  auto filename = QString{};
   switch (file) {
     case DataFile::kWebSearches:
       filename = "web-searches.json";
       break;
   }
 
-  auto dir = QString("://data/");
+  auto dir = QString{"://data/"};
   return dir + filename;
 }
 
 QString ProjectIO::GetImageFilePath(ImageFile file) {
-  auto filename = QString();
+  auto filename = QString{};
   switch (file) {
     case ImageFile::kQuestionMark:
       filename = "question-mark.png";
       break;
   }
 
-  auto dir = QString("://images/");
+  auto dir = QString{"://images/"};
   return dir + filename;
 }
 
 std::vector<std::shared_ptr<DataModel>> ProjectIO::FindDataModels(
     const QString& cmd) {
-  auto data_models_concat = std::vector<std::shared_ptr<DataModel>>();
+  auto data_models_concat = std::vector<std::shared_ptr<DataModel>>{};
   auto suggestions = autocomplete_map_.Find(cmd);
   for (const auto& suggestion : suggestions) {
     auto data_models_it = data_models_map_.find(suggestion);
@@ -59,7 +59,7 @@ std::vector<std::shared_ptr<DataModel>> ProjectIO::FindDataModels(
 
 template <typename T>
 void ProjectIO::ParseDataFile(const QString& path) {
-  auto file = QFile(path);
+  auto file = QFile{path};
   file.open(QIODevice::ReadOnly | QIODevice::Text);
   auto doc = QJsonDocument::fromJson(file.readAll());
 

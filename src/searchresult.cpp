@@ -11,9 +11,9 @@
 SearchResult::SearchResult(const std::shared_ptr<DataModel>& data_model,
                            const QString& arg, const QString& shortcut_key,
                            QWidget* parent)
-    : QWidget(parent),
-      data_model_(data_model),
-      ui_(std::make_unique<Ui::SearchResult>()) {
+    : QWidget{parent},
+      data_model_{data_model},
+      ui_{std::make_unique<Ui::SearchResult>()} {
   ui_->setupUi(this);
   ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
                                             kHorizontalMargin, kVerticalMargin);
@@ -74,7 +74,7 @@ void SearchResult::SetIcon(const QString& path) const {
   //
   // For more information regarding blurry icons:
   // https://github.com/qbittorrent/qBittorrent/issues/8841#issuecomment-387179854
-  auto icon = QIcon(path);
+  auto icon = QIcon{path};
   ui_->icon->setPixmap(icon.pixmap(kFixedHeight));
 }
 

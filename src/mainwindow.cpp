@@ -15,7 +15,7 @@
 #include "searchbox.h"
 
 MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent), ui_(std::make_unique<Ui::MainWindow>()) {
+    : QMainWindow{parent}, ui_{std::make_unique<Ui::MainWindow>()} {
   ui_->setupUi(this);
   setWindowFlag(Qt::WindowStaysOnTopHint);
 
@@ -78,7 +78,7 @@ QMainWindow* MainWindow::FindMainWindow() {
 }
 
 void MainWindow::ProcessCommandLineArguments(const QString& args) {
-  auto parser = QCommandLineParser();
+  auto parser = QCommandLineParser{};
 
   // Sets up builtin options.
   parser.addHelpOption();

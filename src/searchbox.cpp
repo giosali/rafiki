@@ -7,7 +7,7 @@
 #include "./ui_searchbox.h"
 
 SearchBox::SearchBox(QWidget* parent)
-    : QWidget(parent), ui_(std::make_unique<Ui::SearchBox>()) {
+    : QWidget{parent}, ui_{std::make_unique<Ui::SearchBox>()} {
   ui_->setupUi(this);
   setFixedHeight(Height());
 
