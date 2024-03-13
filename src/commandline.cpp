@@ -6,7 +6,7 @@
 #include <QtGlobal>
 
 #include "mainwindow.h"
-#include "singleapplication.h"
+// #include "singleapplication.h"
 
 void CommandLine::Parse(const QByteArray &line) const {
   qDebug() << "Parsing args";
@@ -57,5 +57,5 @@ void CommandLine::HandleToggle() const {
 
 void CommandLine::HandleQuit() const {
   qDebug() << "Qutting application";
-  SingleApplication::instance()->quit();
+  // SingleApplication::instance()->quit();
 }
