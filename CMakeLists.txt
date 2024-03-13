@@ -21,6 +21,8 @@ set(TS_FILES translations/${CMAKE_PROJECT_NAME}_en.ts)
 set(PROJECT_SOURCES
         src/autocompletemap.cpp
         src/autocompletemap.h
+        src/client.cpp
+        src/client.h
         src/commandline.cpp
         src/commandline.h
         src/datamodel.cpp
@@ -42,6 +44,8 @@ set(PROJECT_SOURCES
         src/searchresult.ui
         src/searchresultlist.cpp
         src/searchresultlist.h
+        src/server.cpp
+        src/server.h
         src/utils.h
         src/websearch.cpp
         src/websearch.h
