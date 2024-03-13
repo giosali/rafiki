@@ -18,8 +18,7 @@
 
 #include "searchresult.h"
 
-SearchResultList::SearchResultList(QWidget* parent)
-    : QListWidget{parent}, project_io_{} {
+SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   // Component should be hidden on initialization.
   parent == nullptr ? setFixedHeight(0) : setFixedSize(parent->width(), 0);
 
