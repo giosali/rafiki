@@ -16,7 +16,7 @@
 
 ProjectIO::ProjectIO() {
   auto internal_settings =
-      QSettings{GetDataFilePath(DataFile::kSettings), QSettings::IniFormat};
+    QSettings{GetDataFilePath(DataFile::kSettings), QSettings::IniFormat};
   auto external_settings = QSettings{QSettings::IniFormat, QSettings::UserScope,
                                      QCoreApplication::organizationName(),
                                      QCoreApplication::applicationName()};
@@ -47,6 +47,9 @@ QString ProjectIO::GetDataFilePath(DataFile file) {
 QString ProjectIO::GetImageFilePath(ImageFile file) {
   auto filename = QString{};
   switch (file) {
+    case ImageFile::kCalculator:
+      filename = "calculator.png";
+      break;
     case ImageFile::kQuestionMark:
       filename = "question-mark.png";
       break;
@@ -61,7 +64,7 @@ std::vector<std::shared_ptr<DataModel>> ProjectIO::GetDefaultDataModels() {
 }
 
 std::vector<std::shared_ptr<DataModel>> ProjectIO::FindDataModels(
-    const QString& cmd) {
+  const QString& cmd) {
   auto data_models_concat = std::vector<std::shared_ptr<DataModel>>{};
   auto suggestions = autocomplete_map_.Find(cmd);
   for (const auto& suggestion : suggestions) {

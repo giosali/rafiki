@@ -13,7 +13,7 @@
 class ProjectIO {
  public:
   enum class DataFile { kSettings, kWebSearches };
-  enum class ImageFile { kQuestionMark };
+  enum class ImageFile { kCalculator, kQuestionMark };
 
   explicit ProjectIO();
 
@@ -32,7 +32,7 @@ class ProjectIO {
 
   AutocompleteMap autocomplete_map_;
   std::unordered_map<QString, std::vector<std::shared_ptr<DataModel>>>
-      data_models_map_;
+    data_models_map_;
   std::vector<std::shared_ptr<DataModel>> default_data_models_;
 };
 

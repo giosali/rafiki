@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/images">
         <file>amazon.svg</file>
+        <file>calculator.png</file>
         <file>duckduckgo.svg</file>
         <file>ebay.png</file>
         <file>facebook.png</file>
