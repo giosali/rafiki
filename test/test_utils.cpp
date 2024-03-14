@@ -1,6 +1,13 @@
 #include "../src/utils.h"
 #include "utest.h"
 
+UTEST(Capitalize, replaces_first_char_with_uppercase_char) {
+  auto str = "bob";
+  auto expected = "Bob";
+  auto actual = utils::Capitalize(str);
+  ASSERT_TRUE(expected == actual);
+}
+
 UTEST(Format, replaces_fmt_with_arg) {
   auto fmt = "Hello {}, how are you?";
   auto arg = "Bob";
