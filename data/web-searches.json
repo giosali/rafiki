@@ -1,6 +1,6 @@
 [
   {
-    "id": 1,
+    "id": "061b310b-f046-4a81-aace-6bffbf7d5f8a",
     "command": "google",
     "icon": "://images/google.png",
     "url": "https://google.com/search?q={}",
@@ -13,7 +13,7 @@
     }
   },
   {
-    "id": 2,
+    "id": "e503224d-bf91-40d0-aadf-f5ce797c82b7",
     "command": "duck",
     "icon": "://images/duckduckgo.svg",
     "url": "https://duckduckgo.com/?q={}",
@@ -26,7 +26,7 @@
     }
   },
   {
-    "id": 3,
+    "id": "172e5809-14a6-45d9-808a-7a6389c7461e",
     "command": "amazon",
     "icon": "://images/amazon.svg",
     "url": "https://amazon.com/s?k={}",
@@ -39,7 +39,7 @@
     }
   },
   {
-    "id": 4,
+    "id": "56f0e4bd-01c9-4b3c-a178-6edbab21ae0f",
     "command": "ebay",
     "icon": "://images/ebay.png",
     "url": "https://ebay.com/sch/i.html?_nkw={}",
@@ -52,7 +52,7 @@
     }
   },
   {
-    "id": 5,
+    "id": "60d6ede7-9939-4686-a3ff-d52b716a463c",
     "command": "facebook",
     "icon": "://images/facebook.png",
     "url": "https://facebook.com/search/top?q={}",
@@ -65,7 +65,7 @@
     }
   },
   {
-    "id": 6,
+    "id": "989940b7-6eed-4a21-bf8b-b34e269445c7",
     "command": "github",
     "icon": "://images/github.svg",
     "url": "https://github.com/search?q={}",
@@ -78,7 +78,7 @@
     }
   },
   {
-    "id": 7,
+    "id": "fb6b2533-44cc-44af-a87f-03e885ebbc78",
     "command": "ig",
     "icon": "://images/instagram.png",
     "url": "https://instagram.com/{}",
@@ -91,7 +91,7 @@
     }
   },
   {
-    "id": 8,
+    "id": "fc15afe0-28b7-4c7d-a192-2e9ef38ccd5d",
     "command": "pinterest",
     "icon": "://images/pinterest.svg",
     "url": "https://pinterest.com/search/pins/?q={}",
@@ -104,7 +104,7 @@
     }
   },
   {
-    "id": 9,
+    "id": "ea5093ab-ea96-49ec-9f49-4530752a2ee1",
     "command": "r/",
     "icon": "://images/reddit.svg",
     "url": "https://reddit.com/r/{}",
@@ -117,7 +117,7 @@
     }
   },
   {
-    "id": 10,
+    "id": "a008b62a-a954-42c2-953a-78bbf9f17c51",
     "command": "tiktok",
     "icon": "://images/tiktok.png",
     "url": "https://tiktok.com/@{}",
@@ -130,7 +130,7 @@
     }
   },
   {
-    "id": 11,
+    "id": "a5b25a94-0605-41ea-9abe-944c43e47212",
     "command": "twitch",
     "icon": "://images/twitch.svg",
     "url": "https://twitch.tv/{}",
@@ -143,7 +143,7 @@
     }
   },
   {
-    "id": 12,
+    "id": "c40051e5-dfdf-4612-91a7-b602a44ee43f",
     "command": "twitter",
     "icon": "://images/x.svg",
     "url": "https://twitter.com/{}",
@@ -156,7 +156,7 @@
     }
   },
   {
-    "id": 13,
+    "id": "ca018a3e-8316-475b-8110-4aa14b927083",
     "command": "twitter",
     "icon": "://images/x.svg",
     "url": "https://twitter.com/search?q={}",
@@ -169,7 +169,7 @@
     }
   },
   {
-    "id": 14,
+    "id": "72b3a167-d040-4b52-83fa-f2b310e0ceb0",
     "command": "wiki",
     "icon": "://images/wikipedia.svg",
     "url": "https://wikipedia.org/wiki/Special:Search?search={}",
@@ -182,7 +182,7 @@
     }
   },
   {
-    "id": 15,
+    "id": "abed31c9-214a-4b6b-aebd-5f5a1d790c1d",
     "command": "youtube",
     "icon": "://images/youtube.png",
     "url": "https://youtube.com/results?search_query={}",
