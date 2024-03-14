@@ -3,6 +3,7 @@
 
 #include <QJsonObject>
 #include <QString>
+#include <QUuid>
 
 #include "definitions.h"
 
@@ -19,12 +20,14 @@ class DataModel {
   QString GetCommand(bool try_append_space);
   QString GetDescription();
   QString GetIcon();
+  QUuid GetId();
   QString GetTitle(const QString& arg);
 
  protected:
   void SetCommand(const QString& text);
   void SetDescription(const QString& text);
   void SetIcon(const QString& path);
+  void SetId(const QString& id);
   void SetPlaceholder(const QString& text);
   void SetTitle(const QString& text);
 
@@ -34,6 +37,7 @@ class DataModel {
   QString command_;
   QString description_;
   QString icon_;
+  QUuid id_;
   bool is_title_formattable_;
   QString placeholder_;
   QString title_;

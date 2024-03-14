@@ -5,13 +5,15 @@
 #include "projectio.h"
 #include "utils.h"
 
+QString DataModel::GetCommand(bool try_append_space) {
+  return try_append_space && is_title_formattable_ ? command_ + " " : command_;
+}
+
 QString DataModel::GetDescription() { return description_; }
 
 QString DataModel::GetIcon() { return icon_; }
 
-QString DataModel::GetCommand(bool try_append_space) {
-  return try_append_space && is_title_formattable_ ? command_ + " " : command_;
-}
+QUuid DataModel::GetId() { return id_; }
 
 QString DataModel::GetTitle(const QString &arg) {
   return is_title_formattable_
@@ -29,6 +31,8 @@ void DataModel::SetIcon(const QString &path) {
           ? path
           : ProjectIO::GetImageFilePath(ProjectIO::ImageFile::kQuestionMark);
 }
+
+void DataModel::SetId(const QString &id) { id_ = QUuid::fromString(id); }
 
 void DataModel::SetPlaceholder(const QString &text) { placeholder_ = text; }
 
