@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/data">
       <file>web-searches.json</file>
+      <file>settings.ini</file>
     </qresource>
 </RCC>
