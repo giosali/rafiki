@@ -1,23 +1,40 @@
 #include "projectio.h"
 
+#include <QCoreApplication>
 #include <QFile>
 #include <QIODevice>
 #include <QJsonArray>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QUuid>
 #include <iterator>
+#include <set>
 #include <utility>
 
 #include "websearch.h"
 
 ProjectIO::ProjectIO() {
+  auto internal_settings =
+      QSettings{GetDataFilePath(DataFile::kSettings), QSettings::IniFormat};
+  auto external_settings = QSettings{QSettings::IniFormat, QSettings::UserScope,
+                                     QCoreApplication::organizationName(),
+                                     QCoreApplication::applicationName()};
+
+  for (const auto& group : internal_settings.childGroups()) {
+    SetMissingSettings(internal_settings, external_settings, group);
+  }
+
   ParseDataFile<WebSearch>(GetDataFilePath(DataFile::kWebSearches));
+  PopulateDefaultDataModels(external_settings);
 }
 
 QString ProjectIO::GetDataFilePath(DataFile file) {
   auto filename = QString{};
   switch (file) {
+    case DataFile::kSettings:
+      filename = "settings.ini";
+      break;
     case DataFile::kWebSearches:
       filename = "web-searches.json";
       break;
@@ -37,6 +54,10 @@ QString ProjectIO::GetImageFilePath(ImageFile file) {
 
   auto dir = QString{"://images/"};
   return dir + filename;
+}
+
+std::vector<std::shared_ptr<DataModel>> ProjectIO::GetDefaultDataModels() {
+  return default_data_models_;
 }
 
 std::vector<std::shared_ptr<DataModel>> ProjectIO::FindDataModels(
@@ -72,4 +93,43 @@ void ProjectIO::ParseDataFile(const QString& path) {
     autocomplete_map_.Insert(cmd);
     data_models_map_[cmd].push_back(std::move(data_model));
   }
+}
+
+void ProjectIO::PopulateDefaultDataModels(QSettings& external_settings) {
+  external_settings.beginGroup("DefaultSearchResults");
+
+  auto guid_set = std::set<QUuid>();
+  for (const auto& key : external_settings.allKeys()) {
+    guid_set.insert(QUuid::fromString(external_settings.value(key).toString()));
+  }
+
+  for (const auto& [_, value] : data_models_map_) {
+    for (auto i : value) {
+      if (guid_set.find(i->GetId()) == guid_set.end()) {
+        continue;
+      }
+
+      default_data_models_.push_back(i);
+    }
+  }
+
+  external_settings.endGroup();
+}
+
+void ProjectIO::SetMissingSettings(QSettings& internal_settings,
+                                   QSettings& external_settings,
+                                   const QString& group) const {
+  internal_settings.beginGroup(group);
+  external_settings.beginGroup(group);
+
+  for (const auto& key : internal_settings.allKeys()) {
+    if (external_settings.contains(key)) {
+      continue;
+    }
+
+    external_settings.setValue(key, internal_settings.value(key));
+  }
+
+  external_settings.endGroup();
+  internal_settings.endGroup();
 }
