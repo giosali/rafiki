@@ -3,6 +3,7 @@
 
 #include <QJsonObject>
 #include <QString>
+#include <QUuid>
 
 #include "datamodel.h"
 #include "definitions.h"
@@ -23,7 +24,6 @@ class WebSearch : public DataModel {
 
   QString alt_url_;
   QString alt_title_;
-  int id_;
   QString url_;
 };
 

@@ -16,8 +16,8 @@ defs::Action WebSearch::Go(const QString& arg) { return ProcessUrl(url_, arg); }
 
 void WebSearch::Populate(const QJsonObject& object) {
   auto id_val = object["id"];
-  auto id = id_val.toInt();
-  id_ = id;
+  auto id = id_val.toString();
+  SetId(id);
 
   auto cmd_val = object["command"];
   auto cmd = cmd_val.toString();
