@@ -97,9 +97,11 @@ void SearchResultList::ProcessInput(const QString& input) {
   }
 
   if (count() == 0) {
-    // TODO: add default results to list.
-    emit ItemsChanged(this);
-    return;
+    // Adds default search results to list.
+    auto models = project_io_.GetDefaultDataModels();
+    for (size_t i = 0; i < models.size(); ++i) {
+      AddItem(models[i], input, i);
+    }
   }
 
   emit ItemsChanged(this);
