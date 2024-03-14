@@ -1,2 +1,10 @@
 BasedOnStyle: Google
+ColumnLimit: 80
+ContinuationIndentWidth: 2
+IndentWidth: 2
+Language: Cpp
+MaxEmptyLinesToKeep: 1
+SpacesBeforeTrailingComments: 2
+Standard: c++17
+TabWidth: 2
 UseTab: Never
