@@ -9,6 +9,7 @@
 #include "client.h"
 #include "mainwindow.h"
 #include "server.h"
+#include "utils.h"
 
 int main(int argc, char *argv[]) {
   // https://doc.qt.io/qt-5/qtglobal.html
@@ -18,7 +19,10 @@ int main(int argc, char *argv[]) {
 #endif
 
   auto a = QApplication{argc, argv};
+  auto application_name = QApplication::applicationName();
   QApplication::setApplicationVersion(PROJECT_VERSION);
+  QApplication::setOrganizationName(utils::Capitalize(application_name));
+  QApplication::setOrganizationDomain(application_name + ".com");
 
   auto w = MainWindow{};
 
@@ -53,7 +57,7 @@ int main(int argc, char *argv[]) {
   // 6. /opt/foolib/foo
   auto translator = QTranslator{};
   for (const auto &locale : QLocale::system().uiLanguages()) {
-    const auto base_name = QString(PROJECT_NAME) + "_" + QLocale(locale).name();
+    const auto base_name = application_name + "_" + QLocale(locale).name();
     if (!translator.load(":/i18n/" + base_name)) {
       continue;
     }
