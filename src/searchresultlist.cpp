@@ -64,7 +64,7 @@ void SearchResultList::ActivateItem(QListWidgetItem* item) {
   }
 
   auto key_event = std::make_unique<QKeyEvent>(
-      QEvent::KeyPress, Qt::Key_Return, QApplication::keyboardModifiers());
+    QEvent::KeyPress, Qt::Key_Return, QApplication::keyboardModifiers());
   emit EventSent(key_event.get());
 }
 
@@ -183,7 +183,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
 }
 
 void SearchResultList::ProcessKeyRelease(
-    const QKeyCombination& key_combination) {
+  const QKeyCombination& key_combination) {
   auto key = key_combination.key();
   switch (key) {
     case Qt::Key_Alt: {
@@ -232,7 +232,7 @@ void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
   // to start a drop and drag operation.
   auto current_drag_position = event->pos();
   auto drag_distance =
-      (current_drag_position - starting_drag_position_).manhattanLength();
+    (current_drag_position - starting_drag_position_).manhattanLength();
   if (drag_distance < QApplication::startDragDistance()) {
     return;
   }
