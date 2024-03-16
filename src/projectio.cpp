@@ -59,10 +59,6 @@ QString ProjectIO::GetImageFilePath(ImageFile file) {
   return dir + filename;
 }
 
-std::vector<std::shared_ptr<DataModel>> ProjectIO::GetDefaultDataModels() {
-  return default_data_models_;
-}
-
 std::vector<std::shared_ptr<DataModel>> ProjectIO::FindDataModels(
   const QString& cmd) {
   auto data_models_concat = std::vector<std::shared_ptr<DataModel>>{};
@@ -79,6 +75,10 @@ std::vector<std::shared_ptr<DataModel>> ProjectIO::FindDataModels(
   }
 
   return data_models_concat;
+}
+
+std::vector<std::shared_ptr<DataModel>> ProjectIO::GetDefaultDataModels() {
+  return default_data_models_;
 }
 
 template <typename T>

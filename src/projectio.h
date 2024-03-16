@@ -19,8 +19,8 @@ class ProjectIO {
 
   static QString GetDataFilePath(DataFile file);
   static QString GetImageFilePath(ImageFile file);
-  std::vector<std::shared_ptr<DataModel>> GetDefaultDataModels();
   std::vector<std::shared_ptr<DataModel>> FindDataModels(const QString& cmd);
+  std::vector<std::shared_ptr<DataModel>> GetDefaultDataModels();
 
  private:
   template <typename T>
