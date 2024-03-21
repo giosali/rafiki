@@ -311,11 +311,5 @@ void SearchResultList::ProcessAction(defs::Action action,
 }
 
 SearchResult* SearchResultList::SearchResultAt(int row) {
-  auto list_item = item(row);
-  if (list_item == nullptr) {
-    return nullptr;
-  }
-
-  auto widget = itemWidget(list_item);
-  return static_cast<SearchResult*>(widget);
+  return static_cast<SearchResult*>(itemWidget(item(row)));
 }
