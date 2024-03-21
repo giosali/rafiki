@@ -40,7 +40,6 @@ class SearchResultList : public QListWidget {
 
  signals:
   void EventReceived(QEvent* event);
-  void HideWindowRequested();
   void ItemsChanged(SearchResultList* list);
   void TextReceived(const QString& text);
 

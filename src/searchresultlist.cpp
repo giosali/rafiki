@@ -263,7 +263,7 @@ void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
   switch (drop_action) {
     case Qt::CopyAction:
     case Qt::MoveAction:
-      emit HideWindowRequested();
+      HideParent();
       break;
   }
 }
@@ -301,7 +301,7 @@ void SearchResultList::ProcessAction(defs::Action action,
                                      SearchResult* search_result) {
   switch (action) {
     case defs::Action::HideWindow:
-      emit HideWindowRequested();
+      HideParent();
       break;
     case defs::Action::Nothing:
       break;
