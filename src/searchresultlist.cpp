@@ -86,10 +86,9 @@ void SearchResultList::ProcessInput(const QString& input) {
 
   auto cmd = input;
   auto arg = QString{};
-  auto space_index = input.indexOf(" ");
 
   // Increments in order to include the space when slicing.
-  if (space_index++ != -1) {
+  if (auto space_index = input.indexOf(" "); space_index++ != -1) {
     cmd = input.sliced(0, space_index);
     arg = input.sliced(space_index);
   }
