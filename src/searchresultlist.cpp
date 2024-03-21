@@ -108,23 +108,23 @@ void SearchResultList::ProcessInput(const QString& input) {
 }
 
 void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
+  // Prevents manipulation of SearchResult objects that point to nullptr.
+  auto current_row = currentRow();
+  if (current_row == -1) {
+    return;
+  }
+
   auto key = key_combination.key();
   auto modifiers = key_combination.keyboardModifiers();
+
   switch (key) {
     case Qt::Key_Tab: {
-      auto search_result = SearchResultAt(currentRow());
-      if (search_result == nullptr) {
-        break;
-      }
-
+      auto search_result = SearchResultAt(current_row);
       emit SetTextRequested(search_result->GetCommand());
       break;
     }
     case Qt::Key_Return: {
-      auto search_result = SearchResultAt(currentRow());
-      if (search_result == nullptr) {
-        break;
-      }
+      auto search_result = SearchResultAt(current_row);
 
       if (modifiers & Qt::AltModifier) {
         ProcessAction(search_result->PressAltReturn(), search_result);
@@ -137,7 +137,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
     case Qt::Key_Up:
     case Qt::Key_Down: {
       // https://doc.qt.io/qt-6/qt.html#Key-enum
-      auto new_current_row = currentRow() + (key - Qt::Key_Right);
+      auto new_current_row = current_row + (key - Qt::Key_Right);
       if (new_current_row < 0 || new_current_row >= count()) {
         break;
       }
@@ -146,11 +146,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
       break;
     }
     case Qt::Key_Alt: {
-      auto search_result = SearchResultAt(currentRow());
-      if (search_result == nullptr) {
-        break;
-      }
-
+      auto search_result = SearchResultAt(current_row);
       search_result->PressAlt();
       break;
     }
@@ -161,12 +157,13 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
     case Qt::Key_5:
     case Qt::Key_6: {
       if (modifiers & Qt::ControlModifier) {
-        auto row = key - Qt::Key_1 + verticalScrollBar()->value();
-        auto search_result = SearchResultAt(row);
-        if (search_result == nullptr) {
+        // Prevents manipulation of SearchResult objects that point to nullptr.
+        if (key - Qt::Key_0 > count()) {
           break;
         }
 
+        auto row = key - Qt::Key_1 + verticalScrollBar()->value();
+        auto search_result = SearchResultAt(row);
         ProcessAction(search_result->PressReturn(arg_), search_result);
       }
 
