@@ -6,8 +6,9 @@
 #include <QUuid>
 
 #include "definitions.h"
+#include "interactable.h"
 
-class DataModel {
+class DataModel : public Interactable {
  public:
   explicit DataModel() = default;
 
