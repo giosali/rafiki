@@ -3,6 +3,8 @@
     "editor.semanticHighlighting.enabled": true,
     "editor.suggest.insertMode": "replace",
     "editor.wordBasedSuggestions": "off",
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
   }
 }
