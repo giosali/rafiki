@@ -11,7 +11,7 @@ SearchBox::SearchBox(QWidget* parent)
   ui_->setupUi(this);
   setFixedHeight(Height());
 
-  QObject::connect(ui_->searchBox, &QLineEdit::textChanged, this,
+  QObject::connect(ui_->searchBox, &QLineEdit::textChanged,
                    [this](const QString& text) { emit TextChanged(text); });
 }
 
