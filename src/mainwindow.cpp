@@ -43,8 +43,6 @@ MainWindow::MainWindow(QWidget* parent)
 
   QObject::connect(this, &MainWindow::Deactivated, search_box.get(),
                    &SearchBox::Clear);
-  QObject::connect(list.get(), &SearchResultList::HideWindowRequested, this,
-                   [this]() { hide(); });
   QObject::connect(list.get(), &SearchResultList::ItemsChanged, this,
                    &MainWindow::SetHeight);
   QObject::connect(list.get(), &SearchResultList::TextReceived,
