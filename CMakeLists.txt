@@ -26,6 +26,8 @@ set(PROJECT_SOURCES
         src/datamodel.cpp
         src/datamodel.h
         src/definitions.h
+        src/interactable.cpp
+        src/interactable.h
         src/main.cpp
         src/mainwindow.cpp
         src/mainwindow.h
