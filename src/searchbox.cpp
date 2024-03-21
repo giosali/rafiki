@@ -1,6 +1,6 @@
 #include "searchbox.h"
 
-#include <QApplication>
+#include <QCoreApplication>
 #include <QObject>
 #include <Qt>
 
@@ -25,7 +25,7 @@ void SearchBox::SetText(const QString& text) { ui_->searchBox->setText(text); }
 
 void SearchBox::SimulateKeyPress(QEvent* event) {
   ui_->searchBox->setFocus();
-  QApplication::sendEvent(ui_->searchBox, event);
+  QCoreApplication::sendEvent(ui_->searchBox, event);
 }
 
 void SearchBox::keyPressEvent(QKeyEvent* event) {
