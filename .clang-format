@@ -2,8 +2,10 @@ BasedOnStyle: Google
 ColumnLimit: 80
 ContinuationIndentWidth: 2
 IndentWidth: 2
+InsertNewlineAtEOF: true
 Language: Cpp
 MaxEmptyLinesToKeep: 1
+PointerAlignment: Left
 SpacesBeforeTrailingComments: 2
 Standard: c++17
 TabWidth: 2
