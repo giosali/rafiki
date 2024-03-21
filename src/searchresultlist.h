@@ -23,6 +23,8 @@ class SearchResultList : public QListWidget {
   SearchResultList(QWidget* parent = nullptr);
 
   SearchResult* CurrentSearchResult() const;
+  QString GetArg() const;
+  QString GetCmd() const;
   int Height() const;
 
  public slots:
@@ -52,6 +54,7 @@ class SearchResultList : public QListWidget {
   SearchResult* SearchResultAt(int row);
 
   QString arg_;
+  QString cmd_;
   ProjectIO project_io_;
   QPoint starting_drag_position_;
 };

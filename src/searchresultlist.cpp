@@ -46,6 +46,10 @@ SearchResult* SearchResultList::CurrentSearchResult() const {
   return static_cast<SearchResult*>(itemWidget(currentItem()));
 }
 
+QString SearchResultList::GetArg() const { return arg_; }
+
+QString SearchResultList::GetCmd() const { return cmd_; }
+
 int SearchResultList::Height() const {
   auto row_height = sizeHintForRow(0);
   if (row_height == -1) {
@@ -94,6 +98,8 @@ void SearchResultList::ProcessInput(const QString& input) {
   }
 
   arg_ = arg;
+  cmd_ = cmd;
+
   auto models = project_io_.FindDataModels(cmd);
   for (size_t i = 0; i < models.size(); ++i) {
     AddItem(models[i], arg, i);
