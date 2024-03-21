@@ -37,8 +37,6 @@ MainWindow::MainWindow(QWidget* parent)
 
   auto box = new SearchBox(this);
   auto list = new SearchResultList(this);
-  // auto search_box = std::make_unique<SearchBox>(this);
-  // auto list = std::make_unique<SearchResultList>(this);
 
   // Prevents the window height from strangely expanding when input is cleared.
   setMinimumHeight(box->Height());
