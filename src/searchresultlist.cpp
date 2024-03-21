@@ -151,7 +151,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
     }
     case Qt::Key_Alt: {
       auto search_result = SearchResultAt(current_row);
-      search_result->PressAlt();
+      search_result->HandleKeyPress(key_combination, this);
       break;
     }
     case Qt::Key_1:
