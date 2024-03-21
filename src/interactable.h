@@ -7,12 +7,10 @@
 
 class Interactable {
  public:
-  Interactable() = default;
-
   virtual QString DragAndDrop() = 0;
-  virtual void ProcessKeyPress(const QKeyCombination& key_combination,
+  virtual void ProcessKeyPress(const QKeyCombination& combination,
                                QObject* parent) = 0;
-  virtual void ProcessKeyRelease(const QKeyCombination& key_combination,
+  virtual void ProcessKeyRelease(const QKeyCombination& combination,
                                  QObject* parent) = 0;
 };
 
