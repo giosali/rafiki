@@ -35,29 +35,30 @@ MainWindow::MainWindow(QWidget* parent)
   p.setY(static_cast<int>(screen_geometry.height() * 0.175));
   move(p);
 
-  auto search_box = std::make_unique<SearchBox>(this);
-  auto list = std::make_unique<SearchResultList>(this);
+  auto box = new SearchBox(this);
+  auto list = new SearchResultList(this);
+  // auto search_box = std::make_unique<SearchBox>(this);
+  // auto list = std::make_unique<SearchResultList>(this);
 
   // Prevents the window height from strangely expanding when input is cleared.
-  setMinimumHeight(search_box->Height());
+  setMinimumHeight(box->Height());
 
-  QObject::connect(this, &MainWindow::Deactivated, search_box.get(),
-                   &SearchBox::Clear);
-  QObject::connect(list.get(), &SearchResultList::ItemsChanged, this,
+  QObject::connect(this, &MainWindow::Deactivated, box, &SearchBox::Clear);
+  QObject::connect(list, &SearchResultList::ItemsChanged, this,
                    &MainWindow::SetHeight);
-  QObject::connect(list.get(), &SearchResultList::TextReceived,
-                   search_box.get(), &SearchBox::SetText);
-  QObject::connect(list.get(), &SearchResultList::EventReceived,
-                   search_box.get(), &SearchBox::SimulateKeyPress);
-  QObject::connect(search_box.get(), &SearchBox::TextChanged, list.get(),
+  QObject::connect(list, &SearchResultList::TextReceived, box,
+                   &SearchBox::SetText);
+  QObject::connect(list, &SearchResultList::EventReceived, box,
+                   &SearchBox::SimulateKeyPress);
+  QObject::connect(box, &SearchBox::TextChanged, list,
                    &SearchResultList::ProcessInput);
-  QObject::connect(search_box.get(), &SearchBox::KeyPressed, list.get(),
+  QObject::connect(box, &SearchBox::KeyPressed, list,
                    &SearchResultList::ProcessKeyPress);
-  QObject::connect(search_box.get(), &SearchBox::KeyReleased, list.get(),
+  QObject::connect(box, &SearchBox::KeyReleased, list,
                    &SearchResultList::ProcessKeyRelease);
 
-  centralWidget()->layout()->addWidget(search_box.release());
-  centralWidget()->layout()->addWidget(list.release());
+  centralWidget()->layout()->addWidget(box);
+  centralWidget()->layout()->addWidget(list);
 }
 
 MainWindow::~MainWindow() {}
