@@ -75,7 +75,7 @@ void SearchResultList::ActivateItem(QListWidgetItem* item) {
 
   auto key_event = std::make_unique<QKeyEvent>(
     QEvent::KeyPress, Qt::Key_Return, QApplication::keyboardModifiers());
-  emit EventSent(key_event.get());
+  emit EventReceived(key_event.get());
 }
 
 void SearchResultList::AdjustSize(SearchResultList* list) {
@@ -131,7 +131,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
   switch (key) {
     case Qt::Key_Tab: {
       auto search_result = SearchResultAt(current_row);
-      emit SetTextRequested(search_result->GetCommand());
+      emit TextReceived(search_result->GetCommand());
       break;
     }
     case Qt::Key_Return: {
@@ -306,7 +306,7 @@ void SearchResultList::ProcessAction(defs::Action action,
     case defs::Action::Nothing:
       break;
     case defs::Action::SetTextToCommand:
-      emit SetTextRequested(search_result->GetCommand());
+      emit TextReceived(search_result->GetCommand());
       break;
   }
 }

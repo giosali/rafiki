@@ -47,10 +47,10 @@ MainWindow::MainWindow(QWidget* parent)
                    [this]() { hide(); });
   QObject::connect(list.get(), &SearchResultList::ItemsChanged, this,
                    &MainWindow::SetHeight);
-  QObject::connect(list.get(), &SearchResultList::SetTextRequested,
+  QObject::connect(list.get(), &SearchResultList::TextReceived,
                    search_box.get(), &SearchBox::SetText);
-  QObject::connect(list.get(), &SearchResultList::EventSent, search_box.get(),
-                   &SearchBox::SimulateKeyPress);
+  QObject::connect(list.get(), &SearchResultList::EventReceived,
+                   search_box.get(), &SearchBox::SimulateKeyPress);
   QObject::connect(search_box.get(), &SearchBox::TextChanged, list.get(),
                    &SearchResultList::ProcessInput);
   QObject::connect(search_box.get(), &SearchBox::KeyPressed, list.get(),
@@ -73,7 +73,7 @@ void MainWindow::ProcessCommandLineArguments(const QString& args) {
 
   // Sets up custom options.
   QCommandLineOption toggleOption(
-      "toggle", "Toggles the visibility of the main input window.");
+    "toggle", "Toggles the visibility of the main input window.");
   parser.addOption(toggleOption);
   QCommandLineOption quitOption("quit", "Quits the application.");
   parser.addOption(quitOption);

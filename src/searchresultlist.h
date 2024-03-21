@@ -39,10 +39,10 @@ class SearchResultList : public QListWidget {
   void UpdateShortcuts(int value);
 
  signals:
-  void EventSent(QEvent* event);
+  void EventReceived(QEvent* event);
   void HideWindowRequested();
   void ItemsChanged(SearchResultList* list);
-  void SetTextRequested(const QString& text);
+  void TextReceived(const QString& text);
 
  protected:
   void mouseMoveEvent(QMouseEvent* event) override;
