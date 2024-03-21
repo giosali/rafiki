@@ -134,18 +134,11 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
       ProcessAction(search_result->PressReturn(arg_), search_result);
       break;
     }
-    case Qt::Key_Up: {
-      auto new_current_row = currentRow() - 1;
-      if (new_current_row < 0) {
-        break;
-      }
-
-      setCurrentRow(new_current_row);
-      break;
-    }
+    case Qt::Key_Up:
     case Qt::Key_Down: {
-      auto new_current_row = currentRow() + 1;
-      if (new_current_row >= count()) {
+      // https://doc.qt.io/qt-6/qt.html#Key-enum
+      auto new_current_row = currentRow() + (key - Qt::Key_Right);
+      if (new_current_row < 0 || new_current_row >= count()) {
         break;
       }
 
