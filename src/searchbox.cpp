@@ -1,6 +1,5 @@
 #include "searchbox.h"
 
-#include <QCoreApplication>
 #include <QObject>
 #include <Qt>
 
@@ -22,11 +21,6 @@ int SearchBox::Height() const { return ui_->layout->sizeHint().height(); }
 void SearchBox::Clear() { ui_->searchBox->clear(); }
 
 void SearchBox::SetText(const QString& text) { ui_->searchBox->setText(text); }
-
-void SearchBox::SimulateKeyPress(QEvent* event) {
-  ui_->searchBox->setFocus();
-  QCoreApplication::sendEvent(ui_->searchBox, event);
-}
 
 void SearchBox::keyPressEvent(QKeyEvent* event) {
   if (event->isAutoRepeat()) {

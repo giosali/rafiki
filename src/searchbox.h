@@ -27,7 +27,6 @@ class SearchBox : public QWidget {
  public slots:
   void Clear();
   void SetText(const QString& text);
-  void SimulateKeyPress(QEvent* event);
 
  signals:
   void KeyPressed(const QKeyCombination& key_combination);
