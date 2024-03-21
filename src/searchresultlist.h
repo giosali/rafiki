@@ -26,7 +26,7 @@ class SearchResultList : public QListWidget {
   QString GetArg() const;
   QString GetCmd() const;
   int Height() const;
-  void HideParent() const;
+  void HideParent();
 
  public slots:
   void ActivateItem(QListWidgetItem* item);
