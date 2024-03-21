@@ -30,7 +30,17 @@ SearchResult::SearchResult(const std::shared_ptr<DataModel>& data_model,
 
 SearchResult::~SearchResult() {}
 
-QString SearchResult::DragAndDrop() const { return (const char*)0; }
+void SearchResult::HandleKeyPress(const QKeyCombination& combination,
+                                  QWidget* parent) {
+  data_model_->ProcessKeyPress(combination, parent);
+}
+
+void SearchResult::HandleKeyRelease(const QKeyCombination& combination,
+                                    QWidget* parent) {
+  data_model_->ProcessKeyRelease(combination, parent);
+}
+
+QString SearchResult::DragAndDrop() const { return data_model_->DragAndDrop(); }
 
 QString SearchResult::GetCommand() const {
   return data_model_->GetCommand(true);
@@ -56,9 +66,8 @@ void SearchResult::ReleaseAlt(const QString& arg) const {
 }
 
 void SearchResult::SetShortcut(const QString& shortcut_key) const {
-  ui_->shortcut->setText(shortcut_key.isNull()
-                             ? shortcut_key
-                             : kShortcutModifierKey + shortcut_key);
+  ui_->shortcut->setText(
+    shortcut_key.isNull() ? shortcut_key : kShortcutModifierKey + shortcut_key);
 }
 
 int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }

@@ -3,8 +3,42 @@
 #include <QDesktopServices>
 #include <QJsonValue>
 #include <QUrl>
+#include <Qt>
 
+#include "searchresultlist.h"
 #include "utils.h"
+
+QString WebSearch::DragAndDrop() { return QString{}; }
+
+void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
+                                QWidget* parent) {
+  auto search_result_list = dynamic_cast<SearchResultList*>(parent);
+  if (search_result_list == nullptr) {
+    return;
+  }
+
+  switch (combination.key()) {
+    case Qt::Key_Alt:
+      search_result_list->CurrentSearchResult()->SetTitle(alt_title_);
+      break;
+    case Qt::Key_Return:
+      if (combination.keyboardModifiers() & Qt::AltModifier) {
+        break;
+      }
+
+      break;
+    case Qt::Key_Tab:
+      break;
+  }
+}
+
+void WebSearch::ProcessKeyRelease(const QKeyCombination& combination,
+                                  QWidget* parent) {
+  switch (combination.key()) {
+    case Qt::Key_Alt:
+      break;
+  }
+}
 
 defs::Action WebSearch::AltGo(const QString& arg) {
   return ProcessUrl(alt_url_, arg);

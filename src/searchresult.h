@@ -1,6 +1,7 @@
 #ifndef SEARCHRESULT_H
 #define SEARCHRESULT_H
 
+#include <QKeyCombination>
 #include <QPixmap>
 #include <QString>
 #include <QWidget>
@@ -25,6 +26,8 @@ class SearchResult : public QWidget {
 
   ~SearchResult();
 
+  void HandleKeyPress(const QKeyCombination& combination, QWidget* parent);
+  void HandleKeyRelease(const QKeyCombination& combination, QWidget* parent);
   QString DragAndDrop() const;
   QString GetCommand() const;
   QPixmap GetIcon() const;
@@ -33,6 +36,9 @@ class SearchResult : public QWidget {
   defs::Action PressReturn(const QString& arg) const;
   void ReleaseAlt(const QString& arg) const;
   void SetShortcut(const QString& shortcut_key) const;
+  void SetDescription(const QString& description) const;
+  void SetIcon(const QString& path) const;
+  void SetTitle(const QString& title) const;
 
  private:
   static constexpr int kFixedHeight = 44;
@@ -41,9 +47,6 @@ class SearchResult : public QWidget {
   const QString kShortcutModifierKey = "CTRL + ";
 
   int Height() const;
-  void SetDescription(const QString& description) const;
-  void SetIcon(const QString& path) const;
-  void SetTitle(const QString& title) const;
 
   std::shared_ptr<DataModel> data_model_;
   std::unique_ptr<Ui::SearchResult> ui_;
