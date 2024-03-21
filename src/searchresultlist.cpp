@@ -42,6 +42,10 @@ SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
                    SLOT(SetCurrentItem(SearchResultList*)));
 }
 
+SearchResult* SearchResultList::CurrentSearchResult() const {
+  return static_cast<SearchResult*>(itemWidget(currentItem()));
+}
+
 int SearchResultList::Height() const {
   auto row_height = sizeHintForRow(0);
   if (row_height == -1) {

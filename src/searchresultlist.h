@@ -22,6 +22,7 @@ class SearchResultList : public QListWidget {
 
   SearchResultList(QWidget* parent = nullptr);
 
+  SearchResult* CurrentSearchResult() const;
   int Height() const;
 
  public slots:
