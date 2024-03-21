@@ -4,6 +4,7 @@
 #include <QCursor>
 #include <QDrag>
 #include <QFrame>
+#include <QHideEvent>
 #include <QIcon>
 #include <QKeyEvent>
 #include <QList>
