@@ -61,6 +61,8 @@ int SearchResultList::Height() const {
   return total_height;
 }
 
+void SearchResultList::HideParent() const { parentWidget()->hide(); }
+
 void SearchResultList::ActivateItem(QListWidgetItem* item) {
   if (starting_drag_position_ != mapFromGlobal(QCursor::pos())) {
     return;
