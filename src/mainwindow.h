@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QEvent>
 #include <QMainWindow>
 #include <QString>
 #include <memory>
@@ -34,4 +35,4 @@ class MainWindow : public QMainWindow {
  private:
   std::unique_ptr<Ui::MainWindow> ui_;
 };
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

@@ -2,14 +2,12 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
-#include <QEvent>
 #include <QObject>
 #include <QPoint>
 #include <QRect>
 #include <QScreen>
 #include <Qt>
 #include <QtGlobal>
-#include <utility>
 
 #include "./ui_mainwindow.h"
 #include "searchbox.h"
@@ -49,6 +47,9 @@ MainWindow::MainWindow(QWidget* parent)
   QObject::connect(
     list, &SearchResultList::EventReceived,
     [box](QEvent* event) { QApplication::sendEvent(box, event); });
+  QObject::connect(
+    list, &SearchResultList::EventReceived,
+    [this](QEvent* event) { QApplication::sendEvent(this, event); });
   QObject::connect(box, &SearchBox::TextChanged, list,
                    &SearchResultList::ProcessInput);
   QObject::connect(box, &SearchBox::KeyPressed, list,
@@ -104,7 +105,14 @@ void MainWindow::SetHeight(SearchResultList* list) {
 
 bool MainWindow::event(QEvent* event) {
   switch (event->type()) {
-    case QEvent::WindowDeactivate:
+    case QEvent::Hide:
+      if (isHidden()) {
+        break;
+      }
+
+      hide();
+      break;
+    case QEvent::WindowDeactivate:  // Window lost focus.
       hide();
       emit Deactivated();
       break;
