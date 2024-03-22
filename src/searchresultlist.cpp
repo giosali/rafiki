@@ -130,23 +130,13 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
   }
 
   auto key = key_combination.key();
-  auto modifiers = key_combination.keyboardModifiers();
 
   switch (key) {
-    case Qt::Key_Tab: {
+    case Qt::Key_Tab:
+    case Qt::Key_Return:
+    case Qt::Key_Alt: {
       auto search_result = SearchResultAt(current_row);
-      emit TextReceived(search_result->GetCommand());
-      break;
-    }
-    case Qt::Key_Return: {
-      auto search_result = SearchResultAt(current_row);
-
-      if (modifiers & Qt::AltModifier) {
-        ProcessAction(search_result->PressAltReturn(), search_result);
-        break;
-      }
-
-      ProcessAction(search_result->PressReturn(arg_), search_result);
+      search_result->HandleKeyPress(key_combination, this);
       break;
     }
     case Qt::Key_Up:
@@ -160,18 +150,13 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
       setCurrentRow(new_current_row);
       break;
     }
-    case Qt::Key_Alt: {
-      auto search_result = SearchResultAt(current_row);
-      search_result->HandleKeyPress(key_combination, this);
-      break;
-    }
     case Qt::Key_1:
     case Qt::Key_2:
     case Qt::Key_3:
     case Qt::Key_4:
     case Qt::Key_5:
     case Qt::Key_6: {
-      if (modifiers & Qt::ControlModifier) {
+      if (key_combination.keyboardModifiers() & Qt::ControlModifier) {
         // Prevents manipulation of SearchResult objects that point to nullptr.
         if (key - Qt::Key_0 > count()) {
           break;
@@ -179,7 +164,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
 
         auto row = key - Qt::Key_1 + verticalScrollBar()->value();
         auto search_result = SearchResultAt(row);
-        ProcessAction(search_result->PressReturn(arg_), search_result);
+        search_result->HandleKeyPress(key_combination, this);
       }
 
       break;
@@ -189,15 +174,10 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
 
 void SearchResultList::ProcessKeyRelease(
   const QKeyCombination& key_combination) {
-  auto key = key_combination.key();
-  switch (key) {
+  switch (key_combination.key()) {
     case Qt::Key_Alt: {
       auto search_result = SearchResultAt(currentRow());
-      if (search_result == nullptr) {
-        break;
-      }
-
-      search_result->ReleaseAlt(arg_);
+      search_result->HandleKeyRelease(key_combination, this);
       break;
     }
   }
