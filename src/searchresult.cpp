@@ -1,12 +1,10 @@
 #include "searchresult.h"
 
 #include <QIcon>
-#include <QLayout>
 #include <QPixmap>
 #include <Qt>
 
 #include "./ui_searchresult.h"
-#include "searchresultlist.h"
 
 SearchResult::SearchResult(const std::shared_ptr<DataModel>& data_model,
                            const QString& arg, const QString& shortcut_key,
@@ -30,44 +28,18 @@ SearchResult::SearchResult(const std::shared_ptr<DataModel>& data_model,
 
 SearchResult::~SearchResult() {}
 
+QString SearchResult::DragAndDrop() const { return data_model_->DragAndDrop(); }
+
+QPixmap SearchResult::GetIcon() const { return ui_->icon->pixmap(); }
+
 void SearchResult::HandleKeyPress(const QKeyCombination& combination,
-                                  QWidget* parent) {
+                                  QWidget* parent) const {
   data_model_->ProcessKeyPress(combination, parent);
 }
 
 void SearchResult::HandleKeyRelease(const QKeyCombination& combination,
-                                    QWidget* parent) {
+                                    QWidget* parent) const {
   data_model_->ProcessKeyRelease(combination, parent);
-}
-
-QString SearchResult::DragAndDrop() const { return data_model_->DragAndDrop(); }
-
-QString SearchResult::GetCommand() const {
-  return data_model_->GetCommand(true);
-}
-
-QPixmap SearchResult::GetIcon() const { return ui_->icon->pixmap(); }
-
-void SearchResult::PressAlt() const {
-  auto alt_title = data_model_->GetAltTitle();
-  SetTitle(alt_title);
-}
-
-defs::Action SearchResult::PressAltReturn() const {
-  return data_model_->AltGo((const char*)0);
-}
-
-defs::Action SearchResult::PressReturn(const QString& arg) const {
-  return data_model_->Go(arg);
-}
-
-void SearchResult::ReleaseAlt(const QString& arg) const {
-  SetTitle(data_model_->GetTitle(arg));
-}
-
-void SearchResult::SetShortcut(const QString& shortcut_key) const {
-  ui_->shortcut->setText(
-    shortcut_key.isNull() ? shortcut_key : kShortcutModifierKey + shortcut_key);
 }
 
 int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }
@@ -85,6 +57,11 @@ void SearchResult::SetIcon(const QString& path) const {
   // https://github.com/qbittorrent/qBittorrent/issues/8841#issuecomment-387179854
   auto icon = QIcon{path};
   ui_->icon->setPixmap(icon.pixmap(kFixedHeight));
+}
+
+void SearchResult::SetShortcut(const QString& shortcut_key) const {
+  ui_->shortcut->setText(
+    shortcut_key.isNull() ? shortcut_key : kShortcutModifierKey + shortcut_key);
 }
 
 void SearchResult::SetTitle(const QString& title) const {
