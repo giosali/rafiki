@@ -18,7 +18,7 @@ class DataModel : public Interactable {
   virtual QString GetAltTitle() = 0;
   virtual defs::Action Go(const QString& arg) = 0;
   virtual void Populate(const QJsonObject& object) = 0;
-  QString GetCommand(bool try_append_space);
+  QString GetCommand(bool try_append_space) const;
   QString GetDescription();
   QString GetIcon();
   QUuid GetId();
