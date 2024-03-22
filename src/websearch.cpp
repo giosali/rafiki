@@ -30,7 +30,6 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
       search_result_list->CurrentSearchResult()->SetTitle(alt_title_);
       break;
     case Qt::Key_Return:
-      qDebug() << "CALLED";
       if (combination.keyboardModifiers() & Qt::AltModifier) {
         ProcessUrl(alt_url_, search_result_list);
         break;
@@ -110,6 +109,7 @@ void WebSearch::ProcessUrl(const QString& url,
   if (!url.contains("{}")) {
     search_result_list->HideParent();
     QDesktopServices::openUrl(QUrl(url));
+    return;
   }
 
   auto arg = search_result_list->GetArg();
@@ -117,6 +117,7 @@ void WebSearch::ProcessUrl(const QString& url,
   // Means arg is equal to: QString().
   if (arg.isNull()) {
     emit search_result_list->TextReceived(GetCommand(true));
+    return;
   }
 
   // Means arg is equal to: QString("").
