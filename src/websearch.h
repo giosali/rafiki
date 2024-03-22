@@ -8,6 +8,7 @@
 
 #include "datamodel.h"
 #include "definitions.h"
+#include "searchresultlist.h"
 
 class WebSearch : public DataModel {
  public:
@@ -26,7 +27,8 @@ class WebSearch : public DataModel {
   void Populate(const QJsonObject& object) override;
 
  private:
-  defs::Action ProcessUrl(const QString& url, const QString& arg) const;
+  void ProcessUrl(const QString& url,
+                  SearchResultList* search_result_list) const;
 
   QString alt_url_;
   QString alt_title_;
