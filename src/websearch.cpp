@@ -26,9 +26,6 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
 
       break;
     }
-    case Qt::Key_Alt:
-      search_result_list->CurrentSearchResult()->SetTitle(alt_title_);
-      break;
     case Qt::Key_Return:
       if (combination.keyboardModifiers() & Qt::AltModifier) {
         ProcessUrl(alt_url_, search_result_list);
@@ -36,6 +33,9 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
       }
 
       ProcessUrl(url_, search_result_list);
+      break;
+    case Qt::Key_Alt:
+      search_result_list->CurrentSearchResult()->SetTitle(alt_title_);
       break;
   }
 }
