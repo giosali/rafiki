@@ -281,20 +281,6 @@ void SearchResultList::AddItem(const std::shared_ptr<DataModel>& data_model,
   setItemWidget(item.release(), widget.release());
 }
 
-void SearchResultList::ProcessAction(defs::Action action,
-                                     SearchResult* search_result) {
-  switch (action) {
-    case defs::Action::HideWindow:
-      HideParent();
-      break;
-    case defs::Action::Nothing:
-      break;
-    case defs::Action::SetTextToCommand:
-      emit TextReceived(search_result->GetCommand());
-      break;
-  }
-}
-
 SearchResult* SearchResultList::SearchResultAt(int row) {
   return static_cast<SearchResult*>(itemWidget(item(row)));
 }
