@@ -9,13 +9,13 @@
 #include "utils.h"
 
 WebSearch::WebSearch(const QJsonObject& object)
-    : DataModel{object["id"].toString(),
-                object["icon"].toString(),
-                object["title"].toString(),
-                object["alt"].toObject()["title"].toString(),
-                object["description"].toString(),
-                object["command"].toString(),
-                object["placeholder"].toString()} {
+    : BaseResult{object["id"].toString(),
+                 object["icon"].toString(),
+                 object["title"].toString(),
+                 object["alt"].toObject()["title"].toString(),
+                 object["description"].toString(),
+                 object["command"].toString(),
+                 object["placeholder"].toString()} {
   url_ = object["url"].toString();
 
   auto alt = object["alt"].toObject();

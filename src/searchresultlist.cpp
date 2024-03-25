@@ -106,14 +106,14 @@ void SearchResultList::ProcessInput(const QString& input) {
   arg_ = arg;
   cmd_ = cmd;
 
-  auto models = project_io_.FindDataModels(cmd);
+  auto models = project_io_.FindBaseResults(cmd);
   for (size_t i = 0; i < models.size(); ++i) {
     AddItem(models[i], arg, i);
   }
 
   if (count() == 0) {
     // Adds default search results to list.
-    auto models = project_io_.GetDefaultDataModels();
+    auto models = project_io_.GetDefaultBaseResults();
     for (size_t i = 0; i < models.size(); ++i) {
       AddItem(models[i], input, i);
     }
@@ -268,10 +268,10 @@ void SearchResultList::mousePressEvent(QMouseEvent* event) {
   QListWidget::mousePressEvent(event);
 }
 
-void SearchResultList::AddItem(const std::shared_ptr<DataModel>& data_model,
+void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
                                const QString& arg, int row) {
   auto key = row < kMaxCount ? QString::number(row + 1) : (const char*)0;
-  auto widget = std::make_unique<SearchResult>(data_model, arg, key, this);
+  auto widget = std::make_unique<SearchResult>(base_result, arg, key, this);
   auto item = std::make_unique<QListWidgetItem>(this);
 
   // Sets the actual height of search result items and prevents unusual sizing

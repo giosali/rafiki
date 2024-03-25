@@ -10,7 +10,7 @@
 #include <QString>
 #include <memory>
 
-#include "definitions.h"
+#include "baseresult.h"
 #include "projectio.h"
 #include "searchresult.h"
 
@@ -48,8 +48,8 @@ class SearchResultList : public QListWidget {
   void mousePressEvent(QMouseEvent* event) override;
 
  private:
-  void AddItem(const std::shared_ptr<DataModel>& data_model, const QString& arg,
-               int row);
+  void AddItem(const std::shared_ptr<BaseResult>& base_result,
+               const QString& arg, int row);
   SearchResult* SearchResultAt(int row);
 
   QString arg_;

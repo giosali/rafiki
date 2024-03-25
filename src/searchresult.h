@@ -7,7 +7,7 @@
 #include <QWidget>
 #include <memory>
 
-#include "datamodel.h"
+#include "baseresult.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -19,7 +19,7 @@ class SearchResult : public QWidget {
   Q_OBJECT
 
  public:
-  explicit SearchResult(const std::shared_ptr<DataModel>& data_model,
+  explicit SearchResult(const std::shared_ptr<BaseResult>& base_result,
                         const QString& arg, const QString& shortcut_key,
                         QWidget* parent = nullptr);
 
@@ -44,7 +44,7 @@ class SearchResult : public QWidget {
 
   int Height() const;
 
-  std::shared_ptr<DataModel> data_model_;
+  std::shared_ptr<BaseResult> base_result_;
   std::unique_ptr<Ui::SearchResult> ui_;
 };
 

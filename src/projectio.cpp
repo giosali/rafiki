@@ -26,7 +26,7 @@ ProjectIO::ProjectIO() {
   }
 
   ParseDataFile<WebSearch>(GetDataFilePath(DataFile::kWebSearches));
-  PopulateDefaultDataModels(external_settings);
+  PopulateDefaultBaseResults(external_settings);
 }
 
 QString ProjectIO::GetDataFilePath(DataFile file) {
@@ -59,9 +59,9 @@ QString ProjectIO::GetImageFilePath(ImageFile file) {
   return dir + filename;
 }
 
-std::vector<std::shared_ptr<DataModel>> ProjectIO::FindDataModels(
+std::vector<std::shared_ptr<BaseResult>> ProjectIO::FindBaseResults(
   const QString& cmd) {
-  auto data_models_concat = std::vector<std::shared_ptr<DataModel>>{};
+  auto data_models_concat = std::vector<std::shared_ptr<BaseResult>>{};
   auto suggestions = autocomplete_map_.Find(cmd);
   for (const auto& suggestion : suggestions) {
     auto data_models_it = data_models_map_.find(suggestion);
@@ -77,7 +77,7 @@ std::vector<std::shared_ptr<DataModel>> ProjectIO::FindDataModels(
   return data_models_concat;
 }
 
-std::vector<std::shared_ptr<DataModel>> ProjectIO::GetDefaultDataModels() {
+std::vector<std::shared_ptr<BaseResult>> ProjectIO::GetDefaultBaseResults() {
   return default_data_models_;
 }
 
@@ -96,8 +96,8 @@ void ProjectIO::ParseDataFile(const QString& path) {
   }
 }
 
-void ProjectIO::PopulateDefaultDataModels(QSettings& external_settings) {
-  external_settings.beginGroup("DefaultSearchResults");
+void ProjectIO::PopulateDefaultBaseResults(QSettings& external_settings) {
+  external_settings.beginGroup("DefaultSearchBaseResults");
 
   auto guid_set = std::set<QUuid>();
   for (const auto& key : external_settings.allKeys()) {

@@ -6,11 +6,11 @@
 
 #include "./ui_searchresult.h"
 
-SearchResult::SearchResult(const std::shared_ptr<DataModel>& data_model,
+SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
                            const QString& arg, const QString& shortcut_key,
                            QWidget* parent)
     : QWidget{parent},
-      data_model_{data_model},
+      base_result_{base_result},
       ui_{std::make_unique<Ui::SearchResult>()} {
   ui_->setupUi(this);
   ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
@@ -20,26 +20,28 @@ SearchResult::SearchResult(const std::shared_ptr<DataModel>& data_model,
   // This is required to allow QListWidget to receive mouse move events.
   setMouseTracking(true);
 
-  SetIcon(data_model->GetIcon());
-  SetTitle(data_model->GetTitle(arg));
-  SetDescription(data_model->GetDescription());
+  SetIcon(base_result->GetIcon());
+  SetTitle(base_result->GetTitle(arg));
+  SetDescription(base_result->GetDescription());
   SetShortcut(shortcut_key);
 }
 
 SearchResult::~SearchResult() {}
 
-QString SearchResult::DragAndDrop() const { return data_model_->DragAndDrop(); }
+QString SearchResult::DragAndDrop() const {
+  return base_result_->DragAndDrop();
+}
 
 QPixmap SearchResult::GetIcon() const { return ui_->icon->pixmap(); }
 
 void SearchResult::HandleKeyPress(const QKeyCombination& combination,
                                   QWidget* parent) const {
-  data_model_->ProcessKeyPress(combination, parent);
+  base_result_->ProcessKeyPress(combination, parent);
 }
 
 void SearchResult::HandleKeyRelease(const QKeyCombination& combination,
                                     QWidget* parent) const {
-  data_model_->ProcessKeyRelease(combination, parent);
+  base_result_->ProcessKeyRelease(combination, parent);
 }
 
 int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }

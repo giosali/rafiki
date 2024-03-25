@@ -1,14 +1,14 @@
-#include "datamodel.h"
+#include "baseresult.h"
 
 #include <QFile>
 
 #include "projectio.h"
 #include "utils.h"
 
-DataModel::DataModel(const QString &id, const QString &icon,
-                     const QString &title, const QString &alt_title,
-                     const QString &description, const QString &command,
-                     const QString &placeholder)
+BaseResult::BaseResult(const QString &id, const QString &icon,
+                       const QString &title, const QString &alt_title,
+                       const QString &description, const QString &command,
+                       const QString &placeholder)
     : alt_title_{alt_title},
       placeholder_{placeholder},
       command_{command},
@@ -18,29 +18,29 @@ DataModel::DataModel(const QString &id, const QString &icon,
   SetTitle(title);
 }
 
-QString DataModel::GetCommand(bool try_append_space) const {
+QString BaseResult::GetCommand(bool try_append_space) const {
   return try_append_space && is_title_formattable_ ? command_ + " " : command_;
 }
 
-QString DataModel::GetDescription() { return description_; }
+QString BaseResult::GetDescription() { return description_; }
 
-QString DataModel::GetIcon() { return icon_; }
+QString BaseResult::GetIcon() { return icon_; }
 
-QUuid DataModel::GetId() { return id_; }
+QUuid BaseResult::GetId() { return id_; }
 
-QString DataModel::GetTitle(const QString &arg) {
+QString BaseResult::GetTitle(const QString &arg) {
   return is_title_formattable_
            ? utils::Format(title_, arg.isEmpty() ? placeholder_ : arg)
            : title_;
 }
 
-void DataModel::SetIcon(const QString &path) {
+void BaseResult::SetIcon(const QString &path) {
   icon_ = QFile::exists(path)
             ? path
             : ProjectIO::GetImageFilePath(ProjectIO::ImageFile::kQuestionMark);
 }
 
-void DataModel::SetTitle(const QString &text) {
+void BaseResult::SetTitle(const QString &text) {
   title_ = text;
   is_title_formattable_ = text.contains(kFormat);
 }

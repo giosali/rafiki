@@ -21,10 +21,10 @@ set(TS_FILES translations/${CMAKE_PROJECT_NAME}_en.ts)
 set(PROJECT_SOURCES
         src/autocompletemap.cpp
         src/autocompletemap.h
+        src/baseresult.cpp
+        src/baseresult.h
         src/client.cpp
         src/client.h
-        src/datamodel.cpp
-        src/datamodel.h
         src/definitions.h
         src/interactable.cpp
         src/interactable.h

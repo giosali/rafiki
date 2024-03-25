@@ -1,5 +1,5 @@
-#ifndef DATAMODEL_H
-#define DATAMODEL_H
+#ifndef BASERESULT_H
+#define BASERESULT_H
 
 #include <QJsonObject>
 #include <QString>
@@ -8,15 +8,15 @@
 #include "definitions.h"
 #include "interactable.h"
 
-class DataModel : public Interactable {
+class BaseResult : public Interactable {
  public:
-  DataModel() = default;
-  explicit DataModel(const QString& id, const QString& icon,
-                     const QString& title, const QString& alt_title,
-                     const QString& description, const QString& command,
-                     const QString& placeholder = (const char*)0);
+  BaseResult() = default;
+  explicit BaseResult(const QString& id, const QString& icon,
+                      const QString& title, const QString& alt_title,
+                      const QString& description, const QString& command,
+                      const QString& placeholder = (const char*)0);
 
-  virtual ~DataModel() = default;
+  virtual ~BaseResult() = default;
 
   QString GetCommand(bool try_append_space) const;
   QString GetDescription();
@@ -42,4 +42,4 @@ class DataModel : public Interactable {
   bool is_title_formattable_;
 };
 
-#endif  // DATAMODEL_H
+#endif  // BASERESULT_H

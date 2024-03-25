@@ -5,10 +5,10 @@
 #include <QString>
 #include <QWidget>
 
-#include "datamodel.h"
+#include "baseresult.h"
 #include "searchresultlist.h"
 
-class WebSearch : public DataModel {
+class WebSearch : public BaseResult {
  public:
   explicit WebSearch(const QJsonObject& object);
 
