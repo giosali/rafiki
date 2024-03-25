@@ -29,8 +29,8 @@ class SearchBox : public QWidget {
   void SetText(const QString& text);
 
  signals:
-  void KeyPressed(const QKeyCombination& key_combination);
-  void KeyReleased(const QKeyCombination& key_combination);
+  void KeyPressed(const QKeyCombination& combination);
+  void KeyReleased(const QKeyCombination& combination);
   void TextChanged(const QString& text);
 
  protected:

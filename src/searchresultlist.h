@@ -32,8 +32,8 @@ class SearchResultList : public QListWidget {
   void ActivateItem(QListWidgetItem* item);
   void AdjustSize(SearchResultList* list);
   void ProcessInput(const QString& input);
-  void ProcessKeyPress(const QKeyCombination& key_combination);
-  void ProcessKeyRelease(const QKeyCombination& key_combination);
+  void ProcessKeyPress(const QKeyCombination& combination);
+  void ProcessKeyRelease(const QKeyCombination& combination);
   void SetCurrentItem(QListWidgetItem* item);
   void SetCurrentItem(SearchResultList* list);
   void UpdateShortcuts(int value);

@@ -122,21 +122,21 @@ void SearchResultList::ProcessInput(const QString& input) {
   emit ItemsChanged(this);
 }
 
-void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
+void SearchResultList::ProcessKeyPress(const QKeyCombination& combination) {
   // Prevents manipulation of SearchResult objects that point to nullptr.
   auto current_row = currentRow();
   if (current_row == -1) {
     return;
   }
 
-  auto key = key_combination.key();
+  auto key = combination.key();
 
   switch (key) {
     case Qt::Key_Tab:
     case Qt::Key_Return:
     case Qt::Key_Alt: {
       auto search_result = SearchResultAt(current_row);
-      search_result->HandleKeyPress(key_combination, this);
+      search_result->HandleKeyPress(combination, this);
       break;
     }
     case Qt::Key_Up:
@@ -156,7 +156,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
     case Qt::Key_4:
     case Qt::Key_5:
     case Qt::Key_6: {
-      if (key_combination.keyboardModifiers() & Qt::ControlModifier) {
+      if (combination.keyboardModifiers() & Qt::ControlModifier) {
         // Prevents manipulation of SearchResult objects that point to nullptr.
         if (key - Qt::Key_0 > count()) {
           break;
@@ -164,7 +164,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
 
         auto row = key - Qt::Key_1 + verticalScrollBar()->value();
         auto search_result = SearchResultAt(row);
-        search_result->HandleKeyPress(key_combination, this);
+        search_result->HandleKeyPress(combination, this);
       }
 
       break;
@@ -172,12 +172,11 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& key_combination) {
   }
 }
 
-void SearchResultList::ProcessKeyRelease(
-  const QKeyCombination& key_combination) {
-  switch (key_combination.key()) {
+void SearchResultList::ProcessKeyRelease(const QKeyCombination& combination) {
+  switch (combination.key()) {
     case Qt::Key_Alt: {
       auto search_result = SearchResultAt(currentRow());
-      search_result->HandleKeyRelease(key_combination, this);
+      search_result->HandleKeyRelease(combination, this);
       break;
     }
   }

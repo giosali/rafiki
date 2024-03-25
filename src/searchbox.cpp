@@ -27,8 +27,8 @@ void SearchBox::keyPressEvent(QKeyEvent* event) {
     return;
   }
 
-  auto key_combination = event->keyCombination();
-  switch (key_combination.key()) {
+  auto combination = event->keyCombination();
+  switch (combination.key()) {
     case Qt::Key_Tab:
     case Qt::Key_Return:
     case Qt::Key_Up:
@@ -40,16 +40,16 @@ void SearchBox::keyPressEvent(QKeyEvent* event) {
     case Qt::Key_4:
     case Qt::Key_5:
     case Qt::Key_6:
-      emit KeyPressed(key_combination);
+      emit KeyPressed(combination);
       break;
   }
 }
 
 void SearchBox::keyReleaseEvent(QKeyEvent* event) {
-  auto key_combination = event->keyCombination();
-  switch (key_combination.key()) {
+  auto combination = event->keyCombination();
+  switch (combination.key()) {
     case Qt::Key_Alt:
-      emit KeyReleased(key_combination);
+      emit KeyReleased(combination);
       break;
   }
 }
