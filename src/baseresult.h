@@ -13,7 +13,8 @@ class BaseResult : public Interactable {
   BaseResult() = default;
   explicit BaseResult(const QString& id, const QString& icon,
                       const QString& title, const QString& alt_title,
-                      const QString& description, const QString& command,
+                      const QString& description,
+                      const QString& command = (const char*)0,
                       const QString& placeholder = (const char*)0);
 
   virtual ~BaseResult() = default;
