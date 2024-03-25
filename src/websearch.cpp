@@ -8,6 +8,20 @@
 #include "searchresultlist.h"
 #include "utils.h"
 
+WebSearch::WebSearch(const QJsonObject& object)
+    : DataModel{object["id"].toString(),
+                object["icon"].toString(),
+                object["title"].toString(),
+                object["alt"].toObject()["title"].toString(),
+                object["description"].toString(),
+                object["command"].toString(),
+                object["placeholder"].toString()} {
+  url_ = object["url"].toString();
+
+  auto alt = object["alt"].toObject();
+  alt_url_ = alt["url"].toString();
+}
+
 QString WebSearch::DragAndDrop() { return QString{}; }
 
 void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
@@ -53,55 +67,6 @@ void WebSearch::ProcessKeyRelease(const QKeyCombination& combination,
       search_result_list->CurrentSearchResult()->SetTitle(GetTitle(arg));
       break;
   }
-}
-
-defs::Action WebSearch::AltGo(const QString& arg) {
-  return defs::Action::Nothing;
-}
-
-QString WebSearch::GetAltTitle() { return alt_title_; }
-
-defs::Action WebSearch::Go(const QString& arg) { return defs::Action::Nothing; }
-
-void WebSearch::Populate(const QJsonObject& object) {
-  auto id_val = object["id"];
-  auto id = id_val.toString();
-  SetId(id);
-
-  auto cmd_val = object["command"];
-  auto cmd = cmd_val.toString();
-  SetCommand(cmd);
-
-  auto icon_val = object["icon"];
-  auto icon = icon_val.toString();
-  SetIcon(icon);
-
-  auto url_val = object["url"];
-  auto url = url_val.toString();
-  url_ = url;
-
-  auto title_val = object["title"];
-  auto title = title_val.toString();
-  SetTitle(title);
-
-  auto placeholder_val = object["placeholder"];
-  auto placeholder = placeholder_val.toString();
-  SetPlaceholder(placeholder);
-
-  auto description_val = object["description"];
-  auto description = description_val.toString();
-  SetDescription(description);
-
-  auto alt_val = object["alt"];
-  auto alt = alt_val.toObject();
-
-  auto alt_url_val = alt["url"];
-  auto alt_url = alt_url_val.toString();
-  alt_url_ = alt_url;
-
-  auto alt_title_val = alt["title"];
-  auto alt_title = alt_title_val.toString();
-  alt_title_ = alt_title;
 }
 
 void WebSearch::ProcessUrl(const QString& url,

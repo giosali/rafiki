@@ -10,14 +10,14 @@
 
 class DataModel : public Interactable {
  public:
-  explicit DataModel() = default;
+  DataModel() = default;
+  explicit DataModel(const QString& id, const QString& icon,
+                     const QString& title, const QString& alt_title,
+                     const QString& description, const QString& command,
+                     const QString& placeholder = (const char*)0);
 
   virtual ~DataModel() = default;
 
-  virtual defs::Action AltGo(const QString& arg) = 0;
-  virtual QString GetAltTitle() = 0;
-  virtual defs::Action Go(const QString& arg) = 0;
-  virtual void Populate(const QJsonObject& object) = 0;
   QString GetCommand(bool try_append_space) const;
   QString GetDescription();
   QString GetIcon();
@@ -25,12 +25,12 @@ class DataModel : public Interactable {
   QString GetTitle(const QString& arg);
 
  protected:
-  void SetCommand(const QString& text);
-  void SetDescription(const QString& text);
   void SetIcon(const QString& path);
-  void SetId(const QString& id);
-  void SetPlaceholder(const QString& text);
   void SetTitle(const QString& text);
+
+  QString alt_title_;
+  QString placeholder_;
+  QString title_;
 
  private:
   const QString kFormat = "{}";
@@ -40,8 +40,6 @@ class DataModel : public Interactable {
   QString icon_;
   QUuid id_;
   bool is_title_formattable_;
-  QString placeholder_;
-  QString title_;
 };
 
 #endif  // DATAMODEL_H
