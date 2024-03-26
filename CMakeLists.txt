@@ -32,8 +32,8 @@ set(PROJECT_SOURCES
         src/mainwindow.cpp
         src/mainwindow.h
         src/mainwindow.ui
-        src/projectio.cpp
-        src/projectio.h
+        src/project.cpp
+        src/project.h
         src/searchbox.cpp
         src/searchbox.h
         src/searchbox.ui
