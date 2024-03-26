@@ -8,6 +8,7 @@
 
 #include "client.h"
 #include "mainwindow.h"
+#include "project.h"
 #include "server.h"
 #include "utils.h"
 
@@ -65,6 +66,8 @@ int main(int argc, char *argv[]) {
     a.installTranslator(&translator);
     break;
   }
+
+  Project::Initialize();
 
   w.show();
   return a.exec();
