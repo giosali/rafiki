@@ -2,7 +2,8 @@
 
 #include <QFile>
 
-#include "projectio.h"
+#include "definitions.h"
+#include "project.h"
 #include "utils.h"
 
 BaseResult::BaseResult(const QString &id, const QString &icon,
@@ -11,12 +12,15 @@ BaseResult::BaseResult(const QString &id, const QString &icon,
                        const QString &placeholder)
     : alt_title_{alt_title},
       placeholder_{placeholder},
+      title_{title},
       command_{command},
       description_{description},
-      id_{QUuid::fromString(id)} {
-  SetIcon(icon);
-  SetTitle(title);
-}
+      has_command_{!command.isNull()},
+      icon_{QFile::exists(icon)
+              ? icon
+              : Project::GetImageFilePath(defs::ImageFile::kQuestionMark)},
+      id_{QUuid::fromString(id)},
+      is_title_formattable_{title.contains(kFormat)} {}
 
 QString BaseResult::GetCommand(bool try_append_space) const {
   return try_append_space && is_title_formattable_ ? command_ + " " : command_;
@@ -32,15 +36,4 @@ QString BaseResult::GetTitle(const QString &arg) {
   return is_title_formattable_
            ? utils::Format(title_, arg.isEmpty() ? placeholder_ : arg)
            : title_;
-}
-
-void BaseResult::SetIcon(const QString &path) {
-  icon_ = QFile::exists(path)
-            ? path
-            : ProjectIO::GetImageFilePath(ProjectIO::ImageFile::kQuestionMark);
-}
-
-void BaseResult::SetTitle(const QString &text) {
-  title_ = text;
-  is_title_formattable_ = text.contains(kFormat);
 }

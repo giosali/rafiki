@@ -10,7 +10,6 @@
 
 class BaseResult : public Interactable {
  public:
-  BaseResult() = default;
   explicit BaseResult(const QString& id, const QString& icon,
                       const QString& title, const QString& alt_title,
                       const QString& description,
@@ -26,9 +25,6 @@ class BaseResult : public Interactable {
   QString GetTitle(const QString& arg);
 
  protected:
-  void SetIcon(const QString& path);
-  void SetTitle(const QString& text);
-
   QString alt_title_;
   QString placeholder_;
   QString title_;
@@ -38,6 +34,7 @@ class BaseResult : public Interactable {
 
   QString command_;
   QString description_;
+  bool has_command_;
   QString icon_;
   QUuid id_;
   bool is_title_formattable_;
