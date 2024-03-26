@@ -33,7 +33,7 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
 
   switch (combination.key()) {
     case Qt::Key_Tab: {
-      auto command = GetCommand(true);
+      auto command = FormatCommand();
       if (search_result_list->GetCmd() != command) {
         emit search_result_list->TextReceived(command);
       }
@@ -64,7 +64,7 @@ void WebSearch::ProcessKeyRelease(const QKeyCombination& combination,
   switch (combination.key()) {
     case Qt::Key_Alt:
       auto arg = search_result_list->GetArg();
-      search_result_list->CurrentSearchResult()->SetTitle(GetTitle(arg));
+      search_result_list->CurrentSearchResult()->SetTitle(FormatTitle(arg));
       break;
   }
 }
@@ -81,7 +81,7 @@ void WebSearch::ProcessUrl(const QString& url,
 
   // Means arg is equal to: QString().
   if (arg.isNull()) {
-    emit search_result_list->TextReceived(GetCommand(true));
+    emit search_result_list->TextReceived(FormatCommand());
     return;
   }
 

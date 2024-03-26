@@ -21,7 +21,7 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
   setMouseTracking(true);
 
   SetIcon(base_result->GetIcon());
-  SetTitle(base_result->GetTitle(arg));
+  SetTitle(base_result->FormatTitle(arg));
   SetDescription(base_result->GetDescription());
   SetShortcut(shortcut_key);
 }

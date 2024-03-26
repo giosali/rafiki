@@ -18,11 +18,11 @@ class BaseResult : public Interactable {
 
   virtual ~BaseResult() = default;
 
-  QString GetCommand(bool try_append_space) const;
+  QString FormatCommand() const;
+  QString FormatTitle(const QString& arg) const;
   QString GetDescription();
   QString GetIcon();
   QUuid GetId();
-  QString GetTitle(const QString& arg);
 
  protected:
   QString alt_title_;

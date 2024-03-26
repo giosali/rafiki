@@ -95,7 +95,7 @@ void Project::ParseJsonToBaseResults(const QString& path) {
   auto arr = doc.array();
   for (auto it = arr.begin(); it != arr.end(); ++it) {
     auto result = std::make_shared<T>(it->toObject());
-    auto cmd = result->GetCommand(true);
+    auto cmd = result->FormatCommand();
     autocomplete_.Insert(cmd);
     base_results_map_[cmd].push_back(result);
   }

@@ -22,8 +22,14 @@ BaseResult::BaseResult(const QString &id, const QString &icon,
       id_{QUuid::fromString(id)},
       is_title_formattable_{title.contains(kFormat)} {}
 
-QString BaseResult::GetCommand(bool try_append_space) const {
-  return try_append_space && is_title_formattable_ ? command_ + " " : command_;
+QString BaseResult::FormatCommand() const {
+  return is_title_formattable_ ? command_ + " " : command_;
+}
+
+QString BaseResult::FormatTitle(const QString &arg) const {
+  return is_title_formattable_
+           ? utils::Format(title_, arg.isEmpty() ? placeholder_ : arg)
+           : title_;
 }
 
 QString BaseResult::GetDescription() { return description_; }
@@ -31,9 +37,3 @@ QString BaseResult::GetDescription() { return description_; }
 QString BaseResult::GetIcon() { return icon_; }
 
 QUuid BaseResult::GetId() { return id_; }
-
-QString BaseResult::GetTitle(const QString &arg) {
-  return is_title_formattable_
-           ? utils::Format(title_, arg.isEmpty() ? placeholder_ : arg)
-           : title_;
-}
