@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <cstdlib>
 
+#include "project.h"
 #include "searchresult.h"
 
 SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
@@ -106,16 +107,16 @@ void SearchResultList::ProcessInput(const QString& input) {
   arg_ = arg;
   cmd_ = cmd;
 
-  auto models = project_io_.FindBaseResults(cmd);
-  for (size_t i = 0; i < models.size(); ++i) {
-    AddItem(models[i], arg, i);
+  auto base_results = Project::FindBaseResults(cmd);
+  for (size_t i = 0; i < base_results.size(); ++i) {
+    AddItem(base_results[i], arg, i);
   }
 
   if (count() == 0) {
     // Adds default search results to list.
-    auto models = project_io_.GetDefaultBaseResults();
-    for (size_t i = 0; i < models.size(); ++i) {
-      AddItem(models[i], input, i);
+    auto default_results = Project::GetDefaultBaseResults();
+    for (size_t i = 0; i < default_results.size(); ++i) {
+      AddItem(default_results[i], input, i);
     }
   }
 

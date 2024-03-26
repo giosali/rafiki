@@ -11,7 +11,6 @@
 #include <memory>
 
 #include "baseresult.h"
-#include "projectio.h"
 #include "searchresult.h"
 
 class SearchResultList : public QListWidget {
@@ -54,7 +53,6 @@ class SearchResultList : public QListWidget {
 
   QString arg_;
   QString cmd_;
-  ProjectIO project_io_;
   QPoint starting_drag_position_;
 };
 
