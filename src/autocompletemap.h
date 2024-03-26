@@ -9,7 +9,7 @@
 
 class AutocompleteMap {
  public:
-  explicit AutocompleteMap() = default;
+  AutocompleteMap() = default;
 
   std::set<QString> Find(const QString& text) const;
   void Insert(const QString& text);
