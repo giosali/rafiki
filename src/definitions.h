@@ -4,7 +4,7 @@
 namespace defs {
 enum class DataFile { kSettings, kWebSearches };
 
-enum class ImageFile { kCalculator, kQuestionMark };
+enum class ImageFile { kCalculator, kQuestionMark, kTrash };
 }  // namespace defs
 
 #endif  // DEFINITIONS_H
