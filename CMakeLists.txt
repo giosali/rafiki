@@ -26,6 +26,8 @@ set(PROJECT_SOURCES
         src/client.cpp
         src/client.h
         src/definitions.h
+        src/input.cpp
+        src/input.h
         src/interactable.cpp
         src/interactable.h
         src/main.cpp
