@@ -53,6 +53,8 @@ QString Project::GetImageFilePath(defs::ImageFile file) {
       return dir + "calculator.png";
     case defs::ImageFile::kQuestionMark:
       return dir + "question-mark.png";
+    case defs::ImageFile::kTrash:
+      return dir + "trash.svg";
     default:
       return QString{};
   }
