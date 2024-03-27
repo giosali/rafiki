@@ -32,14 +32,13 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
   }
 
   switch (combination.key()) {
-    case Qt::Key_Tab: {
-      auto command = FormatCommand();
-      if (search_result_list->GetCmd() != command) {
+    case Qt::Key_Tab:
+      if (auto command = FormatCommand();
+          search_result_list->GetCmd() != command) {
         emit search_result_list->TextReceived(command);
       }
 
       break;
-    }
     case Qt::Key_Return:
       if (combination.keyboardModifiers() & Qt::AltModifier) {
         ProcessUrl(alt_url_, search_result_list);
