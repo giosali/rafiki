@@ -11,6 +11,7 @@
 #include <iterator>
 #include <set>
 
+#include "trash.h"
 #include "websearch.h"
 
 std::vector<std::shared_ptr<BaseResult>> Project::FindBaseResults(
@@ -61,6 +62,7 @@ QString Project::GetImageFilePath(defs::ImageFile file) {
 }
 
 void Project::Initialize() {
+  // Sets up default settings.
   auto default_settings = GetUserSettings();
   auto user_settings = GetDefaultSettings();
 
@@ -68,9 +70,27 @@ void Project::Initialize() {
     SetMissingSettings(default_settings, user_settings, group);
   }
 
+  // Sets up search results based on data files.
   ParseJsonToBaseResults<WebSearch>(
     GetDataFilePath(defs::DataFile::kWebSearches));
+
+  // Sets up built-in search results not based on data files.
+  AddBaseResult(std::make_shared<Trash>());
+
+  // Sets up default search results.
   UpdateDefaultBaseResults();
+}
+
+void Project::AddBaseResult(const std::shared_ptr<BaseResult> base_result) {
+  if (!base_result->HasCommand()) {
+    return;
+  }
+
+  auto cmd = base_result->FormatCommand();
+  autocomplete_.Insert(cmd);
+  (base_result->CommandContainsSpace() ? cmd_space_base_results_map_
+                                       : base_results_map_)[cmd]
+    .push_back(base_result);
 }
 
 QSettings Project::GetDefaultSettings() {

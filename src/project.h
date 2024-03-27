@@ -21,6 +21,7 @@ class Project {
   static void Initialize();
 
  private:
+  static void AddBaseResult(const std::shared_ptr<BaseResult> base_result);
   static QSettings GetDefaultSettings();
   static QSettings GetUserSettings();
   template <typename T>
@@ -33,10 +34,10 @@ class Project {
   static inline AutocompleteMap autocomplete_;
   static inline std::unordered_map<QString,
                                    std::vector<std::shared_ptr<BaseResult>>>
-    cmd_base_results_map_;
+    base_results_map_;
   static inline std::unordered_map<QString,
                                    std::vector<std::shared_ptr<BaseResult>>>
-    base_results_map_;
+    cmd_space_base_results_map_;
   static inline std::vector<std::shared_ptr<BaseResult>> default_base_results_;
 };
 
