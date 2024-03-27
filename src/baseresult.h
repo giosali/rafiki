@@ -18,11 +18,13 @@ class BaseResult : public Interactable {
 
   virtual ~BaseResult() = default;
 
+  bool CommandContainsSpace() const;
   QString FormatCommand() const;
   QString FormatTitle(const QString& arg) const;
   QString GetDescription();
   QString GetIcon();
   QUuid GetId();
+  bool HasCommand() const;
 
  protected:
   QString alt_title_;
@@ -34,7 +36,6 @@ class BaseResult : public Interactable {
 
   QString command_;
   QString description_;
-  bool has_command_;
   QString icon_;
   QUuid id_;
   bool is_title_formattable_;

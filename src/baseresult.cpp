@@ -15,12 +15,13 @@ BaseResult::BaseResult(const QString &id, const QString &icon,
       title_{title},
       command_{command},
       description_{description},
-      has_command_{!command.isNull()},
       icon_{QFile::exists(icon)
               ? icon
               : Project::GetImageFilePath(defs::ImageFile::kQuestionMark)},
       id_{QUuid::fromString(id)},
       is_title_formattable_{title.contains(kFormat)} {}
+
+bool BaseResult::CommandContainsSpace() const { return command_.contains(" "); }
 
 QString BaseResult::FormatCommand() const {
   return is_title_formattable_ ? command_ + " " : command_;
@@ -37,3 +38,5 @@ QString BaseResult::GetDescription() { return description_; }
 QString BaseResult::GetIcon() { return icon_; }
 
 QUuid BaseResult::GetId() { return id_; }
+
+bool BaseResult::HasCommand() const { return !command_.isNull(); }
