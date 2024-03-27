@@ -11,6 +11,7 @@
 #include <memory>
 
 #include "baseresult.h"
+#include "input.h"
 #include "searchresult.h"
 
 class SearchResultList : public QListWidget {
@@ -30,7 +31,7 @@ class SearchResultList : public QListWidget {
  public slots:
   void ActivateItem(QListWidgetItem* item);
   void AdjustSize(SearchResultList* list);
-  void ProcessInput(const QString& input);
+  void ProcessInput(const Input& input);
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
   void SetCurrentItem(QListWidgetItem* item);
@@ -51,8 +52,7 @@ class SearchResultList : public QListWidget {
                const QString& arg, int row);
   SearchResult* SearchResultAt(int row);
 
-  QString arg_;
-  QString cmd_;
+  Input input_;
   QPoint starting_drag_position_;
 };
 

@@ -48,9 +48,9 @@ SearchResult* SearchResultList::CurrentSearchResult() const {
   return static_cast<SearchResult*>(itemWidget(currentItem()));
 }
 
-QString SearchResultList::GetArg() const { return arg_; }
+QString SearchResultList::GetArg() const { return input_.GetArg(); }
 
-QString SearchResultList::GetCmd() const { return cmd_; }
+QString SearchResultList::GetCmd() const { return input_.GetCmd(); }
 
 int SearchResultList::Height() const {
   auto row_height = sizeHintForRow(0);
@@ -87,36 +87,24 @@ void SearchResultList::AdjustSize(SearchResultList* list) {
   setFixedHeight(Height());
 }
 
-void SearchResultList::ProcessInput(const QString& input) {
+void SearchResultList::ProcessInput(const Input& input) {
   clear();
 
-  if (input.length() == 0) {
+  if (input.IsEmpty()) {
     emit ItemsChanged(this);
     return;
   }
 
-  auto cmd = input;
-  auto arg = QString{};
-
-  // Increments in order to include the space when slicing.
-  if (auto space_index = input.indexOf(" "); space_index++ != -1) {
-    cmd = input.sliced(0, space_index);
-    arg = input.sliced(space_index);
-  }
-
-  arg_ = arg;
-  cmd_ = cmd;
-
-  auto base_results = Project::FindBaseResults(cmd);
+  auto base_results = Project::FindBaseResults(input.GetCmd());
   for (size_t i = 0; i < base_results.size(); ++i) {
-    AddItem(base_results[i], arg, i);
+    AddItem(base_results[i], input.GetArg(), i);
   }
 
   if (count() == 0) {
     // Adds default search results to list.
     auto default_results = Project::GetDefaultBaseResults();
     for (size_t i = 0; i < default_results.size(); ++i) {
-      AddItem(default_results[i], input, i);
+      AddItem(default_results[i], input.GetFull(), i);
     }
   }
 
