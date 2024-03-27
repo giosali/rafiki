@@ -44,6 +44,8 @@ set(PROJECT_SOURCES
         src/searchresultlist.h
         src/server.cpp
         src/server.h
+        src/trash.cpp
+        src/trash.h
         src/utils.h
         src/websearch.cpp
         src/websearch.h
