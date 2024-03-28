@@ -17,4 +17,6 @@ QString Input::GetCmd() const { return cmd_; }
 
 QString Input::GetFull() const { return full_; }
 
+bool Input::IsCmdRedundant() const { return arg_.isEmpty(); }
+
 bool Input::IsEmpty() const { return full_.isEmpty(); }

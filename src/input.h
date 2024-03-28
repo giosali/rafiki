@@ -11,6 +11,7 @@ class Input {
   QString GetArg() const;
   QString GetCmd() const;
   QString GetFull() const;
+  bool IsCmdRedundant() const;
   bool IsEmpty() const;
 
  private:
