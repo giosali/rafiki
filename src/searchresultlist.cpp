@@ -28,6 +28,7 @@ SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   setFrameStyle(QFrame::NoFrame);
 
   setFocusPolicy(Qt::NoFocus);
+  setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
   // This is required to properly enable mouse events.
   setMouseTracking(true);
