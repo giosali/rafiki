@@ -10,11 +10,12 @@
 #include "autocompletemap.h"
 #include "baseresult.h"
 #include "definitions.h"
+#include "input.h"
 
 class Project {
  public:
   static std::vector<std::shared_ptr<BaseResult>> FindBaseResults(
-    const QString& cmd);
+    const Input& input);
   static QString GetDataFilePath(defs::DataFile file);
   static std::vector<std::shared_ptr<BaseResult>> GetDefaultBaseResults();
   static QString GetImageFilePath(defs::ImageFile file);
@@ -35,9 +36,6 @@ class Project {
   static inline std::unordered_map<QString,
                                    std::vector<std::shared_ptr<BaseResult>>>
     base_results_map_;
-  static inline std::unordered_map<QString,
-                                   std::vector<std::shared_ptr<BaseResult>>>
-    cmd_space_base_results_map_;
   static inline std::vector<std::shared_ptr<BaseResult>> default_base_results_;
 };
 

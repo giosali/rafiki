@@ -15,9 +15,10 @@
 #include "websearch.h"
 
 std::vector<std::shared_ptr<BaseResult>> Project::FindBaseResults(
-  const QString& cmd) {
+  const Input& input) {
   auto results_concat = std::vector<std::shared_ptr<BaseResult>>{};
-  auto suggestions = autocomplete_.Find(cmd);
+
+  auto suggestions = autocomplete_.Find(input);
   for (const auto& suggestion : suggestions) {
     auto results_it = base_results_map_.find(suggestion);
     if (results_it == base_results_map_.end()) {
@@ -88,9 +89,7 @@ void Project::AddBaseResult(const std::shared_ptr<BaseResult> base_result) {
 
   auto cmd = base_result->FormatCommand();
   autocomplete_.Insert(cmd);
-  (base_result->CommandContainsSpace() ? cmd_space_base_results_map_
-                                       : base_results_map_)[cmd]
-    .push_back(base_result);
+  base_results_map_[cmd].push_back(base_result);
 }
 
 QSettings Project::GetDefaultSettings() {
