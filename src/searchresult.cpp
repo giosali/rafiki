@@ -16,6 +16,7 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
   ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
                                             kHorizontalMargin, kVerticalMargin);
   setFixedHeight(Height());
+  setFixedWidth(parent->width());
 
   // This is required to allow QListWidget to receive mouse move events.
   setMouseTracking(true);
@@ -24,6 +25,8 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
   SetTitle(base_result->FormatTitle(arg));
   SetDescription(base_result->GetDescription());
   SetShortcut(shortcut_key);
+
+  // qDebug() << "width:" << width();
 }
 
 SearchResult::~SearchResult() {}
