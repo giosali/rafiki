@@ -95,7 +95,7 @@ void SearchResultList::ProcessInput(const Input& input) {
     return;
   }
 
-  auto base_results = Project::FindBaseResults(input.GetCmd());
+  auto base_results = Project::FindBaseResults(input);
   for (size_t i = 0; i < base_results.size(); ++i) {
     AddItem(base_results[i], input.GetArg(), i);
   }
