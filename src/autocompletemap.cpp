@@ -1,11 +1,21 @@
 #include "autocompletemap.h"
 
-std::set<QString> AutocompleteMap::Find(const QString& text) const {
-  if (auto it = map_.find(text); it != map_.end()) {
-    return it->second;
+#include <vector>
+
+std::set<QString> AutocompleteMap::Find(const Input& input) const {
+  auto concat = std::set<QString>{};
+
+  auto keys = input.IsCmdRedundant()
+                ? std::vector<QString>{input.GetCmd()}
+                : std::vector<QString>{input.GetCmd(), input.GetFull()};
+  for (const auto& key : keys) {
+    if (auto it = map_.find(key); it != map_.end()) {
+      auto s = it->second;
+      concat.insert(s.begin(), s.end());
+    }
   }
 
-  return std::set<QString>{};
+  return concat;
 }
 
 void AutocompleteMap::Insert(const QString& text) {

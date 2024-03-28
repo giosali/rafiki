@@ -7,11 +7,14 @@
 #include <string>
 #include <unordered_map>
 
+#include "definitions.h"
+#include "input.h"
+
 class AutocompleteMap {
  public:
   AutocompleteMap() = default;
 
-  std::set<QString> Find(const QString& text) const;
+  std::set<QString> Find(const Input& input) const;
   void Insert(const QString& text);
 
  private:
