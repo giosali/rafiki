@@ -47,7 +47,13 @@ void SearchResult::HandleKeyRelease(const QKeyCombination& combination,
 int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }
 
 void SearchResult::SetDescription(const QString& description) const {
+  if (description.isEmpty()) {
+    ui_->description->hide();
+    return;
+  }
+
   ui_->description->setText(description);
+  ui_->description->show();
 }
 
 void SearchResult::SetIcon(const QString& path) const {
