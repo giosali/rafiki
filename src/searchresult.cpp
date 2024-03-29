@@ -1,5 +1,6 @@
 #include "searchresult.h"
 
+#include <QFontMetrics>
 #include <QIcon>
 #include <QPixmap>
 #include <Qt>
@@ -11,12 +12,13 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
                            QWidget* parent)
     : QWidget{parent},
       base_result_{base_result},
+      parent_width_{parent->width()},
       ui_{std::make_unique<Ui::SearchResult>()} {
   ui_->setupUi(this);
   ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
                                             kHorizontalMargin, kVerticalMargin);
   setFixedHeight(Height());
-  setFixedWidth(parent->width());
+  setFixedWidth(parent_width_);
 
   // This is required to allow QListWidget to receive mouse move events.
   setMouseTracking(true);
@@ -25,8 +27,6 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
   SetTitle(base_result->FormatTitle(arg));
   SetDescription(base_result->GetDescription());
   SetShortcut(shortcut_key);
-
-  // qDebug() << "width:" << width();
 }
 
 SearchResult::~SearchResult() {}
@@ -46,8 +46,6 @@ void SearchResult::HandleKeyRelease(const QKeyCombination& combination,
                                     QWidget* parent) const {
   base_result_->ProcessKeyRelease(combination, parent);
 }
-
-int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }
 
 void SearchResult::SetDescription(const QString& description) const {
   if (description.isEmpty()) {
@@ -78,3 +76,24 @@ void SearchResult::SetShortcut(const QString& shortcut_key) const {
 void SearchResult::SetTitle(const QString& title) const {
   ui_->title->setText(title);
 }
+
+void SearchResult::resizeEvent(QResizeEvent* event) {
+  auto icon_width = ui_->icon->width();
+  auto title_width = ui_->title->width();
+  auto shortcut_width = ui_->shortcut->width();
+
+  // 2 for the left and right side of the horizontal layout's contents margins.
+  // Another 2 for the spacing in between the horizontal layout's items.
+  auto spacing = kHorizontalMargin * (2 * kHorizontalLayoutGapCount);
+
+  auto total_width = icon_width + title_width + shortcut_width + spacing;
+  if (total_width >= parent_width_) {
+    auto fm = QFontMetrics{ui_->title->font()};
+    auto elided_text =
+      fm.elidedText(ui_->title->text(), Qt::ElideMiddle,
+                    parent_width_ - icon_width - shortcut_width - spacing);
+    SetTitle(elided_text);
+  }
+}
+
+int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }

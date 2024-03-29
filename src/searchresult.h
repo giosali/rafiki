@@ -3,6 +3,7 @@
 
 #include <QKeyCombination>
 #include <QPixmap>
+#include <QResizeEvent>
 #include <QString>
 #include <QWidget>
 #include <memory>
@@ -36,8 +37,12 @@ class SearchResult : public QWidget {
   void SetShortcut(const QString& shortcut_key) const;
   void SetTitle(const QString& title) const;
 
+ protected:
+  void resizeEvent(QResizeEvent* event) override;
+
  private:
   static constexpr int kFixedHeight = 44;
+  static constexpr int kHorizontalLayoutGapCount = 2;
   static constexpr int kHorizontalMargin = 6;
   static constexpr int kVerticalMargin = 6;
   const QString kShortcutModifierKey = "CTRL + ";
@@ -45,6 +50,7 @@ class SearchResult : public QWidget {
   int Height() const;
 
   std::shared_ptr<BaseResult> base_result_;
+  int parent_width_;
   std::unique_ptr<Ui::SearchResult> ui_;
 };
 
