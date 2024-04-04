@@ -19,8 +19,8 @@ std::optional<std::string> ShuntingYardAlgorithm::TryParse(
   return ParsePostfixExpression(postfix_expression.value());
 }
 
-bool ShuntingYardAlgorithm::IsNumber(char ch) {
-  switch (ch) {
+bool ShuntingYardAlgorithm::IsNumber(char token) {
+  switch (token) {
     case '.':
     case '0':
     case '1':
@@ -44,34 +44,46 @@ ShuntingYardAlgorithm::ParseInfixExpression(
   auto output = std::queue<std::string>{};
   auto operators = std::stack<char>{};
   auto buffer = std::string{};
+  auto prev_token = '\0';
+
+  // Checks if the buffer contains text first. Since the buffer is a number,
+  // it must be pushed to the output before proceeding.
+  auto flush_buffer = [&output, &buffer]() {
+    if (buffer.empty()) {
+      return;
+    }
+
+    output.push(buffer);
+    buffer.clear();
+  };
 
   for (size_t i = 0; i < expression.length(); ++i) {
     auto token = expression[i];
     switch (token) {
-      // Ignores all spaces.
       case ' ':
         break;
       case '(':
-        if (!buffer.empty()) {
-          output.push(buffer);
-          buffer.clear();
-        }
+        flush_buffer();
 
-        // Handles multiplication through parentheses. If there's a
-        // number in the output and no operators in the stack, then that means
-        // something like the following was encountered: 2(2 + 2)
-        if (!output.empty() && operators.empty() &&
-            IsNumber(output.back()[0])) {
+        // Handles multiplication through parentheses.
+        // If the previous token is a number or a right parenthesis and the
+        // current token is a left parenthesis, then that means that a
+        // multiplication operator needs to be pushed to the operators stack.
+        // This lets expressions like "2(2 + 2)" and "(2)(2)" be processed.
+        if (IsNumber(prev_token) || prev_token == ')') {
           operators.push('*');
         }
 
         operators.push(token);
         break;
       case ')':
-        if (!buffer.empty()) {
-          output.push(buffer);
-          buffer.clear();
+        // Exits if there are no operators.
+        // This means the expression is invalid.
+        if (operators.empty()) {
+          return {};
         }
+
+        flush_buffer();
 
         // Pops out all operators from the stack and pushes them to the output
         // until a left bracket is encountered.
@@ -89,13 +101,7 @@ ShuntingYardAlgorithm::ParseInfixExpression(
       case '-':
       case '/':
       case '^':
-        // Checks if the buffer contains text. The buffer is a number so if it
-        // contains text, then it must be pushed to the output before handling
-        // the current operator.
-        if (!buffer.empty()) {
-          output.push(buffer);
-          buffer.clear();
-        }
+        flush_buffer();
 
         // While the top of the stack of operators has greater precedence than
         // the current operator, pop them and push them to the queue.
@@ -121,6 +127,7 @@ ShuntingYardAlgorithm::ParseInfixExpression(
             case '+':
               operators.pop();
               operators.push(',' * 2 - top);
+              prev_token = token;
               continue;
           }
         }
@@ -138,26 +145,30 @@ ShuntingYardAlgorithm::ParseInfixExpression(
       case '7':
       case '8':
       case '9':
+        // Handles multiplication through parentheses.
+        // If the previous token is a right parenthesis and the current token is
+        // a number, then that means that a multiplication operator needs to be
+        // pushed to the operators stack.
+        // This lets expressions like "(2 + 2)2" be processed.
+        if (prev_token == ')') {
+          operators.push('*');
+        }
+
         buffer += token;
         break;
       default:
         return {};
     }
+
+    prev_token = token;
   }
 
   // Make sure to always push numbers to the queue before pushing remaining
   // operators to the queue.
-  if (!buffer.empty()) {
-    output.push(buffer);
-  }
+  flush_buffer();
 
   // Pushes remaining operators to queue.
   for (; !operators.empty(); operators.pop()) {
-    auto top = operators.top();
-    if (top == ')') {
-      continue;
-    }
-
     output.push(std::string{operators.top()});
   }
 
@@ -249,6 +260,10 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
         numbers.push(std::pow(left_operand, right_operand));
         break;
     }
+  }
+
+  if (numbers.size() != 1) {
+    return "";
   }
 
   // Converting a double to a string using stringstream is favorable to

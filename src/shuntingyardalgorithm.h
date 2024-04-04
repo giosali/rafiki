@@ -10,7 +10,7 @@ class ShuntingYardAlgorithm {
   static std::optional<std::string> TryParse(const std::string& input);
 
  private:
-  static bool IsNumber(char ch);
+  static bool IsNumber(char token);
   static std::optional<std::queue<std::string>> ParseInfixExpression(
     const std::string& expression, const std::string& decimal_separator);
   static std::string ParsePostfixExpression(
