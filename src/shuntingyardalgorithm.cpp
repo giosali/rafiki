@@ -281,11 +281,16 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
     return "";
   }
 
-  // Converting a double to a string using stringstream is favorable to
-  // converting through std::to_string because the latter appends up to 6 zeros
-  // at the end.
-  auto stream = std::ostringstream{};
+  // Exits if the number is infinity with its string representation.
   auto top = numbers.top();
+  if (std::isinf(top)) {
+    return top < 0 ? "-∞" : "∞";
+  }
+
+  // Converting a double to a string using stringstream is favorable to
+  // converting through std::to_string because the latter appends up to 6
+  // zeros at the end.
+  auto stream = std::ostringstream{};
   if (top > 1e15 || top < -1e15) {
     stream << std::setprecision(9) << top;
   } else {
