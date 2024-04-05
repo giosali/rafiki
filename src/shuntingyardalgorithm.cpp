@@ -2,6 +2,7 @@
 
 #include <QLocale>
 #include <cmath>
+#include <iomanip>
 #include <limits>
 #include <sstream>
 #include <stack>
@@ -17,6 +18,12 @@ std::optional<std::string> ShuntingYardAlgorithm::TryParse(
   }
 
   return ParsePostfixExpression(postfix_expression.value());
+}
+
+int ShuntingYardAlgorithm::FindSurplus(double d) {
+  // 8 == std::log10(1e8)
+  int r = static_cast<int>(std::log10(d)) - 8;
+  return r < 0 ? 0 : r;
 }
 
 bool ShuntingYardAlgorithm::IsNumber(char token) {
@@ -229,6 +236,13 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
 
     // We need to have at least two numbers in order to continue.
     if (numbers.size() == 1) {
+      switch (ch) {
+        case '-':
+          numbers.pop();
+          numbers.push(-right_operand);
+          continue;
+      }
+
       return "";
     }
 
@@ -262,6 +276,7 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
     }
   }
 
+  // There should only be one number at this point.
   if (numbers.size() != 1) {
     return "";
   }
@@ -269,9 +284,15 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
   // Converting a double to a string using stringstream is favorable to
   // converting through std::to_string because the latter appends up to 6 zeros
   // at the end.
-  auto stream = std::stringstream{};
-  stream << numbers.top();
-  return stream.str();
+  auto stream = std::ostringstream{};
+  auto top = numbers.top();
+  if (top > 1e15 || top < -1e15) {
+    stream << std::setprecision(9) << top;
+  } else {
+    stream << std::fixed << std::setprecision(8 - FindSurplus(top)) << top;
+  }
+
+  return TrimZeros(stream.str());
 }
 
 int ShuntingYardAlgorithm::Precedence(char op) {
@@ -289,4 +310,22 @@ int ShuntingYardAlgorithm::Precedence(char op) {
     default:
       return 0;
   }
+}
+
+std::string ShuntingYardAlgorithm::TrimZeros(const std::string& str) {
+  auto dec_index = str.find('.');
+
+  // Exits if there's no decimal point and if the last decimal place isn't a
+  // '0'.
+  if (dec_index == std::string::npos && str.back() != '0') {
+    return str;
+  }
+
+  // The last not '0' index.
+  auto ln_zero_idnex = str.find_last_not_of('0');
+
+  // Trims numbers like "2.0" to "2" and "2.20" to "2.2".
+  // If the last-not-zero index is equal to the decimal point index, the decimal
+  // point needs to be removed as well.
+  return str.substr(0, ln_zero_idnex + (dec_index == ln_zero_idnex ? 0 : 1));
 }
