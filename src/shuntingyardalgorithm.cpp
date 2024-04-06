@@ -213,7 +213,7 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
     // If there are no numbers at this point (which means there's no right-side
     // operand), then something went wrong.
     if (numbers.empty()) {
-      return "";
+      return {};
     }
 
     auto right_operand = numbers.top();
@@ -230,7 +230,7 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
 
     // We need to have at least two numbers in order to continue.
     if (numbers.size() == 1) {
-      return "";
+      return {};
     }
 
     // At this point, there are at least two numbers in the stack which means we
@@ -265,7 +265,7 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
 
   // There should only be one number at this point.
   if (numbers.size() != 1) {
-    return "SIZE";
+    return {};
   }
 
   // Exits if the number is infinity with its string representation.
