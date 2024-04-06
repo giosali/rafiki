@@ -68,7 +68,8 @@ ShuntingYardAlgorithm::ParseInfixExpression(
     auto token = expression[i];
     switch (token) {
       case ' ':
-        break;
+        // Prevents previous token from being assigned to whitespace.
+        continue;
       case '(':
         flush_buffer();
 
@@ -102,10 +103,17 @@ ShuntingYardAlgorithm::ParseInfixExpression(
         // Removes the left parenthesis '('.
         operators.pop();
         break;
+      case '-':
+        // Handles the unary '-' operator.
+        // The check for ')' makes expressions like "(1) - 1" possible.
+        if (!IsNumber(prev_token) && prev_token != ')') {
+          token = 'n';
+        }
+
+        [[fallthrough]];
       case '!':
       case '*':
       case '+':
-      case '-':
       case '/':
       case '^':
         flush_buffer();
@@ -119,24 +127,6 @@ ShuntingYardAlgorithm::ParseInfixExpression(
           }
 
           output.push(std::string{top});
-        }
-
-        // If the current token is a minus sign and the operator at the
-        // top of the stack of operators is also a minus sign, then
-        // replace the top operator with a plus sign.
-        // Otherwise, If the current token is a minus sign and the operator at
-        // the top of the stack of operators is a plus sign, then replace the
-        // top operator with a minus sign.
-        if (!operators.empty() && token == '-') {
-          auto top = operators.top();
-          switch (top) {
-            case '-':
-            case '+':
-              operators.pop();
-              operators.push(',' * 2 - top);
-              prev_token = token;
-              continue;
-          }
         }
 
         operators.push(token);
@@ -232,17 +222,14 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
         numbers.pop();
         numbers.push(std::tgamma(right_operand + 1));
         continue;
+      case 'n':
+        numbers.pop();
+        numbers.push(-right_operand);
+        continue;
     }
 
     // We need to have at least two numbers in order to continue.
     if (numbers.size() == 1) {
-      switch (ch) {
-        case '-':
-          numbers.pop();
-          numbers.push(-right_operand);
-          continue;
-      }
-
       return "";
     }
 
@@ -278,7 +265,7 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
 
   // There should only be one number at this point.
   if (numbers.size() != 1) {
-    return "";
+    return "SIZE";
   }
 
   // Exits if the number is infinity with its string representation.
@@ -302,6 +289,8 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
 
 int ShuntingYardAlgorithm::Precedence(char op) {
   switch (op) {
+    case 'n':
+      return 5;
     case '!':
       return 4;
     case '^':
