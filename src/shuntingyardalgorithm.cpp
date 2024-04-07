@@ -120,9 +120,11 @@ ShuntingYardAlgorithm::ParseInfixExpression(
         operators.pop();
         break;
       case '-':
-        // Handles the unary '-' operator.
+        // Handles the unary '-' operator by checking if the previous token is
+        // an operator is neither a right parenthesis nor an exclamation point.
         // The check for ')' makes expressions like "(1) - 1" possible.
-        if (!IsNumber(prev_token) && prev_token != ')') {
+        // Thec check for '!' makes expressions like "2! - 1" possible.
+        if (!IsNumber(prev_token) && prev_token != ')' && prev_token != '!') {
           token = 'n';
         }
 
