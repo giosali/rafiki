@@ -14,7 +14,7 @@ std::optional<std::string> ShuntingYardAlgorithm::TryParse(
   auto postfix_expression =
     ParseInfixExpression(input, locale.decimalPoint().toStdString());
   if (!postfix_expression.has_value()) {
-    return {};
+    return std::nullopt;
   }
 
   return ParsePostfixExpression(postfix_expression.value());
@@ -104,7 +104,7 @@ ShuntingYardAlgorithm::ParseInfixExpression(
         // Exits if there are no operators.
         // This means the expression is invalid.
         if (operators.empty()) {
-          return {};
+          return std::nullopt;
         }
 
         flush_buffer();
@@ -180,7 +180,7 @@ ShuntingYardAlgorithm::ParseInfixExpression(
         buffer += token;
         break;
       default:
-        return {};
+        return std::nullopt;
     }
 
     prev_token = token;
