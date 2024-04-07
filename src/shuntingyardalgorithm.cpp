@@ -64,6 +64,17 @@ bool ShuntingYardAlgorithm::IsNumber(char token) {
 std::optional<std::queue<std::string>>
 ShuntingYardAlgorithm::ParseInfixExpression(
   const std::string& expression, const std::string& decimal_separator) {
+  // Returns nullopt if the first character is one of the following.
+  switch (expression[0]) {
+    case '!':
+    case ')':
+    case '*':
+    case '+':
+    case '/':
+    case '^':
+      return std::nullopt;
+  }
+
   auto output = std::queue<std::string>{};
   auto operators = std::stack<char>{};
   auto buffer = std::string{};
