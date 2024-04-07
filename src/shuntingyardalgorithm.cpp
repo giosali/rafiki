@@ -316,11 +316,10 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
 
 int ShuntingYardAlgorithm::Precedence(char op) {
   switch (op) {
-    case 'n':
-      return 5;
     case '!':
       return 4;
     case '^':
+    case 'n':
       return 3;
     case '*':
     case '/':
