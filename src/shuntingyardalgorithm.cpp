@@ -1,6 +1,5 @@
 #include "shuntingyardalgorithm.h"
 
-#include <QLocale>
 #include <cmath>
 #include <iomanip>
 #include <limits>
@@ -10,9 +9,7 @@
 
 std::optional<std::string> ShuntingYardAlgorithm::TryParse(
   const std::string& input) {
-  auto locale = QLocale{};
-  auto postfix_expression =
-    ParseInfixExpression(input, locale.decimalPoint().toStdString());
+  auto postfix_expression = ParseInfixExpression(input);
   if (!postfix_expression.has_value()) {
     return std::nullopt;
   }
@@ -62,8 +59,7 @@ bool ShuntingYardAlgorithm::IsNumber(char token) {
 }
 
 std::optional<std::queue<std::string>>
-ShuntingYardAlgorithm::ParseInfixExpression(
-  const std::string& expression, const std::string& decimal_separator) {
+ShuntingYardAlgorithm::ParseInfixExpression(const std::string& expression) {
   // Returns nullopt if the first character is one of the following.
   switch (expression[0]) {
     case '!':
