@@ -26,6 +26,22 @@ int ShuntingYardAlgorithm::FindSurplus(double d) {
   return r < 0 ? 0 : r;
 }
 
+bool ShuntingYardAlgorithm::IsLeftAssociative(char token) {
+  switch (token) {
+    case '!':
+    case '^':
+    case 'n':
+      return false;
+    case '*':
+    case '+':
+    case '-':
+    case '/':
+      return true;
+    default:
+      return false;
+  }
+}
+
 bool ShuntingYardAlgorithm::IsNumber(char token) {
   switch (token) {
     case '.':
@@ -118,15 +134,23 @@ ShuntingYardAlgorithm::ParseInfixExpression(
       case '^':
         flush_buffer();
 
-        // While the top of the stack of operators has greater precedence than
-        // the current operator, pop them and push them to the queue.
-        for (; !operators.empty(); operators.pop()) {
+        // While the operator stack isn't empty, pop operators from the operator
+        // stack and push them into the output queue if the stack operator has a
+        // greater precedence than the token operator or if they have equal
+        // precedence and the token operator is left-associative.
+        while (!operators.empty()) {
           auto top = operators.top();
-          if (Precedence(top) <= Precedence(token)) {
-            break;
+          auto stack_prec = Precedence(top);
+          auto token_prec = Precedence(token);
+
+          if (stack_prec > token_prec ||
+              (stack_prec == token_prec && IsLeftAssociative(token))) {
+            operators.pop();
+            output.push(std::string{top});
+            continue;
           }
 
-          output.push(std::string{top});
+          break;
         }
 
         operators.push(token);
@@ -224,7 +248,10 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
         continue;
       case 'n':
         numbers.pop();
-        numbers.push(-right_operand);
+
+        // Prevents signed zeros.
+        // '+ 0' prevents expressions like "-0" from evaluating to "-0".
+        numbers.push(-right_operand + 0);
         continue;
     }
 
