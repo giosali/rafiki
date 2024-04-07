@@ -9,12 +9,12 @@
 
 std::optional<std::string> ShuntingYardAlgorithm::TryParse(
   const std::string& input) {
-  auto postfix_expression = ParseInfixExpression(input);
-  if (!postfix_expression.has_value()) {
+  auto postfix_queue = ParseInfixExpression(input);
+  if (!postfix_queue.has_value()) {
     return std::nullopt;
   }
 
-  return ParsePostfixExpression(postfix_expression.value());
+  return ParsePostfixExpression(postfix_queue.value());
 }
 
 int ShuntingYardAlgorithm::FindSurplus(double d) {
@@ -206,10 +206,10 @@ ShuntingYardAlgorithm::ParseInfixExpression(const std::string& expression) {
 }
 
 std::string ShuntingYardAlgorithm::ParsePostfixExpression(
-  std::queue<std::string>& expression) {
+  std::queue<std::string>& queue) {
   auto numbers = std::stack<double>{};
-  for (; !expression.empty(); expression.pop()) {
-    auto token = expression.front();
+  for (; !queue.empty(); queue.pop()) {
+    auto token = queue.front();
 
     // If the length of the string is greater than 1, then it is a number and
     // not an operator since operators will only consume one character.
