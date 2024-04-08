@@ -14,6 +14,7 @@ class Trash : public BaseResult {
   Trash();
 
   QString DragAndDrop() override;
+  void ProcessInput(const QString& input) override;
   void ProcessKeyPress(const QKeyCombination& combination,
                        QWidget* parent) override;
   void ProcessKeyRelease(const QKeyCombination& combination,
