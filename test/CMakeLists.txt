@@ -16,8 +16,11 @@ set(PROJECT_SOURCES
         ../src/autocompletemap.h
         ../src/input.cpp
         ../src/input.h
+        ../src/shuntingyardalgorithm.cpp
+        ../src/shuntingyardalgorithm.h
         ../src/utils.h
         test_autocompletemap.cpp
+        test_shuntingyardalgorithm.cpp
         test_utils.cpp
         utest.h
 )
