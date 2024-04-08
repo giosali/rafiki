@@ -18,6 +18,7 @@ class BaseResult : public Interactable {
 
   virtual ~BaseResult() = default;
 
+  virtual void ProcessInput(const QString& input) = 0;
   bool CommandContainsSpace() const;
   QString FormatCommand() const;
   QString FormatTitle(const QString& arg) const;
