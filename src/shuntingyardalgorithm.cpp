@@ -301,12 +301,9 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
         numbers.push(left_operand - right_operand);
         break;
       case '/':
-        if (right_operand == 0) {
-          numbers.push(std::numeric_limits<double>::quiet_NaN());
-          break;
-        }
-
-        numbers.push(left_operand / right_operand);
+        numbers.push(right_operand == 0
+                       ? std::numeric_limits<double>::quiet_NaN()
+                       : left_operand / right_operand);
         break;
       case '^':
         numbers.push(std::pow(left_operand, right_operand));
