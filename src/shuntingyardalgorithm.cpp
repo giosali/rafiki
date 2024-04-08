@@ -107,25 +107,36 @@ ShuntingYardAlgorithm::ParseInfixExpression(const std::string& expression) {
 
         operators.push(token);
         break;
-      case ')':
-        // Exits if there are no operators.
-        // This means the expression is invalid.
-        if (operators.empty()) {
-          return std::nullopt;
-        }
-
+      case ')': {
         flush_buffer();
 
         // Pops out all operators from the stack and pushes them to the output
-        // until a left bracket is encountered.
-        for (auto top = operators.top(); !operators.empty() && top != '(';
-             operators.pop(), top = operators.top()) {
+        // until a left parenthesis is encountered. If a left parenthesis is
+        // never encountered, a right parenthesis is pushed to the output.
+        auto found_left_parenthesis = false;
+        while (!operators.empty()) {
+          auto top = operators.top();
+          operators.pop();
+
+          if (top == '(') {
+            found_left_parenthesis = true;
+            break;
+          }
+
           output.push(std::string{top});
         }
 
-        // Removes the left parenthesis '('.
-        operators.pop();
+        // Pushes the right parenthesis to the output queue if its corresponding
+        // left parenthesis is never found.
+        // This indicates that the postfix expression, when being parsed, will
+        // fail.
+        if (!found_left_parenthesis) {
+          operators.push(')');
+          // operators.push(std::string{")"});
+        }
+
         break;
+      }
       case '-':
         // Handles the unary '-' operator by checking if the previous token is
         // an operator is neither a right parenthesis nor an exclamation point.
@@ -241,6 +252,8 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
       case '9':
         numbers.push(ch - '0');
         continue;
+      case ')':
+        return {};
     }
 
     // At this point, the token can only be an operator.
