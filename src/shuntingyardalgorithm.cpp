@@ -218,6 +218,8 @@ std::string ShuntingYardAlgorithm::ParsePostfixExpression(
         numbers.push(std::stod(token));
       } catch (const std::out_of_range&) {
         numbers.push(std::numeric_limits<double>::infinity());
+      } catch (const std::invalid_argument&) {
+        return {};
       }
 
       continue;
