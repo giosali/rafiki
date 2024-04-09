@@ -40,6 +40,8 @@ set(PROJECT_SOURCES
         src/models/calculator.h
         src/models/interactable.cpp
         src/models/interactable.h
+        src/models/processedresult.cpp
+        src/models/processedresult.h
         src/models/trash.cpp
         src/models/trash.h
         src/models/websearch.cpp
