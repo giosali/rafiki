@@ -2,10 +2,10 @@
 #define WEBSEARCH_H
 
 #include <QJsonObject>
+#include <QKeyCombination>
 #include <QString>
 #include <QWidget>
 
-#include "../core/input.h"
 #include "../ui/searchresultlist.h"
 #include "baseresult.h"
 
@@ -16,7 +16,6 @@ class WebSearch : public BaseResult {
   ~WebSearch() = default;
 
   QString DragAndDrop() override;
-  bool ProcessInput(const Input& input) override;
   void ProcessKeyPress(const QKeyCombination& combination,
                        QWidget* parent) override;
   void ProcessKeyRelease(const QKeyCombination& combination,

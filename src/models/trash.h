@@ -6,7 +6,7 @@
 #include <QWidget>
 #include <string>
 
-#include "../core/input.h"
+#include "../core/definitions.h"
 #include "../core/project.h"
 #include "baseresult.h"
 
@@ -15,7 +15,6 @@ class Trash : public BaseResult {
   Trash();
 
   QString DragAndDrop() override;
-  bool ProcessInput(const Input& input) override;
   void ProcessKeyPress(const QKeyCombination& combination,
                        QWidget* parent) override;
   void ProcessKeyRelease(const QKeyCombination& combination,

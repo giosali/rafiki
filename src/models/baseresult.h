@@ -5,7 +5,6 @@
 #include <QString>
 #include <QUuid>
 
-#include "../core/input.h"
 #include "interactable.h"
 
 class BaseResult : public Interactable {
@@ -18,7 +17,6 @@ class BaseResult : public Interactable {
 
   virtual ~BaseResult() = default;
 
-  virtual bool ProcessInput(const Input& input) = 0;
   bool CommandContainsSpace() const;
   QString FormatCommand() const;
   QString FormatTitle(const QString& arg) const;

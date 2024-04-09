@@ -20,8 +20,6 @@ Trash::Trash()
 
 QString Trash::DragAndDrop() { return QString{}; }
 
-bool Trash::ProcessInput(const Input& input) { return false; }
-
 void Trash::ProcessKeyPress(const QKeyCombination& combination,
                             QWidget* parent) {
   auto search_result_list = dynamic_cast<SearchResultList*>(parent);

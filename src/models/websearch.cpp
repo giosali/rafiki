@@ -23,8 +23,6 @@ WebSearch::WebSearch(const QJsonObject& object)
 
 QString WebSearch::DragAndDrop() { return QString{}; }
 
-bool WebSearch::ProcessInput(const Input& input) { return false; }
-
 void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
                                 QWidget* parent) {
   auto search_result_list = dynamic_cast<SearchResultList*>(parent);
