@@ -5,8 +5,8 @@
 #include <QLocale>
 #include <Qt>
 
-#include "searchresultlist.h"
-#include "shuntingyardalgorithm.h"
+#include "../core/shuntingyardalgorithm.h"
+#include "../ui/searchresultlist.h"
 
 Calculator::Calculator()
     : BaseResult{kId,          kIcon,    kTitle,      kAltTitle,

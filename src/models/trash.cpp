@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <vector>
 
-#include "searchresultlist.h"
+#include "../ui/searchresultlist.h"
 
 Trash::Trash()
     : BaseResult{kId,          kIcon,    kTitle,      kAltTitle,

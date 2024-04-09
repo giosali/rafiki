@@ -17,8 +17,7 @@
 #include <algorithm>
 #include <cstdlib>
 
-#include "project.h"
-#include "searchresult.h"
+#include "../core/project.h"
 
 SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   // Component should be hidden on initialization.

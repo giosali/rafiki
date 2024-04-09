@@ -8,7 +8,7 @@
 #include <QWidget>
 #include <memory>
 
-#include "input.h"
+#include "../core/input.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

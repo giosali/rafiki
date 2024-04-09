@@ -5,8 +5,7 @@
 #include <QString>
 #include <QUuid>
 
-#include "definitions.h"
-#include "input.h"
+#include "../core/input.h"
 #include "interactable.h"
 
 class BaseResult : public Interactable {

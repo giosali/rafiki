@@ -19,42 +19,42 @@ set(RES_FILES
 set(TS_FILES translations/${CMAKE_PROJECT_NAME}_en.ts)
 
 set(PROJECT_SOURCES
-        src/autocompletemap.cpp
-        src/autocompletemap.h
-        src/baseresult.cpp
-        src/baseresult.h
-        src/calculator.cpp
-        src/calculator.h
-        src/client.cpp
-        src/client.h
-        src/definitions.h
-        src/input.cpp
-        src/input.h
-        src/interactable.cpp
-        src/interactable.h
+        src/core/autocompletemap.cpp
+        src/core/autocompletemap.h
+        src/core/client.cpp
+        src/core/client.h
+        src/core/definitions.h
+        src/core/input.cpp
+        src/core/input.h
+        src/core/project.cpp
+        src/core/project.h
+        src/core/server.cpp
+        src/core/server.h
+        src/core/shuntingyardalgorithm.cpp
+        src/core/shuntingyardalgorithm.h
+        src/core/utils.h
         src/main.cpp
-        src/mainwindow.cpp
-        src/mainwindow.h
-        src/mainwindow.ui
-        src/project.cpp
-        src/project.h
-        src/searchbox.cpp
-        src/searchbox.h
-        src/searchbox.ui
-        src/searchresult.cpp
-        src/searchresult.h
-        src/searchresult.ui
-        src/searchresultlist.cpp
-        src/searchresultlist.h
-        src/server.cpp
-        src/server.h
-        src/shuntingyardalgorithm.cpp
-        src/shuntingyardalgorithm.h
-        src/trash.cpp
-        src/trash.h
-        src/utils.h
-        src/websearch.cpp
-        src/websearch.h
+        src/models/baseresult.cpp
+        src/models/baseresult.h
+        src/models/calculator.cpp
+        src/models/calculator.h
+        src/models/interactable.cpp
+        src/models/interactable.h
+        src/models/trash.cpp
+        src/models/trash.h
+        src/models/websearch.cpp
+        src/models/websearch.h
+        src/ui/mainwindow.cpp
+        src/ui/mainwindow.h
+        src/ui/mainwindow.ui
+        src/ui/searchbox.cpp
+        src/ui/searchbox.h
+        src/ui/searchbox.ui
+        src/ui/searchresult.cpp
+        src/ui/searchresult.h
+        src/ui/searchresult.ui
+        src/ui/searchresultlist.cpp
+        src/ui/searchresultlist.h
         ${RES_FILES}
         ${TS_FILES}
 )

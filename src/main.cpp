@@ -6,11 +6,11 @@
 #include <QtEnvironmentVariables>
 #include <memory>
 
-#include "client.h"
-#include "mainwindow.h"
-#include "project.h"
-#include "server.h"
-#include "utils.h"
+#include "core/client.h"
+#include "core/project.h"
+#include "core/server.h"
+#include "core/utils.h"
+#include "ui/mainwindow.h"
 
 int main(int argc, char *argv[]) {
   // https://doc.qt.io/qt-5/qtglobal.html

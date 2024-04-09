@@ -11,9 +11,9 @@
 #include <iterator>
 #include <set>
 
-#include "calculator.h"
-#include "trash.h"
-#include "websearch.h"
+#include "../models/calculator.h"
+#include "../models/trash.h"
+#include "../models/websearch.h"
 
 std::vector<std::shared_ptr<BaseResult>> Project::FindBaseResults(
   const Input& input) {

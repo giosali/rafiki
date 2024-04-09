@@ -5,9 +5,9 @@
 #include <QString>
 #include <QWidget>
 
+#include "../core/input.h"
+#include "../ui/searchresultlist.h"
 #include "baseresult.h"
-#include "input.h"
-#include "searchresultlist.h"
 
 class WebSearch : public BaseResult {
  public:

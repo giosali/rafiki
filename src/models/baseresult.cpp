@@ -2,9 +2,9 @@
 
 #include <QFile>
 
-#include "definitions.h"
-#include "project.h"
-#include "utils.h"
+#include "../core/definitions.h"
+#include "../core/project.h"
+#include "../core/utils.h"
 
 BaseResult::BaseResult(const QString &id, const QString &icon,
                        const QString &title, const QString &alt_title,

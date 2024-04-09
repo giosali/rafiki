@@ -10,8 +10,8 @@
 #include <QString>
 #include <memory>
 
-#include "baseresult.h"
-#include "input.h"
+#include "../core/input.h"
+#include "../models/baseresult.h"
 #include "searchresult.h"
 
 class SearchResultList : public QListWidget {

@@ -6,9 +6,9 @@
 #include <QWidget>
 #include <string>
 
+#include "../core/input.h"
+#include "../core/project.h"
 #include "baseresult.h"
-#include "input.h"
-#include "project.h"
 
 class Trash : public BaseResult {
  public:

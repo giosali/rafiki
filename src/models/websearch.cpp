@@ -5,8 +5,7 @@
 #include <QUrl>
 #include <Qt>
 
-#include "searchresultlist.h"
-#include "utils.h"
+#include "../core/utils.h"
 
 WebSearch::WebSearch(const QJsonObject& object)
     : BaseResult{object["id"].toString(),

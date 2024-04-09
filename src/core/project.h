@@ -7,8 +7,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include "../models/baseresult.h"
 #include "autocompletemap.h"
-#include "baseresult.h"
 #include "definitions.h"
 #include "input.h"
 

@@ -3,10 +3,10 @@
 
 #include <QString>
 
+#include "../core/definitions.h"
+#include "../core/input.h"
+#include "../core/project.h"
 #include "baseresult.h"
-#include "definitions.h"
-#include "input.h"
-#include "project.h"
 
 class Calculator : public BaseResult {
  public:
