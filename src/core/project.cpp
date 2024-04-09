@@ -103,8 +103,8 @@ void Project::AddBaseResult(const std::shared_ptr<BaseResult>& base_result) {
 }
 
 void Project::AddProcessedBaseResult(
-  const std::shared_ptr<BaseResult>& base_result) {
-  processed_base_results_.push_back(base_result);
+  const std::shared_ptr<ProcessedResult>& processed_result) {
+  processed_base_results_.push_back(processed_result);
 }
 
 QSettings Project::GetDefaultSettings() {
