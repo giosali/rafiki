@@ -29,7 +29,9 @@ class Calculator : public BaseResult {
   static const inline QString kInfoDescription{
     "Please enter a valid expression"};
   static const inline QString kPlaceholder{"..."};
-  static const inline QString kTitle{};
+  static inline QString kTitle{};
+
+  QString FormatNumber(QString number) const;
 };
 
 #endif  // CALCULATOR_H

@@ -2,6 +2,8 @@
 
 #include <QClipboard>
 #include <QGuiApplication>
+#include <QLocale>
+#include <Qt>
 
 #include "searchresultlist.h"
 #include "shuntingyardalgorithm.h"
@@ -20,10 +22,10 @@ bool Calculator::ProcessInput(const Input& input) {
 
   auto value = result.value();
   if (value.empty()) {
-    title_ = placeholder_;
+    kTitle = title_ = placeholder_;
     description_ = kInfoDescription;
   } else {
-    title_ = QString::fromStdString(value);
+    kTitle = title_ = QString::fromStdString(value);
     description_ = kDescription;
   }
 
@@ -38,7 +40,7 @@ void Calculator::ProcessKeyPress(const QKeyCombination& combination,
   }
 
   switch (combination.key()) {
-    case Qt::Key_Return:
+    case Qt::Key_Return: {
       search_result_list->HideParent();
       if (title_ == placeholder_) {
         break;
@@ -47,8 +49,41 @@ void Calculator::ProcessKeyPress(const QKeyCombination& combination,
       auto clipboard = QGuiApplication::clipboard();
       clipboard->setText(title_);
       break;
+    }
+    case Qt::Key_Alt:
+      search_result_list->CurrentSearchResult()->SetTitle(FormatNumber(kTitle));
+      break;
   }
 }
 
 void Calculator::ProcessKeyRelease(const QKeyCombination& combination,
-                                   QWidget* parent) {}
+                                   QWidget* parent) {
+  auto search_result_list = dynamic_cast<SearchResultList*>(parent);
+  if (search_result_list == nullptr) {
+    return;
+  }
+
+  switch (combination.key()) {
+    case Qt::Key_Alt:
+      search_result_list->CurrentSearchResult()->SetTitle(kTitle);
+      break;
+  }
+}
+
+QString Calculator::FormatNumber(QString number) const {
+  // Ignores values like "1e+15".
+  if (number.contains('e')) {
+    return number;
+  }
+
+  auto locale = QLocale::system();
+  auto pos = number.contains(locale.decimalPoint())
+               ? number.indexOf(locale.decimalPoint())
+               : number.length();
+
+  for (pos -= 3; pos > 0; pos -= 3) {
+    number.insert(pos, locale.groupSeparator());
+  }
+
+  return number;
+}
