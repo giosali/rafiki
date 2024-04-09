@@ -11,6 +11,7 @@
 #include <iterator>
 #include <set>
 
+#include "calculator.h"
 #include "trash.h"
 #include "websearch.h"
 
@@ -27,6 +28,14 @@ std::vector<std::shared_ptr<BaseResult>> Project::FindBaseResults(
 
     auto results = results_it->second;
     results_concat.insert(results_concat.end(), results.begin(), results.end());
+  }
+
+  for (const auto& pbr : processed_base_results_) {
+    if (!pbr->ProcessInput(input)) {
+      continue;
+    }
+
+    results_concat.push_back(pbr);
   }
 
   return results_concat;
@@ -77,12 +86,13 @@ void Project::Initialize() {
 
   // Sets up built-in search results not based on data files.
   AddBaseResult(std::make_shared<Trash>());
+  AddProcessedBaseResult(std::make_shared<Calculator>());
 
   // Sets up default search results.
   UpdateDefaultBaseResults();
 }
 
-void Project::AddBaseResult(const std::shared_ptr<BaseResult> base_result) {
+void Project::AddBaseResult(const std::shared_ptr<BaseResult>& base_result) {
   if (!base_result->HasCommand()) {
     return;
   }
@@ -90,6 +100,11 @@ void Project::AddBaseResult(const std::shared_ptr<BaseResult> base_result) {
   auto cmd = base_result->FormatCommand();
   autocomplete_.Insert(cmd);
   base_results_map_[cmd].push_back(base_result);
+}
+
+void Project::AddProcessedBaseResult(
+  const std::shared_ptr<BaseResult>& base_result) {
+  processed_base_results_.push_back(base_result);
 }
 
 QSettings Project::GetDefaultSettings() {

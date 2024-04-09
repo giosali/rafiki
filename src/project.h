@@ -22,7 +22,9 @@ class Project {
   static void Initialize();
 
  private:
-  static void AddBaseResult(const std::shared_ptr<BaseResult> base_result);
+  static void AddBaseResult(const std::shared_ptr<BaseResult>& base_result);
+  static void AddProcessedBaseResult(
+    const std::shared_ptr<BaseResult>& base_result);
   static QSettings GetDefaultSettings();
   static QSettings GetUserSettings();
   template <typename T>
@@ -37,6 +39,8 @@ class Project {
                                    std::vector<std::shared_ptr<BaseResult>>>
     base_results_map_;
   static inline std::vector<std::shared_ptr<BaseResult>> default_base_results_;
+  static inline std::vector<std::shared_ptr<BaseResult>>
+    processed_base_results_;
 };
 
 #endif  // PROJECT_H
