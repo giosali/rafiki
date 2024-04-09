@@ -6,9 +6,9 @@
 #include "../core/definitions.h"
 #include "../core/input.h"
 #include "../core/project.h"
-#include "baseresult.h"
+#include "processedresult.h"
 
-class Calculator : public BaseResult {
+class Calculator : public ProcessedResult {
  public:
   Calculator();
 

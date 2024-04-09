@@ -9,8 +9,8 @@
 #include "../ui/searchresultlist.h"
 
 Calculator::Calculator()
-    : BaseResult{kId,          kIcon,    kTitle,      kAltTitle,
-                 kDescription, kCommand, kPlaceholder} {}
+    : ProcessedResult{kId,          kIcon,    kTitle,      kAltTitle,
+                      kDescription, kCommand, kPlaceholder} {}
 
 QString Calculator::DragAndDrop() { return QString{}; }
 
