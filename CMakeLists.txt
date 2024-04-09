@@ -23,6 +23,8 @@ set(PROJECT_SOURCES
         src/autocompletemap.h
         src/baseresult.cpp
         src/baseresult.h
+        src/calculator.cpp
+        src/calculator.h
         src/client.cpp
         src/client.h
         src/definitions.h
@@ -46,6 +48,8 @@ set(PROJECT_SOURCES
         src/searchresultlist.h
         src/server.cpp
         src/server.h
+        src/shuntingyardalgorithm.cpp
+        src/shuntingyardalgorithm.h
         src/trash.cpp
         src/trash.h
         src/utils.h
