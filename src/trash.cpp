@@ -20,7 +20,7 @@ Trash::Trash()
 
 QString Trash::DragAndDrop() { return QString{}; }
 
-void Trash::ProcessInput(const QString& input) { return; }
+bool Trash::ProcessInput(const Input& input) { return false; }
 
 void Trash::ProcessKeyPress(const QKeyCombination& combination,
                             QWidget* parent) {

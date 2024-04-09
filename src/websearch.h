@@ -6,6 +6,7 @@
 #include <QWidget>
 
 #include "baseresult.h"
+#include "input.h"
 #include "searchresultlist.h"
 
 class WebSearch : public BaseResult {
@@ -15,6 +16,7 @@ class WebSearch : public BaseResult {
   ~WebSearch() = default;
 
   QString DragAndDrop() override;
+  bool ProcessInput(const Input& input) override;
   void ProcessKeyPress(const QKeyCombination& combination,
                        QWidget* parent) override;
   void ProcessKeyRelease(const QKeyCombination& combination,

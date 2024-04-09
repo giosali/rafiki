@@ -7,6 +7,7 @@
 #include <string>
 
 #include "baseresult.h"
+#include "input.h"
 #include "project.h"
 
 class Trash : public BaseResult {
@@ -14,7 +15,7 @@ class Trash : public BaseResult {
   Trash();
 
   QString DragAndDrop() override;
-  void ProcessInput(const QString& input) override;
+  bool ProcessInput(const Input& input) override;
   void ProcessKeyPress(const QKeyCombination& combination,
                        QWidget* parent) override;
   void ProcessKeyRelease(const QKeyCombination& combination,
