@@ -30,6 +30,7 @@ class BaseResult : public Interactable {
 
  protected:
   QString alt_title_;
+  QString description_;
   QString placeholder_;
   QString title_;
 
@@ -37,7 +38,6 @@ class BaseResult : public Interactable {
   const QString kFormat = "{}";
 
   QString command_;
-  QString description_;
   QString icon_;
   QUuid id_;
   bool is_title_formattable_;
