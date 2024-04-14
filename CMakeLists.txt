@@ -24,6 +24,8 @@ set(PROJECT_SOURCES
         src/core/client.cpp
         src/core/client.h
         src/core/definitions.h
+        src/core/finder.cpp
+        src/core/finder.h
         src/core/input.cpp
         src/core/input.h
         src/core/project.cpp
@@ -38,10 +40,14 @@ set(PROJECT_SOURCES
         src/models/baseresult.h
         src/models/calculator.cpp
         src/models/calculator.h
+        src/models/filesystementry.cpp
+        src/models/filesystementry.h
         src/models/interactable.cpp
         src/models/interactable.h
         src/models/processedresult.cpp
         src/models/processedresult.h
+        src/models/processedresultbuilder.cpp
+        src/models/processedresultbuilder.h
         src/models/trash.cpp
         src/models/trash.h
         src/models/websearch.cpp
