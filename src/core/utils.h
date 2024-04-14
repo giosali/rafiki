@@ -13,6 +13,8 @@ inline QString Format(QString fmt, const QString& arg) {
   return fmt.replace(fmt.indexOf("{}"), 2, arg);
 }
 
+inline char ToLower(char c) { return c < 'A' || c > 'Z' ? c : c + 32; }
+
 }  // namespace utils
 
 #endif  // UTILS_H
