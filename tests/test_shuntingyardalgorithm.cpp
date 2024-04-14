@@ -3,7 +3,7 @@
 #include <tuple>
 #include <vector>
 
-#include "../src/shuntingyardalgorithm.h"
+#include "../src/core/shuntingyardalgorithm.h"
 #include "utest.h"
 
 #define TEST_IOS(X)                                                      \

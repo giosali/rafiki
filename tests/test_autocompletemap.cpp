@@ -3,8 +3,8 @@
 #include <cstdlib>
 #include <set>
 
-#include "../src/autocompletemap.h"
-#include "../src/input.h"
+#include "../src/core/autocompletemap.h"
+#include "../src/core/input.h"
 #include "utest.h"
 
 UTEST_MAIN();

@@ -1,4 +1,4 @@
-#include "../src/utils.h"
+#include "../src/core/utils.h"
 #include "utest.h"
 
 UTEST(Capitalize, replaces_first_char_with_uppercase_char) {
