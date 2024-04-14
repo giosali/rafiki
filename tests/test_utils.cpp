@@ -1,3 +1,5 @@
+#include <cctype>
+
 #include "../src/core/utils.h"
 #include "utest.h"
 
@@ -22,4 +24,11 @@ UTEST(Format, returns_fmt_if_fmt_has_no_fmt) {
   auto expected = fmt;
   auto actual = utils::Format(fmt, arg);
   ASSERT_TRUE(expected == actual);
+}
+
+UTEST(ToLower, returns_lowercase_characters) {
+  auto ascii_uppercase = std::string{"ABCDEFGHIJKLMNOPQRSTUVWXYZ"};
+  for (auto ch : ascii_uppercase) {
+    EXPECT_TRUE_MSG(std::tolower(ch) == utils::ToLower(ch), &ch);
+  }
 }
