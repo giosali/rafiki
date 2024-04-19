@@ -16,7 +16,6 @@ class BaseResult : public Interactable {
 
   virtual ~BaseResult() = default;
 
-  bool CommandContainsSpace() const;
   QString FormatCommand() const;
   QString FormatTitle(const QString& arg) const;
   QString GetDescription();
@@ -33,6 +32,7 @@ class BaseResult : public Interactable {
  private:
   const QString kFormat = "{}";
 
+  bool append_space_to_command_;
   QString command_;
   QString icon_;
   QUuid id_;

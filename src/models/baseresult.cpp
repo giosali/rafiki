@@ -11,6 +11,7 @@ BaseResult::BaseResult(const QString &id, const QString &icon,
                        const QString &alt_title, const QString &description,
                        const QString &command, bool append_space_to_command)
     : alt_title_{alt_title},
+      append_space_to_command_{append_space_to_command},
       command_{command},
       description_{description},
       icon_{QFile::exists(icon)
@@ -21,10 +22,8 @@ BaseResult::BaseResult(const QString &id, const QString &icon,
       title_placeholder_{title_placeholder},
       title_{title} {}
 
-bool BaseResult::CommandContainsSpace() const { return command_.contains(" "); }
-
 QString BaseResult::FormatCommand() const {
-  return is_title_formattable_ ? command_ + " " : command_;
+  return append_space_to_command_ ? command_ + " " : command_;
 }
 
 QString BaseResult::FormatTitle(const QString &arg) const {
