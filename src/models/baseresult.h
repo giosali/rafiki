@@ -10,10 +10,9 @@
 class BaseResult : public Interactable {
  public:
   explicit BaseResult(const QString& id, const QString& icon,
-                      const QString& title, const QString& alt_title,
-                      const QString& description,
-                      const QString& command = (const char*)0,
-                      const QString& placeholder = (const char*)0);
+                      const QString& title, const QString& title_placeholder,
+                      const QString& alt_title, const QString& description,
+                      const QString& command, bool append_space_to_command);
 
   virtual ~BaseResult() = default;
 
@@ -28,7 +27,7 @@ class BaseResult : public Interactable {
  protected:
   QString alt_title_;
   QString description_;
-  QString placeholder_;
+  QString title_placeholder_;
   QString title_;
 
  private:

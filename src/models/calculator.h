@@ -21,6 +21,7 @@ class Calculator : public ProcessedResult {
 
  private:
   static const inline QString kAltTitle{};
+  static const bool kAppendSpaceToCommand = false;
   static const inline QString kCommand{};
   static const inline QString kDescription{"Copy to clipboard"};
   static const inline QString kIcon{
@@ -28,8 +29,8 @@ class Calculator : public ProcessedResult {
   static const inline QString kId{"7cddc690-1b3d-49d5-bbe4-adbad5a51833"};
   static const inline QString kInfoDescription{
     "Please enter a valid expression"};
-  static const inline QString kPlaceholder{"..."};
   static inline QString kTitle{};
+  static const inline QString kTitlePlaceholder{"..."};
 
   QString FormatNumber(QString number) const;
 };

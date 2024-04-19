@@ -22,13 +22,14 @@ class Trash : public BaseResult {
 
  private:
   static const inline QString kAltTitle{};
+  static const inline bool kAppendSpaceToCommand = false;
   static const inline QString kCommand{"empty trash"};
   static const inline QString kDescription{};
   static const inline QString kIcon{
     Project::GetImageFilePath(defs::ImageFile::kTrash)};
   static const inline QString kId{"9056b806-9219-4f6a-b180-bb087b892bae"};
-  static const inline QString kPlaceholder{};
   static const inline QString kTitle{"Empty trash"};
+  static const inline QString kTitlePlaceholder{};
 
   void Empty() const;
 

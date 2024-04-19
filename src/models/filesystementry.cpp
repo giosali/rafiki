@@ -3,8 +3,10 @@
 #include <QStandardPaths>
 
 FileSystemEntry::FileSystemEntry()
-    : ProcessedResultBuilder{kId,       kIcon,        kTitle,
-                             kAltTitle, kDescription, kCommand},
+    : ProcessedResultBuilder{kId,       kIcon,
+                             kTitle,    kTitlePlaceholder,
+                             kAltTitle, kDescription,
+                             kCommand,  kAppendSpaceToCommand},
       finder_{
         QStandardPaths::writableLocation(QStandardPaths::HomeLocation)
           .toStdString(),
@@ -26,9 +28,11 @@ FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
     : ProcessedResultBuilder{kId,
                              kIcon,
                              QString::fromUtf8(path.filename().string()),
+                             kTitlePlaceholder,
                              kAltTitle,
                              QString::fromUtf8(path.string()),
-                             kCommand} {}
+                             kCommand,
+                             kAppendSpaceToCommand} {}
 
 bool FileSystemEntry::ProcessInput(const Input& input) {
   auto paths = finder_.Search(input.GetCmd().toStdString());
@@ -37,7 +41,7 @@ bool FileSystemEntry::ProcessInput(const Input& input) {
   }
 
   for (const auto& path : paths) {
-    processed_results_.emplace_back(path);
+    // results_.push_back(FileSystemEntry{path});
   }
 
   return true;

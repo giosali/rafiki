@@ -9,8 +9,9 @@
 #include "../ui/searchresultlist.h"
 
 Calculator::Calculator()
-    : ProcessedResult{kId,          kIcon,    kTitle,      kAltTitle,
-                      kDescription, kCommand, kPlaceholder} {}
+    : ProcessedResult{
+        kId,       kIcon,        kTitle,   kTitlePlaceholder,
+        kAltTitle, kDescription, kCommand, kAppendSpaceToCommand} {}
 
 QString Calculator::DragAndDrop() { return QString{}; }
 
@@ -22,7 +23,7 @@ bool Calculator::ProcessInput(const Input& input) {
 
   auto value = result.value();
   if (value.empty()) {
-    kTitle = title_ = placeholder_;
+    kTitle = title_ = title_placeholder_;
     description_ = kInfoDescription;
   } else {
     kTitle = title_ = QString::fromStdString(value);
@@ -42,7 +43,7 @@ void Calculator::ProcessKeyPress(const QKeyCombination& combination,
   switch (combination.key()) {
     case Qt::Key_Return: {
       search_result_list->HideParent();
-      if (title_ == placeholder_) {
+      if (title_ == title_placeholder_) {
         break;
       }
 

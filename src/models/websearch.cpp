@@ -11,10 +11,11 @@ WebSearch::WebSearch(const QJsonObject& object)
     : BaseResult{object["id"].toString(),
                  object["icon"].toString(),
                  object["title"].toString(),
+                 object["placeholder"].toString(),
                  object["alt"].toObject()["title"].toString(),
                  object["description"].toString(),
                  object["command"].toString(),
-                 object["placeholder"].toString()} {
+                 object["title"].toString().contains("{}")} {
   url_ = object["url"].toString();
 
   auto alt = object["alt"].toObject();

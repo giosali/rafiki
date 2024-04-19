@@ -8,8 +8,8 @@
 #include "../ui/searchresultlist.h"
 
 Trash::Trash()
-    : BaseResult{kId,          kIcon,    kTitle,      kAltTitle,
-                 kDescription, kCommand, kPlaceholder} {
+    : BaseResult{kId,       kIcon,        kTitle,   kTitlePlaceholder,
+                 kAltTitle, kDescription, kCommand, kAppendSpaceToCommand} {
   if (auto xdg_data_home = std::getenv("XDG_DATA_HOME");
       xdg_data_home != nullptr) {
     auto home_loc = std::string{xdg_data_home};
