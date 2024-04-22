@@ -19,6 +19,7 @@ Finder::Finder(const std::string& location, size_t max_count,
 }
 
 std::vector<std::filesystem::path> Finder::Search(const std::string& input) {
+  count_ = 0;
   return Iterate(location_, input);
 }
 
@@ -41,11 +42,13 @@ std::vector<std::filesystem::path> Finder::Iterate(
 
     std::transform(filename.begin(), filename.end(), filename.begin(),
                    utils::ToLower);
-    if (filename.find(input) != std::string::npos) {
-      entries.push_back(entry);
-      if (++count_ == max_count_) {
-        return entries;
-      }
+    if (filename.find(input) == std::string::npos) {
+      continue;
+    }
+
+    entries.push_back(entry);
+    if (++count_ == max_count_) {
+      return entries;
     }
   }
 
@@ -86,13 +89,16 @@ std::vector<std::filesystem::path> Finder::Reiterate(
       dirs.push_back(entry);
     }
 
+    // Skips entry if its name doesn't contain the input.
     std::transform(filename.begin(), filename.end(), filename.begin(),
                    utils::ToLower);
-    if (filename.find(input) != std::string::npos) {
-      entries.push_back(entry);
-      if (++count_ == max_count_) {
-        return entries;
-      }
+    if (filename.find(input) == std::string::npos) {
+      continue;
+    }
+
+    entries.push_back(entry);
+    if (++count_ == max_count_) {
+      return entries;
     }
   }
 
