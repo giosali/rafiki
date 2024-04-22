@@ -22,7 +22,6 @@ class Finder {
     std::vector<std::filesystem::path>& entries);
 
   size_t count_;
-  std::vector<std::filesystem::path> files_;
   std::set<std::string> home_dir_names_;
   std::vector<std::filesystem::path> home_dirs_;
   std::set<std::string> ignored_dirs_;
