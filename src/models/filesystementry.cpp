@@ -1,6 +1,12 @@
 #include "filesystementry.h"
 
+#include <QDesktopServices>
+#include <QKeyCombination>
 #include <QStandardPaths>
+#include <QUrl>
+#include <memory>
+
+#include "../ui/searchresultlist.h"
 
 FileSystemEntry::FileSystemEntry()
     : ProcessedResultBuilder{kId,       kIcon,
@@ -22,7 +28,8 @@ FileSystemEntry::FileSystemEntry()
          QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)
            .toStdString(),
          QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)
-           .toStdString()}} {}
+           .toStdString()}},
+      is_entry_{false} {}
 
 FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
     : ProcessedResultBuilder{kId,
@@ -32,17 +39,84 @@ FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
                              kAltTitle,
                              QString::fromUtf8(path.string()),
                              kCommand,
-                             kAppendSpaceToCommand} {}
+                             kAppendSpaceToCommand},
+      is_entry_{true} {}
+
+QString FileSystemEntry::DragAndDrop() {
+  return is_entry_ ? description_ : QString{};
+}
 
 bool FileSystemEntry::ProcessInput(const Input& input) {
-  auto paths = finder_.Search(input.GetCmd().toStdString());
+  results_.clear();
+
+  auto full = input.GetFull();
+  if (full[0] != kInternalCommand) {
+    return false;
+  }
+
+  // Means that the current user input is a single command character.
+  if (full.length() == 1) {
+    return true;
+  }
+
+  auto paths = finder_.Search(full.sliced(1).toStdString());
   if (paths.size() == 0) {
     return false;
   }
 
   for (const auto& path : paths) {
-    // results_.push_back(FileSystemEntry{path});
+    results_.push_back(std::make_shared<FileSystemEntry>(path));
   }
 
   return true;
+}
+
+void FileSystemEntry::ProcessKeyPress(const QKeyCombination& combination,
+                                      QWidget* parent) {
+  if (!is_entry_) {
+    return;
+  }
+
+  auto search_result_list = dynamic_cast<SearchResultList*>(parent);
+  if (search_result_list == nullptr) {
+    return;
+  }
+
+  switch (combination.key()) {
+    case Qt::Key_Return: {
+      // Opens either the containing directory of the entry or the entry itself.
+      auto url =
+        QUrl::fromLocalFile(combination.keyboardModifiers() & Qt::AltModifier
+                              ? QString::fromStdString(std::filesystem::path{
+                                  description_.toStdString()}
+                                                         .parent_path()
+                                                         .string())
+                              : description_);
+      search_result_list->HideParent();
+      QDesktopServices::openUrl(url);
+      break;
+    }
+    case Qt::Key_Alt:
+      search_result_list->CurrentSearchResult()->SetDescription(
+        kAltDescription);
+      break;
+  }
+}
+
+void FileSystemEntry::ProcessKeyRelease(const QKeyCombination& combination,
+                                        QWidget* parent) {
+  if (!is_entry_) {
+    return;
+  }
+
+  auto search_result_list = dynamic_cast<SearchResultList*>(parent);
+  if (search_result_list == nullptr) {
+    return;
+  }
+
+  switch (combination.key()) {
+    case Qt::Key_Alt:
+      search_result_list->CurrentSearchResult()->SetDescription(description_);
+      break;
+  }
 }
