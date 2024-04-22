@@ -12,6 +12,7 @@
 #include <set>
 
 #include "../models/calculator.h"
+#include "../models/filesystementry.h"
 #include "../models/trash.h"
 #include "../models/websearch.h"
 
@@ -38,6 +39,20 @@ std::vector<std::shared_ptr<BaseResult>> Project::FindBaseResults(
     results_concat.push_back(pbr);
   }
 
+  for (const auto& prb : processed_result_builders_) {
+    if (!prb->ProcessInput(input)) {
+      continue;
+    }
+
+    auto results = prb->GetResults();
+    if (results.empty()) {
+      results_concat.push_back(prb);
+    } else {
+      results_concat.insert(results_concat.end(), results.begin(),
+                            results.end());
+    }
+  }
+
   return results_concat;
 }
 
@@ -62,6 +77,8 @@ QString Project::GetImageFilePath(defs::ImageFile file) {
   switch (file) {
     case defs::ImageFile::kCalculator:
       return dir + "calculator.png";
+    case defs::ImageFile::kFileSystemEntry:
+      return dir + "filesystementry.svg";
     case defs::ImageFile::kQuestionMark:
       return dir + "question-mark.png";
     case defs::ImageFile::kTrash:
@@ -87,6 +104,7 @@ void Project::Initialize() {
   // Sets up built-in search results not based on data files.
   AddBaseResult(std::make_shared<Trash>());
   AddProcessedBaseResult(std::make_shared<Calculator>());
+  AddProcessedResultBuilder(std::make_shared<FileSystemEntry>());
 
   // Sets up default search results.
   UpdateDefaultBaseResults();
@@ -104,7 +122,17 @@ void Project::AddBaseResult(const std::shared_ptr<BaseResult>& base_result) {
 
 void Project::AddProcessedBaseResult(
   const std::shared_ptr<ProcessedResult>& processed_result) {
+  if (processed_result->HasCommand()) {
+    auto cmd = processed_result->FormatCommand();
+    autocomplete_.Insert(cmd);
+  }
+
   processed_base_results_.push_back(processed_result);
+}
+
+void Project::AddProcessedResultBuilder(
+  const std::shared_ptr<ProcessedResultBuilder>& builder) {
+  processed_result_builders_.push_back(builder);
 }
 
 QSettings Project::GetDefaultSettings() {

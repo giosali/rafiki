@@ -9,6 +9,7 @@
 
 #include "../models/baseresult.h"
 #include "../models/processedresult.h"
+#include "../models/processedresultbuilder.h"
 #include "autocompletemap.h"
 #include "definitions.h"
 #include "input.h"
@@ -26,6 +27,8 @@ class Project {
   static void AddBaseResult(const std::shared_ptr<BaseResult>& base_result);
   static void AddProcessedBaseResult(
     const std::shared_ptr<ProcessedResult>& processed_result);
+  static void AddProcessedResultBuilder(
+    const std::shared_ptr<ProcessedResultBuilder>& builder);
   static QSettings GetDefaultSettings();
   static QSettings GetUserSettings();
   template <typename T>
@@ -42,6 +45,8 @@ class Project {
   static inline std::vector<std::shared_ptr<BaseResult>> default_base_results_;
   static inline std::vector<std::shared_ptr<ProcessedResult>>
     processed_base_results_;
+  static inline std::vector<std::shared_ptr<ProcessedResultBuilder>>
+    processed_result_builders_;
 };
 
 #endif  // PROJECT_H
