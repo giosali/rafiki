@@ -1,4 +1,5 @@
 #include <cctype>
+#include <string>
 
 #include "../src/core/utils.h"
 #include "utest.h"
@@ -31,4 +32,16 @@ UTEST(ToLower, returns_lowercase_characters) {
   for (auto ch : ascii_uppercase) {
     EXPECT_TRUE_MSG(std::tolower(ch) == utils::ToLower(ch), &ch);
   }
+}
+
+UTEST(Strip, removes_spaces) {
+  auto input = std::string{"  hello world  "};
+  auto expected = std::string{"hello world"};
+  ASSERT_STREQ(expected.c_str(), utils::Strip(input).c_str());
+}
+
+UTEST(Strip, removes_additional_char) {
+  auto input = std::string{"'hello world'"};
+  auto expected = std::string{"hello world"};
+  ASSERT_STREQ(expected.c_str(), utils::Strip(input, '\'').c_str());
 }
