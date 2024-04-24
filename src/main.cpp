@@ -4,6 +4,7 @@
 #include <QString>
 #include <QTranslator>
 #include <QtEnvironmentVariables>
+#include <QtSystemDetection>
 #include <memory>
 
 #include "core/client.h"
