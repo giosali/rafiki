@@ -6,9 +6,12 @@
 #include <QListWidget>
 #include <QListWidgetItem>
 #include <QMouseEvent>
+#include <QObject>
 #include <QPoint>
 #include <QString>
+#include <QThread>
 #include <memory>
+#include <vector>
 
 #include "../core/input.h"
 #include "../models/baseresult.h"
@@ -22,6 +25,8 @@ class SearchResultList : public QListWidget {
 
   SearchResultList(QWidget* parent = nullptr);
 
+  ~SearchResultList();
+
   SearchResult* CurrentSearchResult() const;
   QString GetArg() const;
   QString GetCmd() const;
@@ -34,12 +39,15 @@ class SearchResultList : public QListWidget {
   void ProcessInput(const Input& input);
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
+  void ProcessResults(const std::vector<std::shared_ptr<BaseResult>>& results,
+                      const QString& text);
   void SetCurrentItem(QListWidgetItem* item);
   void SetCurrentItem(SearchResultList* list);
   void UpdateShortcuts(int value);
 
  signals:
   void EventReceived(QEvent* event);
+  void InputReceived(const Input& input);
   void ItemsChanged(SearchResultList* list);
   void TextReceived(const QString& text);
 
@@ -54,6 +62,18 @@ class SearchResultList : public QListWidget {
 
   Input input_;
   QPoint starting_drag_position_;
+  QThread worker_thread_;
+};
+
+class Worker : public QObject {
+  Q_OBJECT
+
+ public slots:
+  void Work(const Input& input);
+
+ signals:
+  void ResultsReadied(const std::vector<std::shared_ptr<BaseResult>>& results,
+                      const QString& text);
 };
 
 #endif  // SEARCHRESULTLIST_H

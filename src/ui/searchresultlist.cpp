@@ -9,7 +9,6 @@
 #include <QKeyEvent>
 #include <QList>
 #include <QMimeData>
-#include <QObject>
 #include <QScrollBar>
 #include <QSize>
 #include <QUrl>
@@ -42,6 +41,11 @@ SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
                    SLOT(SetCurrentItem(QListWidgetItem*)));
   QObject::connect(this, SIGNAL(ItemsChanged(SearchResultList*)), this,
                    SLOT(SetCurrentItem(SearchResultList*)));
+}
+
+SearchResultList::~SearchResultList() {
+  worker_thread_.quit();
+  worker_thread_.wait();
 }
 
 SearchResult* SearchResultList::CurrentSearchResult() const {
@@ -88,27 +92,25 @@ void SearchResultList::AdjustSize(SearchResultList* list) {
 }
 
 void SearchResultList::ProcessInput(const Input& input) {
-  clear();
+  worker_thread_.exit();
 
   if (input.IsEmpty()) {
+    clear();  // Helps prevent flicker.
     emit ItemsChanged(this);
     return;
   }
 
-  auto base_results = Project::FindBaseResults(input);
-  for (size_t i = 0; i < base_results.size(); ++i) {
-    AddItem(base_results[i], input.GetArg(), i);
-  }
+  auto worker = new Worker{};
+  worker->moveToThread(&worker_thread_);
+  QObject::connect(&worker_thread_, &QThread::finished, worker,
+                   &QObject::deleteLater);
+  QObject::connect(this, &SearchResultList::InputReceived, worker,
+                   &Worker::Work);
+  QObject::connect(worker, &Worker::ResultsReadied, this,
+                   &SearchResultList::ProcessResults);
+  worker_thread_.start();
 
-  if (count() == 0) {
-    // Adds default search results to list.
-    auto default_results = Project::GetDefaultBaseResults();
-    for (size_t i = 0; i < default_results.size(); ++i) {
-      AddItem(default_results[i], input.GetFull(), i);
-    }
-  }
-
-  emit ItemsChanged(this);
+  emit InputReceived(input);
 }
 
 void SearchResultList::ProcessKeyPress(const QKeyCombination& combination) {
@@ -169,6 +171,18 @@ void SearchResultList::ProcessKeyRelease(const QKeyCombination& combination) {
       break;
     }
   }
+}
+
+void SearchResultList::ProcessResults(
+  const std::vector<std::shared_ptr<BaseResult>>& results,
+  const QString& text) {
+  clear();  // Helps prevent flicker.
+
+  for (size_t i = 0; i < results.size(); ++i) {
+    AddItem(results[i], text, i);
+  }
+
+  emit ItemsChanged(this);
 }
 
 void SearchResultList::SetCurrentItem(QListWidgetItem* item) {
@@ -271,4 +285,11 @@ void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
 
 SearchResult* SearchResultList::SearchResultAt(int row) {
   return static_cast<SearchResult*>(itemWidget(item(row)));
+}
+
+void Worker::Work(const Input& input) {
+  auto results = Project::FindBaseResults(input);
+  results.empty()
+    ? emit ResultsReadied(Project::GetDefaultBaseResults(), input.GetFull())
+    : emit ResultsReadied(results, input.GetArg());
 }
