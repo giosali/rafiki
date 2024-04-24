@@ -2,7 +2,6 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
-#include <QObject>
 #include <QPoint>
 #include <QRect>
 #include <QScreen>
@@ -39,23 +38,18 @@ MainWindow::MainWindow(QWidget* parent)
   // Prevents the window height from strangely expanding when input is cleared.
   setMinimumHeight(box->Height());
 
-  QObject::connect(this, &MainWindow::Deactivated, box, &SearchBox::Clear);
-  QObject::connect(list, &SearchResultList::ItemsChanged, this,
-                   &MainWindow::SetHeight);
-  QObject::connect(list, &SearchResultList::TextReceived, box,
-                   &SearchBox::SetText);
-  QObject::connect(
-    list, &SearchResultList::EventReceived,
-    [box](QEvent* event) { QApplication::sendEvent(box, event); });
-  QObject::connect(
-    list, &SearchResultList::EventReceived,
-    [this](QEvent* event) { QApplication::sendEvent(this, event); });
-  QObject::connect(box, &SearchBox::TextChanged, list,
-                   &SearchResultList::ProcessInput);
-  QObject::connect(box, &SearchBox::KeyPressed, list,
-                   &SearchResultList::ProcessKeyPress);
-  QObject::connect(box, &SearchBox::KeyReleased, list,
-                   &SearchResultList::ProcessKeyRelease);
+  connect(this, &MainWindow::Deactivated, box, &SearchBox::Clear);
+  connect(list, &SearchResultList::ItemsChanged, this, &MainWindow::SetHeight);
+  connect(list, &SearchResultList::TextReceived, box, &SearchBox::SetText);
+  connect(list, &SearchResultList::EventReceived,
+          [box](QEvent* event) { QApplication::sendEvent(box, event); });
+  connect(list, &SearchResultList::EventReceived,
+          [this](QEvent* event) { QApplication::sendEvent(this, event); });
+  connect(box, &SearchBox::TextChanged, list, &SearchResultList::ProcessInput);
+  connect(box, &SearchBox::KeyPressed, list,
+          &SearchResultList::ProcessKeyPress);
+  connect(box, &SearchBox::KeyReleased, list,
+          &SearchResultList::ProcessKeyRelease);
 
   centralWidget()->layout()->addWidget(box);
   centralWidget()->layout()->addWidget(list);

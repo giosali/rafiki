@@ -31,16 +31,16 @@ SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   // This is required to properly enable mouse events.
   setMouseTracking(true);
 
-  QObject::connect(verticalScrollBar(), &QScrollBar::valueChanged, this,
-                   &SearchResultList::UpdateShortcuts);
-  QObject::connect(this, &QListWidget::itemClicked, this,
-                   &SearchResultList::ActivateItem);
-  QObject::connect(this, &SearchResultList::ItemsChanged, this,
-                   &SearchResultList::AdjustSize);
-  QObject::connect(this, SIGNAL(itemEntered(QListWidgetItem*)), this,
-                   SLOT(SetCurrentItem(QListWidgetItem*)));
-  QObject::connect(this, SIGNAL(ItemsChanged(SearchResultList*)), this,
-                   SLOT(SetCurrentItem(SearchResultList*)));
+  connect(verticalScrollBar(), &QScrollBar::valueChanged, this,
+          &SearchResultList::UpdateShortcuts);
+  connect(this, &QListWidget::itemClicked, this,
+          &SearchResultList::ActivateItem);
+  connect(this, &SearchResultList::ItemsChanged, this,
+          &SearchResultList::AdjustSize);
+  connect(this, SIGNAL(itemEntered(QListWidgetItem*)), this,
+          SLOT(SetCurrentItem(QListWidgetItem*)));
+  connect(this, SIGNAL(ItemsChanged(SearchResultList*)), this,
+          SLOT(SetCurrentItem(SearchResultList*)));
 }
 
 SearchResultList::~SearchResultList() {
@@ -102,12 +102,10 @@ void SearchResultList::ProcessInput(const Input& input) {
 
   auto worker = new Worker{};
   worker->moveToThread(&worker_thread_);
-  QObject::connect(&worker_thread_, &QThread::finished, worker,
-                   &QObject::deleteLater);
-  QObject::connect(this, &SearchResultList::InputReceived, worker,
-                   &Worker::Work);
-  QObject::connect(worker, &Worker::ResultsReadied, this,
-                   &SearchResultList::ProcessResults);
+  connect(&worker_thread_, &QThread::finished, worker, &QObject::deleteLater);
+  connect(this, &SearchResultList::InputReceived, worker, &Worker::Work);
+  connect(worker, &Worker::ResultsReadied, this,
+          &SearchResultList::ProcessResults);
   worker_thread_.start();
 
   emit InputReceived(input);

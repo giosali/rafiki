@@ -1,6 +1,5 @@
 #include "searchbox.h"
 
-#include <QObject>
 #include <Qt>
 
 #include "./ui_searchbox.h"
@@ -10,9 +9,8 @@ SearchBox::SearchBox(QWidget* parent)
   ui_->setupUi(this);
   setFixedHeight(Height());
 
-  QObject::connect(
-    ui_->searchBox, &QLineEdit::textChanged,
-    [this](const QString& text) { emit TextChanged(Input(text)); });
+  connect(ui_->searchBox, &QLineEdit::textChanged,
+          [this](const QString& text) { emit TextChanged(Input(text)); });
 }
 
 SearchBox::~SearchBox() {}
