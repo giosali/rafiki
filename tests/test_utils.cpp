@@ -11,6 +11,30 @@ UTEST(Capitalize, replaces_first_char_with_uppercase_char) {
   ASSERT_TRUE(expected == actual);
 }
 
+UTEST(CompareString, returns_false) {
+  auto str1 = std::string{"a"};
+  auto str2 = std::string{"b"};
+  ASSERT_FALSE(utils::CompareStrings(str2, str1));
+}
+
+UTEST(CompareString, returns_false_with_reverse) {
+  auto str1 = std::string{"a"};
+  auto str2 = std::string{"b"};
+  ASSERT_FALSE(utils::CompareStrings(str1, str2, true));
+}
+
+UTEST(CompareString, returns_true) {
+  auto str1 = std::string{"a"};
+  auto str2 = std::string{"b"};
+  ASSERT_TRUE(utils::CompareStrings(str1, str2));
+}
+
+UTEST(CompareString, returns_true_with_reverse) {
+  auto str1 = std::string{"a"};
+  auto str2 = std::string{"b"};
+  ASSERT_TRUE(utils::CompareStrings(str2, str1, true));
+}
+
 UTEST(Format, replaces_fmt_with_arg) {
   auto fmt = "Hello {}, how are you?";
   auto arg = "Bob";
