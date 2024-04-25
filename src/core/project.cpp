@@ -8,13 +8,15 @@
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QUuid>
-#include <iterator>
+#include <QtSystemDetection>
+#include <algorithm>
 #include <set>
 
 #include "../models/calculator.h"
 #include "../models/filesystementry.h"
 #include "../models/trash.h"
 #include "../models/websearch.h"
+#include "utils.h"
 
 std::vector<std::shared_ptr<BaseResult>> Project::FindBaseResults(
   const Input& input) {
@@ -77,8 +79,12 @@ QString Project::GetImageFilePath(defs::ImageFile file) {
   switch (file) {
     case defs::ImageFile::kCalculator:
       return dir + "calculator.png";
+    case defs::ImageFile::kFile:
+      return dir + "file.svg";
     case defs::ImageFile::kFileSystemEntry:
       return dir + "filesystementry.svg";
+    case defs::ImageFile::kFolder:
+      return dir + "folder.svg";
     case defs::ImageFile::kQuestionMark:
       return dir + "question-mark.png";
     case defs::ImageFile::kTrash:
@@ -86,6 +92,23 @@ QString Project::GetImageFilePath(defs::ImageFile file) {
     default:
       return QString{};
   }
+}
+
+QString Project::GetMimeTypeImagePath(const std::filesystem::path& path) {
+  auto extension = path.extension().string();
+
+  // Exits if path doesn't contain a file extension and isn't a directory.
+  if (extension.empty() && !std::filesystem::is_directory(path)) {
+    return GetImageFilePath(defs::ImageFile::kFile);
+  }
+
+  // Returns a generic resource image if there was no match.
+  auto search = mimetype_images_map_.find(extension);
+  return search == mimetype_images_map_.end()
+           ? GetImageFilePath(std::filesystem::is_directory(path)
+                                ? defs::ImageFile::kFolder
+                                : defs::ImageFile::kFile)
+           : search->second;
 }
 
 void Project::Initialize() {
@@ -108,6 +131,46 @@ void Project::Initialize() {
 
   // Sets up default search results.
   UpdateDefaultBaseResults();
+
+#ifdef Q_OS_LINUX
+  // Fetches icon theme on Linux (for GNOME) and adds MIME types.
+  // For more info: https://stackoverflow.com/a/44629154
+  auto cmd =
+    std::string{"gsettings get org.gnome.desktop.interface icon-theme"};
+  if (auto theme = utils::Strip(utils::Execute(cmd), '\''); !theme.empty()) {
+    AddMimeTypeImage(theme, ".mp3", "audio-x-mpeg", "audio-x-generic");
+    AddMimeTypeImage(theme, ".flac", "audio-x-flac", "audio-x-generic");
+    AddMimeTypeImage(theme, ".opus", "audio-x-generic", "audio-x-generic");
+    AddMimeTypeImage(theme, ".wav", "audio-x-wav", "audio-x-generic");
+
+    AddMimeTypeImage(theme, ".gz", "application-x-gzip", "application-x-gzip");
+
+    AddMimeTypeImage(theme, ".zip", "application-x-zip", "application-x-zip");
+
+    AddMimeTypeImage(theme, "", "folder", "folder");
+
+    AddMimeTypeImage(theme, ".png", "image-x-generic", "image-x-generic");
+    AddMimeTypeImage(theme, ".jpg", "image-x-generic", "image-x-generic");
+    AddMimeTypeImage(theme, ".jpeg", "image-x-generic", "image-x-generic");
+    AddMimeTypeImage(theme, ".svg", "image-svg+xml", "image-x-generic");
+
+    AddMimeTypeImage(theme, ".txt", "text-x-generic", "text-x-generic");
+    AddMimeTypeImage(theme, ".css", "text-css", "text-x-generic");
+    AddMimeTypeImage(theme, ".md", "text-markdown", "text-x-generic");
+    AddMimeTypeImage(theme, ".rtf", "text-richtext", "text-x-generic");
+    AddMimeTypeImage(theme, ".rs", "text-rust", "text-x-generic");
+    AddMimeTypeImage(theme, ".c", "text-x-c", "text-x-generic");
+    AddMimeTypeImage(theme, ".hpp", "text-x-c++hdr", "text-x-generic");
+    AddMimeTypeImage(theme, ".cpp", "text-x-cpp", "text-x-generic");
+    AddMimeTypeImage(theme, ".py", "text-x-python", "text-x-generic");
+    AddMimeTypeImage(theme, ".sass", "text-x-sass", "text-x-generic");
+    AddMimeTypeImage(theme, ".scss", "text-x-sass", "text-x-generic");
+    AddMimeTypeImage(theme, ".ts", "text-x-typescript", "text-x-generic");
+
+    AddMimeTypeImage(theme, ".mp4", "video-x-generic", "video-x-generic");
+    AddMimeTypeImage(theme, ".webm", "video-x-generic", "video-x-generic");
+  }
+#endif
 }
 
 void Project::AddBaseResult(const std::shared_ptr<BaseResult>& base_result) {
@@ -118,6 +181,64 @@ void Project::AddBaseResult(const std::shared_ptr<BaseResult>& base_result) {
   auto cmd = base_result->FormatCommand();
   autocomplete_.Insert(cmd);
   base_results_map_[cmd].push_back(base_result);
+}
+
+void Project::AddMimeTypeImage(const std::string& theme,
+                               const std::string& extension,
+                               const std::string& mimetype,
+                               const std::string& mimetype_fallback) {
+  auto theme_dir = std::filesystem::path{"/usr/share/icons/" + theme};
+  if (!std::filesystem::exists(theme_dir)) {
+    return;
+  }
+
+  auto dirs = std::vector<std::filesystem::path>{};
+  for (const auto& entry : std::filesystem::directory_iterator{theme_dir}) {
+    auto filename = entry.path().filename().string();
+    if (filename[0] == '.' || !entry.is_directory()) {
+      continue;
+    }
+
+    dirs.push_back(entry);
+  }
+
+  // Sorts the child directories in reverse alphabetical order.
+  std::sort(dirs.begin(), dirs.end(),
+            [](const std::filesystem::path& p1,
+               const std::filesystem::path& p2) -> bool {
+              return utils::CompareStrings(p1.filename().string(),
+                                           p2.filename().string(), true);
+            });
+
+  // Looks through child directories for an image file whose name matches the
+  // specified mimetype.
+  auto find_mimetype_image = [&dirs,
+                              &extension](const std::string& mimetype) -> bool {
+    for (const auto& dir : dirs) {
+      for (const auto& entry :
+           std::filesystem::recursive_directory_iterator(dir)) {
+        if (entry.is_directory()) {
+          continue;
+        }
+
+        auto entry_path = entry.path();
+        auto stem = entry_path.stem().string();
+        if (stem != mimetype) {
+          continue;
+        }
+
+        mimetype_images_map_.insert(
+          {extension, QString::fromStdString(entry_path.string())});
+        return true;
+      }
+    }
+
+    return false;
+  };
+
+  if (!find_mimetype_image(mimetype)) {
+    find_mimetype_image(mimetype_fallback);
+  }
 }
 
 void Project::AddProcessedBaseResult(

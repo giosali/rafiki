@@ -3,7 +3,9 @@
 
 #include <QSettings>
 #include <QString>
+#include <filesystem>
 #include <memory>
+#include <string>
 #include <unordered_map>
 #include <vector>
 
@@ -21,10 +23,15 @@ class Project {
   static QString GetDataFilePath(defs::DataFile file);
   static std::vector<std::shared_ptr<BaseResult>> GetDefaultBaseResults();
   static QString GetImageFilePath(defs::ImageFile file);
+  static QString GetMimeTypeImagePath(const std::filesystem::path& path);
   static void Initialize();
 
  private:
   static void AddBaseResult(const std::shared_ptr<BaseResult>& base_result);
+  static void AddMimeTypeImage(const std::string& theme,
+                               const std::string& extension,
+                               const std::string& mimetype,
+                               const std::string& mimetype_fallback);
   static void AddProcessedBaseResult(
     const std::shared_ptr<ProcessedResult>& processed_result);
   static void AddProcessedResultBuilder(
@@ -47,6 +54,7 @@ class Project {
     processed_base_results_;
   static inline std::vector<std::shared_ptr<ProcessedResultBuilder>>
     processed_result_builders_;
+  static inline std::unordered_map<std::string, QString> mimetype_images_map_;
 };
 
 #endif  // PROJECT_H
