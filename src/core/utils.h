@@ -2,12 +2,40 @@
 #define UTILS_H
 
 #include <QString>
+#include <cstdlib>
+#include <fstream>
+#include <sstream>
 #include <string>
 
 namespace utils {
+static const std::string kOutputFile{"/tmp/rafiki_output.txt"};
 
 inline QString Capitalize(QString str) {
   return str.replace(0, 1, str.at(0).toUpper());
+}
+
+inline bool CompareStrings(const std::string& lhs_str,
+                           const std::string& rhs_str, bool reverse = false) {
+  auto r = std::lexicographical_compare(
+    lhs_str.begin(), lhs_str.end(), rhs_str.begin(), rhs_str.end(),
+    [](char lhs_ch, char rhs_ch) {
+      auto proj = [](char ch) {
+        return std::tuple(std::tolower(ch), std::isupper(ch));
+      };
+      return proj(lhs_ch) < proj(rhs_ch);
+    });
+  return reverse ? !r : r;
+}
+
+inline std::string Execute(const std::string& cmd) {
+  auto status = std::system((cmd + " " + kOutputFile).c_str());
+  if (status != 0) {
+    return {};
+  }
+
+  auto stream = std::ostringstream{};
+  stream << std::ifstream{kOutputFile}.rdbuf();
+  return stream.str();
 }
 
 inline QString Format(QString fmt, const QString& arg) {
