@@ -134,7 +134,9 @@ void Project::Initialize() {
 
 #ifdef Q_OS_LINUX
   // Fetches icon theme on Linux (for GNOME) and adds MIME types.
-  // For more info: https://stackoverflow.com/a/44629154
+  // For more info:
+  // https://stackoverflow.com/a/44629154
+  // https://github.com/cerebroapp/cerebro/issues/17
   auto cmd =
     std::string{"gsettings get org.gnome.desktop.interface icon-theme"};
   if (auto theme = utils::Strip(utils::Execute(cmd), '\''); !theme.empty()) {
