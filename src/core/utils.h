@@ -6,6 +6,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <vector>
 
 namespace utils {
 static const std::string kOutputFile{"/tmp/rafiki_output.txt"};
@@ -43,6 +44,19 @@ inline QString Format(QString fmt, const QString& arg) {
 }
 
 inline char ToLower(char c) { return c < 'A' || c > 'Z' ? c : c + 32; }
+
+inline std::vector<std::string> Split(const std::string& str, char ch) {
+  auto v = std::vector<std::string>{};
+  for (size_t i = str.find(ch), last_i = 0;;
+       last_i = ++i, i = str.find(ch, i)) {
+    v.push_back(str.substr(last_i, i - last_i));
+    if (i == std::string::npos) {
+      break;
+    }
+  }
+
+  return v;
+}
 
 inline std::string Strip(const std::string& input, char token = '\0') {
   auto start_it = input.begin();
