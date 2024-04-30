@@ -59,6 +59,11 @@ inline std::vector<std::string> Split(const std::string& str, char ch) {
 }
 
 inline std::string Strip(const std::string& input, char token = '\0') {
+  // Prevents std::lenght_error from being thrown if the input is empty.
+  if (input.empty()) {
+    return {};
+  }
+
   auto start_it = input.begin();
   for (char ch = *start_it; std::isspace(ch) || ch == token;
        ++start_it, ch = *start_it) {
