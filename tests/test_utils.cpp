@@ -86,6 +86,13 @@ UTEST(Split, string_with_one_token) {
   }
 }
 
+UTEST(Strip, empty_string) {
+  auto input = std::string{};
+  auto expected = std::string{};
+  auto actual = utils::Strip(input);
+  ASSERT_STREQ(expected.c_str(), actual.c_str());
+}
+
 UTEST(Strip, removes_spaces) {
   auto input = std::string{"  hello world  "};
   auto expected = std::string{"hello world"};
