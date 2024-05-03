@@ -45,7 +45,7 @@ inline QString Format(QString fmt, const QString& arg) {
 
 inline char ToLower(char c) { return c < 'A' || c > 'Z' ? c : c + 32; }
 
-inline std::vector<std::string> Split(const std::string& str, char ch) {
+inline std::vector<std::string> Split(const std::string& str, char ch = ' ') {
   auto v = std::vector<std::string>{};
   for (size_t i = str.find(ch), last_i = 0;;
        last_i = ++i, i = str.find(ch, i)) {
