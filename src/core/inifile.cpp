@@ -10,11 +10,6 @@ void IniFile::BeginSection(const std::string& section) { section_ = section; }
 
 void IniFile::EndSection() { section_.clear(); }
 
-std::string IniFile::GetValue(const std::string& key) const {
-  auto it = properties_.find(section_.empty() ? key : section_ + "/" + key);
-  return it == properties_.end() ? std::string{} : it->second;
-}
-
 void IniFile::Parse(const std::string& file_path) {
   auto file = std::ifstream{file_path};
   for (std::string line, section_name; std::getline(file, line);) {
