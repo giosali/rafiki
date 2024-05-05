@@ -40,6 +40,12 @@ std::vector<std::filesystem::path> Finder::Iterate(
       other_dirs.push_back(entry);
     }
 
+    // Skips the entry if the input is longer than the filename.
+    if (input.length() > filename.length()) {
+      continue;
+    }
+
+    // Skips entry if its name doesn't contain the input.
     std::transform(filename.begin(), filename.end(), filename.begin(),
                    utils::ToLower);
     if (filename.find(input) == std::string::npos) {
@@ -87,6 +93,11 @@ std::vector<std::filesystem::path> Finder::Reiterate(
       }
 
       dirs.push_back(entry);
+    }
+
+    // Skips the entry if the input is longer than the filename.
+    if (input.length() > filename.length()) {
+      continue;
     }
 
     // Skips entry if its name doesn't contain the input.
