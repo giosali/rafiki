@@ -29,11 +29,7 @@ inline bool CompareStrings(const std::string& lhs_str,
 }
 
 inline std::string Execute(const std::string& cmd) {
-  auto status = std::system((cmd + " >" + kOutputFile).c_str());
-  if (status != 0) {
-    return {};
-  }
-
+  std::system((cmd + " >" + kOutputFile).c_str());
   auto stream = std::ostringstream{};
   stream << std::ifstream{kOutputFile}.rdbuf();
   return stream.str();
