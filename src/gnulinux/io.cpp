@@ -113,6 +113,7 @@ std::vector<std::filesystem::path> Io::FormatBaseDirs(
   }
 
   // https://wiki.archlinux.org/title/desktop_entries#Application_entry
+  base_dirs.push_back(home_path / ".local/share");
   base_dirs.push_back("/usr/local/share/" + subdir);
   base_dirs.push_back("/usr/share/" + subdir);
 
