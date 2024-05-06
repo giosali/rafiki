@@ -233,9 +233,12 @@ QString Io::GetExecutablePath(const QString& exec_key) {
     auto path = std::filesystem::path{executable};
 
     // Skips executables that refer to `env`.
-    // `env` is a shell command that should be ignored.
+    // `env` is a shell command that should be ignored, often found with
+    // applications installed as a Snap package.
+    // `flatpak` is found coupled with applications installed through Flatpak.
+    auto filename = path.filename();
     if (!std::filesystem::exists(path) || std::filesystem::is_directory(path) ||
-        path.filename() == "env") {
+        filename == "env" || filename == "flatpak") {
       continue;
     }
 
