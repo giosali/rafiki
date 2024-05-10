@@ -12,6 +12,11 @@
 #include <algorithm>
 #include <set>
 
+#ifdef Q_OS_LINUX
+#include "../gnulinux/desktopentry.h"
+#include "../gnulinux/io.h"
+#endif
+#include "../models/application.h"
 #include "../models/calculator.h"
 #include "../models/filesystementry.h"
 #include "../models/trash.h"
@@ -119,6 +124,19 @@ void Project::Initialize() {
   for (const auto& group : default_settings.childGroups()) {
     SetMissingSettings(default_settings, user_settings, group);
   }
+
+  // Sets up applications.
+#ifdef Q_OS_LINUX
+  auto desktop_entries = gnulinux::Io::ParseDesktopEntries();
+  for (const auto& desktop_entry : desktop_entries) {
+    auto application = std::make_shared<Application>(
+      desktop_entry.GetName(), desktop_entry.GetIcon(),
+      desktop_entry.GetDescription(), desktop_entry.GetExec());
+    auto cmd = application->FormatCommand();
+    autocomplete_.Insert(cmd);
+    base_results_map_[cmd].push_back(application);
+  }
+#endif
 
   // Sets up search results based on data files.
   ParseJsonToBaseResults<WebSearch>(
