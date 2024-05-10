@@ -26,6 +26,8 @@ set(PROJECT_SOURCES
         src/core/definitions.h
         src/core/finder.cpp
         src/core/finder.h
+        src/core/inifile.cpp
+        src/core/inifile.h
         src/core/input.cpp
         src/core/input.h
         src/core/project.cpp
@@ -35,7 +37,13 @@ set(PROJECT_SOURCES
         src/core/shuntingyardalgorithm.cpp
         src/core/shuntingyardalgorithm.h
         src/core/utils.h
+        src/gnulinux/desktopentry.cpp
+        src/gnulinux/desktopentry.h
+        src/gnulinux/io.cpp
+        src/gnulinux/io.h
         src/main.cpp
+        src/models/application.cpp
+        src/models/application.h
         src/models/baseresult.cpp
         src/models/baseresult.h
         src/models/calculator.cpp
