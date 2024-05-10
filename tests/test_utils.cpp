@@ -1,5 +1,7 @@
 #include <cctype>
 #include <string>
+#include <tuple>
+#include <variant>
 #include <vector>
 
 #include "../src/core/utils.h"
@@ -50,6 +52,22 @@ UTEST(Format, returns_fmt_if_fmt_has_no_fmt) {
   auto expected = fmt;
   auto actual = utils::Format(fmt, arg);
   ASSERT_TRUE(expected == actual);
+}
+
+UTEST(Join, general) {
+  auto ts =
+    std::vector<std::tuple<std::vector<std::string>, std::string, std::string>>{
+      {std::tuple<std::vector<std::string>, std::string, std::string>{
+        {}, " ", ""}},
+      {std::tuple<std::vector<std::string>, std::string, std::string>{
+        {"hello"}, " ", "hello"}},
+      {std::tuple<std::vector<std::string>, std::string, std::string>{
+        {"hello", "world"}, " ", "hello world"}}};
+  for (const auto& t : ts) {
+    auto expected = std::get<2>(t);
+    auto actual = utils::Join(std::get<0>(t), std::get<1>(t));
+    EXPECT_TRUE_MSG(expected == actual, actual.c_str());
+  }
 }
 
 UTEST(ToLower, returns_lowercase_characters) {
