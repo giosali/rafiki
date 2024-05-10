@@ -24,7 +24,6 @@ class Io {
   static std::vector<std::filesystem::path> FormatBaseDirs(
     const std::string& subdir);
   static std::filesystem::path GetDesktopEntryIcon(const std::string& icon_val);
-  static QString GetExecutablePath(const QString& exec_key);
   static std::string GetIconTheme();
   static std::vector<DesktopEntry> ParseDesktopEntries();
 };

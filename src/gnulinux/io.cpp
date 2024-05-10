@@ -224,32 +224,6 @@ std::filesystem::path Io::GetDesktopEntryIcon(const std::string& icon_value) {
   return icon;
 }
 
-QString Io::GetExecutablePath(const QString& exec_key) {
-  // The `which` command will print all valid executable paths.
-  auto cmd = std::string{"which " + exec_key.toStdString()};
-
-  auto executables = utils::Split(utils::Strip(utils::Execute(cmd)), '\n');
-  auto executable_path = QString{};
-  for (const auto& executable : executables) {
-    auto path = std::filesystem::path{executable};
-
-    // Skips executables that refer to `env`.
-    // `env` is a shell command that should be ignored, often found with
-    // applications installed as a Snap package.
-    // `flatpak` is found coupled with applications installed through Flatpak.
-    auto filename = path.filename();
-    if (!std::filesystem::exists(path) || std::filesystem::is_directory(path) ||
-        filename == "env" || filename == "flatpak") {
-      continue;
-    }
-
-    executable_path = QString::fromStdString(path.string());
-    break;
-  }
-
-  return executable_path;
-}
-
 std::string Io::GetIconTheme() {
   // Checks in the following order: GNOME, Cinnamon, Mate, Xfce.
   // https://stackoverflow.com/a/44629154
