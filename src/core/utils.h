@@ -4,6 +4,7 @@
 #include <QString>
 #include <cstdlib>
 #include <fstream>
+#include <numeric>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -37,6 +38,17 @@ inline std::string Execute(const std::string& cmd) {
 
 inline QString Format(QString fmt, const QString& arg) {
   return fmt.replace(fmt.indexOf("{}"), 2, arg);
+}
+
+inline std::string Join(const std::vector<std::string>& vec,
+                        const std::string& delimiter) {
+  return vec.empty() ? ""
+                     : std::accumulate(
+                         vec.begin(), vec.end(), std::string{},
+                         [&delimiter](const std::string& lhs,
+                                      const std::string& rhs) -> std::string {
+                           return lhs + (lhs.empty() ? "" : delimiter) + rhs;
+                         });
 }
 
 inline char ToLower(char c) { return c < 'A' || c > 'Z' ? c : c + 32; }
