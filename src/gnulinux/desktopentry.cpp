@@ -1,16 +1,15 @@
 #include "desktopentry.h"
 
-#include <QFile>
-
 #include "../core/inifile.h"
-#include "io.h"
+#include "../core/utils.h"
 
 namespace gnulinux {
 DesktopEntry::DesktopEntry(
   const std::filesystem::path& desktop_entry_path,
   const std::unordered_map<
     std::string, std::pair<uintmax_t, std::filesystem::path>>& icon_map)
-    : no_display_{false} {
+    : description_{QString::fromStdString(desktop_entry_path)},
+      no_display_{false} {
   auto file = IniFile(desktop_entry_path);
   file.BeginSection("Desktop Entry");
 
@@ -19,7 +18,7 @@ DesktopEntry::DesktopEntry(
     return;
   }
 
-  exec_ = QString::fromStdString(
+  exec_ = RemoveFieldCodes(
     std::any_cast<std::string>(file.GetValue<std::string>("Exec")));
   name_ = QString::fromStdString(
     std::any_cast<std::string>(file.GetValue<std::string>("Name")));
@@ -30,8 +29,6 @@ DesktopEntry::DesktopEntry(
   } else if (auto it = icon_map.find(icon); it != icon_map.end()) {
     icon_ = QString::fromStdString(it->second.second);
   }
-
-  description_ = Io::GetExecutablePath(exec_);
 }
 
 QString DesktopEntry::GetDescription() const { return description_; }
@@ -43,4 +40,39 @@ QString DesktopEntry::GetIcon() const { return icon_; }
 QString DesktopEntry::GetName() const { return name_; }
 
 bool DesktopEntry::NoDisplay() const { return no_display_; }
+
+QString DesktopEntry::RemoveFieldCodes(const std::string& exec) const {
+  auto parts = utils::Split(exec);
+  auto filtered_parts = std::vector<std::string>{};
+  for (const auto& part : parts) {
+    // https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#exec-variables
+    if (part.length() == 2 && part[0] == '%') {
+      switch (part[1]) {
+        case 'f':
+        case 'F':
+        case 'u':
+        case 'U':
+        case 'd':
+        case 'D':
+        case 'n':
+        case 'N':
+        case 'i':
+        case 'c':
+        case 'k':
+        case 'v':
+        case 'm':
+          continue;
+      }
+    }
+
+    filtered_parts.push_back(part);
+  }
+
+  switch (exec[0]) {
+    case 'a':
+      break;
+  }
+
+  return QString::fromStdString(utils::Join(filtered_parts, " "));
+}
 }  // namespace gnulinux

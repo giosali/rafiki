@@ -1,7 +1,6 @@
 #ifndef DESKTOPENTRY_H
 #define DESKTOPENTRY_H
 
-#include <QSettings>
 #include <QString>
 #include <filesystem>
 #include <string>
@@ -22,6 +21,8 @@ class DesktopEntry {
   bool NoDisplay() const;
 
  private:
+  QString RemoveFieldCodes(const std::string& exec) const;
+
   bool no_display_;
   QString description_;
   QString exec_;
