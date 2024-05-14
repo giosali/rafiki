@@ -52,9 +52,12 @@ void Trash::ProcessKeyRelease(const QKeyCombination& combination,
 
 void Trash::Empty() const {
   auto trash = std::filesystem::path{path_};
+  if (!std::filesystem::exists(trash)) {
+    return;
+  }
+
   auto subdirs =
     std::vector<std::filesystem::path>{trash / "files", trash / "info"};
-
   for (const auto& subdir : subdirs) {
     if (!std::filesystem::exists(subdir)) {
       continue;
