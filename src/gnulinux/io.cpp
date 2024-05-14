@@ -32,8 +32,8 @@ Io::CreateIconMap() {
     for (const auto& entry : std::filesystem::recursive_directory_iterator(
            target_dir,
            std::filesystem::directory_options::skip_permission_denied)) {
-      auto entry_path = entry.path();
-      if (entry.is_directory()) {
+      // qDebug() << "MADE IT THIS FAR!" << entry.exists();
+      if (!entry.exists() || entry.is_directory()) {
         continue;
       }
 
