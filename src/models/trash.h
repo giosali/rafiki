@@ -33,7 +33,7 @@ class Trash : public BaseResult {
 
   void Empty() const;
 
-  std::string trash_loc_;
+  const char* path_;
 };
 
 #endif  // TRASH_H
