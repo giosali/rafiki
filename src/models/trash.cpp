@@ -3,6 +3,8 @@
 #include <Qt>
 #include <cstdlib>
 #include <filesystem>
+#include <iterator>
+#include <system_error>
 #include <vector>
 
 #include "../ui/searchresultlist.h"
@@ -49,12 +51,38 @@ void Trash::ProcessKeyRelease(const QKeyCombination& combination,
 }
 
 void Trash::Empty() const {
-  auto trash_path = std::filesystem::path{trash_loc_};
-  auto paths = std::vector<std::filesystem::path>{trash_path / "files",
-                                                  trash_path / "info"};
-  for (const auto& path : paths) {
-    for (const auto& entry : std::filesystem::directory_iterator(path)) {
-      std::filesystem::remove_all(entry.path());
+  auto trash = std::filesystem::path{trash_loc_};
+  auto subdirs =
+    std::vector<std::filesystem::path>{trash / "files", trash / "info"};
+
+  for (const auto& subdir : subdirs) {
+    if (!std::filesystem::exists(subdir)) {
+      continue;
     }
+
+    // Removes files from user's Trash through std::filesystem.
+    for (const auto& entry : std::filesystem::recursive_directory_iterator{
+           subdir,
+           std::filesystem::directory_options::skip_permission_denied}) {
+      auto ec = std::error_code{};
+      std::filesystem::remove_all(entry, ec);
+    }
+
+    // Checks for unsuccessful deletion attempts of files.
+    if (size_t file_count = std::distance(
+          std::filesystem::directory_iterator{
+            subdir, std::filesystem::directory_options::skip_permission_denied},
+          {});
+        file_count == 0) {
+      continue;
+    }
+
+    // Removes files through `rm` command.
+    // This is intended to handle bizarre issues with 'stubborn' symlinks.
+    //
+    // Wrapped in double quotes to handle restricted characters such as spaces.
+    auto quoted_path = "\"" + subdir.string() + "/\"*";
+    auto cmd = "rm -rf " + quoted_path;
+    std::system(cmd.c_str());
   }
 }
