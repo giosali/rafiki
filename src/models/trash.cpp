@@ -81,7 +81,8 @@ void Trash::Empty() const {
     }
 
     // Removes files through `rm` command.
-    // This is intended to handle bizarre issues with 'stubborn' symlinks.
+    // This is intended to handle bizarre issues with 'stubborn' symlinks. This
+    // is a last resort.
     //
     // Wrapped in double quotes to handle restricted characters such as spaces.
     auto quoted_path = "\"" + subdir.string() + "/\"*";
