@@ -1,5 +1,6 @@
 #include "trash.h"
 
+#include <QStandardPaths>
 #include <Qt>
 #include <cstdlib>
 #include <filesystem>
@@ -12,12 +13,11 @@
 Trash::Trash()
     : BaseResult{kId,       kIcon,        kTitle,   kTitlePlaceholder,
                  kAltTitle, kDescription, kCommand, kAppendSpaceToCommand} {
-  if (auto xdg_data_home = std::getenv("XDG_DATA_HOME");
-      xdg_data_home != nullptr) {
-    auto home_loc = std::string{xdg_data_home};
-    trash_loc_ =
-      home_loc.empty() ? "~/.local/share/Trash" : home_loc + "/Trash";
-  }
+  auto home_location =
+    QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
+  auto home = std::filesystem::path{home_location.toStdString()};
+  auto trash = home / ".local/share/Trash";
+  path_ = trash.c_str();
 }
 
 QString Trash::DragAndDrop() { return QString{}; }
@@ -51,7 +51,7 @@ void Trash::ProcessKeyRelease(const QKeyCombination& combination,
 }
 
 void Trash::Empty() const {
-  auto trash = std::filesystem::path{trash_loc_};
+  auto trash = std::filesystem::path{path_};
   auto subdirs =
     std::vector<std::filesystem::path>{trash / "files", trash / "info"};
 
