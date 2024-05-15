@@ -28,6 +28,17 @@ SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   setFocusPolicy(Qt::NoFocus);
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
+  // Styles the scrollbar.
+  auto stylesheet = QString{
+    "QScrollBar:vertical { background: none; border: none; "
+    "margin: 0px; "
+    "width: 4px; } QScrollBar::handle:vertical { background: gray; } "
+    "QScrollBar::add-line:vertical { "
+    "background: "
+    "none; border: none; } QScrollBar::sub-line:vertical { background: "
+    "none; border: none; }"};
+  setStyleSheet(stylesheet);
+
   // This is required to properly enable mouse events.
   setMouseTracking(true);
 
