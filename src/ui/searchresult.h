@@ -45,6 +45,7 @@ class SearchResult : public QWidget {
   static constexpr int kHorizontalMargin = 6;
   static constexpr int kIconSize = 44;
   static constexpr int kVerticalMargin = 6;
+  static constexpr int kShortcutRightMargin = 10;
   const QString kShortcutModifierKey = "CTRL + ";
 
   std::shared_ptr<BaseResult> base_result_;

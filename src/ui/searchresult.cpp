@@ -23,6 +23,8 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
   // Sets height of the QLabel called `icon` to the same height of its QPixmap.
   ui_->icon->setFixedHeight(kIconSize);
 
+  ui_->shortcut->setContentsMargins(0, 0, kShortcutRightMargin, 0);
+
   setFixedWidth(parent_width_);
 
   // This is required to allow QListWidget to receive mouse move events.
