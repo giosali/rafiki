@@ -4,6 +4,7 @@
 #include <QKeyCombination>
 #include <QString>
 #include <QWidget>
+#include <filesystem>
 #include <string>
 
 #include "../core/definitions.h"
@@ -33,7 +34,7 @@ class Trash : public BaseResult {
 
   void Empty() const;
 
-  const char* path_;
+  std::filesystem::path path_;
 };
 
 #endif  // TRASH_H

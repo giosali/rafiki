@@ -3,7 +3,6 @@
 #include <QStandardPaths>
 #include <Qt>
 #include <cstdlib>
-#include <filesystem>
 #include <iterator>
 #include <system_error>
 #include <vector>
@@ -16,8 +15,7 @@ Trash::Trash()
   auto home_location =
     QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
   auto home = std::filesystem::path{home_location.toStdString()};
-  auto trash = home / ".local/share/Trash";
-  path_ = trash.c_str();
+  path_ = home / ".local/share/Trash";
 }
 
 QString Trash::DragAndDrop() { return QString{}; }
@@ -51,20 +49,19 @@ void Trash::ProcessKeyRelease(const QKeyCombination& combination,
 }
 
 void Trash::Empty() const {
-  auto trash = std::filesystem::path{path_};
-  if (!std::filesystem::exists(trash)) {
+  if (!std::filesystem::exists(path_)) {
     return;
   }
 
   auto subdirs =
-    std::vector<std::filesystem::path>{trash / "files", trash / "info"};
+    std::vector<std::filesystem::path>{path_ / "files", path_ / "info"};
   for (const auto& subdir : subdirs) {
     if (!std::filesystem::exists(subdir)) {
       continue;
     }
 
     // Removes files from user's Trash through std::filesystem.
-    for (const auto& entry : std::filesystem::recursive_directory_iterator{
+    for (const auto& entry : std::filesystem::directory_iterator{
            subdir,
            std::filesystem::directory_options::skip_permission_denied}) {
       auto ec = std::error_code{};
