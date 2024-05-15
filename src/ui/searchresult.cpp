@@ -15,9 +15,14 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
       parent_width_{parent->width()},
       ui_{std::make_unique<Ui::SearchResult>()} {
   ui_->setupUi(this);
+
+  // Padding around the search result.
   ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
                                             kHorizontalMargin, kVerticalMargin);
-  setFixedHeight(Height());
+
+  // Sets height of the QLabel called `icon` to the same height of its QPixmap.
+  ui_->icon->setFixedHeight(kFixedHeight);
+
   setFixedWidth(parent_width_);
 
   // This is required to allow QListWidget to receive mouse move events.
