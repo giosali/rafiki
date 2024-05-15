@@ -21,7 +21,7 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
                                             kHorizontalMargin, kVerticalMargin);
 
   // Sets height of the QLabel called `icon` to the same height of its QPixmap.
-  ui_->icon->setFixedHeight(kFixedHeight);
+  ui_->icon->setFixedHeight(kIconSize);
 
   setFixedWidth(parent_width_);
 
@@ -70,7 +70,7 @@ void SearchResult::SetIcon(const QString& path) const {
   // For more information regarding blurry icons:
   // https://github.com/qbittorrent/qBittorrent/issues/8841#issuecomment-387179854
   auto icon = QIcon{path};
-  ui_->icon->setPixmap(icon.pixmap(kFixedHeight));
+  ui_->icon->setPixmap(icon.pixmap(kIconSize));
 }
 
 void SearchResult::SetShortcut(const QString& shortcut_key) const {
@@ -100,5 +100,3 @@ void SearchResult::resizeEvent(QResizeEvent* event) {
     SetTitle(elided_text);
   }
 }
-
-int SearchResult::Height() const { return kFixedHeight + kVerticalMargin * 2; }
