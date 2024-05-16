@@ -29,6 +29,7 @@ SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
   // Styles the scrollbar.
+  // https://doc.qt.io/qt-6/stylesheet-examples.html#customizing-qscrollbar
   auto stylesheet = QString{
     "QScrollBar:vertical { background: none; border: none; "
     "margin: 0px; "
