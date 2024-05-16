@@ -112,11 +112,14 @@ void SearchResultList::ProcessInput(const Input& input) {
     return;
   }
 
-  auto worker = new Worker{};
+  // Does not work with smart pointers.
+  auto worker = new searchresultlist::Worker{};
+
   worker->moveToThread(&worker_thread_);
   connect(&worker_thread_, &QThread::finished, worker, &QObject::deleteLater);
-  connect(this, &SearchResultList::InputReceived, worker, &Worker::Work);
-  connect(worker, &Worker::ResultsReadied, this,
+  connect(this, &SearchResultList::InputReceived, worker,
+          &searchresultlist::Worker::ProcessInput);
+  connect(worker, &searchresultlist::Worker::ResultsReadied, this,
           &SearchResultList::ProcessResults);
   worker_thread_.start();
 
@@ -297,9 +300,11 @@ SearchResult* SearchResultList::SearchResultAt(int row) {
   return static_cast<SearchResult*>(itemWidget(item(row)));
 }
 
-void Worker::Work(const Input& input) {
+namespace searchresultlist {
+void Worker::ProcessInput(const Input& input) {
   auto results = Project::FindBaseResults(input);
   results.empty()
     ? emit ResultsReadied(Project::GetDefaultBaseResults(), input.GetFull())
     : emit ResultsReadied(results, input.GetArg());
 }
+}  // namespace searchresultlist

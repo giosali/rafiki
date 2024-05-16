@@ -65,15 +65,17 @@ class SearchResultList : public QListWidget {
   QThread worker_thread_;
 };
 
+namespace searchresultlist {
 class Worker : public QObject {
   Q_OBJECT
 
  public slots:
-  void Work(const Input& input);
+  void ProcessInput(const Input& input);
 
  signals:
   void ResultsReadied(const std::vector<std::shared_ptr<BaseResult>>& results,
                       const QString& text);
 };
+}  // namespace searchresultlist
 
 #endif  // SEARCHRESULTLIST_H
