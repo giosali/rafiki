@@ -4,6 +4,7 @@
 #include <QIcon>
 #include <Qt>
 
+#include "../core/config.h"
 #include "./ui_searchresult.h"
 
 SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
@@ -21,7 +22,8 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
 
   // Sets height of the QLabel called `icon` to the same height of its QPixmap.
   // ui_->icon->setFixedHeight(kIconSize);
-  ui_->icon->setFixedSize(kIconSize, kIconSize);
+  ui_->icon->setFixedSize(Config::search_result_icon_size_,
+                          Config::search_result_icon_size_);
 
   ui_->shortcut->setContentsMargins(0, 0, kShortcutRightMargin, 0);
 
@@ -83,7 +85,7 @@ void SearchResult::SetIcon(const QString& path,
   // For more information regarding blurry icons:
   // https://github.com/qbittorrent/qBittorrent/issues/8841#issuecomment-387179854
   auto icon = QIcon{path};
-  ui_->icon->setPixmap(icon.pixmap(kIconSize));
+  ui_->icon->setPixmap(icon.pixmap(Config::search_result_icon_size_));
 }
 
 void SearchResult::SetShortcut(const QString& shortcut_key) const {

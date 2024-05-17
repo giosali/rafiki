@@ -8,6 +8,7 @@
 #include <filesystem>
 #include <thread>
 
+#include "../core/config.h"
 #include "../ui/searchresultlist.h"
 
 Application::Application(const QString& name, const QString& icon,
@@ -26,7 +27,8 @@ Application::Application(const QString& name, const QString& icon,
     return;
   }
 
-  pixmap_key_ = QPixmapCache::insert(QIcon(icon).pixmap(44));
+  pixmap_key_ =
+    QPixmapCache::insert(QIcon(icon).pixmap(Config::search_result_icon_size_));
 }
 
 QString Application::DragAndDrop() { return QString{}; };
