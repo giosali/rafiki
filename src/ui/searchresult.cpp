@@ -2,7 +2,6 @@
 
 #include <QFontMetrics>
 #include <QIcon>
-#include <QPixmap>
 #include <Qt>
 
 #include "./ui_searchresult.h"
@@ -21,7 +20,8 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
                                             kHorizontalMargin, kVerticalMargin);
 
   // Sets height of the QLabel called `icon` to the same height of its QPixmap.
-  ui_->icon->setFixedHeight(kIconSize);
+  // ui_->icon->setFixedHeight(kIconSize);
+  ui_->icon->setFixedSize(kIconSize, kIconSize);
 
   ui_->shortcut->setContentsMargins(0, 0, kShortcutRightMargin, 0);
 
@@ -30,7 +30,7 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
   // This is required to allow QListWidget to receive mouse move events.
   setMouseTracking(true);
 
-  SetIcon(base_result->GetIcon());
+  SetIcon(base_result->GetIcon(), base_result->GetPixmapKey());
   SetTitle(base_result->FormatTitle(arg));
   SetDescription(base_result->GetDescription());
   SetShortcut(shortcut_key);
@@ -64,7 +64,18 @@ void SearchResult::SetDescription(const QString& description) const {
   ui_->description->show();
 }
 
-void SearchResult::SetIcon(const QString& path) const {
+void SearchResult::SetIcon(const QString& path,
+                           const QPixmapCache::Key& key) const {
+  // Tries to search for a cached QPixmap first.
+  if (key.isValid()) {
+    auto pixmap = QPixmap{};
+    if (auto success = QPixmapCache::find(key, &pixmap); success) {
+      auto result = QPixmapCache::find(key, &pixmap);
+      ui_->icon->setPixmap(pixmap);
+      return;
+    }
+  }
+
   // If the height of the icon is greater than the fixed height of the search
   // result, the icon height will take precedence over the fixed height, thus
   // overriding the fixed height.

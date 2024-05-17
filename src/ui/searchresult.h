@@ -3,6 +3,7 @@
 
 #include <QKeyCombination>
 #include <QPixmap>
+#include <QPixmapCache>
 #include <QResizeEvent>
 #include <QString>
 #include <QWidget>
@@ -33,7 +34,7 @@ class SearchResult : public QWidget {
   void HandleKeyRelease(const QKeyCombination& combination,
                         QWidget* parent) const;
   void SetDescription(const QString& description) const;
-  void SetIcon(const QString& path) const;
+  void SetIcon(const QString& path, const QPixmapCache::Key& key) const;
   void SetShortcut(const QString& shortcut_key) const;
   void SetTitle(const QString& title) const;
 
