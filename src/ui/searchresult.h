@@ -44,7 +44,6 @@ class SearchResult : public QWidget {
  private:
   static constexpr int kHorizontalLayoutGapCount = 2;
   static constexpr int kHorizontalMargin = 6;
-  static constexpr int kIconSize = 44;
   static constexpr int kVerticalMargin = 6;
   static constexpr int kShortcutRightMargin = 10;
   const QString kShortcutModifierKey = "CTRL + ";
