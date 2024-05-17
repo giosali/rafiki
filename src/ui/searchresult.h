@@ -42,11 +42,11 @@ class SearchResult : public QWidget {
   void resizeEvent(QResizeEvent* event) override;
 
  private:
-  static constexpr int kHorizontalLayoutGapCount = 2;
-  static constexpr int kHorizontalMargin = 6;
-  static constexpr int kVerticalMargin = 6;
-  static constexpr int kShortcutRightMargin = 10;
-  const QString kShortcutModifierKey = "CTRL + ";
+  static const int kHorizontalLayoutGapCount;
+  static const int kHorizontalMargin;
+  static const int kVerticalMargin;
+  static const int kShortcutRightMargin;
+  static const QString kShortcutModifierKey;
 
   std::shared_ptr<BaseResult> base_result_;
   int parent_width_;
