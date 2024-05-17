@@ -17,6 +17,7 @@ class DesktopEntry {
   QString GetDescription() const;
   QString GetExec() const;
   QString GetIcon() const;
+  uintmax_t GetIconSize() const;
   QString GetName() const;
   bool NoDisplay() const;
 

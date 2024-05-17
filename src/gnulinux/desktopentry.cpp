@@ -37,6 +37,11 @@ QString DesktopEntry::GetExec() const { return exec_; }
 
 QString DesktopEntry::GetIcon() const { return icon_; }
 
+uintmax_t DesktopEntry::GetIconSize() const {
+  auto icon = std::filesystem::path{icon_.toStdString()};
+  return std::filesystem::exists(icon) ? std::filesystem::file_size(icon) : 0;
+}
+
 QString DesktopEntry::GetName() const { return name_; }
 
 bool DesktopEntry::NoDisplay() const { return no_display_; }
