@@ -37,10 +37,6 @@ set(PROJECT_SOURCES
         src/core/shuntingyardalgorithm.cpp
         src/core/shuntingyardalgorithm.h
         src/core/utils.h
-        src/gnulinux/desktopentry.cpp
-        src/gnulinux/desktopentry.h
-        src/gnulinux/io.cpp
-        src/gnulinux/io.h
         src/main.cpp
         src/models/application.cpp
         src/models/application.h
@@ -74,6 +70,17 @@ set(PROJECT_SOURCES
         ${RES_FILES}
         ${TS_FILES}
 )
+
+# https://cmake.org/cmake/help/latest/variable/CMAKE_SYSTEM_NAME.html
+if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
+    set(PROJECT_SOURCES
+        ${PROJECT_SOURCES}
+        src/gnulinux/desktopentry.cpp
+        src/gnulinux/desktopentry.h
+        src/gnulinux/io.cpp
+        src/gnulinux/io.h
+    )
+endif()
 
 add_definitions(
     -DPROJECT_VERSION="${PROJECT_VERSION}"
