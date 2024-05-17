@@ -38,4 +38,6 @@ QString BaseResult::GetIcon() { return icon_; }
 
 QUuid BaseResult::GetId() { return id_; }
 
+QPixmapCache::Key BaseResult::GetPixmapKey() const { return pixmap_key_; }
+
 bool BaseResult::HasCommand() const { return !command_.isNull(); }

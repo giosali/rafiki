@@ -2,6 +2,7 @@
 #define BASERESULT_H
 
 #include <QJsonObject>
+#include <QPixmapCache>
 #include <QString>
 #include <QUuid>
 
@@ -21,11 +22,13 @@ class BaseResult : public Interactable {
   QString GetDescription();
   QString GetIcon();
   QUuid GetId();
+  QPixmapCache::Key GetPixmapKey() const;
   bool HasCommand() const;
 
  protected:
   QString alt_title_;
   QString description_;
+  QPixmapCache::Key pixmap_key_;
   QString title_placeholder_;
   QString title_;
 
