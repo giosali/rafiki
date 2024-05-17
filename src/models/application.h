@@ -11,7 +11,8 @@
 class Application : public BaseResult {
  public:
   explicit Application(const QString& name, const QString& icon,
-                       const QString& description, const QString& exec);
+                       uintmax_t icon_size, const QString& description,
+                       const QString& exec);
 
   QString DragAndDrop() override;
   void ProcessKeyPress(const QKeyCombination& combination,

@@ -1,6 +1,8 @@
 #include "application.h"
 
 #include <QDesktopServices>
+#include <QIcon>
+#include <QPixmapCache>
 #include <QUuid>
 #include <cstdlib>
 #include <filesystem>
@@ -9,7 +11,8 @@
 #include "../ui/searchresultlist.h"
 
 Application::Application(const QString& name, const QString& icon,
-                         const QString& description, const QString& exec)
+                         uintmax_t icon_size, const QString& description,
+                         const QString& exec)
     : BaseResult{QUuid::createUuid().toString(),
                  icon,
                  name,
@@ -18,7 +21,13 @@ Application::Application(const QString& name, const QString& icon,
                  description,
                  name,
                  false},
-      exec_{exec} {}
+      exec_{exec} {
+  if (icon_size < 1000000) {  // 1 MB
+    return;
+  }
+
+  pixmap_key_ = QPixmapCache::insert(QIcon(icon).pixmap(44));
+}
 
 QString Application::DragAndDrop() { return QString{}; };
 
