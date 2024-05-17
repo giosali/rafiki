@@ -23,6 +23,8 @@ set(PROJECT_SOURCES
         src/core/autocompletemap.h
         src/core/client.cpp
         src/core/client.h
+        src/core/config.cpp
+        src/core/config.h
         src/core/definitions.h
         src/core/finder.cpp
         src/core/finder.h
