@@ -131,7 +131,8 @@ void Project::Initialize() {
   for (const auto& desktop_entry : desktop_entries) {
     auto application = std::make_shared<Application>(
       desktop_entry.GetName(), desktop_entry.GetIcon(),
-      desktop_entry.GetDescription(), desktop_entry.GetExec());
+      desktop_entry.GetIconSize(), desktop_entry.GetDescription(),
+      desktop_entry.GetExec());
     auto cmd = application->FormatCommand();
     autocomplete_.Insert(cmd);
     base_results_map_[cmd].push_back(application);
