@@ -29,10 +29,8 @@ class SearchResult : public QWidget {
 
   QString DragAndDrop() const;
   QPixmap GetIcon() const;
-  void HandleKeyPress(const QKeyCombination& combination,
-                      QWidget* parent) const;
-  void HandleKeyRelease(const QKeyCombination& combination,
-                        QWidget* parent) const;
+  void HandleKeyPress(const QKeyCombination& combination) const;
+  void HandleKeyRelease(const QKeyCombination& combination) const;
   void SetDescription(const QString& description) const;
   void SetIcon(const QString& path, const QPixmapCache::Key& key) const;
   void SetShortcut(const QString& shortcut_key) const;

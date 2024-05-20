@@ -4,7 +4,6 @@
 #include <QJsonObject>
 #include <QKeyCombination>
 #include <QString>
-#include <QWidget>
 
 #include "../ui/searchresultlist.h"
 #include "baseresult.h"
@@ -16,10 +15,8 @@ class WebSearch : public BaseResult {
   ~WebSearch() = default;
 
   QString DragAndDrop() override;
-  void ProcessKeyPress(const QKeyCombination& combination,
-                       QWidget* parent) override;
-  void ProcessKeyRelease(const QKeyCombination& combination,
-                         QWidget* parent) override;
+  void ProcessKeyPress(const QKeyCombination& combination) override;
+  void ProcessKeyRelease(const QKeyCombination& combination) override;
 
  private:
   void ProcessUrl(const QString& url,

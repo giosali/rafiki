@@ -20,10 +20,8 @@ class FileSystemEntry : public ProcessedResultBuilder {
 
   QString DragAndDrop() override;
   bool ProcessInput(const Input& input) override;
-  void ProcessKeyPress(const QKeyCombination& combination,
-                       QWidget* parent) override;
-  void ProcessKeyRelease(const QKeyCombination& combination,
-                         QWidget* parent) override;
+  void ProcessKeyPress(const QKeyCombination& combination) override;
+  void ProcessKeyRelease(const QKeyCombination& combination) override;
 
  private:
   static const inline QString kAltDescription{"Show in folder"};

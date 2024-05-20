@@ -160,7 +160,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& combination) {
     case Qt::Key_Return:
     case Qt::Key_Alt: {
       auto search_result = SearchResultAt(current_row);
-      search_result->HandleKeyPress(combination, this);
+      search_result->HandleKeyPress(combination);
       break;
     }
     case Qt::Key_Up:
@@ -188,7 +188,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& combination) {
 
         auto row = key - Qt::Key_1 + verticalScrollBar()->value();
         auto search_result = SearchResultAt(row);
-        search_result->HandleKeyPress(combination, this);
+        search_result->HandleKeyPress(combination);
       }
 
       break;
@@ -200,7 +200,7 @@ void SearchResultList::ProcessKeyRelease(const QKeyCombination& combination) {
   switch (combination.key()) {
     case Qt::Key_Alt: {
       auto search_result = SearchResultAt(currentRow());
-      search_result->HandleKeyRelease(combination, this);
+      search_result->HandleKeyRelease(combination);
       break;
     }
   }

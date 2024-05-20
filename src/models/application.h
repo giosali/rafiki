@@ -4,7 +4,6 @@
 #include <QKeyCombination>
 #include <QSettings>
 #include <QString>
-#include <QWidget>
 
 #include "baseresult.h"
 
@@ -15,10 +14,8 @@ class Application : public BaseResult {
                        const QString& exec);
 
   QString DragAndDrop() override;
-  void ProcessKeyPress(const QKeyCombination& combination,
-                       QWidget* parent) override;
-  void ProcessKeyRelease(const QKeyCombination& combination,
-                         QWidget* parent) override;
+  void ProcessKeyPress(const QKeyCombination& combination) override;
+  void ProcessKeyRelease(const QKeyCombination& combination) override;
 
  private:
   static inline QString kAltDescription{"Reveal in folder"};

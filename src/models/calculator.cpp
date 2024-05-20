@@ -33,8 +33,7 @@ bool Calculator::ProcessInput(const Input& input) {
   return true;
 }
 
-void Calculator::ProcessKeyPress(const QKeyCombination& combination,
-                                 QWidget* parent) {
+void Calculator::ProcessKeyPress(const QKeyCombination& combination) {
   auto main_window = MainWindow::Get();
   if (main_window == nullptr) {
     return;
@@ -57,8 +56,7 @@ void Calculator::ProcessKeyPress(const QKeyCombination& combination,
   }
 }
 
-void Calculator::ProcessKeyRelease(const QKeyCombination& combination,
-                                   QWidget* parent) {
+void Calculator::ProcessKeyRelease(const QKeyCombination& combination) {
   auto main_window = MainWindow::Get();
   if (main_window == nullptr) {
     return;

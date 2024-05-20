@@ -21,8 +21,7 @@ Trash::Trash()
 
 QString Trash::DragAndDrop() { return QString{}; }
 
-void Trash::ProcessKeyPress(const QKeyCombination& combination,
-                            QWidget* parent) {
+void Trash::ProcessKeyPress(const QKeyCombination& combination) {
   auto main_window = MainWindow::Get();
   if (main_window == nullptr) {
     return;
@@ -44,10 +43,7 @@ void Trash::ProcessKeyPress(const QKeyCombination& combination,
   }
 }
 
-void Trash::ProcessKeyRelease(const QKeyCombination& combination,
-                              QWidget* parent) {
-  return;
-}
+void Trash::ProcessKeyRelease(const QKeyCombination& combination) { return; }
 
 void Trash::Empty() const {
   if (!std::filesystem::exists(path_)) {

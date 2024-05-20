@@ -46,14 +46,12 @@ QString SearchResult::DragAndDrop() const {
 
 QPixmap SearchResult::GetIcon() const { return ui_->icon->pixmap(); }
 
-void SearchResult::HandleKeyPress(const QKeyCombination& combination,
-                                  QWidget* parent) const {
-  base_result_->ProcessKeyPress(combination, parent);
+void SearchResult::HandleKeyPress(const QKeyCombination& combination) const {
+  base_result_->ProcessKeyPress(combination);
 }
 
-void SearchResult::HandleKeyRelease(const QKeyCombination& combination,
-                                    QWidget* parent) const {
-  base_result_->ProcessKeyRelease(combination, parent);
+void SearchResult::HandleKeyRelease(const QKeyCombination& combination) const {
+  base_result_->ProcessKeyRelease(combination);
 }
 
 void SearchResult::SetDescription(const QString& description) const {

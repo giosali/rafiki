@@ -25,8 +25,7 @@ WebSearch::WebSearch(const QJsonObject& object)
 
 QString WebSearch::DragAndDrop() { return QString{}; }
 
-void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
-                                QWidget* parent) {
+void WebSearch::ProcessKeyPress(const QKeyCombination& combination) {
   auto main_window = MainWindow::Get();
   if (main_window == nullptr) {
     return;
@@ -72,17 +71,16 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
   }
 }
 
-void WebSearch::ProcessKeyRelease(const QKeyCombination& combination,
-                                  QWidget* parent) {
-  auto search_result_list = dynamic_cast<SearchResultList*>(parent);
-  if (search_result_list == nullptr) {
+void WebSearch::ProcessKeyRelease(const QKeyCombination& combination) {
+  auto main_window = MainWindow::Get();
+  if (main_window == nullptr) {
     return;
   }
 
   switch (combination.key()) {
     case Qt::Key_Alt:
-      auto arg = search_result_list->GetArg();
-      search_result_list->CurrentSearchResult()->SetTitle(FormatTitle(arg));
+      auto arg = main_window->GetSearchBoxText().GetArg();
+      main_window->SetSearchResultTitle(FormatTitle(arg));
       break;
   }
 }

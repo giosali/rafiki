@@ -71,8 +71,7 @@ bool FileSystemEntry::ProcessInput(const Input& input) {
   return true;
 }
 
-void FileSystemEntry::ProcessKeyPress(const QKeyCombination& combination,
-                                      QWidget* parent) {
+void FileSystemEntry::ProcessKeyPress(const QKeyCombination& combination) {
   if (!is_entry_) {
     return;
   }
@@ -102,8 +101,7 @@ void FileSystemEntry::ProcessKeyPress(const QKeyCombination& combination,
   }
 }
 
-void FileSystemEntry::ProcessKeyRelease(const QKeyCombination& combination,
-                                        QWidget* parent) {
+void FileSystemEntry::ProcessKeyRelease(const QKeyCombination& combination) {
   if (!is_entry_) {
     return;
   }

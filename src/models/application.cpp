@@ -33,8 +33,7 @@ Application::Application(const QString& name, const QString& icon,
 
 QString Application::DragAndDrop() { return QString{}; };
 
-void Application::ProcessKeyPress(const QKeyCombination& combination,
-                                  QWidget* parent) {
+void Application::ProcessKeyPress(const QKeyCombination& combination) {
   auto main_window = MainWindow::Get();
   if (main_window == nullptr) {
     return;
@@ -70,8 +69,7 @@ void Application::ProcessKeyPress(const QKeyCombination& combination,
   }
 }
 
-void Application::ProcessKeyRelease(const QKeyCombination& combination,
-                                    QWidget* parent) {
+void Application::ProcessKeyRelease(const QKeyCombination& combination) {
   auto main_window = MainWindow::Get();
   if (main_window == nullptr) {
     return;
