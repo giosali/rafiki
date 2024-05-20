@@ -19,6 +19,8 @@
 #include "../core/project.h"
 
 SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
+  setObjectName("SearchResultList");
+
   // Component should be hidden on initialization.
   parent == nullptr ? setFixedHeight(0) : setFixedSize(parent->width(), 0);
 
@@ -82,6 +84,24 @@ int SearchResultList::Height() const {
 void SearchResultList::HideParent() {
   auto event = std::make_unique<QHideEvent>();
   emit EventReceived(event.get());
+}
+
+void SearchResultList::UpdateDescription(const QString& text) {
+  auto search_result = SearchResultAt(currentRow());
+  if (search_result == nullptr) {
+    return;
+  }
+
+  search_result->SetDescription(text);
+}
+
+void SearchResultList::UpdateTitle(const QString& text) {
+  auto search_result = SearchResultAt(currentRow());
+  if (search_result == nullptr) {
+    return;
+  }
+
+  search_result->SetTitle(text);
 }
 
 void SearchResultList::ActivateItem(QListWidgetItem* item) {
