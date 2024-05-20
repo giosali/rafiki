@@ -6,6 +6,7 @@
 #include <QString>
 #include <memory>
 
+#include "../core/input.h"
 #include "searchresultlist.h"
 
 QT_BEGIN_NAMESPACE
@@ -21,6 +22,13 @@ class MainWindow : public QMainWindow {
   MainWindow(QWidget *parent = nullptr);
 
   ~MainWindow();
+
+  static MainWindow *Get();
+  Input GetSearchBoxText();
+  void Hide();
+  void SetSearchBoxText(const QString &text);
+  void SetSearchResultDescription(const QString &text);
+  void SetSearchResultTitle(const QString &text);
 
  public slots:
   void ProcessCommandLineArguments(const QString &args);
