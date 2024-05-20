@@ -40,6 +40,7 @@ MainWindow::MainWindow(QWidget* parent)
   setMinimumHeight(box->Height());
 
   connect(this, &MainWindow::Deactivated, box, &SearchBox::Clear);
+  connect(list, &SearchResultList::HideRequested, this, &MainWindow::Hide);
   connect(list, &SearchResultList::ItemsChanged, this, &MainWindow::SetHeight);
   connect(list, &SearchResultList::TextReceived, box, &SearchBox::SetText);
   connect(list, &SearchResultList::EventReceived,
