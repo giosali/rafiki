@@ -17,6 +17,8 @@ SearchBox::~SearchBox() {}
 
 int SearchBox::Height() const { return ui_->layout->sizeHint().height(); }
 
+Input SearchBox::GetText() const { return Input{ui_->searchBox->text()}; }
+
 void SearchBox::Clear() { ui_->searchBox->clear(); }
 
 void SearchBox::SetText(const QString& text) { ui_->searchBox->setText(text); }

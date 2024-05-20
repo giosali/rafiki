@@ -25,6 +25,7 @@ class SearchBox : public QWidget {
   ~SearchBox();
 
   int Height() const;
+  Input GetText() const;
 
  public slots:
   void Clear();
