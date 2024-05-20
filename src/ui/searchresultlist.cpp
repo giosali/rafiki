@@ -81,11 +81,6 @@ int SearchResultList::Height() const {
   return total_height;
 }
 
-void SearchResultList::HideParent() {
-  auto event = std::make_unique<QHideEvent>();
-  emit EventReceived(event.get());
-}
-
 void SearchResultList::UpdateDescription(const QString& text) {
   auto search_result = SearchResultAt(currentRow());
   if (search_result == nullptr) {
@@ -282,7 +277,7 @@ void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
   switch (drop_action) {
     case Qt::CopyAction:
     case Qt::MoveAction:
-      HideParent();
+      emit HideRequested();
       break;
   }
 }

@@ -31,7 +31,6 @@ class SearchResultList : public QListWidget {
   QString GetArg() const;
   QString GetCmd() const;
   int Height() const;
-  void HideParent();
   void UpdateDescription(const QString& text);
   void UpdateTitle(const QString& text);
 
@@ -48,6 +47,7 @@ class SearchResultList : public QListWidget {
   void UpdateShortcuts(int value);
 
  signals:
+  void HideRequested();
   void EventReceived(QEvent* event);
   void InputReceived(const Input& input);
   void ItemsChanged(SearchResultList* list);
