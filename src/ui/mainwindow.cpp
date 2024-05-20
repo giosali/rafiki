@@ -154,6 +154,10 @@ bool MainWindow::event(QEvent* event) {
       hide();
       break;
     case QEvent::WindowDeactivate:  // Window lost focus.
+      if (isHidden()) {
+        break;
+      }
+
       Hide();
       break;
   }
