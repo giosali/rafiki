@@ -25,12 +25,12 @@ class MainWindow : public QMainWindow {
 
   static MainWindow *Get();
   Input GetSearchBoxText();
-  void Hide();
   void SetSearchBoxText(const QString &text);
   void SetSearchResultDescription(const QString &text);
   void SetSearchResultTitle(const QString &text);
 
  public slots:
+  void Hide();
   void ProcessCommandLineArguments(const QString &args);
   void SetHeight(SearchResultList *list);
 
