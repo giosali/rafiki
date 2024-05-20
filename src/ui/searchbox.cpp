@@ -10,7 +10,7 @@ SearchBox::SearchBox(QWidget* parent)
   setFixedHeight(Height());
 
   connect(ui_->searchBox, &QLineEdit::textChanged,
-          [this](const QString& text) { emit TextChanged(Input(text)); });
+          [this](const QString& text) { emit TextChanged(Input{text}); });
 }
 
 SearchBox::~SearchBox() {}
