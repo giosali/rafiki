@@ -2,7 +2,6 @@
 #define APPLICATION_H
 
 #include <QKeyCombination>
-#include <QSettings>
 #include <QString>
 
 #include "baseresult.h"

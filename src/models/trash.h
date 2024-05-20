@@ -3,9 +3,7 @@
 
 #include <QKeyCombination>
 #include <QString>
-#include <QWidget>
 #include <filesystem>
-#include <string>
 
 #include "../core/definitions.h"
 #include "../core/project.h"

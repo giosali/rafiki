@@ -1,6 +1,7 @@
 #ifndef CALCULATOR_H
 #define CALCULATOR_H
 
+#include <QKeyCombination>
 #include <QString>
 
 #include "../core/definitions.h"

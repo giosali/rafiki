@@ -1,7 +1,6 @@
 #include "filesystementry.h"
 
 #include <QDesktopServices>
-#include <QKeyCombination>
 #include <QStandardPaths>
 #include <QUrl>
 #include <memory>

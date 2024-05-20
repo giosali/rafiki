@@ -8,7 +8,6 @@
 #include <vector>
 
 #include "../ui/mainwindow.h"
-#include "../ui/searchresultlist.h"
 
 Trash::Trash()
     : BaseResult{kId,       kIcon,        kTitle,   kTitlePlaceholder,

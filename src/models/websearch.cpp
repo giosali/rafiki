@@ -84,28 +84,3 @@ void WebSearch::ProcessKeyRelease(const QKeyCombination& combination) {
       break;
   }
 }
-
-void WebSearch::ProcessUrl(const QString& url,
-                           SearchResultList* search_result_list) const {
-  if (!url.contains("{}")) {
-    search_result_list->HideParent();
-    QDesktopServices::openUrl(QUrl(url));
-    return;
-  }
-
-  auto arg = search_result_list->GetArg();
-
-  // Means arg is equal to: QString().
-  if (arg.isNull()) {
-    emit search_result_list->TextReceived(FormatCommand());
-    return;
-  }
-
-  // Means arg is equal to: QString("").
-  if (arg.isEmpty()) {
-    return;
-  }
-
-  search_result_list->HideParent();
-  QDesktopServices::openUrl(QUrl(utils::Format(url_, arg)));
-}

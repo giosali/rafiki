@@ -5,7 +5,6 @@
 #include <QKeyCombination>
 #include <QString>
 
-#include "../ui/searchresultlist.h"
 #include "baseresult.h"
 
 class WebSearch : public BaseResult {
@@ -19,9 +18,6 @@ class WebSearch : public BaseResult {
   void ProcessKeyRelease(const QKeyCombination& combination) override;
 
  private:
-  void ProcessUrl(const QString& url,
-                  SearchResultList* search_result_list) const;
-
   QString alt_url_;
   QString url_;
 };
