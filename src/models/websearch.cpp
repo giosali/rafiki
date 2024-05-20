@@ -6,6 +6,7 @@
 #include <Qt>
 
 #include "../core/utils.h"
+#include "../ui/mainwindow.h"
 
 WebSearch::WebSearch(const QJsonObject& object)
     : BaseResult{object["id"].toString(),
@@ -26,29 +27,47 @@ QString WebSearch::DragAndDrop() { return QString{}; }
 
 void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
                                 QWidget* parent) {
-  auto search_result_list = dynamic_cast<SearchResultList*>(parent);
-  if (search_result_list == nullptr) {
+  auto main_window = MainWindow::Get();
+  if (main_window == nullptr) {
     return;
   }
 
   switch (combination.key()) {
     case Qt::Key_Tab:
       if (auto command = FormatCommand();
-          search_result_list->GetCmd() != command) {
-        emit search_result_list->TextReceived(command);
+          main_window->GetSearchBoxText().GetCmd() != command) {
+        main_window->SetSearchBoxText(command);
       }
 
       break;
-    case Qt::Key_Return:
-      if (combination.keyboardModifiers() & Qt::AltModifier) {
-        ProcessUrl(alt_url_, search_result_list);
+    case Qt::Key_Return: {
+      auto url =
+        combination.keyboardModifiers() & Qt::AltModifier ? alt_url_ : url_;
+      if (!url.contains("{}")) {
+        main_window->Hide();
+        QDesktopServices::openUrl(QUrl(url));
         break;
       }
 
-      ProcessUrl(url_, search_result_list);
+      auto arg = main_window->GetSearchBoxText().GetArg();
+
+      // Means arg is equal to: QString().
+      if (arg.isNull()) {
+        main_window->SetSearchBoxText(FormatCommand());
+        break;
+      }
+
+      // Means arg is equal to: QString("").
+      if (arg.isEmpty()) {
+        break;
+      }
+
+      main_window->Hide();
+      QDesktopServices::openUrl(QUrl(utils::Format(url, arg)));
       break;
+    }
     case Qt::Key_Alt:
-      search_result_list->CurrentSearchResult()->SetTitle(alt_title_);
+      main_window->SetSearchResultTitle(alt_title_);
       break;
   }
 }

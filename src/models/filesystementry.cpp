@@ -6,7 +6,7 @@
 #include <QUrl>
 #include <memory>
 
-#include "../ui/searchresultlist.h"
+#include "../ui/mainwindow.h"
 
 FileSystemEntry::FileSystemEntry()
     : ProcessedResultBuilder{kId,       kIcon,
@@ -77,8 +77,8 @@ void FileSystemEntry::ProcessKeyPress(const QKeyCombination& combination,
     return;
   }
 
-  auto search_result_list = dynamic_cast<SearchResultList*>(parent);
-  if (search_result_list == nullptr) {
+  auto main_window = MainWindow::Get();
+  if (main_window == nullptr) {
     return;
   }
 
@@ -92,13 +92,12 @@ void FileSystemEntry::ProcessKeyPress(const QKeyCombination& combination,
                                                          .parent_path()
                                                          .string())
                               : description_);
-      search_result_list->HideParent();
+      main_window->Hide();
       QDesktopServices::openUrl(url);
       break;
     }
     case Qt::Key_Alt:
-      search_result_list->CurrentSearchResult()->SetDescription(
-        kAltDescription);
+      main_window->SetSearchResultDescription(kAltDescription);
       break;
   }
 }
@@ -109,14 +108,14 @@ void FileSystemEntry::ProcessKeyRelease(const QKeyCombination& combination,
     return;
   }
 
-  auto search_result_list = dynamic_cast<SearchResultList*>(parent);
-  if (search_result_list == nullptr) {
+  auto main_window = MainWindow::Get();
+  if (main_window == nullptr) {
     return;
   }
 
   switch (combination.key()) {
     case Qt::Key_Alt:
-      search_result_list->CurrentSearchResult()->SetDescription(description_);
+      main_window->SetSearchResultDescription(description_);
       break;
   }
 }

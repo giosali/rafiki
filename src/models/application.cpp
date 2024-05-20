@@ -9,7 +9,7 @@
 #include <thread>
 
 #include "../core/config.h"
-#include "../ui/searchresultlist.h"
+#include "../ui/mainwindow.h"
 
 Application::Application(const QString& name, const QString& icon,
                          uintmax_t icon_size, const QString& description,
@@ -35,8 +35,8 @@ QString Application::DragAndDrop() { return QString{}; };
 
 void Application::ProcessKeyPress(const QKeyCombination& combination,
                                   QWidget* parent) {
-  auto search_result_list = dynamic_cast<SearchResultList*>(parent);
-  if (search_result_list == nullptr) {
+  auto main_window = MainWindow::Get();
+  if (main_window == nullptr) {
     return;
   }
 
@@ -48,7 +48,7 @@ void Application::ProcessKeyPress(const QKeyCombination& combination,
           break;
         }
 
-        search_result_list->HideParent();
+        main_window->Hide();
         auto path = std::filesystem::path{description_.toStdString()};
         auto parent = path.parent_path();
         auto dir = QUrl::fromLocalFile(QString::fromStdString(parent));
@@ -56,30 +56,30 @@ void Application::ProcessKeyPress(const QKeyCombination& combination,
         break;
       }
 
-      search_result_list->HideParent();
-      auto t = std::thread{
-        [](const QString& exec) { std::system(exec.toStdString().c_str()); },
-        exec_};
+      main_window->Hide();
+
+      // This does not execute when running through VSCode.
+      auto t =
+        std::thread{[this]() { std::system(exec_.toStdString().c_str()); }};
       t.detach();
       break;
     }
     case Qt::Key_Alt:
-      search_result_list->CurrentSearchResult()->SetDescription(
-        kAltDescription);
+      main_window->SetSearchResultDescription(kAltDescription);
       break;
   }
 }
 
 void Application::ProcessKeyRelease(const QKeyCombination& combination,
                                     QWidget* parent) {
-  auto search_result_list = dynamic_cast<SearchResultList*>(parent);
-  if (search_result_list == nullptr) {
+  auto main_window = MainWindow::Get();
+  if (main_window == nullptr) {
     return;
   }
 
   switch (combination.key()) {
     case Qt::Key_Alt:
-      search_result_list->CurrentSearchResult()->SetDescription(description_);
+      main_window->SetSearchResultDescription(description_);
       break;
   }
 }

@@ -7,6 +7,7 @@
 #include <system_error>
 #include <vector>
 
+#include "../ui/mainwindow.h"
 #include "../ui/searchresultlist.h"
 
 Trash::Trash()
@@ -22,22 +23,22 @@ QString Trash::DragAndDrop() { return QString{}; }
 
 void Trash::ProcessKeyPress(const QKeyCombination& combination,
                             QWidget* parent) {
-  auto search_result_list = dynamic_cast<SearchResultList*>(parent);
-  if (search_result_list == nullptr) {
+  auto main_window = MainWindow::Get();
+  if (main_window == nullptr) {
     return;
   }
 
   switch (combination.key()) {
     case Qt::Key_Tab:
       if (auto command = FormatCommand();
-          search_result_list->GetCmd() != command) {
-        emit search_result_list->TextReceived(command);
+          main_window->GetSearchBoxText().GetCmd() != command) {
+        main_window->SetSearchBoxText(command);
       }
 
       break;
 
     case Qt::Key_Return:
-      search_result_list->HideParent();
+      main_window->Hide();
       Empty();
       break;
   }

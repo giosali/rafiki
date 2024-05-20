@@ -6,7 +6,7 @@
 #include <Qt>
 
 #include "../core/shuntingyardalgorithm.h"
-#include "../ui/searchresultlist.h"
+#include "../ui/mainwindow.h"
 
 Calculator::Calculator()
     : ProcessedResult{
@@ -35,14 +35,14 @@ bool Calculator::ProcessInput(const Input& input) {
 
 void Calculator::ProcessKeyPress(const QKeyCombination& combination,
                                  QWidget* parent) {
-  auto search_result_list = dynamic_cast<SearchResultList*>(parent);
-  if (search_result_list == nullptr) {
+  auto main_window = MainWindow::Get();
+  if (main_window == nullptr) {
     return;
   }
 
   switch (combination.key()) {
     case Qt::Key_Return: {
-      search_result_list->HideParent();
+      main_window->Hide();
       if (title_ == title_placeholder_) {
         break;
       }
@@ -52,21 +52,21 @@ void Calculator::ProcessKeyPress(const QKeyCombination& combination,
       break;
     }
     case Qt::Key_Alt:
-      search_result_list->CurrentSearchResult()->SetTitle(FormatNumber(kTitle));
+      main_window->SetSearchResultTitle(FormatNumber(kTitle));
       break;
   }
 }
 
 void Calculator::ProcessKeyRelease(const QKeyCombination& combination,
                                    QWidget* parent) {
-  auto search_result_list = dynamic_cast<SearchResultList*>(parent);
-  if (search_result_list == nullptr) {
+  auto main_window = MainWindow::Get();
+  if (main_window == nullptr) {
     return;
   }
 
   switch (combination.key()) {
     case Qt::Key_Alt:
-      search_result_list->CurrentSearchResult()->SetTitle(kTitle);
+      main_window->SetSearchResultTitle(kTitle);
       break;
   }
 }
