@@ -24,17 +24,18 @@ void SearchBox::Clear() { ui_->searchBox->clear(); }
 void SearchBox::SetText(const QString& text) { ui_->searchBox->setText(text); }
 
 void SearchBox::keyPressEvent(QKeyEvent* event) {
-  if (event->isAutoRepeat()) {
-    return;
-  }
-
   auto combination = event->keyCombination();
   switch (combination.key()) {
     case Qt::Key_Tab:
     case Qt::Key_Return:
+    case Qt::Key_Alt:
+      if (event->isAutoRepeat()) {
+        return;
+      }
+
+      [[fallthrough]];
     case Qt::Key_Up:
     case Qt::Key_Down:
-    case Qt::Key_Alt:
     case Qt::Key_1:
     case Qt::Key_2:
     case Qt::Key_3:
