@@ -61,7 +61,10 @@ class SearchResultList : public QListWidget {
                const QString& arg, int row);
   SearchResult* SearchResultAt(int row);
 
+  QPoint cursor_position_;
+  QListWidgetItem* entered_item_;
   Input input_;
+  bool is_entered_item_selectable_;
   QPoint starting_drag_position_;
   QThread worker_thread_;
 };

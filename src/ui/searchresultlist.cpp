@@ -209,10 +209,22 @@ void SearchResultList::ProcessResults(
 }
 
 void SearchResultList::SetCurrentItem(QListWidgetItem* item) {
+  // Prevents the user from automatically selecting an item when an item appears
+  // underneath the cursor without having moved the cursor.
+  if (!is_entered_item_selectable_) {
+    is_entered_item_selectable_ = true;
+    entered_item_ = item;
+    return;
+  }
+
   setCurrentItem(item);
 }
 
 void SearchResultList::SetCurrentItem(SearchResultList* list) {
+  // Resets the starting move position.
+  // This is typically going to be called after the user types.
+  is_entered_item_selectable_ = false;
+
   setCurrentRow(0);
 }
 
@@ -232,6 +244,14 @@ void SearchResultList::UpdateShortcuts(int value) {
 }
 
 void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
+  // Changes the current selected item after ignoring the initial incidental
+  // hover that triggers when the list is populated with items and the cursor
+  // happens to be above said items.
+  if (is_entered_item_selectable_ && entered_item_ != nullptr) {
+    emit itemEntered(entered_item_);
+    entered_item_ = nullptr;
+  }
+
   // Exits if left mouse button isn't down while dragging.
   if (!(event->buttons() & Qt::LeftButton)) {
     QListWidget::mouseMoveEvent(event);
