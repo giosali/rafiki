@@ -43,10 +43,6 @@ MainWindow::MainWindow(QWidget* parent)
   connect(list, &SearchResultList::HideRequested, this, &MainWindow::Hide);
   connect(list, &SearchResultList::ItemsChanged, this, &MainWindow::SetHeight);
   connect(list, &SearchResultList::TextReceived, box, &SearchBox::SetText);
-  connect(list, &SearchResultList::EventReceived,
-          [box](QEvent* event) { QApplication::sendEvent(box, event); });
-  connect(list, &SearchResultList::EventReceived,
-          [this](QEvent* event) { QApplication::sendEvent(this, event); });
   connect(box, &SearchBox::TextChanged, list, &SearchResultList::ProcessInput);
   connect(box, &SearchBox::KeyPressed, list,
           &SearchResultList::ProcessKeyPress);

@@ -51,6 +51,8 @@ SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
           &SearchResultList::ActivateItem);
   connect(this, &SearchResultList::ItemsChanged, this,
           &SearchResultList::AdjustSize);
+  connect(this, &SearchResultList::KeyPressSimulated, this,
+          &SearchResultList::ProcessKeyPress);
   connect(this, SIGNAL(itemEntered(QListWidgetItem*)), this,
           SLOT(SetCurrentItem(QListWidgetItem*)));
   connect(this, SIGNAL(ItemsChanged(SearchResultList*)), this,
@@ -104,14 +106,7 @@ void SearchResultList::ActivateItem(QListWidgetItem* item) {
     return;
   }
 
-  auto search_result = SearchResultAt(row(item));
-  if (search_result == nullptr) {
-    return;
-  }
-
-  auto key_event = std::make_unique<QKeyEvent>(
-    QEvent::KeyPress, Qt::Key_Return, QApplication::keyboardModifiers());
-  emit EventReceived(key_event.get());
+  emit KeyPressSimulated(QKeyCombination{Qt::Key_Return});
 }
 
 void SearchResultList::AdjustSize(SearchResultList* list) {

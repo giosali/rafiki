@@ -1,7 +1,6 @@
 #ifndef SEARCHRESULTLIST_H
 #define SEARCHRESULTLIST_H
 
-#include <QEvent>
 #include <QKeyCombination>
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -48,9 +47,9 @@ class SearchResultList : public QListWidget {
 
  signals:
   void HideRequested();
-  void EventReceived(QEvent* event);
   void InputReceived(const Input& input);
   void ItemsChanged(SearchResultList* list);
+  void KeyPressSimulated(const QKeyCombination& combination);
   void TextReceived(const QString& text);
 
  protected:
