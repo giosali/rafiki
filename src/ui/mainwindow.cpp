@@ -141,13 +141,6 @@ void MainWindow::SetHeight(SearchResultList* list) {
 
 bool MainWindow::event(QEvent* event) {
   switch (event->type()) {
-    case QEvent::Hide:
-      if (isHidden()) {
-        break;
-      }
-
-      hide();
-      break;
     case QEvent::WindowDeactivate:  // Window lost focus.
       if (isHidden()) {
         break;
