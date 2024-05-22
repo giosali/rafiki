@@ -68,17 +68,6 @@ SearchResultList::~SearchResultList() {
   worker_thread_.wait();
 }
 
-int SearchResultList::Height() const {
-  auto row_height = sizeHintForRow(0);
-  if (row_height == -1) {
-    return 0;
-  }
-
-  auto min_num_rows = std::min(count(), kMaxCount);
-  auto total_height = min_num_rows * row_height;
-  return total_height;
-}
-
 void SearchResultList::UpdateDescription(const QString& text) {
   auto search_result = SearchResultAt(currentRow());
   if (search_result == nullptr) {
@@ -318,6 +307,17 @@ void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
   item->setSizeHint(widget->sizeHint());
 
   setItemWidget(item.release(), widget.release());
+}
+
+int SearchResultList::Height() const {
+  auto row_height = sizeHintForRow(0);
+  if (row_height == -1) {
+    return 0;
+  }
+
+  auto min_num_rows = std::min(count(), kMaxCount);
+  auto total_height = min_num_rows * row_height;
+  return total_height;
 }
 
 SearchResult* SearchResultList::SearchResultAt(int row) {

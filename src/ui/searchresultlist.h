@@ -26,7 +26,6 @@ class SearchResultList : public QListWidget {
 
   ~SearchResultList();
 
-  int Height() const;
   void UpdateDescription(const QString& text);
   void UpdateTitle(const QString& text);
 
@@ -55,6 +54,7 @@ class SearchResultList : public QListWidget {
  private:
   void AddItem(const std::shared_ptr<BaseResult>& base_result,
                const QString& arg, int row);
+  int Height() const;
   SearchResult* SearchResultAt(int row);
 
   QPoint cursor_position_;
