@@ -11,6 +11,7 @@
 
 #include "./ui_mainwindow.h"
 #include "searchbox.h"
+#include "searchresultlist.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow{parent}, ui_{std::make_unique<Ui::MainWindow>()} {

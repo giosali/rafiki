@@ -7,7 +7,6 @@
 #include <memory>
 
 #include "../core/input.h"
-#include "searchresultlist.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
