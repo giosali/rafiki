@@ -42,7 +42,6 @@ MainWindow::MainWindow(QWidget* parent)
   connect(this, &MainWindow::Deactivated, box, &SearchBox::Clear);
   connect(list, &SearchResultList::HideRequested, this, &MainWindow::Hide);
   connect(list, &SearchResultList::ItemsChanged, this, &MainWindow::SetHeight);
-  connect(list, &SearchResultList::TextReceived, box, &SearchBox::SetText);
   connect(box, &SearchBox::TextChanged, list, &SearchResultList::ProcessInput);
   connect(box, &SearchBox::KeyPressed, list,
           &SearchResultList::ProcessKeyPress);
