@@ -118,8 +118,8 @@ const int SearchResult::kHorizontalLayoutGapCount = 2;
 
 const int SearchResult::kHorizontalMargin = 6;
 
-const int SearchResult::kVerticalMargin = 6;
+const QString SearchResult::kShortcutModifierKey = "CTRL + ";
 
 const int SearchResult::kShortcutRightMargin = 10;
 
-const QString SearchResult::kShortcutModifierKey = "CTRL + ";
+const int SearchResult::kVerticalMargin = 6;

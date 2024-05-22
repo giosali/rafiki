@@ -42,9 +42,9 @@ class SearchResult : public QWidget {
  private:
   static const int kHorizontalLayoutGapCount;
   static const int kHorizontalMargin;
-  static const int kVerticalMargin;
-  static const int kShortcutRightMargin;
   static const QString kShortcutModifierKey;
+  static const int kShortcutRightMargin;
+  static const int kVerticalMargin;
 
   std::shared_ptr<BaseResult> base_result_;
   int parent_width_;
