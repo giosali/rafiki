@@ -298,7 +298,7 @@ void SearchResultList::mousePressEvent(QMouseEvent* event) {
 
 void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
                                const QString& arg, int row) {
-  auto key = row < kMaxCount ? QString::number(row + 1) : (const char*)0;
+  auto key = row < kMaxCount ? QString::number(row + 1) : QString{};
   auto widget = std::make_unique<SearchResult>(base_result, arg, key, this);
   auto item = std::make_unique<QListWidgetItem>(this);
 
