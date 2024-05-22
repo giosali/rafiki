@@ -132,11 +132,10 @@ void MainWindow::ProcessCommandLineArguments(const QString& args) {
   }
 }
 
-void MainWindow::SetHeight(SearchResultList* list) {
+void MainWindow::SetHeight(int height) {
   // The minimum height of the window being already set prevents the window from
   // shrinking down all the way to 0, which is a good thing.
-  auto list_height = list->Height();
-  resize(width(), list_height == 0 ? 0 : minimumHeight() + list_height);
+  resize(width(), height == 0 ? 0 : minimumHeight() + height);
 }
 
 bool MainWindow::event(QEvent* event) {

@@ -35,20 +35,20 @@ class SearchResultList : public QListWidget {
 
  public slots:
   void ActivateItem(QListWidgetItem* item);
-  void AdjustSize(SearchResultList* list);
+  void AdjustSize(int height);
   void ProcessInput(const Input& input);
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
   void ProcessResults(const std::vector<std::shared_ptr<BaseResult>>& results,
                       const QString& text);
   void SetCurrentItem(QListWidgetItem* item);
-  void SetCurrentItem(SearchResultList* list);
+  void SetCurrentItem(int _);
   void UpdateShortcuts(int value);
 
  signals:
   void HideRequested();
   void InputReceived(const Input& input);
-  void ItemsChanged(SearchResultList* list);
+  void ItemsChanged(int height);
   void KeyPressSimulated(const QKeyCombination& combination);
 
  protected:

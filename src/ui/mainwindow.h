@@ -32,7 +32,7 @@ class MainWindow : public QMainWindow {
  public slots:
   void Hide();
   void ProcessCommandLineArguments(const QString &args);
-  void SetHeight(SearchResultList *list);
+  void SetHeight(int height);
 
  signals:
   void Deactivated();

@@ -13,6 +13,7 @@
 #include <QSize>
 #include <QUrl>
 #include <Qt>
+#include <QtGlobal>
 #include <algorithm>
 #include <cstdlib>
 
@@ -45,18 +46,21 @@ SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   // This is required to properly enable mouse events.
   setMouseTracking(true);
 
+  // Inherited -> this
   connect(verticalScrollBar(), &QScrollBar::valueChanged, this,
           &SearchResultList::UpdateShortcuts);
   connect(this, &QListWidget::itemClicked, this,
           &SearchResultList::ActivateItem);
+  connect(this, &QListWidget::itemEntered, this,
+          qOverload<QListWidgetItem*>(&SearchResultList::SetCurrentItem));
+
+  // this -> this
   connect(this, &SearchResultList::ItemsChanged, this,
           &SearchResultList::AdjustSize);
+  connect(this, &SearchResultList::ItemsChanged, this,
+          qOverload<int>(&SearchResultList::SetCurrentItem));
   connect(this, &SearchResultList::KeyPressSimulated, this,
           &SearchResultList::ProcessKeyPress);
-  connect(this, SIGNAL(itemEntered(QListWidgetItem*)), this,
-          SLOT(SetCurrentItem(QListWidgetItem*)));
-  connect(this, SIGNAL(ItemsChanged(SearchResultList*)), this,
-          SLOT(SetCurrentItem(SearchResultList*)));
 }
 
 SearchResultList::~SearchResultList() {
@@ -109,16 +113,14 @@ void SearchResultList::ActivateItem(QListWidgetItem* item) {
   emit KeyPressSimulated(QKeyCombination{Qt::Key_Return});
 }
 
-void SearchResultList::AdjustSize(SearchResultList* list) {
-  setFixedHeight(Height());
-}
+void SearchResultList::AdjustSize(int height) { setFixedHeight(height); }
 
 void SearchResultList::ProcessInput(const Input& input) {
   worker_thread_.exit();
 
   if (input.IsEmpty()) {
     clear();  // Helps prevent flicker.
-    emit ItemsChanged(this);
+    emit ItemsChanged(Height());
     return;
   }
 
@@ -205,7 +207,7 @@ void SearchResultList::ProcessResults(
     AddItem(results[i], text, i);
   }
 
-  emit ItemsChanged(this);
+  emit ItemsChanged(Height());
 }
 
 void SearchResultList::SetCurrentItem(QListWidgetItem* item) {
@@ -220,7 +222,7 @@ void SearchResultList::SetCurrentItem(QListWidgetItem* item) {
   setCurrentItem(item);
 }
 
-void SearchResultList::SetCurrentItem(SearchResultList* list) {
+void SearchResultList::SetCurrentItem(int _) {
   // Resets the starting move position.
   // This is typically going to be called after the user types.
   is_entered_item_selectable_ = false;
