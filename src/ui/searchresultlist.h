@@ -26,9 +26,6 @@ class SearchResultList : public QListWidget {
 
   ~SearchResultList();
 
-  SearchResult* CurrentSearchResult() const;
-  QString GetArg() const;
-  QString GetCmd() const;
   int Height() const;
   void UpdateDescription(const QString& text);
   void UpdateTitle(const QString& text);
@@ -62,7 +59,6 @@ class SearchResultList : public QListWidget {
 
   QPoint cursor_position_;
   QListWidgetItem* entered_item_;
-  Input input_;
   bool is_entered_item_selectable_;
   QPoint starting_drag_position_;
   QThread worker_thread_;

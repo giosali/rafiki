@@ -68,14 +68,6 @@ SearchResultList::~SearchResultList() {
   worker_thread_.wait();
 }
 
-SearchResult* SearchResultList::CurrentSearchResult() const {
-  return static_cast<SearchResult*>(itemWidget(currentItem()));
-}
-
-QString SearchResultList::GetArg() const { return input_.GetArg(); }
-
-QString SearchResultList::GetCmd() const { return input_.GetCmd(); }
-
 int SearchResultList::Height() const {
   auto row_height = sizeHintForRow(0);
   if (row_height == -1) {
