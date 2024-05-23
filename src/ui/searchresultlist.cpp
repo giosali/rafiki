@@ -172,7 +172,12 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& combination) {
 void SearchResultList::ProcessKeyRelease(const QKeyCombination& combination) {
   switch (combination.key()) {
     case Qt::Key_Alt: {
-      auto search_result = SearchResultAt(currentRow());
+      auto current_row = currentRow();
+      if (current_row == -1) {
+        break;
+      }
+
+      auto search_result = SearchResultAt(current_row);
       search_result->HandleKeyRelease(combination);
       break;
     }
