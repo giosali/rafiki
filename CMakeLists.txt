@@ -66,6 +66,8 @@ set(PROJECT_SOURCES
         src/ui/searchbox.ui
         src/ui/searchresult.cpp
         src/ui/searchresult.h
+        src/ui/searchresultitem.cpp
+        src/ui/searchresultitem.h
         src/ui/searchresult.ui
         src/ui/searchresultlist.cpp
         src/ui/searchresultlist.h
