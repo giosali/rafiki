@@ -50,7 +50,7 @@ class SearchResultList : public QListWidget {
 
  private:
   void AddItem(const std::shared_ptr<BaseResult>& base_result,
-               const QString& arg, int row);
+               const QString& arg, int index);
   int Height() const;
   SearchResult* SearchResultAt(int row);
 

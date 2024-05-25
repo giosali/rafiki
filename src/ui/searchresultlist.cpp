@@ -309,14 +309,12 @@ void SearchResultList::mousePressEvent(QMouseEvent* event) {
 }
 
 void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
-                               const QString& arg, int row) {
-  auto key = row < Config::search_result_list_max_count_
-               ? QString::number(row + 1)
-               : QString{};
-
-  auto widget = new SearchResult(base_result, arg, key, row, this);
+                               const QString& arg, int index) {
+  auto widget = new SearchResult(base_result, arg, index, this);
   connect(verticalScrollBar(), &QScrollBar::valueChanged, widget,
           &SearchResult::UpdateShortcut);
+  connect(this, &QListWidget::currentRowChanged, widget,
+          &SearchResult::SetIsSelected);
 
   auto item = new SearchResultItem(base_result->GetId(), this);
 
