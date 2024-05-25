@@ -8,8 +8,7 @@
 #include "./ui_searchresult.h"
 
 SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
-                           const QString& arg, const QString& shortcut_key,
-                           int index, QWidget* parent)
+                           const QString& arg, int index, QWidget* parent)
     : QWidget{parent},
       base_result_{base_result},
       index_{index},
@@ -36,7 +35,7 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
   SetIcon(base_result->GetIcon(), base_result->GetPixmapKey());
   SetTitle(base_result->FormatTitle(arg));
   SetDescription(base_result->GetDescription());
-  SetShortcut(shortcut_key);
+  SetShortcut(index);
 }
 
 SearchResult::~SearchResult() {}
@@ -87,13 +86,32 @@ void SearchResult::SetIcon(const QString& path,
   ui_->icon->setPixmap(icon.pixmap(Config::search_result_icon_size_));
 }
 
-void SearchResult::SetShortcut(const QString& shortcut_key) const {
-  ui_->shortcut->setText(
-    shortcut_key.isNull() ? shortcut_key : kShortcutModifierKey + shortcut_key);
+void SearchResult::SetShortcut(int row) const {
+  if (row >= Config::search_result_list_max_count_) {
+    return;
+  }
+
+  ui_->shortcut->setText(kShortcutModifierKey + QString::number(row + 1));
+}
+
+void SearchResult::SetShortcut(const QString& text) const {
+  ui_->shortcut->setText(text);
 }
 
 void SearchResult::SetTitle(const QString& title) const {
   ui_->title->setText(title);
+}
+
+void SearchResult::SetIsSelected(int current_row) {
+  // Updates the shortcut of the result that is now no longer the selected item.
+  if (!previous_shortcut_.isEmpty()) {
+    SetShortcut(previous_shortcut_);
+  }
+
+  if (current_row == index_) {
+    previous_shortcut_ = ui_->shortcut->text();
+    SetShortcut(kReturnKey);
+  }
 }
 
 void SearchResult::UpdateShortcut(int slider_value) {
@@ -101,12 +119,8 @@ void SearchResult::UpdateShortcut(int slider_value) {
     return;
   }
 
-  auto number = index_ - slider_value + 1;
-  if (number > Config::search_result_list_max_count_) {
-    return;
-  }
-
-  SetShortcut(QString::number(number));
+  auto diff = index_ - slider_value;
+  SetShortcut(diff);
 }
 
 void SearchResult::resizeEvent(QResizeEvent* event) {
@@ -131,6 +145,8 @@ void SearchResult::resizeEvent(QResizeEvent* event) {
 const int SearchResult::kHorizontalLayoutGapCount = 2;
 
 const int SearchResult::kHorizontalMargin = 6;
+
+const QString SearchResult::kReturnKey = "↵";
 
 const QString SearchResult::kShortcutModifierKey = "CTRL + ";
 

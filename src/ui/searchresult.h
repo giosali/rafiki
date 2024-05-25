@@ -22,8 +22,8 @@ class SearchResult : public QWidget {
 
  public:
   explicit SearchResult(const std::shared_ptr<BaseResult>& base_result,
-                        const QString& arg, const QString& shortcut_key,
-                        int index, QWidget* parent = nullptr);
+                        const QString& arg, int index,
+                        QWidget* parent = nullptr);
 
   ~SearchResult();
 
@@ -33,10 +33,12 @@ class SearchResult : public QWidget {
   void HandleKeyRelease(const QKeyCombination& combination) const;
   void SetDescription(const QString& description) const;
   void SetIcon(const QString& path, const QPixmapCache::Key& key) const;
-  void SetShortcut(const QString& shortcut_key) const;
+  void SetShortcut(int row) const;
+  void SetShortcut(const QString& text) const;
   void SetTitle(const QString& title) const;
 
  public slots:
+  void SetIsSelected(int current_row);
   void UpdateShortcut(int slider_value);
 
  protected:
@@ -45,6 +47,7 @@ class SearchResult : public QWidget {
  private:
   static const int kHorizontalLayoutGapCount;
   static const int kHorizontalMargin;
+  static const QString kReturnKey;
   static const QString kShortcutModifierKey;
   static const int kShortcutRightMargin;
   static const int kVerticalMargin;
@@ -52,6 +55,7 @@ class SearchResult : public QWidget {
   std::shared_ptr<BaseResult> base_result_;
   int index_;
   int parent_width_;
+  QString previous_shortcut_;
   std::unique_ptr<Ui::SearchResult> ui_;
 };
 
