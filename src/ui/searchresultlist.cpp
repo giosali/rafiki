@@ -18,6 +18,7 @@
 #include <cstdlib>
 
 #include "../core/project.h"
+#include "searchresultitem.h"
 
 SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   setObjectName("SearchResultList");
@@ -57,8 +58,6 @@ SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   // this -> this
   connect(this, &SearchResultList::ItemsChanged, this,
           &SearchResultList::AdjustSize);
-  connect(this, &SearchResultList::ItemsChanged, this,
-          qOverload<int>(&SearchResultList::SetCurrentItem));
   connect(this, &SearchResultList::KeyPressSimulated, this,
           &SearchResultList::ProcessKeyPress);
 }
@@ -99,8 +98,13 @@ void SearchResultList::AdjustSize(int height) { setFixedHeight(height); }
 void SearchResultList::ProcessInput(const Input& input) {
   worker_thread_.exit();
 
+  // Resets the starting move position.
+  // This value will always be reset after the user types.
+  is_entered_item_selectable_ = false;
+
   if (input.IsEmpty()) {
-    clear();  // Helps prevent flicker.
+    clear();                      // Helps prevent flicker.
+    user_selected_item_ = false;  // Resets.
     emit ItemsChanged(Height());
     return;
   }
@@ -112,6 +116,8 @@ void SearchResultList::ProcessInput(const Input& input) {
   connect(&worker_thread_, &QThread::finished, worker, &QObject::deleteLater);
   connect(this, &SearchResultList::InputReceived, worker,
           &searchresultlist::Worker::ProcessInput);
+  connect(worker, &searchresultlist::Worker::DefaultResultsGuardChanged, this,
+          &SearchResultList::SetUserSelectedItem);
   connect(worker, &searchresultlist::Worker::ResultsReadied, this,
           &SearchResultList::ProcessResults);
   worker_thread_.start();
@@ -145,6 +151,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& combination) {
       }
 
       setCurrentRow(new_current_row);
+      user_selected_item_ = true;
       break;
     }
     case Qt::Key_1:
@@ -187,12 +194,30 @@ void SearchResultList::ProcessKeyRelease(const QKeyCombination& combination) {
 void SearchResultList::ProcessResults(
   const std::vector<std::shared_ptr<BaseResult>>& results,
   const QString& text) {
+  auto current_row = currentRow();
+  auto current_id =
+    current_row == -1
+      ? QUuid{}
+      : static_cast<SearchResultItem*>(item(current_row))->GetId();
+  auto row = 0;
+
   clear();  // Helps prevent flicker.
 
+  // Ensures we don't check for matching IDs since there can only be one match.
+  bool found_id = false;
+
   for (size_t i = 0; i < results.size(); ++i) {
-    AddItem(results[i], text, i);
+    auto result = results[i];
+    AddItem(result, text, i);
+
+    if (user_selected_item_ && !found_id && result->GetId() == current_id) {
+      row = i;
+      found_id = true;
+    }
   }
 
+  setCurrentRow(row);
+  scrollToItem(currentItem());
   emit ItemsChanged(Height());
 }
 
@@ -206,14 +231,11 @@ void SearchResultList::SetCurrentItem(QListWidgetItem* item) {
   }
 
   setCurrentItem(item);
+  user_selected_item_ = true;
 }
 
-void SearchResultList::SetCurrentItem(int _) {
-  // Resets the starting move position.
-  // This is typically going to be called after the user types.
-  is_entered_item_selectable_ = false;
-
-  setCurrentRow(0);
+void SearchResultList::SetUserSelectedItem(bool value) {
+  user_selected_item_ = value;
 }
 
 void SearchResultList::UpdateShortcuts(int value) {
@@ -305,7 +327,7 @@ void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
                                const QString& arg, int row) {
   auto key = row < kMaxCount ? QString::number(row + 1) : QString{};
   auto widget = std::make_unique<SearchResult>(base_result, arg, key, this);
-  auto item = std::make_unique<QListWidgetItem>(this);
+  auto item = std::make_unique<SearchResultItem>(base_result->GetId(), this);
 
   // Sets the actual height of search result items and prevents unusual sizing
   // differences between items.
@@ -331,9 +353,30 @@ SearchResult* SearchResultList::SearchResultAt(int row) {
 
 namespace searchresultlist {
 void Worker::ProcessInput(const Input& input) {
+  // When the user:
+  // - ***is just now*** receiving default search results
+  // - deletes all input
+  // --> *Don't* reselect the previously selected item. Select the first item.
+  // When the user:
+  // - manually selects an item (through arrow keys/mouse hover)
+  // --> Reselect the previously selected item.
+  static bool last_results_were_default_results = false;
+
   auto results = Project::FindBaseResults(input);
-  results.empty()
-    ? emit ResultsReadied(Project::GetDefaultBaseResults(), input.GetFull())
-    : emit ResultsReadied(results, input.GetArg());
+  if (results.empty()) {
+    if (!last_results_were_default_results) {
+      emit DefaultResultsGuardChanged(false);
+    }
+
+    last_results_were_default_results = true;
+    emit ResultsReadied(Project::GetDefaultBaseResults(), input.GetFull());
+  } else {
+    if (last_results_were_default_results) {
+      emit DefaultResultsGuardChanged(false);
+    }
+
+    last_results_were_default_results = false;
+    emit ResultsReadied(results, input.GetArg());
+  }
 }
 }  // namespace searchresultlist

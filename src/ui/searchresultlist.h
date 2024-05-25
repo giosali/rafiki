@@ -38,7 +38,7 @@ class SearchResultList : public QListWidget {
   void ProcessResults(const std::vector<std::shared_ptr<BaseResult>>& results,
                       const QString& text);
   void SetCurrentItem(QListWidgetItem* item);
-  void SetCurrentItem(int _);
+  void SetUserSelectedItem(bool value);
   void UpdateShortcuts(int value);
 
  signals:
@@ -60,7 +60,9 @@ class SearchResultList : public QListWidget {
   QPoint cursor_position_;
   QListWidgetItem* entered_item_;
   bool is_entered_item_selectable_;
+  bool follow_last_selected_;
   QPoint starting_drag_position_;
+  bool user_selected_item_;
   QThread worker_thread_;
 };
 
@@ -72,6 +74,7 @@ class Worker : public QObject {
   void ProcessInput(const Input& input);
 
  signals:
+  void DefaultResultsGuardChanged(bool value);
   void ResultsReadied(const std::vector<std::shared_ptr<BaseResult>>& results,
                       const QString& text);
 };
