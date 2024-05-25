@@ -9,9 +9,10 @@
 
 SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
                            const QString& arg, const QString& shortcut_key,
-                           QWidget* parent)
+                           int index, QWidget* parent)
     : QWidget{parent},
       base_result_{base_result},
+      index_{index},
       parent_width_{parent->width()},
       ui_{std::make_unique<Ui::SearchResult>()} {
   ui_->setupUi(this);
@@ -93,6 +94,19 @@ void SearchResult::SetShortcut(const QString& shortcut_key) const {
 
 void SearchResult::SetTitle(const QString& title) const {
   ui_->title->setText(title);
+}
+
+void SearchResult::UpdateShortcut(int slider_value) {
+  if (index_ < slider_value) {
+    return;
+  }
+
+  auto number = index_ - slider_value + 1;
+  if (number > Config::search_result_list_max_count_) {
+    return;
+  }
+
+  SetShortcut(QString::number(number));
 }
 
 void SearchResult::resizeEvent(QResizeEvent* event) {

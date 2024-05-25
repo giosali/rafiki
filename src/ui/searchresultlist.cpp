@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <cstdlib>
 
+#include "../core/config.h"
 #include "../core/project.h"
 #include "searchresultitem.h"
 
@@ -48,8 +49,6 @@ SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   setMouseTracking(true);
 
   // Inherited -> this
-  connect(verticalScrollBar(), &QScrollBar::valueChanged, this,
-          &SearchResultList::UpdateShortcuts);
   connect(this, &QListWidget::itemClicked, this,
           &SearchResultList::ActivateItem);
   connect(this, &QListWidget::itemEntered, this,
@@ -217,7 +216,8 @@ void SearchResultList::ProcessResults(
   }
 
   setCurrentRow(row);
-  scrollToItem(currentItem());
+  // TODO: check if necessary.
+  // scrollToItem(currentItem());
   emit ItemsChanged(Height());
 }
 
@@ -236,21 +236,6 @@ void SearchResultList::SetCurrentItem(QListWidgetItem* item) {
 
 void SearchResultList::SetUserSelectedItem(bool value) {
   user_selected_item_ = value;
-}
-
-void SearchResultList::UpdateShortcuts(int value) {
-  for (size_t i = 0, j = 0; i < count() && j < kMaxCount; ++i) {
-    if (i < value) {
-      continue;
-    }
-
-    auto search_result = SearchResultAt(i);
-    if (search_result == nullptr) {
-      continue;
-    }
-
-    search_result->SetShortcut(QString::number(++j));
-  }
 }
 
 void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
@@ -325,15 +310,21 @@ void SearchResultList::mousePressEvent(QMouseEvent* event) {
 
 void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
                                const QString& arg, int row) {
-  auto key = row < kMaxCount ? QString::number(row + 1) : QString{};
-  auto widget = std::make_unique<SearchResult>(base_result, arg, key, this);
-  auto item = std::make_unique<SearchResultItem>(base_result->GetId(), this);
+  auto key = row < Config::search_result_list_max_count_
+               ? QString::number(row + 1)
+               : QString{};
+
+  auto widget = new SearchResult(base_result, arg, key, row, this);
+  connect(verticalScrollBar(), &QScrollBar::valueChanged, widget,
+          &SearchResult::UpdateShortcut);
+
+  auto item = new SearchResultItem(base_result->GetId(), this);
 
   // Sets the actual height of search result items and prevents unusual sizing
   // differences between items.
   item->setSizeHint(widget->sizeHint());
 
-  setItemWidget(item.release(), widget.release());
+  setItemWidget(item, widget);
 }
 
 int SearchResultList::Height() const {
@@ -342,7 +333,7 @@ int SearchResultList::Height() const {
     return 0;
   }
 
-  auto min_num_rows = std::min(count(), kMaxCount);
+  auto min_num_rows = std::min(count(), Config::search_result_list_max_count_);
   auto total_height = min_num_rows * row_height;
   return total_height;
 }

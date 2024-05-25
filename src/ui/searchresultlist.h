@@ -20,8 +20,6 @@ class SearchResultList : public QListWidget {
   Q_OBJECT
 
  public:
-  static constexpr int kMaxCount = 6;
-
   SearchResultList(QWidget* parent = nullptr);
 
   ~SearchResultList();
@@ -39,7 +37,6 @@ class SearchResultList : public QListWidget {
                       const QString& text);
   void SetCurrentItem(QListWidgetItem* item);
   void SetUserSelectedItem(bool value);
-  void UpdateShortcuts(int value);
 
  signals:
   void HideRequested();

@@ -23,7 +23,7 @@ class SearchResult : public QWidget {
  public:
   explicit SearchResult(const std::shared_ptr<BaseResult>& base_result,
                         const QString& arg, const QString& shortcut_key,
-                        QWidget* parent = nullptr);
+                        int index, QWidget* parent = nullptr);
 
   ~SearchResult();
 
@@ -36,6 +36,9 @@ class SearchResult : public QWidget {
   void SetShortcut(const QString& shortcut_key) const;
   void SetTitle(const QString& title) const;
 
+ public slots:
+  void UpdateShortcut(int slider_value);
+
  protected:
   void resizeEvent(QResizeEvent* event) override;
 
@@ -47,6 +50,7 @@ class SearchResult : public QWidget {
   static const int kVerticalMargin;
 
   std::shared_ptr<BaseResult> base_result_;
+  int index_;
   int parent_width_;
   std::unique_ptr<Ui::SearchResult> ui_;
 };
