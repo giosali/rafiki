@@ -33,7 +33,7 @@ class SearchResult : public QWidget {
   void HandleKeyRelease(const QKeyCombination& combination) const;
   void SetDescription(const QString& description) const;
   void SetIcon(const QString& path, const QPixmapCache::Key& key) const;
-  void SetShortcut(int row) const;
+  void SetShortcut(int row);
   void SetShortcut(const QString& text) const;
   void SetTitle(const QString& title) const;
 
@@ -54,6 +54,7 @@ class SearchResult : public QWidget {
 
   std::shared_ptr<BaseResult> base_result_;
   int index_;
+  bool is_selected_;
   int parent_width_;
   QString previous_shortcut_;
   std::unique_ptr<Ui::SearchResult> ui_;

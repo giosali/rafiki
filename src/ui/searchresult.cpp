@@ -86,12 +86,17 @@ void SearchResult::SetIcon(const QString& path,
   ui_->icon->setPixmap(icon.pixmap(Config::search_result_icon_size_));
 }
 
-void SearchResult::SetShortcut(int row) const {
+void SearchResult::SetShortcut(int row) {
   if (row >= Config::search_result_list_max_count_) {
     return;
   }
 
-  ui_->shortcut->setText(kShortcutModifierKey + QString::number(row + 1));
+  auto text = kShortcutModifierKey + QString::number(row + 1);
+  ui_->shortcut->setText(text);
+
+  // Stores current shortcut to revert back to when a selected item is no longer
+  // selected.
+  previous_shortcut_ = text;
 }
 
 void SearchResult::SetShortcut(const QString& text) const {
@@ -103,14 +108,12 @@ void SearchResult::SetTitle(const QString& title) const {
 }
 
 void SearchResult::SetIsSelected(int current_row) {
-  // Updates the shortcut of the result that is now no longer the selected item.
-  if (!previous_shortcut_.isEmpty()) {
-    SetShortcut(previous_shortcut_);
-  }
-
   if (current_row == index_) {
-    previous_shortcut_ = ui_->shortcut->text();
+    is_selected_ = true;
     SetShortcut(kReturnKey);
+  } else {
+    is_selected_ = false;
+    SetShortcut(previous_shortcut_);
   }
 }
 
@@ -121,6 +124,10 @@ void SearchResult::UpdateShortcut(int slider_value) {
 
   auto diff = index_ - slider_value;
   SetShortcut(diff);
+
+  if (is_selected_) {
+    SetShortcut(kReturnKey);
+  }
 }
 
 void SearchResult::resizeEvent(QResizeEvent* event) {
