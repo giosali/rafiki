@@ -31,6 +31,10 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
 
   // This is required to allow QListWidget to receive mouse move events.
   setMouseTracking(true);
+  ui_->icon->setMouseTracking(true);
+  ui_->title->setMouseTracking(true);
+  ui_->description->setMouseTracking(true);
+  ui_->shortcut->setMouseTracking(true);
 
   SetIcon(base_result->GetIcon(), base_result->GetPixmapKey());
   SetTitle(base_result->FormatTitle(arg));
