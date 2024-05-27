@@ -35,7 +35,6 @@ class SearchResultList : public QListWidget {
   void ProcessKeyRelease(const QKeyCombination& combination);
   void ProcessResults(const std::vector<std::shared_ptr<BaseResult>>& results,
                       const QString& text);
-  void SetCurrentItem(QListWidgetItem* item);
   void SetUserSelectedItem(bool value);
 
  signals:
@@ -55,9 +54,7 @@ class SearchResultList : public QListWidget {
   SearchResult* SearchResultAt(int row);
 
   QPoint cursor_position_;
-  QListWidgetItem* entered_item_;
-  bool is_entered_item_selectable_;
-  bool follow_last_selected_;
+  bool entered_;
   QPoint starting_drag_position_;
   bool user_selected_item_;
   QThread worker_thread_;

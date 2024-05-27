@@ -51,8 +51,6 @@ SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   // Inherited -> this
   connect(this, &QListWidget::itemClicked, this,
           &SearchResultList::ActivateItem);
-  connect(this, &QListWidget::itemEntered, this,
-          qOverload<QListWidgetItem*>(&SearchResultList::SetCurrentItem));
 
   // this -> this
   connect(this, &SearchResultList::ItemsChanged, this,
@@ -96,10 +94,7 @@ void SearchResultList::AdjustSize(int height) { setFixedHeight(height); }
 
 void SearchResultList::ProcessInput(const Input& input) {
   worker_thread_.exit();
-
-  // Resets the starting move position.
-  // This value will always be reset after the user types.
-  is_entered_item_selectable_ = false;
+  entered_ = false;
 
   if (input.IsEmpty()) {
     clear();                      // Helps prevent flicker.
@@ -221,30 +216,21 @@ void SearchResultList::ProcessResults(
   emit ItemsChanged(Height());
 }
 
-void SearchResultList::SetCurrentItem(QListWidgetItem* item) {
-  // Prevents the user from automatically selecting an item when an item appears
-  // underneath the cursor without having moved the cursor.
-  if (!is_entered_item_selectable_) {
-    is_entered_item_selectable_ = true;
-    entered_item_ = item;
-    return;
-  }
-
-  setCurrentItem(item);
-  user_selected_item_ = true;
-}
-
 void SearchResultList::SetUserSelectedItem(bool value) {
   user_selected_item_ = value;
 }
 
 void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
-  // Changes the current selected item after ignoring the initial incidental
-  // hover that triggers when the list is populated with items and the cursor
-  // happens to be above said items.
-  if (is_entered_item_selectable_ && entered_item_ != nullptr) {
-    emit itemEntered(entered_item_);
-    entered_item_ = nullptr;
+  // Prevents an item from being selected when items are rendered and the cursor
+  // happens to be hovering over the newly rendered items.
+  if (!entered_) {
+    entered_ = true;
+    return;
+  }
+
+  auto position = event->position();
+  if (auto item = itemAt(position.x(), position.y()); !item->isSelected()) {
+    setCurrentItem(item);
   }
 
   // Exits if left mouse button isn't down while dragging.
