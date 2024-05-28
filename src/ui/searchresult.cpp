@@ -112,13 +112,8 @@ void SearchResult::SetTitle(const QString& title) const {
 }
 
 void SearchResult::SetIsSelected(int current_row) {
-  if (current_row == index_) {
-    is_selected_ = true;
-    SetShortcut(kReturnKey);
-  } else {
-    is_selected_ = false;
-    SetShortcut(previous_shortcut_);
-  }
+  is_selected_ = current_row == index_;
+  SetShortcut(is_selected_ ? kReturnKey : previous_shortcut_);
 }
 
 void SearchResult::UpdateShortcut(int slider_value) {
