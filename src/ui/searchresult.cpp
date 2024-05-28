@@ -111,6 +111,14 @@ void SearchResult::SetTitle(const QString& title) const {
   ui_->title->setText(title);
 }
 
+void SearchResult::ProcessKeyPress(const QKeyCombination& combination) {
+  if (!is_selected_) {
+    return;
+  }
+
+  base_result_->ProcessKeyPress(combination);
+}
+
 void SearchResult::SetIsSelected(int current_row) {
   is_selected_ = current_row == index_;
   SetShortcut(is_selected_ ? kReturnKey : previous_shortcut_);
