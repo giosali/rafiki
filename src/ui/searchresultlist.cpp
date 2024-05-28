@@ -55,8 +55,6 @@ SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   // this -> this
   connect(this, &SearchResultList::ItemsChanged, this,
           &SearchResultList::AdjustSize);
-  connect(this, &SearchResultList::KeyPressSimulated, this,
-          &SearchResultList::ProcessKeyPress);
 }
 
 SearchResultList::~SearchResultList() {
@@ -87,7 +85,7 @@ void SearchResultList::ActivateItem(QListWidgetItem* item) {
     return;
   }
 
-  emit KeyPressSimulated(QKeyCombination{Qt::Key_Return});
+  emit KeyPressReceived(QKeyCombination{Qt::Key_Return});
 }
 
 void SearchResultList::AdjustSize(int height) { setFixedHeight(height); }
@@ -301,6 +299,8 @@ void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
           &SearchResult::UpdateShortcut);
   connect(this, &QListWidget::currentRowChanged, widget,
           &SearchResult::SetIsSelected);
+  connect(this, &SearchResultList::KeyPressReceived, widget,
+          &SearchResult::ProcessKeyPress);
 
   auto item = new SearchResultItem(base_result->GetId(), this);
 
