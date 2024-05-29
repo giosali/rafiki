@@ -51,6 +51,8 @@ SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   // Inherited -> this
   connect(this, &QListWidget::itemClicked, this,
           &SearchResultList::ActivateItem);
+  connect(this, &QListWidget::currentItemChanged, this,
+          &SearchResultList::CheckSelectedItem);
 
   // this -> this
   connect(this, &SearchResultList::ItemsChanged, this,
@@ -90,6 +92,18 @@ void SearchResultList::ActivateItem(QListWidgetItem* item) {
 
 void SearchResultList::AdjustSize(int height) { setFixedHeight(height); }
 
+void SearchResultList::CheckSelectedItem(QListWidgetItem* current,
+                                         QListWidgetItem* previous) {
+  // Ensures an item will always be selected.
+  if (current == nullptr) {
+    if (previous != nullptr) {
+      setCurrentItem(previous);
+    } else if (count() > 0) {
+      setCurrentRow(0);
+    }
+  }
+}
+
 void SearchResultList::ProcessInput(const Input& input) {
   worker_thread_.exit();
   entered_ = false;
@@ -118,53 +132,34 @@ void SearchResultList::ProcessInput(const Input& input) {
 }
 
 void SearchResultList::ProcessKeyPress(const QKeyCombination& combination) {
-  // Prevents manipulation of SearchResult objects that point to nullptr.
-  auto current_row = currentRow();
-  if (current_row == -1) {
-    return;
-  }
-
   auto key = combination.key();
-
   switch (key) {
-    case Qt::Key_Tab:
-    case Qt::Key_Return:
-    case Qt::Key_Alt: {
-      auto search_result = SearchResultAt(current_row);
-      search_result->HandleKeyPress(combination);
-      break;
-    }
-    case Qt::Key_Up:
-    case Qt::Key_Down: {
-      // https://doc.qt.io/qt-6/qt.html#Key-enum
-      auto new_current_row = current_row + (key - Qt::Key_Right);
-      if (new_current_row < 0 || new_current_row >= count()) {
-        break;
-      }
-
-      setCurrentRow(new_current_row);
-      user_selected_item_ = true;
-      break;
-    }
     case Qt::Key_1:
     case Qt::Key_2:
     case Qt::Key_3:
     case Qt::Key_4:
     case Qt::Key_5:
-    case Qt::Key_6: {
-      if (combination.keyboardModifiers() & Qt::ControlModifier) {
-        // Prevents manipulation of SearchResult objects that point to nullptr.
-        if (key - Qt::Key_0 > count()) {
-          break;
-        }
-
+    case Qt::Key_6:
+      if (combination.keyboardModifiers() & Qt::ControlModifier &&
+          key - Qt::Key_0 <= count()) {
         auto row = key - Qt::Key_1 + verticalScrollBar()->value();
-        auto search_result = SearchResultAt(row);
-        search_result->HandleKeyPress(combination);
+        setCurrentRow(row);
+        emit KeyPressReceived(QKeyCombination{Qt::Key_Return});
       }
 
       break;
-    }
+    case Qt::Key_Up:
+    case Qt::Key_Down:
+      if (auto row = currentRow() + (key - Qt::Key_Right);
+          row >= 0 && row < count()) {
+        setCurrentRow(row);
+        user_selected_item_ = true;
+      }
+
+      break;
+    default:
+      emit KeyPressReceived(combination);
+      break;
   }
 }
 

@@ -30,6 +30,7 @@ class SearchResultList : public QListWidget {
  public slots:
   void ActivateItem(QListWidgetItem* item);
   void AdjustSize(int height);
+  void CheckSelectedItem(QListWidgetItem* current, QListWidgetItem* previous);
   void ProcessInput(const Input& input);
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
