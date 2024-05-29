@@ -6,7 +6,7 @@
 #include <QListWidgetItem>
 #include <QMouseEvent>
 #include <QObject>
-#include <QPoint>
+#include <QPointF>
 #include <QString>
 #include <QThread>
 #include <memory>
@@ -56,9 +56,8 @@ class SearchResultList : public QListWidget {
   int Height() const;
   SearchResult* SearchResultAt(int row);
 
-  QPoint cursor_position_;
   bool entered_;
-  QPoint starting_drag_position_;
+  QPointF starting_drag_position_;
   bool user_selected_item_;
   QThread worker_thread_;
 };
