@@ -2,16 +2,10 @@
 
 #include <QApplication>
 #include <QCursor>
-#include <QDrag>
 #include <QFrame>
-#include <QHideEvent>
 #include <QIcon>
-#include <QKeyEvent>
 #include <QList>
-#include <QMimeData>
 #include <QScrollBar>
-#include <QSize>
-#include <QUrl>
 #include <Qt>
 #include <QtGlobal>
 #include <algorithm>
@@ -210,6 +204,7 @@ void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
     return;
   }
 
+  // Selects item currently under mouse.
   auto position = event->position();
   if (auto item = itemAt(position.x(), position.y()); !item->isSelected()) {
     setCurrentItem(item);
@@ -230,34 +225,7 @@ void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
     return;
   }
 
-  auto search_result = SearchResultAt(currentRow());
-  if (search_result == nullptr) {
-    return;
-  }
-
-  // Drag and drop will only apply to local files on user's machine.
-  auto url = QUrl::fromLocalFile(search_result->DragAndDrop());
-  if (url.isEmpty()) {
-    return;
-  }
-
-  // Takes the icon from the current search result and uses it as the icon for
-  // the drop and drag action.
-  auto drag = std::make_unique<QDrag>(this);
-  auto icon = QIcon(search_result->GetIcon());
-  drag->setPixmap(icon.pixmap(22));
-
-  auto mime_data = std::make_unique<QMimeData>();
-  mime_data->setUrls(QList<QUrl>({url}));
-
-  drag->setMimeData(mime_data.release());
-  auto drop_action = drag->exec(Qt::CopyAction | Qt::MoveAction);
-  switch (drop_action) {
-    case Qt::CopyAction:
-    case Qt::MoveAction:
-      emit HideRequested();
-      break;
-  }
+  emit ItemDragged();
 }
 
 void SearchResultList::mousePressEvent(QMouseEvent* event) {
@@ -283,6 +251,8 @@ void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
           &SearchResult::UpdateShortcut);
   connect(this, &QListWidget::currentRowChanged, widget,
           &SearchResult::SetIsSelected);
+  connect(this, &SearchResultList::ItemDragged, widget,
+          &SearchResult::DragAndDrop);
   connect(this, &SearchResultList::KeyPressReceived, widget,
           &SearchResult::ProcessKeyPress);
   connect(this, &SearchResultList::KeyReleaseReceived, widget,

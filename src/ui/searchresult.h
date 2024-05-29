@@ -27,7 +27,6 @@ class SearchResult : public QWidget {
 
   ~SearchResult();
 
-  QString DragAndDrop() const;
   QPixmap GetIcon() const;
   void HandleKeyPress(const QKeyCombination& combination) const;
   void HandleKeyRelease(const QKeyCombination& combination) const;
@@ -38,6 +37,7 @@ class SearchResult : public QWidget {
   void SetTitle(const QString& title) const;
 
  public slots:
+  void DragAndDrop();
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
   void SetIsSelected(int current_row);

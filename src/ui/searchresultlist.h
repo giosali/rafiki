@@ -39,6 +39,7 @@ class SearchResultList : public QListWidget {
   void SetUserSelectedItem(bool value);
 
  signals:
+  void ItemDragged();
   void HideRequested();
   void InputReceived(const Input& input);
   void ItemsChanged(int height);

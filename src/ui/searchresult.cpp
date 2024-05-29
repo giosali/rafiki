@@ -1,7 +1,10 @@
 #include "searchresult.h"
 
+#include <QDrag>
 #include <QFontMetrics>
 #include <QIcon>
+#include <QMimeData>
+#include <QUrl>
 #include <Qt>
 
 #include "../core/config.h"
@@ -43,10 +46,6 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
 }
 
 SearchResult::~SearchResult() {}
-
-QString SearchResult::DragAndDrop() const {
-  return base_result_->DragAndDrop();
-}
 
 QPixmap SearchResult::GetIcon() const { return ui_->icon->pixmap(); }
 
@@ -109,6 +108,32 @@ void SearchResult::SetShortcut(const QString& text) const {
 
 void SearchResult::SetTitle(const QString& title) const {
   ui_->title->setText(title);
+}
+
+void SearchResult::DragAndDrop() {
+  if (!is_selected_) {
+    return;
+  }
+
+  auto text = base_result_->DragAndDrop();
+  if (text.isNull()) {
+    return;
+  }
+
+  // Drag and drop will only apply to local files on user's machine.
+  auto url = QUrl::fromLocalFile(text);
+
+  // Takes the icon from the current search result and uses it as the icon for
+  // the drop and drag action.
+  auto drag = std::make_unique<QDrag>(this);
+  auto icon = QIcon(ui_->icon->pixmap());
+  drag->setPixmap(icon.pixmap(22));
+
+  auto mime_data = std::make_unique<QMimeData>();
+  mime_data->setUrls(QList<QUrl>({url}));
+
+  drag->setMimeData(mime_data.release());
+  drag->exec(Qt::CopyAction | Qt::MoveAction);
 }
 
 void SearchResult::ProcessKeyPress(const QKeyCombination& combination) {
