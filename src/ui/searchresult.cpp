@@ -120,6 +120,10 @@ void SearchResult::ProcessKeyPress(const QKeyCombination& combination) {
 }
 
 void SearchResult::SetIsSelected(int current_row) {
+  if (current_row == -1) {
+    return;
+  }
+
   is_selected_ = current_row == index_;
   SetShortcut(is_selected_ ? kReturnKey : previous_shortcut_);
 }
