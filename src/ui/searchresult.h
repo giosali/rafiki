@@ -39,6 +39,7 @@ class SearchResult : public QWidget {
 
  public slots:
   void ProcessKeyPress(const QKeyCombination& combination);
+  void ProcessKeyRelease(const QKeyCombination& combination);
   void SetIsSelected(int current_row);
   void UpdateShortcut(int slider_value);
 

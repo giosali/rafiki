@@ -119,6 +119,14 @@ void SearchResult::ProcessKeyPress(const QKeyCombination& combination) {
   base_result_->ProcessKeyPress(combination);
 }
 
+void SearchResult::ProcessKeyRelease(const QKeyCombination& combination) {
+  if (!is_selected_) {
+    return;
+  }
+
+  base_result_->ProcessKeyRelease(combination);
+}
+
 void SearchResult::SetIsSelected(int current_row) {
   if (current_row == -1) {
     return;
