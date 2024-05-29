@@ -43,6 +43,7 @@ class SearchResultList : public QListWidget {
   void InputReceived(const Input& input);
   void ItemsChanged(int height);
   void KeyPressReceived(const QKeyCombination& combination);
+  void KeyReleaseReceived(const QKeyCombination& combination);
 
  protected:
   void mouseMoveEvent(QMouseEvent* event) override;

@@ -164,18 +164,7 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& combination) {
 }
 
 void SearchResultList::ProcessKeyRelease(const QKeyCombination& combination) {
-  switch (combination.key()) {
-    case Qt::Key_Alt: {
-      auto current_row = currentRow();
-      if (current_row == -1) {
-        break;
-      }
-
-      auto search_result = SearchResultAt(current_row);
-      search_result->HandleKeyRelease(combination);
-      break;
-    }
-  }
+  emit KeyReleaseReceived(combination);
 }
 
 void SearchResultList::ProcessResults(
@@ -296,6 +285,8 @@ void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
           &SearchResult::SetIsSelected);
   connect(this, &SearchResultList::KeyPressReceived, widget,
           &SearchResult::ProcessKeyPress);
+  connect(this, &SearchResultList::KeyReleaseReceived, widget,
+          &SearchResult::ProcessKeyRelease);
 
   auto item = new SearchResultItem(base_result->GetId(), this);
 
