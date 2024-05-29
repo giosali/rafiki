@@ -206,7 +206,8 @@ void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
 
   // Selects item currently under mouse.
   auto position = event->position();
-  if (auto item = itemAt(position.x(), position.y()); !item->isSelected()) {
+  if (auto item = itemAt(position.x(), position.y());
+      item != nullptr && !item->isSelected()) {
     setCurrentItem(item);
   }
 
