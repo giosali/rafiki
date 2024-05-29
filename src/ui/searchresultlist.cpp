@@ -219,9 +219,7 @@ void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
 
   // Exits if the distance traveled is less than the recommended drag distance
   // to start a drop and drag operation.
-  auto current_drag_position = event->pos();
-  auto drag_distance =
-    (current_drag_position - starting_drag_position_).manhattanLength();
+  auto drag_distance = (position - starting_drag_position_).manhattanLength();
   if (drag_distance < QApplication::startDragDistance()) {
     return;
   }
@@ -232,7 +230,7 @@ void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
 void SearchResultList::mousePressEvent(QMouseEvent* event) {
   switch (event->button()) {
     case Qt::LeftButton:
-      starting_drag_position_ = event->pos();
+      starting_drag_position_ = event->position();
 
       // Prevents user from deselecting an item by control-clicking it.
       if (QApplication::keyboardModifiers() & Qt::ControlModifier) {
