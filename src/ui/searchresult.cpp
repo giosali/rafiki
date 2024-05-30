@@ -4,6 +4,7 @@
 #include <QFontMetrics>
 #include <QIcon>
 #include <QMimeData>
+#include <QPixmap>
 #include <QUrl>
 #include <Qt>
 
@@ -46,8 +47,6 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
 }
 
 SearchResult::~SearchResult() {}
-
-QPixmap SearchResult::GetIcon() const { return ui_->icon->pixmap(); }
 
 void SearchResult::HandleKeyPress(const QKeyCombination& combination) const {
   base_result_->ProcessKeyPress(combination);

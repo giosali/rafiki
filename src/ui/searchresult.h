@@ -2,7 +2,6 @@
 #define SEARCHRESULT_H
 
 #include <QKeyCombination>
-#include <QPixmap>
 #include <QPixmapCache>
 #include <QResizeEvent>
 #include <QString>
@@ -27,7 +26,6 @@ class SearchResult : public QWidget {
 
   ~SearchResult();
 
-  QPixmap GetIcon() const;
   void HandleKeyPress(const QKeyCombination& combination) const;
   void HandleKeyRelease(const QKeyCombination& combination) const;
   void SetDescription(const QString& description) const;
