@@ -26,8 +26,6 @@ class SearchResult : public QWidget {
 
   ~SearchResult();
 
-  void HandleKeyPress(const QKeyCombination& combination) const;
-  void HandleKeyRelease(const QKeyCombination& combination) const;
   void SetDescription(const QString& description) const;
   void SetIcon(const QString& path, const QPixmapCache::Key& key) const;
   void SetShortcut(int row);

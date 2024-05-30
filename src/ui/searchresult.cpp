@@ -48,14 +48,6 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
 
 SearchResult::~SearchResult() {}
 
-void SearchResult::HandleKeyPress(const QKeyCombination& combination) const {
-  base_result_->ProcessKeyPress(combination);
-}
-
-void SearchResult::HandleKeyRelease(const QKeyCombination& combination) const {
-  base_result_->ProcessKeyRelease(combination);
-}
-
 void SearchResult::SetDescription(const QString& description) const {
   if (description.isEmpty()) {
     ui_->description->hide();
