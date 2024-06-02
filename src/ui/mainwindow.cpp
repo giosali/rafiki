@@ -2,7 +2,6 @@
 
 #include <QApplication>
 #include <QCommandLineParser>
-#include <QObject>
 #include <QPoint>
 #include <QRect>
 #include <QScreen>

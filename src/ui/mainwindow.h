@@ -6,8 +6,6 @@
 #include <QString>
 #include <memory>
 
-#include "../core/input.h"
-
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
