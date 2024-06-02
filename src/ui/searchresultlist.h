@@ -39,7 +39,6 @@ class SearchResultList : public QListWidget {
 
  signals:
   void ItemDragged();
-  void HideRequested();
   void InputReceived(const Input& input);
   void ItemsChanged(int height);
   void KeyPressReceived(const QKeyCombination& combination);
