@@ -26,9 +26,12 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
                                             kHorizontalMargin, kVerticalMargin);
 
   // Sets height of the QLabel called `icon` to the same height of its QPixmap.
-  // ui_->icon->setFixedHeight(kIconSize);
   ui_->icon->setFixedSize(Config::search_result_icon_size_,
                           Config::search_result_icon_size_);
+
+  // Prevents Search Results from having different sizes when titles contain a
+  // colon.
+  ui_->title->setFixedHeight(Config::search_result_title_max_height_);
 
   ui_->shortcut->setContentsMargins(0, 0, kShortcutRightMargin, 0);
 
