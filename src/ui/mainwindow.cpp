@@ -55,49 +55,9 @@ MainWindow::MainWindow(QWidget* parent)
 
 MainWindow::~MainWindow() {}
 
-MainWindow* MainWindow::Get() {
-  return qobject_cast<MainWindow*>(QApplication::activeWindow());
-}
-
-Input MainWindow::GetSearchBoxText() {
-  auto box = findChild<SearchBox*>("SearchBox");
-  if (box == nullptr) {
-    return Input{};
-  }
-
-  return box->GetText();
-}
-
 void MainWindow::Hide() {
   hide();
   emit Deactivated();
-}
-
-void MainWindow::SetSearchBoxText(const QString& text) {
-  auto box = findChild<SearchBox*>("SearchBox");
-  if (box == nullptr) {
-    return;
-  }
-
-  box->SetText(text);
-}
-
-void MainWindow::SetSearchResultDescription(const QString& text) {
-  auto list = findChild<SearchResultList*>("SearchResultList");
-  if (list == nullptr) {
-    return;
-  }
-
-  list->UpdateDescription(text);
-}
-
-void MainWindow::SetSearchResultTitle(const QString& text) {
-  auto list = findChild<SearchResultList*>("SearchResultList");
-  if (list == nullptr) {
-    return;
-  }
-
-  list->UpdateTitle(text);
 }
 
 void MainWindow::ProcessCommandLineArguments(const QString& args) {

@@ -22,12 +22,6 @@ class MainWindow : public QMainWindow {
 
   ~MainWindow();
 
-  static MainWindow *Get();
-  Input GetSearchBoxText();
-  void SetSearchBoxText(const QString &text);
-  void SetSearchResultDescription(const QString &text);
-  void SetSearchResultTitle(const QString &text);
-
  public slots:
   void Hide();
   void ProcessCommandLineArguments(const QString &args);
