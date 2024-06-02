@@ -6,7 +6,6 @@
 #include <Qt>
 
 #include "../core/utils.h"
-#include "../ui/mainwindow.h"
 
 WebSearch::WebSearch(const QJsonObject& object)
     : BaseResult{object["id"].toString(),
@@ -23,19 +22,14 @@ WebSearch::WebSearch(const QJsonObject& object)
   alt_url_ = alt["url"].toString();
 }
 
-QString WebSearch::DragAndDrop() { return QString{}; }
+void WebSearch::Drag() {}
 
-void WebSearch::ProcessKeyPress(const QKeyCombination& combination) {
-  auto main_window = MainWindow::Get();
-  if (main_window == nullptr) {
-    return;
-  }
-
+void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
+                                const Input& input) {
   switch (combination.key()) {
     case Qt::Key_Tab:
-      if (auto command = FormatCommand();
-          main_window->GetSearchBoxText().GetCmd() != command) {
-        main_window->SetSearchBoxText(command);
+      if (auto command = FormatCommand(); input.GetCmd() != command) {
+        emit NewSearchBoxTextRequested(command);
       }
 
       break;
@@ -43,16 +37,16 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination) {
       auto url =
         combination.keyboardModifiers() & Qt::AltModifier ? alt_url_ : url_;
       if (!url.contains("{}")) {
-        main_window->Hide();
+        emit Hidden();
         QDesktopServices::openUrl(QUrl(url));
         break;
       }
 
-      auto arg = main_window->GetSearchBoxText().GetArg();
+      auto arg = input.GetArg();
 
       // Means arg is equal to: QString().
       if (arg.isNull()) {
-        main_window->SetSearchBoxText(FormatCommand());
+        emit NewSearchBoxTextRequested(FormatCommand());
         break;
       }
 
@@ -61,26 +55,21 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination) {
         break;
       }
 
-      main_window->Hide();
+      emit Hidden();
       QDesktopServices::openUrl(QUrl(utils::Format(url, arg)));
       break;
     }
     case Qt::Key_Alt:
-      main_window->SetSearchResultTitle(alt_title_);
+      emit NewTitleRequested(alt_title_);
       break;
   }
 }
 
-void WebSearch::ProcessKeyRelease(const QKeyCombination& combination) {
-  auto main_window = MainWindow::Get();
-  if (main_window == nullptr) {
-    return;
-  }
-
+void WebSearch::ProcessKeyRelease(const QKeyCombination& combination,
+                                  const Input& input) {
   switch (combination.key()) {
     case Qt::Key_Alt:
-      auto arg = main_window->GetSearchBoxText().GetArg();
-      main_window->SetSearchResultTitle(FormatTitle(arg));
+      emit NewTitleRequested(FormatTitle(input.GetArg()));
       break;
   }
 }

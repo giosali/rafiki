@@ -10,12 +10,17 @@
 #include "baseresult.h"
 
 class Trash : public BaseResult {
+  Q_OBJECT
+
  public:
   Trash();
 
-  QString DragAndDrop() override;
-  void ProcessKeyPress(const QKeyCombination& combination) override;
-  void ProcessKeyRelease(const QKeyCombination& combination) override;
+ public slots:
+  void Drag() override;
+  void ProcessKeyPress(const QKeyCombination& combination,
+                       const Input& input) override;
+  void ProcessKeyRelease(const QKeyCombination& combination,
+                         const Input& input) override;
 
  private:
   static const inline QString kAltTitle{};

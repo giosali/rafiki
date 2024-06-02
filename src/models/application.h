@@ -7,14 +7,19 @@
 #include "baseresult.h"
 
 class Application : public BaseResult {
+  Q_OBJECT
+
  public:
   explicit Application(const QString& name, const QString& icon,
                        uintmax_t icon_size, const QString& description,
                        const QString& exec);
 
-  QString DragAndDrop() override;
-  void ProcessKeyPress(const QKeyCombination& combination) override;
-  void ProcessKeyRelease(const QKeyCombination& combination) override;
+ public slots:
+  void Drag() override;
+  void ProcessKeyPress(const QKeyCombination& combination,
+                       const Input& input) override;
+  void ProcessKeyRelease(const QKeyCombination& combination,
+                         const Input& input) override;
 
  private:
   static inline QString kAltDescription{"Reveal in folder"};

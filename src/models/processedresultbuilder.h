@@ -7,6 +7,8 @@
 #include "processedresult.h"
 
 class ProcessedResultBuilder : public ProcessedResult {
+  Q_OBJECT
+
  public:
   using ProcessedResult::ProcessedResult;
 

@@ -6,14 +6,11 @@
 #include <Qt>
 
 #include "../core/shuntingyardalgorithm.h"
-#include "../ui/mainwindow.h"
 
 Calculator::Calculator()
     : ProcessedResult{
         kId,       kIcon,        kTitle,   kTitlePlaceholder,
         kAltTitle, kDescription, kCommand, kAppendSpaceToCommand} {}
-
-QString Calculator::DragAndDrop() { return QString{}; }
 
 bool Calculator::ProcessInput(const Input& input) {
   auto result = ShuntingYardAlgorithm::TryParse(input.GetFull().toStdString());
@@ -33,38 +30,32 @@ bool Calculator::ProcessInput(const Input& input) {
   return true;
 }
 
-void Calculator::ProcessKeyPress(const QKeyCombination& combination) {
-  auto main_window = MainWindow::Get();
-  if (main_window == nullptr) {
-    return;
-  }
+void Calculator::Drag() {}
 
+void Calculator::ProcessKeyPress(const QKeyCombination& combination,
+                                 const Input& input) {
   switch (combination.key()) {
     case Qt::Key_Return: {
-      main_window->Hide();
       if (title_ == title_placeholder_) {
         break;
       }
 
+      emit Hidden();
       auto clipboard = QGuiApplication::clipboard();
       clipboard->setText(title_);
       break;
     }
     case Qt::Key_Alt:
-      main_window->SetSearchResultTitle(FormatNumber(kTitle));
+      emit NewTitleRequested(kTitle);
       break;
   }
 }
 
-void Calculator::ProcessKeyRelease(const QKeyCombination& combination) {
-  auto main_window = MainWindow::Get();
-  if (main_window == nullptr) {
-    return;
-  }
-
+void Calculator::ProcessKeyRelease(const QKeyCombination& combination,
+                                   const Input& input) {
   switch (combination.key()) {
     case Qt::Key_Alt:
-      main_window->SetSearchResultTitle(kTitle);
+      emit NewTitleRequested(kTitle);
       break;
   }
 }

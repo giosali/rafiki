@@ -5,6 +5,8 @@
 #include "baseresult.h"
 
 class ProcessedResult : public BaseResult {
+  Q_OBJECT
+
  public:
   using BaseResult::BaseResult;
 

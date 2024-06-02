@@ -5,8 +5,6 @@
 #include <QUrl>
 #include <memory>
 
-#include "../ui/mainwindow.h"
-
 FileSystemEntry::FileSystemEntry()
     : ProcessedResultBuilder{kId,       kIcon,
                              kTitle,    kTitlePlaceholder,
@@ -41,10 +39,6 @@ FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
                              kAppendSpaceToCommand},
       is_entry_{true} {}
 
-QString FileSystemEntry::DragAndDrop() {
-  return is_entry_ ? description_ : QString{};
-}
-
 bool FileSystemEntry::ProcessInput(const Input& input) {
   results_.clear();
 
@@ -70,13 +64,15 @@ bool FileSystemEntry::ProcessInput(const Input& input) {
   return true;
 }
 
-void FileSystemEntry::ProcessKeyPress(const QKeyCombination& combination) {
-  if (!is_entry_) {
-    return;
+void FileSystemEntry::Drag() {
+  if (is_entry_) {
+    emit Dragged(description_);
   }
+}
 
-  auto main_window = MainWindow::Get();
-  if (main_window == nullptr) {
+void FileSystemEntry::ProcessKeyPress(const QKeyCombination& combination,
+                                      const Input& input) {
+  if (!is_entry_) {
     return;
   }
 
@@ -90,29 +86,25 @@ void FileSystemEntry::ProcessKeyPress(const QKeyCombination& combination) {
                                                          .parent_path()
                                                          .string())
                               : description_);
-      main_window->Hide();
+      emit Hidden();
       QDesktopServices::openUrl(url);
       break;
     }
     case Qt::Key_Alt:
-      main_window->SetSearchResultDescription(kAltDescription);
+      emit NewDescriptionRequested(kAltDescription);
       break;
   }
 }
 
-void FileSystemEntry::ProcessKeyRelease(const QKeyCombination& combination) {
+void FileSystemEntry::ProcessKeyRelease(const QKeyCombination& combination,
+                                        const Input& input) {
   if (!is_entry_) {
-    return;
-  }
-
-  auto main_window = MainWindow::Get();
-  if (main_window == nullptr) {
     return;
   }
 
   switch (combination.key()) {
     case Qt::Key_Alt:
-      main_window->SetSearchResultDescription(description_);
+      emit NewDescriptionRequested(description_);
       break;
   }
 }

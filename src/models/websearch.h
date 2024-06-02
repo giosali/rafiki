@@ -8,14 +8,19 @@
 #include "baseresult.h"
 
 class WebSearch : public BaseResult {
+  Q_OBJECT
+
  public:
   explicit WebSearch(const QJsonObject& object);
 
   ~WebSearch() = default;
 
-  QString DragAndDrop() override;
-  void ProcessKeyPress(const QKeyCombination& combination) override;
-  void ProcessKeyRelease(const QKeyCombination& combination) override;
+ public slots:
+  void Drag() override;
+  void ProcessKeyPress(const QKeyCombination& combination,
+                       const Input& input) override;
+  void ProcessKeyRelease(const QKeyCombination& combination,
+                         const Input& input) override;
 
  private:
   QString alt_url_;

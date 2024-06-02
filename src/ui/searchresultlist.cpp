@@ -15,7 +15,8 @@
 #include "../core/project.h"
 #include "searchresultitem.h"
 
-SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
+SearchResultList::SearchResultList(SearchBox* search_box, MainWindow* parent)
+    : QListWidget{parent}, main_window_{parent}, search_box_{search_box} {
   setObjectName("SearchResultList");
 
   // Component should be hidden on initialization.
@@ -162,7 +163,7 @@ void SearchResultList::ProcessKeyRelease(const QKeyCombination& combination) {
 }
 
 void SearchResultList::ProcessResults(
-  const std::vector<std::shared_ptr<BaseResult>>& results,
+  const std::vector<std::shared_ptr<BaseResult>>& results, const Input& input,
   const QString& text) {
   auto current_row = currentRow();
   auto current_id =
@@ -178,7 +179,7 @@ void SearchResultList::ProcessResults(
 
   for (size_t i = 0; i < results.size(); ++i) {
     auto result = results[i];
-    AddItem(result, text, i);
+    AddItem(result, input, text, i);
 
     if (user_selected_item_ && !found_id && result->GetId() == current_id) {
       row = i;
@@ -244,18 +245,23 @@ void SearchResultList::mousePressEvent(QMouseEvent* event) {
 }
 
 void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
-                               const QString& arg, int index) {
-  auto widget = new SearchResult(base_result, arg, index, this);
+                               const Input& input, const QString& arg,
+                               int index) {
+  auto widget = new SearchResult(base_result, input, arg, index, this);
   connect(verticalScrollBar(), &QScrollBar::valueChanged, widget,
           &SearchResult::UpdateShortcut);
   connect(this, &QListWidget::currentRowChanged, widget,
           &SearchResult::SetIsSelected);
-  connect(this, &SearchResultList::ItemDragged, widget,
-          &SearchResult::DragAndDrop);
+  connect(this, &SearchResultList::ItemDragged, widget, &SearchResult::Drag);
   connect(this, &SearchResultList::KeyPressReceived, widget,
           &SearchResult::ProcessKeyPress);
   connect(this, &SearchResultList::KeyReleaseReceived, widget,
           &SearchResult::ProcessKeyRelease);
+
+  auto interactable = base_result.get();
+  connect(interactable, &Interactable::NewSearchBoxTextRequested, search_box_,
+          &SearchBox::SetText);
+  connect(interactable, &Interactable::Hidden, main_window_, &MainWindow::Hide);
 
   auto item = new SearchResultItem(base_result->GetId(), this);
 
@@ -299,14 +305,15 @@ void Worker::ProcessInput(const Input& input) {
     }
 
     last_results_were_default_results = true;
-    emit ResultsReadied(Project::GetDefaultBaseResults(), input.GetFull());
+    emit ResultsReadied(Project::GetDefaultBaseResults(), input,
+                        input.GetFull());
   } else {
     if (last_results_were_default_results) {
       emit DefaultResultsGuardChanged(false);
     }
 
     last_results_were_default_results = false;
-    emit ResultsReadied(results, input.GetArg());
+    emit ResultsReadied(results, input, input.GetArg());
   }
 }
 }  // namespace searchresultlist

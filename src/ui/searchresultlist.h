@@ -14,13 +14,15 @@
 
 #include "../core/input.h"
 #include "../models/baseresult.h"
+#include "mainwindow.h"
+#include "searchbox.h"
 #include "searchresult.h"
 
 class SearchResultList : public QListWidget {
   Q_OBJECT
 
  public:
-  SearchResultList(QWidget* parent = nullptr);
+  SearchResultList(SearchBox* search_box, MainWindow* parent = nullptr);
 
   ~SearchResultList();
 
@@ -35,7 +37,7 @@ class SearchResultList : public QListWidget {
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
   void ProcessResults(const std::vector<std::shared_ptr<BaseResult>>& results,
-                      const QString& text);
+                      const Input& input, const QString& text);
   void SetUserSelectedItem(bool value);
 
  signals:
@@ -52,11 +54,13 @@ class SearchResultList : public QListWidget {
 
  private:
   void AddItem(const std::shared_ptr<BaseResult>& base_result,
-               const QString& arg, int index);
+               const Input& input, const QString& arg, int index);
   int Height() const;
   SearchResult* SearchResultAt(int row);
 
   bool entered_;
+  MainWindow* main_window_;
+  SearchBox* search_box_;
   QPointF starting_drag_position_;
   bool user_selected_item_;
   QThread worker_thread_;
@@ -72,7 +76,7 @@ class Worker : public QObject {
  signals:
   void DefaultResultsGuardChanged(bool value);
   void ResultsReadied(const std::vector<std::shared_ptr<BaseResult>>& results,
-                      const QString& text);
+                      const Input& input, const QString& text);
 };
 }  // namespace searchresultlist
 

@@ -8,6 +8,7 @@
 #include <QWidget>
 #include <memory>
 
+#include "../core/input.h"
 #include "../models/baseresult.h"
 
 QT_BEGIN_NAMESPACE
@@ -21,7 +22,7 @@ class SearchResult : public QWidget {
 
  public:
   explicit SearchResult(const std::shared_ptr<BaseResult>& base_result,
-                        const QString& arg, int index,
+                        const Input& input, const QString& arg, int index,
                         QWidget* parent = nullptr);
 
   ~SearchResult();
@@ -33,11 +34,17 @@ class SearchResult : public QWidget {
   void SetTitle(const QString& title) const;
 
  public slots:
-  void DragAndDrop();
+  void Drag();
+  void Drop(const QString& text);
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
   void SetIsSelected(int current_row);
   void UpdateShortcut(int slider_value);
+
+ signals:
+  void Dragged();
+  void KeyPressed(const QKeyCombination& combination, const Input& input);
+  void KeyReleased(const QKeyCombination& combination, const Input& input);
 
  protected:
   void resizeEvent(QResizeEvent* event) override;
@@ -50,8 +57,8 @@ class SearchResult : public QWidget {
   static const int kShortcutRightMargin;
   static const int kVerticalMargin;
 
-  std::shared_ptr<BaseResult> base_result_;
   int index_;
+  Input input_;
   bool is_selected_;
   int parent_width_;
   QString previous_shortcut_;

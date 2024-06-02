@@ -12,10 +12,11 @@
 #include "./ui_searchresult.h"
 
 SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
-                           const QString& arg, int index, QWidget* parent)
+                           const Input& input, const QString& arg, int index,
+                           QWidget* parent)
     : QWidget{parent},
-      base_result_{base_result},
       index_{index},
+      input_{input},
       parent_width_{parent->width()},
       ui_{std::make_unique<Ui::SearchResult>()} {
   ui_->setupUi(this);
@@ -44,6 +45,18 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
   SetTitle(base_result->FormatTitle(arg));
   SetDescription(base_result->GetDescription());
   SetShortcut(index);
+
+  auto interactable = base_result.get();
+  connect(this, &SearchResult::Dragged, interactable, &Interactable::Drag);
+  connect(this, &SearchResult::KeyPressed, interactable,
+          &Interactable::ProcessKeyPress);
+  connect(this, &SearchResult::KeyReleased, interactable,
+          &Interactable::ProcessKeyRelease);
+  connect(interactable, &Interactable::Dragged, this, &SearchResult::Drop);
+  connect(interactable, &Interactable::NewDescriptionRequested, this,
+          &SearchResult::SetDescription);
+  connect(interactable, &Interactable::NewTitleRequested, this,
+          &SearchResult::SetTitle);
 }
 
 SearchResult::~SearchResult() {}
@@ -101,16 +114,13 @@ void SearchResult::SetTitle(const QString& title) const {
   ui_->title->setText(title);
 }
 
-void SearchResult::DragAndDrop() {
-  if (!is_selected_) {
-    return;
+void SearchResult::Drag() {
+  if (is_selected_) {
+    emit Dragged();
   }
+}
 
-  auto text = base_result_->DragAndDrop();
-  if (text.isNull()) {
-    return;
-  }
-
+void SearchResult::Drop(const QString& text) {
   // Drag and drop will only apply to local files on user's machine.
   auto url = QUrl::fromLocalFile(text);
 
@@ -128,19 +138,15 @@ void SearchResult::DragAndDrop() {
 }
 
 void SearchResult::ProcessKeyPress(const QKeyCombination& combination) {
-  if (!is_selected_) {
-    return;
+  if (is_selected_) {
+    emit KeyPressed(combination, input_);
   }
-
-  base_result_->ProcessKeyPress(combination);
 }
 
 void SearchResult::ProcessKeyRelease(const QKeyCombination& combination) {
-  if (!is_selected_) {
-    return;
+  if (is_selected_) {
+    emit KeyReleased(combination, input_);
   }
-
-  base_result_->ProcessKeyRelease(combination);
 }
 
 void SearchResult::SetIsSelected(int current_row) {

@@ -35,7 +35,7 @@ MainWindow::MainWindow(QWidget* parent)
   move(p);
 
   auto box = new SearchBox(this);
-  auto list = new SearchResultList(this);
+  auto list = new SearchResultList(box, this);
 
   // Prevents the window height from strangely expanding when input is cleared.
   setMinimumHeight(box->Height());

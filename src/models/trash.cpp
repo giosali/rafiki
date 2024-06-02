@@ -7,8 +7,6 @@
 #include <system_error>
 #include <vector>
 
-#include "../ui/mainwindow.h"
-
 Trash::Trash()
     : BaseResult{kId,       kIcon,        kTitle,   kTitlePlaceholder,
                  kAltTitle, kDescription, kCommand, kAppendSpaceToCommand} {
@@ -18,31 +16,28 @@ Trash::Trash()
   path_ = home / ".local/share/Trash";
 }
 
-QString Trash::DragAndDrop() { return QString{}; }
+void Trash::Drag() {}
 
-void Trash::ProcessKeyPress(const QKeyCombination& combination) {
-  auto main_window = MainWindow::Get();
-  if (main_window == nullptr) {
-    return;
-  }
-
+void Trash::ProcessKeyPress(const QKeyCombination& combination,
+                            const Input& input) {
   switch (combination.key()) {
     case Qt::Key_Tab:
-      if (auto command = FormatCommand();
-          main_window->GetSearchBoxText().GetCmd() != command) {
-        main_window->SetSearchBoxText(command);
+      if (auto command = FormatCommand(); input.GetCmd() != command) {
+        emit NewSearchBoxTextRequested(command);
       }
 
       break;
-
     case Qt::Key_Return:
-      main_window->Hide();
+      emit Hidden();
       Empty();
       break;
   }
 }
 
-void Trash::ProcessKeyRelease(const QKeyCombination& combination) { return; }
+void Trash::ProcessKeyRelease(const QKeyCombination& combination,
+                              const Input& input) {
+  return;
+}
 
 void Trash::Empty() const {
   if (!std::filesystem::exists(path_)) {

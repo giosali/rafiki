@@ -10,13 +10,19 @@
 #include "processedresult.h"
 
 class Calculator : public ProcessedResult {
+  Q_OBJECT
+
  public:
   Calculator();
 
-  QString DragAndDrop() override;
   bool ProcessInput(const Input& input) override;
-  void ProcessKeyPress(const QKeyCombination& combination) override;
-  void ProcessKeyRelease(const QKeyCombination& combination) override;
+
+ public slots:
+  void Drag() override;
+  void ProcessKeyPress(const QKeyCombination& combination,
+                       const Input& input) override;
+  void ProcessKeyRelease(const QKeyCombination& combination,
+                         const Input& input) override;
 
  private:
   static const inline QString kAltTitle{};

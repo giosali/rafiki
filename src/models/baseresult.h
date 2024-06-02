@@ -9,6 +9,8 @@
 #include "interactable.h"
 
 class BaseResult : public Interactable {
+  Q_OBJECT
+
  public:
   explicit BaseResult(const QString& id, const QString& icon,
                       const QString& title, const QString& title_placeholder,
