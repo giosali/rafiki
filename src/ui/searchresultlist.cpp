@@ -145,25 +145,32 @@ void SearchResultList::ProcessKeyRelease(const QKeyCombination& combination) {
 void SearchResultList::ProcessResults(
   const std::vector<std::shared_ptr<BaseResult>>& results, const Input& input,
   const QString& text) {
-  auto current_row = currentRow();
-  auto current_id =
-    current_row == -1
-      ? QUuid{}
-      : static_cast<SearchResultItem*>(item(current_row))->GetId();
   auto row = 0;
+  if (auto current_row = currentRow();
+      current_row == -1 || !user_selected_item_) {
+    clear();  // Helps prevent flicker.
 
-  clear();  // Helps prevent flicker.
+    for (size_t i = 0; i < results.size(); ++i) {
+      AddItem(results[i], input, text, i);
+    }
+  } else {
+    auto current_id =
+      static_cast<SearchResultItem*>(item(current_row))->GetId();
 
-  // Ensures we don't check for matching IDs since there can only be one match.
-  bool found_id = false;
+    clear();  // Helps prevent flicker.
 
-  for (size_t i = 0; i < results.size(); ++i) {
-    auto result = results[i];
-    AddItem(result, input, text, i);
+    // Ensures we don't check for matching IDs since there can only be one
+    // match.
+    bool found_id = false;
 
-    if (user_selected_item_ && !found_id && result->GetId() == current_id) {
-      row = i;
-      found_id = true;
+    for (size_t i = 0; i < results.size(); ++i) {
+      auto result = results[i];
+      AddItem(result, input, text, i);
+
+      if (!found_id && result->GetId() == current_id) {
+        row = i;
+        found_id = true;
+      }
     }
   }
 
