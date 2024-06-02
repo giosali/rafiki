@@ -7,6 +7,7 @@ class Config {
 
   static int search_result_icon_size_;
   static int search_result_list_max_count_;
+  static int search_result_title_max_height_;
 };
 
 #endif  // CONFIG_H
