@@ -59,24 +59,6 @@ SearchResultList::~SearchResultList() {
   worker_thread_.wait();
 }
 
-void SearchResultList::UpdateDescription(const QString& text) {
-  auto search_result = SearchResultAt(currentRow());
-  if (search_result == nullptr) {
-    return;
-  }
-
-  search_result->SetDescription(text);
-}
-
-void SearchResultList::UpdateTitle(const QString& text) {
-  auto search_result = SearchResultAt(currentRow());
-  if (search_result == nullptr) {
-    return;
-  }
-
-  search_result->SetTitle(text);
-}
-
 void SearchResultList::ActivateItem(QListWidgetItem* item) {
   if (starting_drag_position_ != mapFromGlobal(QCursor::pos())) {
     return;
@@ -281,10 +263,6 @@ int SearchResultList::Height() const {
   auto min_num_rows = std::min(count(), Config::search_result_list_max_count_);
   auto total_height = min_num_rows * row_height;
   return total_height;
-}
-
-SearchResult* SearchResultList::SearchResultAt(int row) {
-  return static_cast<SearchResult*>(itemWidget(item(row)));
 }
 
 namespace searchresultlist {

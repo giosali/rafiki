@@ -26,9 +26,6 @@ class SearchResultList : public QListWidget {
 
   ~SearchResultList();
 
-  void UpdateDescription(const QString& text);
-  void UpdateTitle(const QString& text);
-
  public slots:
   void ActivateItem(QListWidgetItem* item);
   void AdjustSize(int height);
@@ -56,7 +53,6 @@ class SearchResultList : public QListWidget {
   void AddItem(const std::shared_ptr<BaseResult>& base_result,
                const Input& input, const QString& arg, int index);
   int Height() const;
-  SearchResult* SearchResultAt(int row);
 
   bool entered_;
   MainWindow* main_window_;
