@@ -1,7 +1,6 @@
 #ifndef SEARCHBOX_H
 #define SEARCHBOX_H
 
-#include <QEvent>
 #include <QKeyCombination>
 #include <QKeyEvent>
 #include <QString>

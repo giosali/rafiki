@@ -40,7 +40,6 @@ MainWindow::MainWindow(QWidget* parent)
   setMinimumHeight(box->Height());
 
   connect(this, &MainWindow::Deactivated, box, &SearchBox::Clear);
-  connect(list, &SearchResultList::HideRequested, this, &MainWindow::Hide);
   connect(list, &SearchResultList::ItemsChanged, this, &MainWindow::SetHeight);
   connect(box, &SearchBox::TextChanged, list, &SearchResultList::ProcessInput);
   connect(box, &SearchBox::KeyPressed, list,
@@ -101,11 +100,10 @@ void MainWindow::SetHeight(int height) {
 bool MainWindow::event(QEvent* event) {
   switch (event->type()) {
     case QEvent::WindowDeactivate:  // Window lost focus.
-      if (isHidden()) {
-        break;
+      if (!isHidden()) {
+        Hide();
       }
 
-      Hide();
       break;
   }
 

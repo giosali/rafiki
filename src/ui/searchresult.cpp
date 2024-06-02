@@ -97,16 +97,14 @@ void SearchResult::SetIcon(const QString& path,
 }
 
 void SearchResult::SetShortcut(int row) {
-  if (row >= Config::search_result_list_max_count_) {
-    return;
+  if (row < Config::search_result_list_max_count_) {
+    auto text = kShortcutModifierKey + QString::number(row + 1);
+    ui_->shortcut->setText(text);
+
+    // Stores current shortcut to revert back to when a selected item is no
+    // longer selected.
+    previous_shortcut_ = text;
   }
-
-  auto text = kShortcutModifierKey + QString::number(row + 1);
-  ui_->shortcut->setText(text);
-
-  // Stores current shortcut to revert back to when a selected item is no longer
-  // selected.
-  previous_shortcut_ = text;
 }
 
 void SearchResult::SetShortcut(const QString& text) const {
@@ -153,12 +151,10 @@ void SearchResult::ProcessKeyRelease(const QKeyCombination& combination) {
 }
 
 void SearchResult::SetIsSelected(int current_row) {
-  if (current_row == -1) {
-    return;
+  if (current_row != -1) {
+    is_selected_ = current_row == index_;
+    SetShortcut(is_selected_ ? kReturnKey : previous_shortcut_);
   }
-
-  is_selected_ = current_row == index_;
-  SetShortcut(is_selected_ ? kReturnKey : previous_shortcut_);
 }
 
 void SearchResult::UpdateShortcut(int slider_value) {
@@ -183,8 +179,8 @@ void SearchResult::resizeEvent(QResizeEvent* event) {
   // Another 2 for the spacing in between the horizontal layout's items.
   auto spacing = kHorizontalMargin * (2 * kHorizontalLayoutGapCount);
 
-  auto total_width = icon_width + title_width + shortcut_width + spacing;
-  if (total_width >= parent_width_) {
+  // Left-hand side is the total width.
+  if (icon_width + title_width + shortcut_width + spacing >= parent_width_) {
     auto fm = QFontMetrics{ui_->title->font()};
     auto elided_text =
       fm.elidedText(ui_->title->text(), Qt::ElideMiddle,

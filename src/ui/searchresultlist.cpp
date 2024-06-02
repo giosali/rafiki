@@ -60,11 +60,9 @@ SearchResultList::~SearchResultList() {
 }
 
 void SearchResultList::ActivateItem(QListWidgetItem* item) {
-  if (starting_drag_position_ != mapFromGlobal(QCursor::pos())) {
-    return;
+  if (starting_drag_position_ == mapFromGlobal(QCursor::pos())) {
+    emit KeyPressReceived(QKeyCombination{Qt::Key_Return});
   }
-
-  emit KeyPressReceived(QKeyCombination{Qt::Key_Return});
 }
 
 void SearchResultList::AdjustSize(int height) { setFixedHeight(height); }
@@ -170,7 +168,7 @@ void SearchResultList::ProcessResults(
   }
 
   setCurrentRow(row);
-  // TODO: check if necessary.
+  // TODO: check if necessary:
   // scrollToItem(currentItem());
   emit ItemsChanged(Height());
 }
