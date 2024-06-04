@@ -30,7 +30,7 @@ FileSystemEntry::FileSystemEntry()
 
 FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
     : ProcessedResultBuilder{kId,
-                             Project::GetMimeTypeImagePath(path),
+                             Io::GetMimeTypeImagePath(path),
                              QString::fromUtf8(path.filename().string()),
                              kTitlePlaceholder,
                              kAltTitle,

@@ -6,7 +6,7 @@
 #include <filesystem>
 
 #include "../core/definitions.h"
-#include "../core/project.h"
+#include "../core/io.h"
 #include "baseresult.h"
 
 class Trash : public BaseResult {
@@ -28,7 +28,7 @@ class Trash : public BaseResult {
   static const inline QString kCommand{"empty trash"};
   static const inline QString kDescription{};
   static const inline QString kIcon{
-    Project::GetImageFilePath(defs::ImageFile::kTrash)};
+    Io::GetImageFilePath(defs::ImageFile::kTrash)};
   static const inline QString kId{"9056b806-9219-4f6a-b180-bb087b892bae"};
   static const inline QString kTitle{"Empty trash"};
   static const inline QString kTitlePlaceholder{};

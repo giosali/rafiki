@@ -16,7 +16,7 @@
 #include "definitions.h"
 #include "input.h"
 
-class Project {
+class Io {
  public:
   static std::vector<std::shared_ptr<BaseResult>> FindBaseResults(
     const Input& input);

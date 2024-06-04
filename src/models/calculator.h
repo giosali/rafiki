@@ -6,7 +6,7 @@
 
 #include "../core/definitions.h"
 #include "../core/input.h"
-#include "../core/project.h"
+#include "../core/io.h"
 #include "processedresult.h"
 
 class Calculator : public ProcessedResult {
@@ -30,7 +30,7 @@ class Calculator : public ProcessedResult {
   static const inline QString kCommand{};
   static const inline QString kDescription{"Copy to clipboard"};
   static const inline QString kIcon{
-    Project::GetImageFilePath(defs::ImageFile::kCalculator)};
+    Io::GetImageFilePath(defs::ImageFile::kCalculator)};
   static const inline QString kId{"7cddc690-1b3d-49d5-bbe4-adbad5a51833"};
   static const inline QString kInfoDescription{
     "Please enter a valid expression"};

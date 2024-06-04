@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "core/client.h"
-#include "core/project.h"
+#include "core/io.h"
 #include "core/server.h"
 #include "core/utils.h"
 #include "ui/mainwindow.h"
@@ -68,7 +68,7 @@ int main(int argc, char *argv[]) {
     break;
   }
 
-  Project::Initialize();
+  Io::Initialize();
 
   w.show();
   return a.exec();

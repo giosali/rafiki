@@ -1,4 +1,4 @@
-#include "project.h"
+#include "io.h"
 
 #include <QCoreApplication>
 #include <QFile>
@@ -23,7 +23,7 @@
 #include "../models/websearch.h"
 #include "utils.h"
 
-std::vector<std::shared_ptr<BaseResult>> Project::FindBaseResults(
+std::vector<std::shared_ptr<BaseResult>> Io::FindBaseResults(
   const Input& input) {
   auto results_concat = std::vector<std::shared_ptr<BaseResult>>{};
 
@@ -63,7 +63,7 @@ std::vector<std::shared_ptr<BaseResult>> Project::FindBaseResults(
   return results_concat;
 }
 
-QString Project::GetDataFilePath(defs::DataFile file) {
+QString Io::GetDataFilePath(defs::DataFile file) {
   auto dir = QString{"://data/"};
   switch (file) {
     case defs::DataFile::kSettings:
@@ -75,11 +75,11 @@ QString Project::GetDataFilePath(defs::DataFile file) {
   }
 }
 
-std::vector<std::shared_ptr<BaseResult>> Project::GetDefaultBaseResults() {
+std::vector<std::shared_ptr<BaseResult>> Io::GetDefaultBaseResults() {
   return default_base_results_;
 }
 
-QString Project::GetImageFilePath(defs::ImageFile file) {
+QString Io::GetImageFilePath(defs::ImageFile file) {
   auto dir = QString{"://images/"};
   switch (file) {
     case defs::ImageFile::kCalculator:
@@ -99,7 +99,7 @@ QString Project::GetImageFilePath(defs::ImageFile file) {
   }
 }
 
-QString Project::GetMimeTypeImagePath(const std::filesystem::path& path) {
+QString Io::GetMimeTypeImagePath(const std::filesystem::path& path) {
   auto extension = path.extension().string();
 
   // Exits if path doesn't contain a file extension and isn't a directory.
@@ -116,7 +116,7 @@ QString Project::GetMimeTypeImagePath(const std::filesystem::path& path) {
            : search->second;
 }
 
-void Project::Initialize() {
+void Io::Initialize() {
   // Sets up default settings.
   auto default_settings = GetUserSettings();
   auto user_settings = GetDefaultSettings();
@@ -192,7 +192,7 @@ void Project::Initialize() {
 #endif
 }
 
-void Project::AddBaseResult(const std::shared_ptr<BaseResult>& base_result) {
+void Io::AddBaseResult(const std::shared_ptr<BaseResult>& base_result) {
   if (!base_result->HasCommand()) {
     return;
   }
@@ -202,10 +202,10 @@ void Project::AddBaseResult(const std::shared_ptr<BaseResult>& base_result) {
   base_results_map_[cmd].push_back(base_result);
 }
 
-void Project::AddMimeTypeImage(const std::string& theme,
-                               const std::string& extension,
-                               const std::string& mimetype,
-                               const std::string& mimetype_fallback) {
+void Io::AddMimeTypeImage(const std::string& theme,
+                          const std::string& extension,
+                          const std::string& mimetype,
+                          const std::string& mimetype_fallback) {
   auto theme_dir = std::filesystem::path{"/usr/share/icons/" + theme};
   if (!std::filesystem::exists(theme_dir)) {
     return;
@@ -260,7 +260,7 @@ void Project::AddMimeTypeImage(const std::string& theme,
   }
 }
 
-void Project::AddProcessedBaseResult(
+void Io::AddProcessedBaseResult(
   const std::shared_ptr<ProcessedResult>& processed_result) {
   if (processed_result->HasCommand()) {
     auto cmd = processed_result->FormatCommand();
@@ -270,24 +270,24 @@ void Project::AddProcessedBaseResult(
   processed_base_results_.push_back(processed_result);
 }
 
-void Project::AddProcessedResultBuilder(
+void Io::AddProcessedResultBuilder(
   const std::shared_ptr<ProcessedResultBuilder>& builder) {
   processed_result_builders_.push_back(builder);
 }
 
-QSettings Project::GetDefaultSettings() {
+QSettings Io::GetDefaultSettings() {
   return QSettings{GetDataFilePath(defs::DataFile::kSettings),
                    QSettings::IniFormat};
 }
 
-QSettings Project::GetUserSettings() {
+QSettings Io::GetUserSettings() {
   return QSettings{QSettings::IniFormat, QSettings::UserScope,
                    QCoreApplication::organizationName(),
                    QCoreApplication::applicationName()};
 }
 
 template <typename T>
-void Project::ParseJsonToBaseResults(const QString& path) {
+void Io::ParseJsonToBaseResults(const QString& path) {
   auto file = QFile{path};
   if (!file.exists()) {
     return;
@@ -309,9 +309,9 @@ void Project::ParseJsonToBaseResults(const QString& path) {
 /// @param internal_settings
 /// @param external_settings
 /// @param group The name of the INI section.
-void Project::SetMissingSettings(QSettings& internal_settings,
-                                 QSettings& external_settings,
-                                 const QString& group) {
+void Io::SetMissingSettings(QSettings& internal_settings,
+                            QSettings& external_settings,
+                            const QString& group) {
   internal_settings.beginGroup(group);
   external_settings.beginGroup(group);
 
@@ -327,7 +327,7 @@ void Project::SetMissingSettings(QSettings& internal_settings,
   internal_settings.endGroup();
 }
 
-void Project::UpdateDefaultBaseResults() {
+void Io::UpdateDefaultBaseResults() {
   default_base_results_.clear();
   auto user_settings = GetUserSettings();
 

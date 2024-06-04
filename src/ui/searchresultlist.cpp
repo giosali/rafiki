@@ -12,7 +12,7 @@
 #include <cstdlib>
 
 #include "../core/config.h"
-#include "../core/project.h"
+#include "../core/io.h"
 #include "searchresultitem.h"
 
 SearchResultList::SearchResultList(SearchBox* search_box, MainWindow* parent)
@@ -281,15 +281,14 @@ void Worker::ProcessInput(const Input& input) {
   // --> Reselect the previously selected item.
   static bool last_results_were_default_results = false;
 
-  auto results = Project::FindBaseResults(input);
+  auto results = Io::FindBaseResults(input);
   if (results.empty()) {
     if (!last_results_were_default_results) {
       emit DefaultResultsGuardChanged(false);
     }
 
     last_results_were_default_results = true;
-    emit ResultsReadied(Project::GetDefaultBaseResults(), input,
-                        input.GetFull());
+    emit ResultsReadied(Io::GetDefaultBaseResults(), input, input.GetFull());
   } else {
     if (last_results_were_default_results) {
       emit DefaultResultsGuardChanged(false);

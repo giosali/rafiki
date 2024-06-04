@@ -11,7 +11,7 @@
 #include "../core/definitions.h"
 #include "../core/finder.h"
 #include "../core/input.h"
-#include "../core/project.h"
+#include "../core/io.h"
 #include "processedresultbuilder.h"
 
 class FileSystemEntry : public ProcessedResultBuilder {
@@ -38,7 +38,7 @@ class FileSystemEntry : public ProcessedResultBuilder {
   static const inline QString kDescription{
     "Search for files on your PC and open"};
   static const inline QString kIcon{
-    Project::GetImageFilePath(defs::ImageFile::kFileSystemEntry)};
+    Io::GetImageFilePath(defs::ImageFile::kFileSystemEntry)};
   static const inline QString kId{"397662aa-d686-48e3-b454-2d059cbd7ea0"};
   static const inline QChar kInternalCommand{'\''};
   static const inline QString kTitle{"Open file"};
