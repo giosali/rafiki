@@ -21,9 +21,10 @@ int main(int argc, char *argv[]) {
 #endif
 
   auto a = QApplication{argc, argv};
+  QApplication::setApplicationName(PROJECT_NAME);
   auto application_name = QApplication::applicationName();
   QApplication::setApplicationVersion(PROJECT_VERSION);
-  QApplication::setOrganizationName(utils::Capitalize(application_name));
+  QApplication::setOrganizationName(application_name);
   QApplication::setOrganizationDomain(application_name + ".com");
 
   auto w = MainWindow{};

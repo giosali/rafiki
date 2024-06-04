@@ -7,13 +7,6 @@
 #include "../src/core/utils.h"
 #include "utest.h"
 
-UTEST(Capitalize, replaces_first_char_with_uppercase_char) {
-  auto str = "bob";
-  auto expected = "Bob";
-  auto actual = utils::Capitalize(str);
-  ASSERT_TRUE(expected == actual);
-}
-
 UTEST(CompareString, returns_false) {
   auto str1 = std::string{"a"};
   auto str2 = std::string{"b"};

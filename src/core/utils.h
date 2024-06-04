@@ -9,10 +9,6 @@
 namespace utils {
 static const std::string kOutputFile{"/tmp/rafiki_output.txt"};
 
-inline QString Capitalize(QString str) {
-  return str.replace(0, 1, str.at(0).toUpper());
-}
-
 inline bool CompareStrings(const std::string& lhs_str,
                            const std::string& rhs_str, bool reverse = false) {
   auto r = std::lexicographical_compare(
