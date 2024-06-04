@@ -2,10 +2,7 @@
 #define UTILS_H
 
 #include <QString>
-#include <cstdlib>
-#include <fstream>
 #include <numeric>
-#include <sstream>
 #include <string>
 #include <vector>
 
@@ -27,13 +24,6 @@ inline bool CompareStrings(const std::string& lhs_str,
       return proj(lhs_ch) < proj(rhs_ch);
     });
   return reverse ? !r : r;
-}
-
-inline std::string Execute(const std::string& cmd) {
-  std::system((cmd + " >" + kOutputFile).c_str());
-  auto stream = std::ostringstream{};
-  stream << std::ifstream{kOutputFile}.rdbuf();
-  return stream.str();
 }
 
 inline QString Format(QString fmt, const QString& arg) {

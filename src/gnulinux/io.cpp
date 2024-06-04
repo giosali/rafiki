@@ -1,5 +1,6 @@
 #include "io.h"
 
+#include <QProcess>
 #include <QSettings>
 #include <QString>
 #include <QStringList>
@@ -32,7 +33,6 @@ Io::CreateIconMap() {
     for (const auto& entry : std::filesystem::recursive_directory_iterator(
            target_dir,
            std::filesystem::directory_options::skip_permission_denied)) {
-      // qDebug() << "MADE IT THIS FAR!" << entry.exists();
       if (!entry.exists() || entry.is_directory()) {
         continue;
       }
@@ -228,26 +228,26 @@ std::string Io::GetIconTheme() {
   // Checks in the following order: GNOME, Cinnamon, Mate, Xfce.
   // https://stackoverflow.com/a/44629154
   // https://github.com/cerebroapp/cerebro/issues/17
-  auto cmds = std::array<std::string, 4>{
+  auto commands = std::array<QString, 4>{
     "gsettings get org.gnome.desktop.interface icon-theme",
     "gsettings get org.cinnamon.desktop.interface icon-theme",
     "gsettings get org.mate.interface icon-theme",
     "xfconf-query -lvc xsettings -p /Net/ThemeName"};
 
-  auto theme = std::string{};
-  for (size_t i = 0; i < cmds.size(); ++i) {
-    auto result = utils::Execute(cmds[i]);
-    if (result.empty()) {
-      continue;
+  auto theme = QString{};
+  for (size_t i = 0; i < commands.size(); ++i) {
+    if (auto result = Execute(commands[i]); !result.isEmpty()) {
+      // Strips apostrophes from both sides since the theme is returned as
+      // 'Theme' on GNOME.
+      result = result.trimmed();
+      qsizetype pos = result.front() == '\'' ? 1 : 0;
+      qsizetype n = result.length() - pos - (result.back() == '\'' ? 1 : 0);
+      theme = result.sliced(pos, n);
+      break;
     }
-
-    // Strips apostrophes from both sides since the theme is returned as
-    // 'Theme' on GNOME.
-    theme = utils::Strip(result, '\'');
-    break;
   }
 
-  return theme;
+  return theme.toStdString();
 }
 
 std::vector<DesktopEntry> Io::ParseDesktopEntries() {
@@ -285,5 +285,13 @@ std::vector<DesktopEntry> Io::ParseDesktopEntries() {
   }
 
   return desktop_entries;
+}
+
+QString Io::Execute(const QString& command) {
+  auto parts = QProcess::splitCommand(command);
+  auto process = QProcess{};
+  process.start(parts.takeFirst(), parts);
+  process.waitForFinished();
+  return process.readAllStandardOutput();
 }
 }  // namespace gnulinux
