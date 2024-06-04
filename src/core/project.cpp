@@ -156,9 +156,7 @@ void Project::Initialize() {
   // For more info:
   // https://stackoverflow.com/a/44629154
   // https://github.com/cerebroapp/cerebro/issues/17
-  auto cmd =
-    std::string{"gsettings get org.gnome.desktop.interface icon-theme"};
-  if (auto theme = utils::Strip(utils::Execute(cmd), '\''); !theme.empty()) {
+  if (auto theme = gnulinux::Io::GetIconTheme(); !theme.empty()) {
     AddMimeTypeImage(theme, ".mp3", "audio-x-mpeg", "audio-x-generic");
     AddMimeTypeImage(theme, ".flac", "audio-x-flac", "audio-x-generic");
     AddMimeTypeImage(theme, ".opus", "audio-x-generic", "audio-x-generic");
