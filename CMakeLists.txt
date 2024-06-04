@@ -86,10 +86,6 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     )
 endif()
 
-add_definitions(
-    -DPROJECT_VERSION="${PROJECT_VERSION}"
-)
-
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(${CMAKE_PROJECT_NAME}
         MANUAL_FINALIZATION
@@ -118,6 +114,22 @@ else()
 endif()
 
 target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE Qt${QT_VERSION_MAJOR}::Widgets Qt${QT_VERSION_MAJOR}::Network)
+
+# Capitalizes the project name amd stores it in a variable.
+string(LENGTH ${CMAKE_PROJECT_NAME} cmake_project_name_length)
+string(SUBSTRING ${CMAKE_PROJECT_NAME} 0 1 cmake_project_name_head)
+string(TOUPPER ${cmake_project_name_head} cmake_project_name_head_upper)
+math(EXPR cmake_project_name_difference "${_cmake_project_name_length} - 1")
+string(SUBSTRING ${CMAKE_PROJECT_NAME} 1 ${cmake_project_name_difference} cmake_project_name_tail)
+string(CONCAT cmake_project_name_proper ${cmake_project_name_head_upper} ${cmake_project_name_tail})
+
+target_compile_definitions(${CMAKE_PROJECT_NAME}
+    PUBLIC
+        PROJECT_NAME="${cmake_project_name_proper}"
+        PROJECT_VERSION="${PROJECT_VERSION}"
+    PRIVATE
+        CMAKE_EXPORT_COMPILE_COMMANDS=1
+)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
