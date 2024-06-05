@@ -3,6 +3,7 @@
 
 #include <any>
 #include <map>
+#include <stdexcept>
 #include <string>
 #include <type_traits>
 
@@ -13,7 +14,7 @@ class IniFile {
   void BeginSection(const std::string& section);
   void EndSection();
   /// @brief Finds element with specific key.
-  /// @tparam T Supported types: `bool` and `std::string`
+  /// @tparam T Supported types: `bool`, `int`, and `std::string`
   /// @param key
   /// @param fallback
   /// @return
@@ -33,6 +34,19 @@ class IniFile {
       }
 
       return fallback.has_value() ? fallback : false;
+    } else if (std::is_same<T, int>::value) {
+      // Returns 0 if the key wasn't found.
+      if (it == properties_.end()) {
+        return 0;
+      }
+
+      try {
+        return std::stoi(it->second);
+      } catch (const std::invalid_argument&) {
+        return 0;
+      } catch (const std::out_of_range&) {
+        return 0;
+      }
     } else {
       // If the key exists, returns the value.
       // Otherwise, if the fallback has a value, returns the fallback.
