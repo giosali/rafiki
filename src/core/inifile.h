@@ -12,6 +12,11 @@ class IniFile {
 
   void BeginSection(const std::string& section);
   void EndSection();
+  /// @brief Finds element with specific key.
+  /// @tparam T Supported types: `bool` and `std::string`
+  /// @param key
+  /// @param fallback
+  /// @return
   template <typename T>
   std::any GetValue(const std::string& key,
                     const std::any& fallback = std::any{}) const {
