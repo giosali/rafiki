@@ -25,6 +25,7 @@ class Io {
     const std::string& subdir);
   static std::filesystem::path GetDesktopEntryIcon(const std::string& icon_val);
   static std::string GetIconTheme();
+  static std::unordered_map<std::string, QString> GetMimeTypeIcons();
   static std::vector<DesktopEntry> ParseDesktopEntries();
 
  private:

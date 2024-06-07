@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <set>
 
+#include "../core/inifile.h"
 #include "../core/utils.h"
 
 namespace gnulinux {
@@ -248,6 +249,126 @@ std::string Io::GetIconTheme() {
   }
 
   return theme.toStdString();
+}
+
+std::unordered_map<std::string, QString> Io::GetMimeTypeIcons() {
+  auto mimetype_extensions = std::unordered_map<std::string, QString>{};
+
+  auto theme = GetIconTheme();
+  if (theme.empty()) {
+    return mimetype_extensions;
+  }
+
+  // Must check if theme directory exists since `theme` could be garbage.
+  auto theme_path = std::filesystem::path{"/usr/share/icons"} / theme;
+  if (!std::filesystem::exists(theme_path)) {
+    return mimetype_extensions;
+  }
+
+  // "index.theme" MUST exist.
+  auto theme_index = IniFile{theme_path / "index.theme"};
+
+  // "Directories" is a required value.
+  auto directories_value = std::any_cast<std::string>(
+    theme_index.GetValue<std::string>("Icon Theme/Directories"));
+
+  // All lists in index.theme are comma-separated.
+  auto directories = utils::Split(directories_value, ',');
+
+  auto current_size = 0;
+  auto mimetypes_directory = std::string{};
+  for (const auto& directory : directories) {
+    theme_index.BeginSection(directory);
+
+    // "Context" is a required value.
+    // Searches for the "Context" that is set to "MimeTypes".
+    if (auto context = std::any_cast<std::string>(
+          theme_index.GetValue<std::string>("Context"));
+        context != "MimeTypes") {
+      theme_index.EndSection();
+      continue;
+    }
+
+    // "Size" is a required value.
+    if (auto size = std::any_cast<int>(theme_index.GetValue<int>("Size"));
+        size > current_size) {
+      current_size = size;
+      mimetypes_directory = directory;
+    }
+
+    theme_index.EndSection();
+  }
+
+  // <filename without extension, file path>
+  auto mimetype_stems =
+    std::unordered_map<std::string, std::filesystem::path>{};
+  for (const auto& entry : std::filesystem::recursive_directory_iterator{
+         theme_path / mimetypes_directory,
+         std::filesystem::directory_options::skip_permission_denied}) {
+    if (entry.is_directory()) {
+      continue;
+    }
+
+    auto path = entry.path();
+    if (auto extension = path.extension();
+        extension == ".png" || extension == ".svg") {
+      mimetype_stems.insert({path.stem().string(), path});
+    }
+  }
+
+  // <extension, [preferred MIME type, fallback MIME type]>
+  auto mimetype_pairs =
+    std::array<std::pair<std::string, std::array<std::string, 2>>, 25>{
+      {
+        // Audio
+        {".flac", {{"audio-x-flac", "audio-x-generic"}}},
+        {".mp3", {{"audio-x-mpeg", "audio-x-generic"}}},
+        {".opus", {{"audio-x-generic", "audio-x-generic"}}},
+        {".wav", {{"audio-x-wav", "audio-x-generic"}}},
+        // Archive
+        {".gz", {{"application-x-gzip", "application-x-gzip"}}},
+        {".zip", {{"application-x-zip", "application-x-zip"}}},
+        // Misc
+        {"", {{"folder", "folder"}}},
+        // Image
+        {".jpg", {{"image-x-generic", "image-x-generic"}}},
+        {".jpeg", {{"image-x-generic", "image-x-generic"}}},
+        {".png", {{"image-x-generic", "image-x-generic"}}},
+        {".svg", {{"image-svg+xml", "image-x-generic"}}},
+        // Text
+        {".c", {{"text-x-c", "text-x-generic"}}},
+        {".cpp", {{"text-x-cpp", "text-x-generic"}}},
+        {".css", {{"text-css", "text-x-generic"}}},
+        {".hpp", {{"text-x-c++hdr", "text-x-generic"}}},
+        {".md", {{"text-markdown", "text-x-generic"}}},
+        {".py", {{"text-x-python", "text-x-generic"}}},
+        {".rs", {{"text-rust", "text-x-generic"}}},
+        {".rtf", {{"text-richtext", "text-x-generic"}}},
+        {".sass", {{"text-x-sass", "text-x-generic"}}},
+        {".scss", {{"text-x-sass", "text-x-generic"}}},
+        {".ts", {{"text-x-typescript", "text-x-generic"}}},
+        {".txt", {{"text-x-generic", "text-x-generic"}}},
+        // Video
+        {".mp4", {{"video-x-generic", "video-x-generic"}}},
+        {".webm", {{"video-x-generic", "video-x-generic"}}},
+      },
+    };
+
+  for (const auto& pair : mimetype_pairs) {
+    auto mimetypes = pair.second;
+
+    // Searches for the preferred MIME type (and fallback MIME type if
+    // necessary).
+    for (const auto& mimetype : mimetypes) {
+      if (auto it = mimetype_stems.find(mimetype); it != mimetype_stems.end()) {
+        auto extension = pair.first;
+        auto path = it->second;
+        mimetype_extensions.insert({extension, QString::fromStdString(path)});
+      }
+    }
+  }
+
+  return mimetype_extensions;
 }
 
 std::vector<DesktopEntry> Io::ParseDesktopEntries() {

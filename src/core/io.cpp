@@ -108,8 +108,8 @@ QString Io::GetMimeTypeImagePath(const std::filesystem::path& path) {
   }
 
   // Returns a generic resource image if there was no match.
-  auto search = mimetype_images_map_.find(extension);
-  return search == mimetype_images_map_.end()
+  auto search = mimetype_icons_.find(extension);
+  return search == mimetype_icons_.end()
            ? GetImageFilePath(std::filesystem::is_directory(path)
                                 ? defs::ImageFile::kFolder
                                 : defs::ImageFile::kFile)
@@ -125,8 +125,8 @@ void Io::Initialize() {
     SetMissingSettings(default_settings, user_settings, group);
   }
 
-  // Sets up applications.
 #ifdef Q_OS_LINUX
+  // Sets up applications.
   auto desktop_entries = gnulinux::Io::ParseDesktopEntries();
   for (const auto& desktop_entry : desktop_entries) {
     auto application = std::make_shared<Application>(
@@ -137,6 +137,12 @@ void Io::Initialize() {
     autocomplete_.Insert(cmd);
     base_results_map_[cmd].push_back(application);
   }
+
+  // Fetches icon theme on Linux (for GNOME) and adds MIME types.
+  // For more info:
+  // https://stackoverflow.com/a/44629154
+  // https://github.com/cerebroapp/cerebro/issues/17
+  mimetype_icons_ = gnulinux::Io::GetMimeTypeIcons();
 #endif
 
   // Sets up search results based on data files.
@@ -150,46 +156,6 @@ void Io::Initialize() {
 
   // Sets up default search results.
   UpdateDefaultBaseResults();
-
-#ifdef Q_OS_LINUX
-  // Fetches icon theme on Linux (for GNOME) and adds MIME types.
-  // For more info:
-  // https://stackoverflow.com/a/44629154
-  // https://github.com/cerebroapp/cerebro/issues/17
-  if (auto theme = gnulinux::Io::GetIconTheme(); !theme.empty()) {
-    AddMimeTypeImage(theme, ".mp3", "audio-x-mpeg", "audio-x-generic");
-    AddMimeTypeImage(theme, ".flac", "audio-x-flac", "audio-x-generic");
-    AddMimeTypeImage(theme, ".opus", "audio-x-generic", "audio-x-generic");
-    AddMimeTypeImage(theme, ".wav", "audio-x-wav", "audio-x-generic");
-
-    AddMimeTypeImage(theme, ".gz", "application-x-gzip", "application-x-gzip");
-
-    AddMimeTypeImage(theme, ".zip", "application-x-zip", "application-x-zip");
-
-    AddMimeTypeImage(theme, "", "folder", "folder");
-
-    AddMimeTypeImage(theme, ".png", "image-x-generic", "image-x-generic");
-    AddMimeTypeImage(theme, ".jpg", "image-x-generic", "image-x-generic");
-    AddMimeTypeImage(theme, ".jpeg", "image-x-generic", "image-x-generic");
-    AddMimeTypeImage(theme, ".svg", "image-svg+xml", "image-x-generic");
-
-    AddMimeTypeImage(theme, ".txt", "text-x-generic", "text-x-generic");
-    AddMimeTypeImage(theme, ".css", "text-css", "text-x-generic");
-    AddMimeTypeImage(theme, ".md", "text-markdown", "text-x-generic");
-    AddMimeTypeImage(theme, ".rtf", "text-richtext", "text-x-generic");
-    AddMimeTypeImage(theme, ".rs", "text-rust", "text-x-generic");
-    AddMimeTypeImage(theme, ".c", "text-x-c", "text-x-generic");
-    AddMimeTypeImage(theme, ".hpp", "text-x-c++hdr", "text-x-generic");
-    AddMimeTypeImage(theme, ".cpp", "text-x-cpp", "text-x-generic");
-    AddMimeTypeImage(theme, ".py", "text-x-python", "text-x-generic");
-    AddMimeTypeImage(theme, ".sass", "text-x-sass", "text-x-generic");
-    AddMimeTypeImage(theme, ".scss", "text-x-sass", "text-x-generic");
-    AddMimeTypeImage(theme, ".ts", "text-x-typescript", "text-x-generic");
-
-    AddMimeTypeImage(theme, ".mp4", "video-x-generic", "video-x-generic");
-    AddMimeTypeImage(theme, ".webm", "video-x-generic", "video-x-generic");
-  }
-#endif
 }
 
 void Io::AddBaseResult(const std::shared_ptr<BaseResult>& base_result) {
@@ -200,64 +166,6 @@ void Io::AddBaseResult(const std::shared_ptr<BaseResult>& base_result) {
   auto cmd = base_result->FormatCommand();
   autocomplete_.Insert(cmd);
   base_results_map_[cmd].push_back(base_result);
-}
-
-void Io::AddMimeTypeImage(const std::string& theme,
-                          const std::string& extension,
-                          const std::string& mimetype,
-                          const std::string& mimetype_fallback) {
-  auto theme_dir = std::filesystem::path{"/usr/share/icons/" + theme};
-  if (!std::filesystem::exists(theme_dir)) {
-    return;
-  }
-
-  auto dirs = std::vector<std::filesystem::path>{};
-  for (const auto& entry : std::filesystem::directory_iterator{theme_dir}) {
-    auto filename = entry.path().filename().string();
-    if (filename[0] == '.' || !entry.is_directory()) {
-      continue;
-    }
-
-    dirs.push_back(entry);
-  }
-
-  // Sorts the child directories in reverse alphabetical order.
-  std::sort(dirs.begin(), dirs.end(),
-            [](const std::filesystem::path& p1,
-               const std::filesystem::path& p2) -> bool {
-              return utils::CompareStrings(p1.filename().string(),
-                                           p2.filename().string(), true);
-            });
-
-  // Looks through child directories for an image file whose name matches the
-  // specified mimetype.
-  auto find_mimetype_image = [&dirs,
-                              &extension](const std::string& mimetype) -> bool {
-    for (const auto& dir : dirs) {
-      for (const auto& entry :
-           std::filesystem::recursive_directory_iterator(dir)) {
-        if (entry.is_directory()) {
-          continue;
-        }
-
-        auto entry_path = entry.path();
-        auto stem = entry_path.stem().string();
-        if (stem != mimetype) {
-          continue;
-        }
-
-        mimetype_images_map_.insert(
-          {extension, QString::fromStdString(entry_path.string())});
-        return true;
-      }
-    }
-
-    return false;
-  };
-
-  if (!find_mimetype_image(mimetype)) {
-    find_mimetype_image(mimetype_fallback);
-  }
 }
 
 void Io::AddProcessedBaseResult(

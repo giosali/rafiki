@@ -28,10 +28,6 @@ class Io {
 
  private:
   static void AddBaseResult(const std::shared_ptr<BaseResult>& base_result);
-  static void AddMimeTypeImage(const std::string& theme,
-                               const std::string& extension,
-                               const std::string& mimetype,
-                               const std::string& mimetype_fallback);
   static void AddProcessedBaseResult(
     const std::shared_ptr<ProcessedResult>& processed_result);
   static void AddProcessedResultBuilder(
@@ -54,7 +50,7 @@ class Io {
     processed_base_results_;
   static inline std::vector<std::shared_ptr<ProcessedResultBuilder>>
     processed_result_builders_;
-  static inline std::unordered_map<std::string, QString> mimetype_images_map_;
+  static inline std::unordered_map<std::string, QString> mimetype_icons_;
 };
 
 #endif  // PROJECT_H
