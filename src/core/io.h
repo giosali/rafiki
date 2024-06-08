@@ -18,6 +18,8 @@
 
 class Io {
  public:
+  Io() = delete;
+
   static std::vector<std::shared_ptr<BaseResult>> FindBaseResults(
     const Input& input);
   static QString GetDataFilePath(defs::DataFile file);
