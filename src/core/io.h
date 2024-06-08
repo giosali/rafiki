@@ -33,8 +33,8 @@ class Io {
     const Input& input);
   static QString GetDataFilePath(DataFile file);
   static std::vector<std::shared_ptr<BaseResult>> GetDefaultBaseResults();
+  static QString GetIcon(ImageFile file);
   static QString GetIcon(const std::filesystem::path& path);
-  static QString GetImageFilePath(ImageFile file);
   static void Initialize();
 
  private:

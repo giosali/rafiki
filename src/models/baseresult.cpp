@@ -13,9 +13,8 @@ BaseResult::BaseResult(const QString &id, const QString &icon,
       append_space_to_command_{append_space_to_command},
       command_{command},
       description_{description},
-      icon_{QFile::exists(icon)
-              ? icon
-              : Io::GetImageFilePath(Io::ImageFile::kQuestionMark)},
+      icon_{QFile::exists(icon) ? icon
+                                : Io::GetIcon(Io::ImageFile::kQuestionMark)},
       id_{QUuid::fromString(id)},
       is_title_formattable_{title.contains(kFormat)},
       title_placeholder_{title_placeholder},

@@ -79,24 +79,7 @@ std::vector<std::shared_ptr<BaseResult>> Io::GetDefaultBaseResults() {
   return default_base_results_;
 }
 
-QString Io::GetIcon(const std::filesystem::path& path) {
-  auto extension = path.extension().string();
-
-  // Exits if path doesn't contain a file extension and isn't a directory.
-  if (extension.empty() && !std::filesystem::is_directory(path)) {
-    return GetImageFilePath(ImageFile::kFile);
-  }
-
-  // Returns a generic resource image if there was no match.
-  auto search = mimetype_icons_.find(extension);
-  return search == mimetype_icons_.end()
-           ? GetImageFilePath(std::filesystem::is_directory(path)
-                                ? ImageFile::kFolder
-                                : ImageFile::kFile)
-           : search->second;
-}
-
-QString Io::GetImageFilePath(ImageFile file) {
+QString Io::GetIcon(ImageFile file) {
   auto dir = QString{"://images/"};
   switch (file) {
     case ImageFile::kCalculator:
@@ -114,6 +97,22 @@ QString Io::GetImageFilePath(ImageFile file) {
     default:
       return QString{};
   }
+}
+
+QString Io::GetIcon(const std::filesystem::path& path) {
+  auto extension = path.extension().string();
+
+  // Exits if path doesn't contain a file extension and isn't a directory.
+  if (extension.empty() && !std::filesystem::is_directory(path)) {
+    return GetIcon(ImageFile::kFile);
+  }
+
+  // Returns a generic resource image if there was no match.
+  auto search = mimetype_icons_.find(extension);
+  return search == mimetype_icons_.end()
+           ? GetIcon(std::filesystem::is_directory(path) ? ImageFile::kFolder
+                                                         : ImageFile::kFile)
+           : search->second;
 }
 
 void Io::Initialize() {
