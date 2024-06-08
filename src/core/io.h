@@ -22,8 +22,8 @@ class Io {
     const Input& input);
   static QString GetDataFilePath(defs::DataFile file);
   static std::vector<std::shared_ptr<BaseResult>> GetDefaultBaseResults();
+  static QString GetIcon(const std::filesystem::path& path);
   static QString GetImageFilePath(defs::ImageFile file);
-  static QString GetMimeTypeImagePath(const std::filesystem::path& path);
   static void Initialize();
 
  private:
