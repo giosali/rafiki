@@ -5,8 +5,6 @@
 #include <QString>
 #include <filesystem>
 
-#include "../core/definitions.h"
-#include "../core/io.h"
 #include "baseresult.h"
 
 class Trash : public BaseResult {
@@ -23,15 +21,14 @@ class Trash : public BaseResult {
                          const Input& input) override;
 
  private:
-  static const inline QString kAltTitle{};
-  static const inline bool kAppendSpaceToCommand = false;
-  static const inline QString kCommand{"empty trash"};
-  static const inline QString kDescription{};
-  static const inline QString kIcon{
-    Io::GetImageFilePath(defs::ImageFile::kTrash)};
-  static const inline QString kId{"9056b806-9219-4f6a-b180-bb087b892bae"};
-  static const inline QString kTitle{"Empty trash"};
-  static const inline QString kTitlePlaceholder{};
+  static const QString kAltTitle;
+  static const bool kAppendSpaceToCommand;
+  static const QString kCommand;
+  static const QString kDescription;
+  static const QString kIcon;
+  static const QString kId;
+  static const QString kTitle;
+  static const QString kTitlePlaceholder;
 
   void Empty() const;
 

@@ -5,6 +5,8 @@
 #include <QLocale>
 #include <Qt>
 
+#include "../core/definitions.h"
+#include "../core/io.h"
 #include "../core/shuntingyardalgorithm.h"
 
 Calculator::Calculator()
@@ -20,10 +22,10 @@ bool Calculator::ProcessInput(const Input& input) {
 
   auto value = result.value();
   if (value.empty()) {
-    kTitle = title_ = title_placeholder_;
+    title_ = title_placeholder_;
     description_ = kInfoDescription;
   } else {
-    kTitle = title_ = QString::fromStdString(value);
+    title_ = QString::fromStdString(value);
     description_ = kDescription;
   }
 
@@ -46,7 +48,7 @@ void Calculator::ProcessKeyPress(const QKeyCombination& combination,
       break;
     }
     case Qt::Key_Alt:
-      emit NewTitleRequested(kTitle);
+      emit NewTitleRequested(FormatNumber(title_));
       break;
   }
 }
@@ -55,10 +57,29 @@ void Calculator::ProcessKeyRelease(const QKeyCombination& combination,
                                    const Input& input) {
   switch (combination.key()) {
     case Qt::Key_Alt:
-      emit NewTitleRequested(kTitle);
+      emit NewTitleRequested(title_);
       break;
   }
 }
+
+const QString Calculator::kAltTitle{};
+
+const bool Calculator::kAppendSpaceToCommand{false};
+
+const QString Calculator::kCommand{};
+
+const QString Calculator::kDescription{"Copy to clipboard"};
+
+const QString Calculator::kIcon{
+  Io::GetImageFilePath(defs::ImageFile::kCalculator)};
+
+const QString Calculator::kId{"7cddc690-1b3d-49d5-bbe4-adbad5a51833"};
+
+const QString Calculator::kInfoDescription{"Please enter a valid expression"};
+
+const QString Calculator::kTitle{};
+
+const QString Calculator::kTitlePlaceholder{"..."};
 
 QString Calculator::FormatNumber(QString number) const {
   // Ignores values like "1e+15".

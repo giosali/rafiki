@@ -72,3 +72,5 @@ void Application::ProcessKeyRelease(const QKeyCombination& combination,
       break;
   }
 }
+
+const QString Application::kAltDescription{"Reveal in folder"};

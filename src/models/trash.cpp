@@ -7,6 +7,9 @@
 #include <system_error>
 #include <vector>
 
+#include "../core/definitions.h"
+#include "../core/io.h"
+
 Trash::Trash()
     : BaseResult{kId,       kIcon,        kTitle,   kTitlePlaceholder,
                  kAltTitle, kDescription, kCommand, kAppendSpaceToCommand} {
@@ -38,6 +41,22 @@ void Trash::ProcessKeyRelease(const QKeyCombination& combination,
                               const Input& input) {
   return;
 }
+
+const QString Trash::kAltTitle{};
+
+const bool Trash::kAppendSpaceToCommand{false};
+
+const QString Trash::kCommand{"empty trash"};
+
+const QString Trash::kDescription{};
+
+const QString Trash::kIcon{Io::GetImageFilePath(defs::ImageFile::kTrash)};
+
+const QString Trash::kId{"9056b806-9219-4f6a-b180-bb087b892bae"};
+
+const QString Trash::kTitle{"Empty trash"};
+
+const QString Trash::kTitlePlaceholder{};
 
 void Trash::Empty() const {
   if (!std::filesystem::exists(path_)) {

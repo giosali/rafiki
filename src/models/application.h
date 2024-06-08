@@ -22,7 +22,7 @@ class Application : public BaseResult {
                          const Input& input) override;
 
  private:
-  static inline QString kAltDescription{"Reveal in folder"};
+  static const QString kAltDescription;
 
   QString exec_;
 };

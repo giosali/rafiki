@@ -5,6 +5,9 @@
 #include <QUrl>
 #include <memory>
 
+#include "../core/definitions.h"
+#include "../core/io.h"
+
 FileSystemEntry::FileSystemEntry()
     : ProcessedResultBuilder{kId,       kIcon,
                              kTitle,    kTitlePlaceholder,
@@ -108,3 +111,25 @@ void FileSystemEntry::ProcessKeyRelease(const QKeyCombination& combination,
       break;
   }
 }
+
+const QString FileSystemEntry::kAltDescription{"Show in folder"};
+
+const QString FileSystemEntry::kAltTitle{};
+
+const bool FileSystemEntry::kAppendSpaceToCommand{false};
+
+const QString FileSystemEntry::kCommand{};
+
+const QString FileSystemEntry::kDescription{
+  "Search for files on your PC and open"};
+
+const QString FileSystemEntry::kIcon{
+  Io::GetImageFilePath(defs::ImageFile::kFileSystemEntry)};
+
+const QString FileSystemEntry::kId{"397662aa-d686-48e3-b454-2d059cbd7ea0"};
+
+const QChar FileSystemEntry::kInternalCommand{'\''};
+
+const QString FileSystemEntry::kTitle{"Open file"};
+
+const QString FileSystemEntry::kTitlePlaceholder{};

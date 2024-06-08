@@ -4,9 +4,7 @@
 #include <QKeyCombination>
 #include <QString>
 
-#include "../core/definitions.h"
 #include "../core/input.h"
-#include "../core/io.h"
 #include "processedresult.h"
 
 class Calculator : public ProcessedResult {
@@ -25,17 +23,15 @@ class Calculator : public ProcessedResult {
                          const Input& input) override;
 
  private:
-  static const inline QString kAltTitle{};
-  static const bool kAppendSpaceToCommand = false;
-  static const inline QString kCommand{};
-  static const inline QString kDescription{"Copy to clipboard"};
-  static const inline QString kIcon{
-    Io::GetImageFilePath(defs::ImageFile::kCalculator)};
-  static const inline QString kId{"7cddc690-1b3d-49d5-bbe4-adbad5a51833"};
-  static const inline QString kInfoDescription{
-    "Please enter a valid expression"};
-  static inline QString kTitle{};
-  static const inline QString kTitlePlaceholder{"..."};
+  static const QString kAltTitle;
+  static const bool kAppendSpaceToCommand;
+  static const QString kCommand;
+  static const QString kDescription;
+  static const QString kIcon;
+  static const QString kId;
+  static const QString kInfoDescription;
+  static const QString kTitle;
+  static const QString kTitlePlaceholder;
 
   QString FormatNumber(QString number) const;
 };

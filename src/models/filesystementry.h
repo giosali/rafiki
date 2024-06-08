@@ -8,10 +8,8 @@
 #include <string>
 #include <vector>
 
-#include "../core/definitions.h"
 #include "../core/finder.h"
 #include "../core/input.h"
-#include "../core/io.h"
 #include "processedresultbuilder.h"
 
 class FileSystemEntry : public ProcessedResultBuilder {
@@ -31,18 +29,16 @@ class FileSystemEntry : public ProcessedResultBuilder {
                          const Input& input) override;
 
  private:
-  static const inline QString kAltDescription{"Show in folder"};
-  static const inline QString kAltTitle{};
-  static const inline bool kAppendSpaceToCommand = false;
-  static const inline QString kCommand{};
-  static const inline QString kDescription{
-    "Search for files on your PC and open"};
-  static const inline QString kIcon{
-    Io::GetImageFilePath(defs::ImageFile::kFileSystemEntry)};
-  static const inline QString kId{"397662aa-d686-48e3-b454-2d059cbd7ea0"};
-  static const inline QChar kInternalCommand{'\''};
-  static const inline QString kTitle{"Open file"};
-  static const inline QString kTitlePlaceholder{};
+  static const QString kAltDescription;
+  static const QString kAltTitle;
+  static const bool kAppendSpaceToCommand;
+  static const QString kCommand;
+  static const QString kDescription;
+  static const QString kIcon;
+  static const QString kId;
+  static const QChar kInternalCommand;
+  static const QString kTitle;
+  static const QString kTitlePlaceholder;
 
   Finder finder_;
   bool is_entry_;
