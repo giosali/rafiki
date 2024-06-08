@@ -25,7 +25,6 @@ set(PROJECT_SOURCES
         src/core/client.h
         src/core/config.cpp
         src/core/config.h
-        src/core/definitions.h
         src/core/finder.cpp
         src/core/finder.h
         src/core/inifile.cpp

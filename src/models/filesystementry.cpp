@@ -5,7 +5,6 @@
 #include <QUrl>
 #include <memory>
 
-#include "../core/definitions.h"
 #include "../core/io.h"
 
 FileSystemEntry::FileSystemEntry()
@@ -124,7 +123,7 @@ const QString FileSystemEntry::kDescription{
   "Search for files on your PC and open"};
 
 const QString FileSystemEntry::kIcon{
-  Io::GetImageFilePath(defs::ImageFile::kFileSystemEntry)};
+  Io::GetImageFilePath(Io::ImageFile::kFileSystemEntry)};
 
 const QString FileSystemEntry::kId{"397662aa-d686-48e3-b454-2d059cbd7ea0"};
 

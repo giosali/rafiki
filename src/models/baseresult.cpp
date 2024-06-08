@@ -2,7 +2,6 @@
 
 #include <QFile>
 
-#include "../core/definitions.h"
 #include "../core/io.h"
 #include "../core/utils.h"
 
@@ -16,7 +15,7 @@ BaseResult::BaseResult(const QString &id, const QString &icon,
       description_{description},
       icon_{QFile::exists(icon)
               ? icon
-              : Io::GetImageFilePath(defs::ImageFile::kQuestionMark)},
+              : Io::GetImageFilePath(Io::ImageFile::kQuestionMark)},
       id_{QUuid::fromString(id)},
       is_title_formattable_{title.contains(kFormat)},
       title_placeholder_{title_placeholder},

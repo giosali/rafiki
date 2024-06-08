@@ -63,12 +63,12 @@ std::vector<std::shared_ptr<BaseResult>> Io::FindBaseResults(
   return results_concat;
 }
 
-QString Io::GetDataFilePath(defs::DataFile file) {
+QString Io::GetDataFilePath(DataFile file) {
   auto dir = QString{"://data/"};
   switch (file) {
-    case defs::DataFile::kSettings:
+    case DataFile::kSettings:
       return dir + "settings.ini";
-    case defs::DataFile::kWebSearches:
+    case DataFile::kWebSearches:
       return dir + "web-searches.json";
     default:
       return QString{};
@@ -84,32 +84,32 @@ QString Io::GetIcon(const std::filesystem::path& path) {
 
   // Exits if path doesn't contain a file extension and isn't a directory.
   if (extension.empty() && !std::filesystem::is_directory(path)) {
-    return GetImageFilePath(defs::ImageFile::kFile);
+    return GetImageFilePath(ImageFile::kFile);
   }
 
   // Returns a generic resource image if there was no match.
   auto search = mimetype_icons_.find(extension);
   return search == mimetype_icons_.end()
            ? GetImageFilePath(std::filesystem::is_directory(path)
-                                ? defs::ImageFile::kFolder
-                                : defs::ImageFile::kFile)
+                                ? ImageFile::kFolder
+                                : ImageFile::kFile)
            : search->second;
 }
 
-QString Io::GetImageFilePath(defs::ImageFile file) {
+QString Io::GetImageFilePath(ImageFile file) {
   auto dir = QString{"://images/"};
   switch (file) {
-    case defs::ImageFile::kCalculator:
+    case ImageFile::kCalculator:
       return dir + "calculator.png";
-    case defs::ImageFile::kFile:
+    case ImageFile::kFile:
       return dir + "file.svg";
-    case defs::ImageFile::kFileSystemEntry:
+    case ImageFile::kFileSystemEntry:
       return dir + "filesystementry.svg";
-    case defs::ImageFile::kFolder:
+    case ImageFile::kFolder:
       return dir + "folder.svg";
-    case defs::ImageFile::kQuestionMark:
+    case ImageFile::kQuestionMark:
       return dir + "question-mark.png";
-    case defs::ImageFile::kTrash:
+    case ImageFile::kTrash:
       return dir + "trash.svg";
     default:
       return QString{};
@@ -146,8 +146,7 @@ void Io::Initialize() {
 #endif
 
   // Sets up search results based on data files.
-  ParseJsonToBaseResults<WebSearch>(
-    GetDataFilePath(defs::DataFile::kWebSearches));
+  ParseJsonToBaseResults<WebSearch>(GetDataFilePath(DataFile::kWebSearches));
 
   // Sets up built-in search results not based on data files.
   AddBaseResult(std::make_shared<Trash>());
@@ -184,8 +183,7 @@ void Io::AddProcessedResultBuilder(
 }
 
 QSettings Io::GetDefaultSettings() {
-  return QSettings{GetDataFilePath(defs::DataFile::kSettings),
-                   QSettings::IniFormat};
+  return QSettings{GetDataFilePath(DataFile::kSettings), QSettings::IniFormat};
 }
 
 QSettings Io::GetUserSettings() {

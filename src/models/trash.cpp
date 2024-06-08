@@ -7,7 +7,6 @@
 #include <system_error>
 #include <vector>
 
-#include "../core/definitions.h"
 #include "../core/io.h"
 
 Trash::Trash()
@@ -50,7 +49,7 @@ const QString Trash::kCommand{"empty trash"};
 
 const QString Trash::kDescription{};
 
-const QString Trash::kIcon{Io::GetImageFilePath(defs::ImageFile::kTrash)};
+const QString Trash::kIcon{Io::GetImageFilePath(Io::ImageFile::kTrash)};
 
 const QString Trash::kId{"9056b806-9219-4f6a-b180-bb087b892bae"};
 

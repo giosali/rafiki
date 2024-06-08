@@ -13,19 +13,28 @@
 #include "../models/processedresult.h"
 #include "../models/processedresultbuilder.h"
 #include "autocompletemap.h"
-#include "definitions.h"
 #include "input.h"
 
 class Io {
  public:
+  enum class DataFile { kSettings, kWebSearches };
+  enum class ImageFile {
+    kCalculator,
+    kFile,
+    kFileSystemEntry,
+    kFolder,
+    kQuestionMark,
+    kTrash
+  };
+
   Io() = delete;
 
   static std::vector<std::shared_ptr<BaseResult>> FindBaseResults(
     const Input& input);
-  static QString GetDataFilePath(defs::DataFile file);
+  static QString GetDataFilePath(DataFile file);
   static std::vector<std::shared_ptr<BaseResult>> GetDefaultBaseResults();
   static QString GetIcon(const std::filesystem::path& path);
-  static QString GetImageFilePath(defs::ImageFile file);
+  static QString GetImageFilePath(ImageFile file);
   static void Initialize();
 
  private:
