@@ -63,19 +63,8 @@ std::vector<std::shared_ptr<BaseResult>> Io::FindBaseResults(
   return results_concat;
 }
 
-QString Io::GetDataFilePath(DataFile file) {
-  auto dir = QString{"://data/"};
-  switch (file) {
-    case DataFile::kSettings:
-      return dir + "settings.ini";
-    case DataFile::kWebSearches:
-      return dir + "web-searches.json";
-    default:
-      return QString{};
-  }
-}
-
 std::vector<std::shared_ptr<BaseResult>> Io::GetDefaultBaseResults() {
+  qDebug() << "SIZE:" << default_base_results_.size();
   return default_base_results_;
 }
 
@@ -145,7 +134,7 @@ void Io::Initialize() {
 #endif
 
   // Sets up search results based on data files.
-  ParseJsonToBaseResults<WebSearch>(GetDataFilePath(DataFile::kWebSearches));
+  ParseJsonToBaseResults<WebSearch>(GetFile(DataFile::kWebSearches));
 
   // Sets up built-in search results not based on data files.
   AddBaseResult(std::make_shared<Trash>());
@@ -182,7 +171,19 @@ void Io::AddProcessedResultBuilder(
 }
 
 QSettings Io::GetDefaultSettings() {
-  return QSettings{GetDataFilePath(DataFile::kSettings), QSettings::IniFormat};
+  return QSettings{GetFile(DataFile::kSettings), QSettings::IniFormat};
+}
+
+QString Io::GetFile(DataFile file) {
+  auto dir = QString{"://data/"};
+  switch (file) {
+    case DataFile::kSettings:
+      return dir + "settings.ini";
+    case DataFile::kWebSearches:
+      return dir + "web-searches.json";
+    default:
+      return QString{};
+  }
 }
 
 QSettings Io::GetUserSettings() {

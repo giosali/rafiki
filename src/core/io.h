@@ -31,7 +31,6 @@ class Io {
 
   static std::vector<std::shared_ptr<BaseResult>> FindBaseResults(
     const Input& input);
-  static QString GetDataFilePath(DataFile file);
   static std::vector<std::shared_ptr<BaseResult>> GetDefaultBaseResults();
   static QString GetIcon(ImageFile file);
   static QString GetIcon(const std::filesystem::path& path);
@@ -44,6 +43,7 @@ class Io {
   static void AddProcessedResultBuilder(
     const std::shared_ptr<ProcessedResultBuilder>& builder);
   static QSettings GetDefaultSettings();
+  static QString GetFile(DataFile file);
   static QSettings GetUserSettings();
   template <typename T>
   static void ParseJsonToBaseResults(const QString& path);
