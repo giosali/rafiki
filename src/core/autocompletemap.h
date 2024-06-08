@@ -7,7 +7,6 @@
 #include <string>
 #include <unordered_map>
 
-#include "definitions.h"
 #include "input.h"
 
 class AutocompleteMap {
