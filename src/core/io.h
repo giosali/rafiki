@@ -17,6 +17,7 @@
 
 class Io {
  public:
+  enum class ConfigFile { kDefault, kUser };
   enum class DataFile { kSettings, kWebSearches };
   enum class ImageFile {
     kCalculator,
@@ -42,14 +43,10 @@ class Io {
     const std::shared_ptr<ProcessedResult>& processed_result);
   static void AddProcessedResultBuilder(
     const std::shared_ptr<ProcessedResultBuilder>& builder);
-  static QSettings GetDefaultSettings();
+  static QSettings GetFile(ConfigFile file);
   static QString GetFile(DataFile file);
-  static QSettings GetUserSettings();
   template <typename T>
   static void ParseJsonToBaseResults(const QString& path);
-  static void SetMissingSettings(QSettings& internal_settings,
-                                 QSettings& external_settings,
-                                 const QString& group);
   static void UpdateDefaultBaseResults();
 
   static inline AutocompleteMap autocomplete_;

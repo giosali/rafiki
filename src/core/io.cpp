@@ -64,7 +64,6 @@ std::vector<std::shared_ptr<BaseResult>> Io::FindBaseResults(
 }
 
 std::vector<std::shared_ptr<BaseResult>> Io::GetDefaultBaseResults() {
-  qDebug() << "SIZE:" << default_base_results_.size();
   return default_base_results_;
 }
 
@@ -106,11 +105,23 @@ QString Io::GetIcon(const std::filesystem::path& path) {
 
 void Io::Initialize() {
   // Sets up default settings.
-  auto default_settings = GetUserSettings();
-  auto user_settings = GetDefaultSettings();
+  auto default_settings = GetFile(ConfigFile::kDefault);
+  auto user_settings = GetFile(ConfigFile::kUser);
 
+  // Adds missing/new settings from default settings to user settings (written
+  // to disk).
   for (const auto& group : default_settings.childGroups()) {
-    SetMissingSettings(default_settings, user_settings, group);
+    default_settings.beginGroup(group);
+    user_settings.beginGroup(group);
+
+    for (const auto& key : default_settings.childKeys()) {
+      if (!user_settings.contains(key)) {
+        user_settings.setValue(key, default_settings.value(key));
+      }
+    }
+
+    default_settings.endGroup();
+    user_settings.endGroup();
   }
 
 #ifdef Q_OS_LINUX
@@ -170,8 +181,18 @@ void Io::AddProcessedResultBuilder(
   processed_result_builders_.push_back(builder);
 }
 
-QSettings Io::GetDefaultSettings() {
-  return QSettings{GetFile(DataFile::kSettings), QSettings::IniFormat};
+QSettings Io::GetFile(ConfigFile file) {
+  switch (file) {
+    case ConfigFile::kDefault:
+      return QSettings{GetFile(DataFile::kSettings), QSettings::IniFormat};
+    case ConfigFile::kUser:
+      return QSettings{QSettings::IniFormat, QSettings::UserScope,
+                       QCoreApplication::organizationName(),
+                       QCoreApplication::applicationName()};
+      break;
+    default:
+      return QSettings{};
+  }
 }
 
 QString Io::GetFile(DataFile file) {
@@ -184,12 +205,6 @@ QString Io::GetFile(DataFile file) {
     default:
       return QString{};
   }
-}
-
-QSettings Io::GetUserSettings() {
-  return QSettings{QSettings::IniFormat, QSettings::UserScope,
-                   QCoreApplication::organizationName(),
-                   QCoreApplication::applicationName()};
 }
 
 template <typename T>
@@ -211,31 +226,9 @@ void Io::ParseJsonToBaseResults(const QString& path) {
   }
 }
 
-/// @brief Writes default settings to the user's filesystem.
-/// @param internal_settings
-/// @param external_settings
-/// @param group The name of the INI section.
-void Io::SetMissingSettings(QSettings& internal_settings,
-                            QSettings& external_settings,
-                            const QString& group) {
-  internal_settings.beginGroup(group);
-  external_settings.beginGroup(group);
-
-  for (const auto& key : internal_settings.allKeys()) {
-    if (external_settings.contains(key)) {
-      continue;
-    }
-
-    external_settings.setValue(key, internal_settings.value(key));
-  }
-
-  external_settings.endGroup();
-  internal_settings.endGroup();
-}
-
 void Io::UpdateDefaultBaseResults() {
   default_base_results_.clear();
-  auto user_settings = GetUserSettings();
+  auto user_settings = GetFile(ConfigFile::kUser);
 
   // Takes the IDs of the default search results and stores them in a set.
   user_settings.beginGroup("DefaultSearchResults");
