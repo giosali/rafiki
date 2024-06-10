@@ -12,7 +12,6 @@ class Client : public QObject {
  public:
   explicit Client(QObject* parent = nullptr);
 
-  void Connect();
   void Connect(const QString& message);
 
  public slots:
