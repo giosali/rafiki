@@ -13,8 +13,6 @@ class WebSearch : public BaseResult {
  public:
   explicit WebSearch(const QJsonObject& object);
 
-  ~WebSearch() = default;
-
  public slots:
   void Drag() override;
   void ProcessKeyPress(const QKeyCombination& combination,
