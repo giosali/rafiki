@@ -27,6 +27,7 @@ std::vector<std::shared_ptr<BaseResult>> Io::FindBaseResults(
   const Input& input) {
   auto results_concat = std::vector<std::shared_ptr<BaseResult>>{};
 
+  // Regular commands.
   auto suggestions = autocomplete_.Find(input);
   for (const auto& suggestion : suggestions) {
     auto results_it = base_results_map_.find(suggestion);
@@ -38,6 +39,7 @@ std::vector<std::shared_ptr<BaseResult>> Io::FindBaseResults(
     results_concat.insert(results_concat.end(), results.begin(), results.end());
   }
 
+  // Input-dependent results.
   for (const auto& pbr : processed_base_results_) {
     if (!pbr->ProcessInput(input)) {
       continue;
@@ -46,6 +48,7 @@ std::vector<std::shared_ptr<BaseResult>> Io::FindBaseResults(
     results_concat.push_back(pbr);
   }
 
+  // Input-dependent results that also produce results.
   for (const auto& prb : processed_result_builders_) {
     if (!prb->ProcessInput(input)) {
       continue;
