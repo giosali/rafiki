@@ -28,7 +28,7 @@ std::vector<std::shared_ptr<BaseResult>> Io::FindBaseResults(
   auto results_concat = std::vector<std::shared_ptr<BaseResult>>{};
 
   // Regular commands.
-  auto suggestions = autocomplete_.Find(input);
+  auto suggestions = autocompleter_.Find(input);
   for (const auto& suggestion : suggestions) {
     auto results_it = base_results_map_.find(suggestion);
     if (results_it == base_results_map_.end()) {
@@ -136,7 +136,7 @@ void Io::Initialize() {
       desktop_entry.GetIconSize(), desktop_entry.GetDescription(),
       desktop_entry.GetExec());
     auto cmd = application->FormatCommand();
-    autocomplete_.Insert(cmd);
+    autocompleter_.Insert(cmd);
     base_results_map_[cmd].push_back(application);
   }
 
@@ -165,7 +165,7 @@ void Io::AddBaseResult(const std::shared_ptr<BaseResult>& base_result) {
   }
 
   auto cmd = base_result->FormatCommand();
-  autocomplete_.Insert(cmd);
+  autocompleter_.Insert(cmd);
   base_results_map_[cmd].push_back(base_result);
 }
 
@@ -173,7 +173,7 @@ void Io::AddProcessedBaseResult(
   const std::shared_ptr<ProcessedResult>& processed_result) {
   if (processed_result->HasCommand()) {
     auto cmd = processed_result->FormatCommand();
-    autocomplete_.Insert(cmd);
+    autocompleter_.Insert(cmd);
   }
 
   processed_base_results_.push_back(processed_result);
@@ -224,7 +224,7 @@ void Io::ParseJsonToBaseResults(const QString& path) {
   for (auto it = arr.begin(); it != arr.end(); ++it) {
     auto result = std::make_shared<T>(it->toObject());
     auto cmd = result->FormatCommand();
-    autocomplete_.Insert(cmd);
+    autocompleter_.Insert(cmd);
     base_results_map_[cmd].push_back(result);
   }
 }

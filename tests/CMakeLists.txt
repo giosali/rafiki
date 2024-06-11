@@ -12,8 +12,8 @@ find_package(Qt6 REQUIRED COMPONENTS Test)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../src)
 
 set(PROJECT_SOURCES
-        ../src/core/autocompletemap.cpp
-        ../src/core/autocompletemap.h
+        ../src/core/autocompleter.cpp
+        ../src/core/autocompleter.h
         ../src/core/input.cpp
         ../src/core/input.h
         ../src/core/shuntingyardalgorithm.cpp

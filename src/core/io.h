@@ -12,7 +12,7 @@
 #include "../models/baseresult.h"
 #include "../models/processedresult.h"
 #include "../models/processedresultbuilder.h"
-#include "autocompletemap.h"
+#include "autocompleter.h"
 #include "input.h"
 
 class Io {
@@ -49,7 +49,7 @@ class Io {
   static void ParseJsonToBaseResults(const QString& path);
   static void UpdateDefaultBaseResults();
 
-  static inline AutocompleteMap autocomplete_;
+  static inline Autocompleter autocompleter_;
   static inline std::unordered_map<QString,
                                    std::vector<std::shared_ptr<BaseResult>>>
     base_results_map_;

@@ -9,9 +9,9 @@
 
 #include "input.h"
 
-class AutocompleteMap {
+class Autocompleter {
  public:
-  AutocompleteMap() = default;
+  Autocompleter() = default;
 
   std::set<QString> Find(const Input& input) const;
   void Insert(const QString& text);

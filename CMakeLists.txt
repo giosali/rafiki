@@ -19,8 +19,8 @@ set(RES_FILES
 set(TS_FILES translations/${CMAKE_PROJECT_NAME}_en.ts)
 
 set(PROJECT_SOURCES
-        src/core/autocompletemap.cpp
-        src/core/autocompletemap.h
+        src/core/autocompleter.cpp
+        src/core/autocompleter.h
         src/core/client.cpp
         src/core/client.h
         src/core/config.cpp

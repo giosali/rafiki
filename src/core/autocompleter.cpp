@@ -1,8 +1,8 @@
-#include "autocompletemap.h"
+#include "autocompleter.h"
 
 #include <vector>
 
-std::set<QString> AutocompleteMap::Find(const Input& input) const {
+std::set<QString> Autocompleter::Find(const Input& input) const {
   auto concat = std::set<QString>{};
 
   auto keys = input.IsCmdRedundant()
@@ -18,7 +18,7 @@ std::set<QString> AutocompleteMap::Find(const Input& input) const {
   return concat;
 }
 
-void AutocompleteMap::Insert(const QString& text) {
+void Autocompleter::Insert(const QString& text) {
   auto key = QString{};
   for (const auto ch : text) {
     key += ch;
