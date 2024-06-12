@@ -12,8 +12,8 @@
 #include "./ui_searchresult.h"
 
 SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
-                           const Input& input, const QString& arg, int index,
-                           QWidget* parent)
+                           const Input& input, const QString& argument,
+                           int index, QWidget* parent)
     : QWidget{parent},
       index_{index},
       input_{input},
@@ -45,7 +45,7 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
   ui_->shortcut->setMouseTracking(true);
 
   SetIcon(base_result->GetIcon(), base_result->GetPixmapKey());
-  SetTitle(base_result->FormatTitle(arg));
+  SetTitle(base_result->FormatTitle(argument));
   SetDescription(base_result->GetDescription());
   SetShortcut(index);
 

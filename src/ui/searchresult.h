@@ -22,7 +22,7 @@ class SearchResult : public QWidget {
 
  public:
   explicit SearchResult(const std::shared_ptr<BaseResult>& base_result,
-                        const Input& input, const QString& arg, int index,
+                        const Input& input, const QString& argument, int index,
                         QWidget* parent = nullptr);
 
   ~SearchResult();
