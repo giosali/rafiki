@@ -19,7 +19,7 @@ set(PROJECT_SOURCES
         ../src/core/shuntingyardalgorithm.cpp
         ../src/core/shuntingyardalgorithm.h
         ../src/core/utils.h
-        test_autocompletemap.cpp
+        test_autocompleter.cpp
         test_shuntingyardalgorithm.cpp
         test_utils.cpp
         utest.h

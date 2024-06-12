@@ -34,6 +34,24 @@ UTEST(Find, return_empty_set) {
   ASSERT_TRUE(actual.empty());
 }
 
+UTEST(Find, ignores_uppercase) {
+  auto autocompleter = Autocompleter{};
+  auto term = QString{"hElLo"};
+  autocompleter.Insert(term);
+
+  auto actual = autocompleter.Find(Input{"HELLO"});
+  ASSERT_FALSE(actual.empty());
+}
+
+UTEST(Find, acronym) {
+  auto autocompleter = Autocompleter{};
+  auto term = QString{"hElLo"};
+  autocompleter.Insert(term);
+
+  auto actual = autocompleter.Find(Input{"el"});
+  ASSERT_FALSE(actual.empty());
+}
+
 UTEST(Insert, no_duplicates) {
   auto autocompleter = Autocompleter();
   auto term = QString("hello");
