@@ -80,7 +80,10 @@ void SearchResultList::CheckSelectedItem(QListWidgetItem* current,
 }
 
 void SearchResultList::ProcessInput(const Input& input) {
+  // This is necessary for when CPU intensive operations are currently underway.
+  // Most of the time, this will be redundant.
   worker_thread_.exit();
+
   entered_ = false;
 
   if (input.IsEmpty()) {
@@ -178,6 +181,9 @@ void SearchResultList::ProcessResults(
 
   setCurrentRow(row);
   emit ItemsChanged(Height());
+
+  // Worker thread is no longer needed at this point.
+  worker_thread_.exit();
 }
 
 void SearchResultList::SetUserSelectedItem(bool value) {
