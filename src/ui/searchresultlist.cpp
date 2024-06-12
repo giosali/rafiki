@@ -97,8 +97,6 @@ void SearchResultList::ProcessInput(const Input& input) {
   connect(&worker_thread_, &QThread::finished, worker, &QObject::deleteLater);
   connect(this, &SearchResultList::InputReceived, worker,
           &searchresultlist::Worker::ProcessInput);
-  connect(worker, &searchresultlist::Worker::DefaultResultsGuardChanged, this,
-          &SearchResultList::SetUserSelectedItem);
   connect(worker, &searchresultlist::Worker::ResultsReadied, this,
           &SearchResultList::ProcessResults);
   worker_thread_.start();
@@ -144,14 +142,18 @@ void SearchResultList::ProcessKeyRelease(const QKeyCombination& combination) {
 
 void SearchResultList::ProcessResults(
   const std::vector<std::shared_ptr<BaseResult>>& results, const Input& input,
-  const QString& text) {
+  const QString& argument, bool set_row_to_zero) {
+  if (set_row_to_zero) {
+    user_selected_item_ = false;
+  }
+
   auto row = 0;
   if (auto current_row = currentRow();
       current_row == -1 || !user_selected_item_) {
     clear();  // Helps prevent flicker.
 
     for (size_t i = 0; i < results.size(); ++i) {
-      AddItem(results[i], input, text, i);
+      AddItem(results[i], input, argument, i);
     }
   } else {
     auto current_id =
@@ -165,7 +167,7 @@ void SearchResultList::ProcessResults(
 
     for (size_t i = 0; i < results.size(); ++i) {
       auto result = results[i];
-      AddItem(result, input, text, i);
+      AddItem(result, input, argument, i);
 
       if (!found_id && result->GetId() == current_id) {
         row = i;
@@ -175,8 +177,6 @@ void SearchResultList::ProcessResults(
   }
 
   setCurrentRow(row);
-  // TODO: check if necessary:
-  // scrollToItem(currentItem());
   emit ItemsChanged(Height());
 }
 
@@ -197,6 +197,7 @@ void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
   if (auto item = itemAt(position.x(), position.y());
       item != nullptr && !item->isSelected()) {
     setCurrentItem(item);
+    user_selected_item_ = true;
   }
 
   // Exits if left mouse button isn't down while dragging.
@@ -232,9 +233,9 @@ void SearchResultList::mousePressEvent(QMouseEvent* event) {
 }
 
 void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
-                               const Input& input, const QString& arg,
+                               const Input& input, const QString& argument,
                                int index) {
-  auto widget = new SearchResult(base_result, input, arg, index, this);
+  auto widget = new SearchResult(base_result, input, argument, index, this);
   connect(verticalScrollBar(), &QScrollBar::valueChanged, widget,
           &SearchResult::UpdateShortcut);
   connect(this, &QListWidget::currentRowChanged, widget,
@@ -279,23 +280,17 @@ void Worker::ProcessInput(const Input& input) {
   // When the user:
   // - manually selects an item (through arrow keys/mouse hover)
   // --> Reselect the previously selected item.
-  static bool last_results_were_default_results = false;
+  static bool last_results_were_defaults = false;
 
   auto results = Io::FindBaseResults(input);
   if (results.empty()) {
-    if (!last_results_were_default_results) {
-      emit DefaultResultsGuardChanged(false);
-    }
-
-    last_results_were_default_results = true;
-    emit ResultsReadied(Io::GetDefaultBaseResults(), input, input.ToString());
+    emit ResultsReadied(Io::GetDefaultBaseResults(), input, input.ToString(),
+                        !last_results_were_defaults);
+    last_results_were_defaults = true;
   } else {
-    if (last_results_were_default_results) {
-      emit DefaultResultsGuardChanged(false);
-    }
-
-    last_results_were_default_results = false;
-    emit ResultsReadied(results, input, input.Argument());
+    emit ResultsReadied(results, input, input.Argument(),
+                        last_results_were_defaults);
+    last_results_were_defaults = false;
   }
 }
 }  // namespace searchresultlist

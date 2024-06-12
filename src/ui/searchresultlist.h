@@ -34,7 +34,8 @@ class SearchResultList : public QListWidget {
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
   void ProcessResults(const std::vector<std::shared_ptr<BaseResult>>& results,
-                      const Input& input, const QString& text);
+                      const Input& input, const QString& argument,
+                      bool set_row_to_zero);
   void SetUserSelectedItem(bool value);
 
  signals:
@@ -50,7 +51,7 @@ class SearchResultList : public QListWidget {
 
  private:
   void AddItem(const std::shared_ptr<BaseResult>& base_result,
-               const Input& input, const QString& arg, int index);
+               const Input& input, const QString& argument, int index);
   int Height() const;
 
   bool entered_;
@@ -69,9 +70,9 @@ class Worker : public QObject {
   void ProcessInput(const Input& input);
 
  signals:
-  void DefaultResultsGuardChanged(bool value);
   void ResultsReadied(const std::vector<std::shared_ptr<BaseResult>>& results,
-                      const Input& input, const QString& text);
+                      const Input& input, const QString& text,
+                      bool set_row_to_zero);
 };
 }  // namespace searchresultlist
 
