@@ -9,7 +9,7 @@ std::set<QString> Autocompleter::Find(const Input& input) const {
                 ? std::vector<QString>{input.Command()}
                 : std::vector<QString>{input.Command(), input.ToString()};
   for (const auto& key : keys) {
-    if (auto it = map_.find(key); it != map_.end()) {
+    if (auto it = map_.find(key.toLower()); it != map_.end()) {
       auto s = it->second;
       concat.insert(s.begin(), s.end());
     }
