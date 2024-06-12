@@ -288,14 +288,14 @@ void Worker::ProcessInput(const Input& input) {
     }
 
     last_results_were_default_results = true;
-    emit ResultsReadied(Io::GetDefaultBaseResults(), input, input.GetFull());
+    emit ResultsReadied(Io::GetDefaultBaseResults(), input, input.ToString());
   } else {
     if (last_results_were_default_results) {
       emit DefaultResultsGuardChanged(false);
     }
 
     last_results_were_default_results = false;
-    emit ResultsReadied(results, input, input.GetArg());
+    emit ResultsReadied(results, input, input.Argument());
   }
 }
 }  // namespace searchresultlist

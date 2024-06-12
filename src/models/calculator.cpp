@@ -14,7 +14,7 @@ Calculator::Calculator()
         kAltTitle, kDescription, kCommand, kAppendSpaceToCommand} {}
 
 bool Calculator::ProcessInput(const Input& input) {
-  auto result = ShuntingYardAlgorithm::TryParse(input.GetFull().toStdString());
+  auto result = ShuntingYardAlgorithm::TryParse(input.ToString().toStdString());
   if (!result.has_value()) {
     return false;
   }

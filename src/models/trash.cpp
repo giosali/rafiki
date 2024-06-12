@@ -24,7 +24,7 @@ void Trash::ProcessKeyPress(const QKeyCombination& combination,
                             const Input& input) {
   switch (combination.key()) {
     case Qt::Key_Tab:
-      if (auto command = FormatCommand(); input.GetCmd() != command) {
+      if (auto command = FormatCommand(); input.Command() != command) {
         emit NewSearchBoxTextRequested(command);
       }
 

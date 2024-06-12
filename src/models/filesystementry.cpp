@@ -44,17 +44,17 @@ FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
 bool FileSystemEntry::ProcessInput(const Input& input) {
   results_.clear();
 
-  auto full = input.GetFull();
-  if (full[0] != kInternalCommand) {
+  auto text = input.ToString();
+  if (text[0] != kInternalCommand) {
     return false;
   }
 
   // Means that the current user input is a single command character.
-  if (full.length() == 1) {
+  if (text.length() == 1) {
     return true;
   }
 
-  auto paths = finder_.Search(full.sliced(1).toStdString());
+  auto paths = finder_.Search(text.sliced(1).toStdString());
   if (paths.size() == 0) {
     return false;
   }

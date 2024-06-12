@@ -5,9 +5,9 @@
 std::set<QString> Autocompleter::Find(const Input& input) const {
   auto concat = std::set<QString>{};
 
-  auto keys = input.IsCmdRedundant()
-                ? std::vector<QString>{input.GetCmd()}
-                : std::vector<QString>{input.GetCmd(), input.GetFull()};
+  auto keys = input.IsCommandRedundant()
+                ? std::vector<QString>{input.Command()}
+                : std::vector<QString>{input.Command(), input.ToString()};
   for (const auto& key : keys) {
     if (auto it = map_.find(key); it != map_.end()) {
       auto s = it->second;

@@ -8,16 +8,16 @@ class Input {
   Input() = default;
   explicit Input(const QString& text);
 
-  QString GetArg() const;
-  QString GetCmd() const;
-  QString GetFull() const;
-  bool IsCmdRedundant() const;
+  QString Argument() const;
+  QString Command() const;
+  bool IsCommandRedundant() const;
   bool IsEmpty() const;
+  QString ToString() const;
 
  private:
-  QString arg_;
-  QString cmd_;
-  QString full_;
+  QString argument_;
+  QString command_;
+  QString text_;
 };
 
 #endif  // INPUT_H

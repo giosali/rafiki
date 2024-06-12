@@ -28,7 +28,7 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
                                 const Input& input) {
   switch (combination.key()) {
     case Qt::Key_Tab:
-      if (auto command = FormatCommand(); input.GetCmd() != command) {
+      if (auto command = FormatCommand(); input.Command() != command) {
         emit NewSearchBoxTextRequested(command);
       }
 
@@ -42,21 +42,21 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
         break;
       }
 
-      auto arg = input.GetArg();
+      auto argument = input.Argument();
 
       // Means arg is equal to: QString().
-      if (arg.isNull()) {
+      if (argument.isNull()) {
         emit NewSearchBoxTextRequested(FormatCommand());
         break;
       }
 
       // Means arg is equal to: QString("").
-      if (arg.isEmpty()) {
+      if (argument.isEmpty()) {
         break;
       }
 
       emit Hidden();
-      QDesktopServices::openUrl(QUrl(utils::Format(url, arg)));
+      QDesktopServices::openUrl(QUrl(utils::Format(url, argument)));
       break;
     }
     case Qt::Key_Alt:
@@ -69,7 +69,7 @@ void WebSearch::ProcessKeyRelease(const QKeyCombination& combination,
                                   const Input& input) {
   switch (combination.key()) {
     case Qt::Key_Alt:
-      emit NewTitleRequested(FormatTitle(input.GetArg()));
+      emit NewTitleRequested(FormatTitle(input.Argument()));
       break;
   }
 }

@@ -1,22 +1,21 @@
 #include "input.h"
 
-Input::Input(const QString& text) : full_{text} {
-  // Increments in order to include the space when slicing.
+Input::Input(const QString& text) : text_{text} {
+  // `space_index` increments in order to include the space when slicing.
   if (auto space_index = text.indexOf(" "); space_index++ != -1) {
-    cmd_ = text.sliced(0, space_index);
-    arg_ = text.sliced(space_index);
-    return;
+    command_ = text.sliced(0, space_index);
+    argument_ = text.sliced(space_index);
+  } else {
+    command_ = text;
   }
-
-  cmd_ = text;
 }
 
-QString Input::GetArg() const { return arg_; }
+QString Input::Argument() const { return argument_; }
 
-QString Input::GetCmd() const { return cmd_; }
+QString Input::Command() const { return command_; }
 
-QString Input::GetFull() const { return full_; }
+bool Input::IsCommandRedundant() const { return argument_.isEmpty(); }
 
-bool Input::IsCmdRedundant() const { return arg_.isEmpty(); }
+bool Input::IsEmpty() const { return text_.isEmpty(); }
 
-bool Input::IsEmpty() const { return full_.isEmpty(); }
+QString Input::ToString() const { return text_; }
