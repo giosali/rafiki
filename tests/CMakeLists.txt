@@ -20,6 +20,7 @@ set(PROJECT_SOURCES
         ../src/core/shuntingyardalgorithm.h
         ../src/core/utils.h
         test_autocompleter.cpp
+        test_qurl.cpp
         test_shuntingyardalgorithm.cpp
         test_utils.cpp
         utest.h
@@ -31,5 +32,5 @@ add_executable(${CMAKE_PROJECT_NAME} ${PROJECT_SOURCES})
 target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Test)
 
 add_custom_target(run ALL
-    COMMAND ./test
+    COMMAND ${PROJECT_NAME}
 )
