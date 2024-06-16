@@ -18,11 +18,13 @@ set(PROJECT_SOURCES
         ../src/core/input.h
         ../src/core/shuntingyardalgorithm.cpp
         ../src/core/shuntingyardalgorithm.h
+        ../src/core/urlparser.cpp
+        ../src/core/urlparser.h
         ../src/core/utils.h
         test_autocompleter.cpp
-        test_qurl.cpp
         test_shuntingyardalgorithm.cpp
         test_utils.cpp
+        test_urlparser.cpp
         utest.h
 )
 
