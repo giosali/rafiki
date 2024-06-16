@@ -37,6 +37,8 @@ set(PROJECT_SOURCES
         src/core/server.h
         src/core/shuntingyardalgorithm.cpp
         src/core/shuntingyardalgorithm.h
+        src/core/urlparser.cpp
+        src/core/urlparser.h
         src/core/utils.h
         src/main.cpp
         src/models/application.cpp
@@ -55,6 +57,8 @@ set(PROJECT_SOURCES
         src/models/processedresultbuilder.h
         src/models/trash.cpp
         src/models/trash.h
+        src/models/url.cpp
+        src/models/url.h
         src/models/websearch.cpp
         src/models/websearch.h
         src/ui/mainwindow.cpp
