@@ -25,7 +25,8 @@ class Io {
     kFileSystemEntry,
     kFolder,
     kQuestionMark,
-    kTrash
+    kTrash,
+    kUrl
   };
 
   Io() = delete;

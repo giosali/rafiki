@@ -20,6 +20,7 @@
 #include "../models/calculator.h"
 #include "../models/filesystementry.h"
 #include "../models/trash.h"
+#include "../models/url.h"
 #include "../models/websearch.h"
 #include "utils.h"
 
@@ -85,6 +86,8 @@ QString Io::GetIcon(ImageFile file) {
       return dir + "question-mark.png";
     case ImageFile::kTrash:
       return dir + "trash.svg";
+    case ImageFile::kUrl:
+      return dir + "url.svg";
     default:
       return QString{};
   }
@@ -153,6 +156,7 @@ void Io::Initialize() {
   // Sets up built-in search results not based on data files.
   AddBaseResult(std::make_shared<Trash>());
   AddProcessedBaseResult(std::make_shared<Calculator>());
+  AddProcessedBaseResult(std::make_shared<Url>());
   AddProcessedResultBuilder(std::make_shared<FileSystemEntry>());
 
   // Sets up default search results.
