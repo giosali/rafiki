@@ -74,6 +74,9 @@ set(PROJECT_SOURCES
         src/ui/searchresult.ui
         src/ui/searchresultlist.cpp
         src/ui/searchresultlist.h
+        src/ui/settingswindow.cpp
+        src/ui/settingswindow.h
+        src/ui/settingswindow.ui
         ${RES_FILES}
         ${TS_FILES}
 )
