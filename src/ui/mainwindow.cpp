@@ -17,7 +17,9 @@
 #include "searchresultlist.h"
 
 MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow{parent}, ui_{std::make_unique<Ui::MainWindow>()} {
+    : QMainWindow{parent},
+      settings_window_{std::make_unique<SettingsWindow>(this)},
+      ui_{std::make_unique<Ui::MainWindow>()} {
   ui_->setupUi(this);
   setWindowFlag(Qt::WindowStaysOnTopHint);
 
@@ -128,10 +130,17 @@ bool MainWindow::event(QEvent* event) {
 }
 
 void MainWindow::CreateTrayIcon() {
+  auto settings_action = new QAction{"Settings", this};
+  connect(settings_action, &QAction::triggered, [this]() {
+    Hide();
+    settings_window_->show();
+  });
+
   auto quit_action = new QAction{"Quit", this};
   connect(quit_action, &QAction::triggered, this, &QCoreApplication::quit);
 
   auto tray_menu = new QMenu{this};
+  tray_menu->addAction(settings_action);
   tray_menu->addAction(quit_action);
 
   auto tray_icon = new QSystemTrayIcon{this};

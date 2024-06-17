@@ -7,6 +7,8 @@
 #include <QSystemTrayIcon>
 #include <memory>
 
+#include "settingswindow.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -36,6 +38,7 @@ class MainWindow : public QMainWindow {
  private:
   void CreateTrayIcon();
 
+  std::unique_ptr<SettingsWindow> settings_window_;
   std::unique_ptr<Ui::MainWindow> ui_;
 };
 #endif  // MAINWINDOW_H
