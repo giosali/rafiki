@@ -4,6 +4,7 @@
 #include <QEvent>
 #include <QMainWindow>
 #include <QString>
+#include <QSystemTrayIcon>
 #include <memory>
 
 QT_BEGIN_NAMESPACE
@@ -22,6 +23,7 @@ class MainWindow : public QMainWindow {
 
  public slots:
   void Hide();
+  void ProcessActivationReason(QSystemTrayIcon::ActivationReason reason);
   void ProcessCommandLineArguments(const QString &args);
   void SetHeight(int height);
 
@@ -32,6 +34,8 @@ class MainWindow : public QMainWindow {
   bool event(QEvent *event) override;
 
  private:
+  void CreateTrayIcon();
+
   std::unique_ptr<Ui::MainWindow> ui_;
 };
 #endif  // MAINWINDOW_H

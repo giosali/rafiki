@@ -1,13 +1,17 @@
 #include "mainwindow.h"
 
-#include <QApplication>
+#include <QAction>
 #include <QCommandLineParser>
+#include <QCoreApplication>
+#include <QIcon>
+#include <QMenu>
 #include <QPoint>
 #include <QRect>
 #include <QScreen>
 #include <Qt>
 #include <QtGlobal>
 
+#include "../core/io.h"
 #include "./ui_mainwindow.h"
 #include "searchbox.h"
 #include "searchresultlist.h"
@@ -49,6 +53,10 @@ MainWindow::MainWindow(QWidget* parent)
 
   centralWidget()->layout()->addWidget(box);
   centralWidget()->layout()->addWidget(list);
+
+  if (QSystemTrayIcon::isSystemTrayAvailable()) {
+    CreateTrayIcon();
+  }
 }
 
 MainWindow::~MainWindow() {}
@@ -56,6 +64,15 @@ MainWindow::~MainWindow() {}
 void MainWindow::Hide() {
   hide();
   emit Deactivated();
+}
+
+void MainWindow::ProcessActivationReason(
+  QSystemTrayIcon::ActivationReason reason) {
+  switch (reason) {
+    case QSystemTrayIcon::ActivationReason::MiddleClick:
+      setVisible(!isVisible());
+      break;
+  }
 }
 
 void MainWindow::ProcessCommandLineArguments(const QString& args) {
@@ -87,7 +104,7 @@ void MainWindow::ProcessCommandLineArguments(const QString& args) {
   }
 
   if (parser.isSet(quitOption)) {
-    QApplication::quit();
+    QCoreApplication::quit();
   }
 }
 
@@ -108,4 +125,21 @@ bool MainWindow::event(QEvent* event) {
   }
 
   return QMainWindow::event(event);
+}
+
+void MainWindow::CreateTrayIcon() {
+  auto quit_action = new QAction{"Quit", this};
+  connect(quit_action, &QAction::triggered, this, &QCoreApplication::quit);
+
+  auto tray_menu = new QMenu{this};
+  tray_menu->addAction(quit_action);
+
+  auto tray_icon = new QSystemTrayIcon{this};
+  connect(tray_icon, &QSystemTrayIcon::activated, this,
+          &MainWindow::ProcessActivationReason);
+  tray_icon->setContextMenu(tray_menu);
+
+  // TODO: change icon.
+  tray_icon->setIcon(QIcon{Io::GetIcon(Io::ImageFile::kUrl)});
+  tray_icon->show();
 }
