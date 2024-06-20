@@ -78,9 +78,7 @@ void SearchResult::SetIcon(const QString& path,
                            const QPixmapCache::Key& key) const {
   // Tries to search for a cached QPixmap first.
   if (key.isValid()) {
-    auto pixmap = QPixmap{};
-    if (auto success = QPixmapCache::find(key, &pixmap); success) {
-      auto result = QPixmapCache::find(key, &pixmap);
+    if (auto pixmap = QPixmap{}; QPixmapCache::find(key, &pixmap)) {
       ui_->icon->setPixmap(pixmap);
       return;
     }
