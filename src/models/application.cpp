@@ -22,12 +22,10 @@ Application::Application(const QString& name, const QString& icon,
                  name,
                  false},
       exec_{exec} {
-  if (icon_size < 1000000) {  // 1 MB
-    return;
+  if (icon_size >= 1000000) {  // 1 MB
+    pixmap_key_ = QPixmapCache::insert(
+      QIcon(icon).pixmap(Config::search_result_icon_size_));
   }
-
-  pixmap_key_ =
-    QPixmapCache::insert(QIcon(icon).pixmap(Config::search_result_icon_size_));
 }
 
 void Application::Drag() {};
