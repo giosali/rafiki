@@ -4,7 +4,6 @@
 #include <QFontMetrics>
 #include <QIcon>
 #include <QMimeData>
-#include <QPixmap>
 #include <QUrl>
 #include <Qt>
 
@@ -44,7 +43,7 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
   ui_->description->setMouseTracking(true);
   ui_->shortcut->setMouseTracking(true);
 
-  SetIcon(base_result->GetIcon(), base_result->GetPixmapKey());
+  SetIcon(base_result->GetIcon(Config::search_result_icon_size_));
   SetTitle(base_result->FormatTitle(argument));
   SetDescription(base_result->GetDescription());
   SetShortcut(index);
@@ -74,24 +73,14 @@ void SearchResult::SetDescription(const QString& description) const {
   ui_->description->show();
 }
 
-void SearchResult::SetIcon(const QString& path,
-                           const QPixmapCache::Key& key) const {
-  // Tries to search for a cached QPixmap first.
-  if (key.isValid()) {
-    if (auto pixmap = QPixmap{}; QPixmapCache::find(key, &pixmap)) {
-      ui_->icon->setPixmap(pixmap);
-      return;
-    }
-  }
-
+void SearchResult::SetIcon(const QPixmap& pixmap) const {
   // If the height of the icon is greater than the fixed height of the search
   // result, the icon height will take precedence over the fixed height, thus
   // overriding the fixed height.
   //
   // For more information regarding blurry icons:
   // https://github.com/qbittorrent/qBittorrent/issues/8841#issuecomment-387179854
-  auto icon = QIcon{path};
-  ui_->icon->setPixmap(icon.pixmap(Config::search_result_icon_size_));
+  ui_->icon->setPixmap(pixmap);
 }
 
 void SearchResult::SetShortcut(int row) {

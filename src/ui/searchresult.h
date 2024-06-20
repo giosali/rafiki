@@ -2,6 +2,7 @@
 #define SEARCHRESULT_H
 
 #include <QKeyCombination>
+#include <QPixmap>
 #include <QPixmapCache>
 #include <QResizeEvent>
 #include <QString>
@@ -28,7 +29,7 @@ class SearchResult : public QWidget {
   ~SearchResult();
 
   void SetDescription(const QString& description) const;
-  void SetIcon(const QString& path, const QPixmapCache::Key& key) const;
+  void SetIcon(const QPixmap& pixmap) const;
   void SetShortcut(int row);
   void SetShortcut(const QString& text) const;
   void SetTitle(const QString& title) const;

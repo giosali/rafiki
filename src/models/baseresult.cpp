@@ -1,6 +1,7 @@
 #include "baseresult.h"
 
 #include <QFile>
+#include <QIcon>
 
 #include "../core/io.h"
 #include "../core/utils.h"
@@ -32,10 +33,17 @@ QString BaseResult::FormatTitle(const QString &arg) const {
 
 QString BaseResult::GetDescription() { return description_; }
 
-QString BaseResult::GetIcon() { return icon_; }
+QPixmap BaseResult::GetIcon(int size) {
+  // Tries to search for a cached QPixmap first.
+  if (pixmap_key_.isValid()) {
+    if (auto pixmap = QPixmap{}; QPixmapCache::find(pixmap_key_, &pixmap)) {
+      return pixmap;
+    }
+  }
+
+  return QIcon{icon_}.pixmap(size);
+}
 
 QUuid BaseResult::GetId() { return id_; }
-
-QPixmapCache::Key BaseResult::GetPixmapKey() const { return pixmap_key_; }
 
 bool BaseResult::HasCommand() const { return !command_.isNull(); }
