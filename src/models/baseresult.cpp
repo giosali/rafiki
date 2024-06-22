@@ -31,9 +31,11 @@ QString BaseResult::FormatTitle(const QString &arg) const {
            : title_;
 }
 
-QString BaseResult::GetDescription() { return description_; }
+QString BaseResult::GetCommand() const { return command_; }
 
-QPixmap BaseResult::GetIcon(int size) {
+QString BaseResult::GetDescription() const { return description_; }
+
+QPixmap BaseResult::GetIcon(int size) const {
   // Tries to search for a cached QPixmap first.
   if (pixmap_key_.isValid()) {
     if (auto pixmap = QPixmap{}; QPixmapCache::find(pixmap_key_, &pixmap)) {
@@ -44,6 +46,6 @@ QPixmap BaseResult::GetIcon(int size) {
   return QIcon{icon_}.pixmap(size);
 }
 
-QUuid BaseResult::GetId() { return id_; }
+QUuid BaseResult::GetId() const { return id_; }
 
 bool BaseResult::HasCommand() const { return !command_.isNull(); }

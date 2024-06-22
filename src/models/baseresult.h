@@ -22,9 +22,10 @@ class BaseResult : public Interactable {
 
   QString FormatCommand() const;
   QString FormatTitle(const QString& arg) const;
-  QString GetDescription();
-  QPixmap GetIcon(int size);
-  QUuid GetId();
+  QString GetCommand() const;
+  QString GetDescription() const;
+  QPixmap GetIcon(int size) const;
+  QUuid GetId() const;
   bool HasCommand() const;
 
  protected:
