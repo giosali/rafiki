@@ -12,6 +12,7 @@
 #include "../models/baseresult.h"
 #include "../models/processedresult.h"
 #include "../models/processedresultbuilder.h"
+#include "../models/websearch.h"
 #include "autocompleter.h"
 #include "input.h"
 
@@ -36,6 +37,7 @@ class Io {
   static std::vector<std::shared_ptr<BaseResult>> GetDefaultBaseResults();
   static QString GetIcon(ImageFile file);
   static QString GetIcon(const std::filesystem::path& path);
+  static std::vector<std::shared_ptr<WebSearch>> GetWebSearches();
   static void Initialize();
 
  private:

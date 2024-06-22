@@ -21,7 +21,6 @@
 #include "../models/filesystementry.h"
 #include "../models/trash.h"
 #include "../models/url.h"
-#include "../models/websearch.h"
 #include "utils.h"
 
 std::vector<std::shared_ptr<BaseResult>> Io::FindBaseResults(
@@ -107,6 +106,26 @@ QString Io::GetIcon(const std::filesystem::path& path) {
            ? GetIcon(std::filesystem::is_directory(path) ? ImageFile::kFolder
                                                          : ImageFile::kFile)
            : search->second;
+}
+
+std::vector<std::shared_ptr<WebSearch>> Io::GetWebSearches() {
+  auto path = GetFile(DataFile::kWebSearches);
+  auto file = QFile{path};
+  if (!file.exists()) {
+    return std::vector<std::shared_ptr<WebSearch>>{};
+  }
+
+  file.open(QIODevice::ReadOnly | QIODevice::Text);
+  auto doc = QJsonDocument::fromJson(file.readAll());
+
+  auto v = std::vector<std::shared_ptr<WebSearch>>{};
+  auto arr = doc.array();
+  for (auto it = arr.begin(); it != arr.end(); ++it) {
+    auto web_search = std::make_shared<WebSearch>(it->toObject());
+    v.push_back(web_search);
+  }
+
+  return v;
 }
 
 void Io::Initialize() {
