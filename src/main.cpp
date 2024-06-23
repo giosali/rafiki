@@ -26,6 +26,7 @@ int main(int argc, char *argv[]) {
   QApplication::setApplicationVersion(PROJECT_VERSION);
   QApplication::setOrganizationName(application_name);
   QApplication::setOrganizationDomain(application_name + ".com");
+  QApplication::setQuitOnLastWindowClosed(false);
 
   auto w = MainWindow{};
 
