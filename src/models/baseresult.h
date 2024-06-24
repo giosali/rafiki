@@ -27,6 +27,7 @@ class BaseResult : public Interactable {
   QPixmap GetIcon(int size) const;
   QUuid GetId() const;
   bool HasCommand() const;
+  bool IsEnabled() const;
 
  protected:
   QString alt_title_;
@@ -42,6 +43,7 @@ class BaseResult : public Interactable {
   QString command_;
   QString icon_;
   QUuid id_;
+  bool is_enabled_;
   bool is_title_formattable_;
 };
 

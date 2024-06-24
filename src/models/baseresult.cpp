@@ -17,6 +17,7 @@ BaseResult::BaseResult(const QString &id, const QString &icon,
       icon_{QFile::exists(icon) ? icon
                                 : Io::GetIcon(Io::ImageFile::kQuestionMark)},
       id_{QUuid::fromString(id)},
+      is_enabled_{true},
       is_title_formattable_{title.contains(kFormat)},
       title_placeholder_{title_placeholder},
       title_{title} {}
@@ -49,3 +50,5 @@ QPixmap BaseResult::GetIcon(int size) const {
 QUuid BaseResult::GetId() const { return id_; }
 
 bool BaseResult::HasCommand() const { return !command_.isNull(); }
+
+bool BaseResult::IsEnabled() const { return is_enabled_; }
