@@ -46,8 +46,6 @@ void SettingsWindow::showEvent(QShowEvent* event) {
     auto icon_widget = new QWidget{};
     auto layout = new QHBoxLayout{icon_widget};
     auto icon_label = new QLabel{};
-    // label->setMaximumSize(16, 16);
-    // label->setScaledContents(true);
     icon_label->setPixmap(web_search->GetIcon(16));
     layout->addWidget(icon_label);
     layout->setAlignment(Qt::AlignCenter);
