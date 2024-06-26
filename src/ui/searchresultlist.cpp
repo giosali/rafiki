@@ -17,8 +17,6 @@
 
 SearchResultList::SearchResultList(SearchBox* search_box, MainWindow* parent)
     : QListWidget{parent}, main_window_{parent}, search_box_{search_box} {
-  setObjectName("SearchResultList");
-
   // Component should be hidden on initialization.
   parent == nullptr ? setFixedHeight(0) : setFixedSize(parent->width(), 0);
 
