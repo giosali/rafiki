@@ -18,7 +18,7 @@ BaseResult::BaseResult(uint64_t id, const QString &icon, const QString &title,
                                 : Io::GetIcon(Io::ImageFile::kQuestionMark)},
       id_{id},
       is_enabled_{true},
-      is_title_formattable_{title.contains(kFormat)},
+      is_title_formattable_{title.contains("{}")},
       title_placeholder_{title_placeholder},
       title_{title} {}
 

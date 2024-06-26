@@ -33,12 +33,10 @@ class BaseResult : public Interactable {
   QString alt_title_;
   QString description_;
   QPixmapCache::Key pixmap_key_;
-  QString title_placeholder_;
   QString title_;
+  QString title_placeholder_;
 
  private:
-  const QString kFormat = "{}";
-
   bool append_space_to_command_;
   QString command_;
   QString icon_;
