@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "../core/input.h"
-#include "../models/baseresult.h"
+#include "../models/result.h"
 #include "mainwindow.h"
 #include "searchbox.h"
 #include "searchresult.h"
@@ -33,7 +33,7 @@ class SearchResultList : public QListWidget {
   void ProcessInput(const Input& input);
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
-  void ProcessResults(const std::vector<std::shared_ptr<BaseResult>>& results,
+  void ProcessResults(const std::vector<std::shared_ptr<Result>>& results,
                       const Input& input, const QString& argument,
                       bool set_row_to_zero);
   void SetUserSelectedItem(bool value);
@@ -50,8 +50,8 @@ class SearchResultList : public QListWidget {
   void mousePressEvent(QMouseEvent* event) override;
 
  private:
-  void AddItem(const std::shared_ptr<BaseResult>& base_result,
-               const Input& input, const QString& argument, int index);
+  void AddItem(const std::shared_ptr<Result>& result, const Input& input,
+               const QString& argument, int index);
   int Height() const;
 
   bool entered_;
@@ -70,7 +70,7 @@ class Worker : public QObject {
   void ProcessInput(const Input& input);
 
  signals:
-  void ResultsReadied(const std::vector<std::shared_ptr<BaseResult>>& results,
+  void ResultsReadied(const std::vector<std::shared_ptr<Result>>& results,
                       const Input& input, const QString& text,
                       bool set_row_to_zero);
 };

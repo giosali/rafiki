@@ -6,9 +6,9 @@
 #include <cstdint>
 #include <filesystem>
 
-#include "baseresult.h"
+#include "result.h"
 
-class Trash : public BaseResult {
+class Trash : public Result {
   Q_OBJECT
 
  public:

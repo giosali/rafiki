@@ -1,5 +1,5 @@
-#ifndef BASERESULT_H
-#define BASERESULT_H
+#ifndef RESULT_H
+#define RESULT_H
 
 #include <QJsonObject>
 #include <QPixmap>
@@ -9,16 +9,16 @@
 
 #include "interactable.h"
 
-class BaseResult : public Interactable {
+class Result : public Interactable {
   Q_OBJECT
 
  public:
-  explicit BaseResult(uint64_t id, const QString& icon, const QString& title,
-                      const QString& title_placeholder,
-                      const QString& alt_title, const QString& description,
-                      const QString& command, bool append_space_to_command);
+  explicit Result(uint64_t id, const QString& icon, const QString& title,
+                  const QString& title_placeholder, const QString& alt_title,
+                  const QString& description, const QString& command,
+                  bool append_space_to_command);
 
-  virtual ~BaseResult() = default;
+  virtual ~Result() = default;
 
   QString FormatCommand() const;
   QString FormatTitle(const QString& arg) const;
@@ -45,4 +45,4 @@ class BaseResult : public Interactable {
   bool is_title_formattable_;
 };
 
-#endif  // BASERESULT_H
+#endif  // RESULT_H

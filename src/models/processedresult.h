@@ -2,13 +2,13 @@
 #define PROCESSEDRESULT_H
 
 #include "../core/input.h"
-#include "baseresult.h"
+#include "result.h"
 
-class ProcessedResult : public BaseResult {
+class ProcessedResult : public Result {
   Q_OBJECT
 
  public:
-  using BaseResult::BaseResult;
+  using Result::Result;
 
   virtual bool ProcessInput(const Input& input) = 0;
 };

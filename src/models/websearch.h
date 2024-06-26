@@ -5,9 +5,9 @@
 #include <QKeyCombination>
 #include <QString>
 
-#include "baseresult.h"
+#include "result.h"
 
-class WebSearch : public BaseResult {
+class WebSearch : public Result {
   Q_OBJECT
 
  public:

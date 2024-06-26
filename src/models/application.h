@@ -4,9 +4,9 @@
 #include <QKeyCombination>
 #include <QString>
 
-#include "baseresult.h"
+#include "result.h"
 
-class Application : public BaseResult {
+class Application : public Result {
   Q_OBJECT
 
  public:

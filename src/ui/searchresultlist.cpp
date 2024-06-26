@@ -142,7 +142,7 @@ void SearchResultList::ProcessKeyRelease(const QKeyCombination& combination) {
 }
 
 void SearchResultList::ProcessResults(
-  const std::vector<std::shared_ptr<BaseResult>>& results, const Input& input,
+  const std::vector<std::shared_ptr<Result>>& results, const Input& input,
   const QString& argument, bool set_row_to_zero) {
   if (set_row_to_zero) {
     user_selected_item_ = false;
@@ -236,10 +236,10 @@ void SearchResultList::mousePressEvent(QMouseEvent* event) {
   QListWidget::mousePressEvent(event);
 }
 
-void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
+void SearchResultList::AddItem(const std::shared_ptr<Result>& result,
                                const Input& input, const QString& argument,
                                int index) {
-  auto widget = new SearchResult(base_result, input, argument, index, this);
+  auto widget = new SearchResult(result, input, argument, index, this);
   connect(verticalScrollBar(), &QScrollBar::valueChanged, widget,
           &SearchResult::UpdateShortcut);
   connect(this, &QListWidget::currentRowChanged, widget,
@@ -250,12 +250,12 @@ void SearchResultList::AddItem(const std::shared_ptr<BaseResult>& base_result,
   connect(this, &SearchResultList::KeyReleaseReceived, widget,
           &SearchResult::ProcessKeyRelease);
 
-  auto interactable = base_result.get();
+  auto interactable = result.get();
   connect(interactable, &Interactable::NewSearchBoxTextRequested, search_box_,
           &SearchBox::SetText);
   connect(interactable, &Interactable::Hidden, main_window_, &MainWindow::Hide);
 
-  auto item = new SearchResultItem(base_result->GetId(), this);
+  auto item = new SearchResultItem(result->GetId(), this);
 
   // Sets the actual height of search result items and prevents unusual sizing
   // differences between items.
@@ -286,9 +286,9 @@ void Worker::ProcessInput(const Input& input) {
   // --> Reselect the previously selected item.
   static bool last_results_were_defaults = false;
 
-  auto results = Io::FindBaseResults(input);
+  auto results = Io::FindResults(input);
   if (results.empty()) {
-    emit ResultsReadied(Io::GetDefaultBaseResults(), input, input.ToString(),
+    emit ResultsReadied(Io::GetDefaultResults(), input, input.ToString(),
                         !last_results_were_defaults);
     last_results_were_defaults = true;
   } else {

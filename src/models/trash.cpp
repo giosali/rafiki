@@ -9,8 +9,8 @@
 #include "../core/io.h"
 
 Trash::Trash()
-    : BaseResult{kId,       kIcon,        kTitle,   kTitlePlaceholder,
-                 kAltTitle, kDescription, kCommand, kAppendSpaceToCommand} {
+    : Result{kId,       kIcon,        kTitle,   kTitlePlaceholder,
+             kAltTitle, kDescription, kCommand, kAppendSpaceToCommand} {
   auto home_location =
     QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
   auto home = std::filesystem::path{home_location.toStdString()};

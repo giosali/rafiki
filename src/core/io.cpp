@@ -24,29 +24,28 @@
 #include "../models/url.h"
 #include "utils.h"
 
-std::vector<std::shared_ptr<BaseResult>> Io::FindBaseResults(
-  const Input& input) {
-  auto results_concat = std::vector<std::shared_ptr<BaseResult>>{};
+std::vector<std::shared_ptr<Result>> Io::FindResults(const Input& input) {
+  auto all_results = std::vector<std::shared_ptr<Result>>{};
 
   // Regular commands.
   auto suggestions = autocompleter_.Find(input);
   for (const auto& suggestion : suggestions) {
-    auto results_it = base_results_map_.find(suggestion);
-    if (results_it == base_results_map_.end()) {
+    auto results_it = results_map_.find(suggestion);
+    if (results_it == results_map_.end()) {
       continue;
     }
 
     auto results = results_it->second;
-    results_concat.insert(results_concat.end(), results.begin(), results.end());
+    all_results.insert(all_results.end(), results.begin(), results.end());
   }
 
   // Input-dependent results.
-  for (const auto& pbr : processed_base_results_) {
+  for (const auto& pbr : processed_results_) {
     if (!pbr->ProcessInput(input)) {
       continue;
     }
 
-    results_concat.push_back(pbr);
+    all_results.push_back(pbr);
   }
 
   // Input-dependent results that also produce results.
@@ -57,18 +56,17 @@ std::vector<std::shared_ptr<BaseResult>> Io::FindBaseResults(
 
     auto results = prb->GetResults();
     if (results.empty()) {
-      results_concat.push_back(prb);
+      all_results.push_back(prb);
     } else {
-      results_concat.insert(results_concat.end(), results.begin(),
-                            results.end());
+      all_results.insert(all_results.end(), results.begin(), results.end());
     }
   }
 
-  return results_concat;
+  return all_results;
 }
 
-std::vector<std::shared_ptr<BaseResult>> Io::GetDefaultBaseResults() {
-  return default_base_results_;
+std::vector<std::shared_ptr<Result>> Io::GetDefaultResults() {
+  return default_results_;
 }
 
 QString Io::GetIcon(ImageFile file) {
@@ -160,7 +158,7 @@ void Io::Initialize() {
       desktop_entry.GetExec());
     auto cmd = application->FormatCommand();
     autocompleter_.Insert(cmd);
-    base_results_map_[cmd].push_back(application);
+    results_map_[cmd].push_back(application);
   }
 
   // Fetches icon theme on Linux (for GNOME) and adds MIME types.
@@ -171,36 +169,36 @@ void Io::Initialize() {
 #endif
 
   // Sets up search results based on data files.
-  ParseJsonToBaseResults<WebSearch>(GetFile(DataFile::kWebSearches));
+  ParseJsonToResults<WebSearch>(GetFile(DataFile::kWebSearches));
 
   // Sets up built-in search results not based on data files.
-  AddBaseResult(std::make_shared<Trash>());
-  AddProcessedBaseResult(std::make_shared<Calculator>());
-  AddProcessedBaseResult(std::make_shared<Url>());
+  AddResult(std::make_shared<Trash>());
+  AddProcessedResult(std::make_shared<Calculator>());
+  AddProcessedResult(std::make_shared<Url>());
   AddProcessedResultBuilder(std::make_shared<FileSystemEntry>());
 
   // Sets up default search results.
-  UpdateDefaultBaseResults();
+  UpdateDefaultResults();
 }
 
-void Io::AddBaseResult(const std::shared_ptr<BaseResult>& base_result) {
-  if (!base_result->HasCommand()) {
+void Io::AddResult(const std::shared_ptr<Result>& result) {
+  if (!result->HasCommand()) {
     return;
   }
 
-  auto cmd = base_result->FormatCommand();
+  auto cmd = result->FormatCommand();
   autocompleter_.Insert(cmd);
-  base_results_map_[cmd].push_back(base_result);
+  results_map_[cmd].push_back(result);
 }
 
-void Io::AddProcessedBaseResult(
+void Io::AddProcessedResult(
   const std::shared_ptr<ProcessedResult>& processed_result) {
   if (processed_result->HasCommand()) {
     auto cmd = processed_result->FormatCommand();
     autocompleter_.Insert(cmd);
   }
 
-  processed_base_results_.push_back(processed_result);
+  processed_results_.push_back(processed_result);
 }
 
 void Io::AddProcessedResultBuilder(
@@ -235,7 +233,7 @@ QString Io::GetFile(DataFile file) {
 }
 
 template <typename T>
-void Io::ParseJsonToBaseResults(const QString& path) {
+void Io::ParseJsonToResults(const QString& path) {
   auto file = QFile{path};
   if (!file.exists()) {
     return;
@@ -249,12 +247,12 @@ void Io::ParseJsonToBaseResults(const QString& path) {
     auto result = std::make_shared<T>(it->toObject());
     auto cmd = result->FormatCommand();
     autocompleter_.Insert(cmd);
-    base_results_map_[cmd].push_back(result);
+    results_map_[cmd].push_back(result);
   }
 }
 
-void Io::UpdateDefaultBaseResults() {
-  default_base_results_.clear();
+void Io::UpdateDefaultResults() {
+  default_results_.clear();
   auto user_settings = GetFile(ConfigFile::kUser);
 
   // Takes the IDs of the default search results and stores them in a set.
@@ -267,14 +265,14 @@ void Io::UpdateDefaultBaseResults() {
 
   user_settings.endGroup();
 
-  for (const auto& [_, results] : base_results_map_) {
+  for (const auto& [_, results] : results_map_) {
     for (const auto& result : results) {
       // TODO: update syntax in C++20.
       if (ids.find(result->GetId()) == ids.end()) {
         continue;
       }
 
-      default_base_results_.push_back(result);
+      default_results_.push_back(result);
     }
   }
 }

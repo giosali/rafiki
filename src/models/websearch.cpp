@@ -8,14 +8,14 @@
 #include "../core/utils.h"
 
 WebSearch::WebSearch(const QJsonObject& object)
-    : BaseResult{object["id"].toString().toULongLong(),
-                 object["icon"].toString(),
-                 object["title"].toString(),
-                 object["placeholder"].toString(),
-                 object["alt"].toObject()["title"].toString(),
-                 object["description"].toString(),
-                 object["command"].toString(),
-                 object["title"].toString().contains("{}")} {
+    : Result{object["id"].toString().toULongLong(),
+             object["icon"].toString(),
+             object["title"].toString(),
+             object["placeholder"].toString(),
+             object["alt"].toObject()["title"].toString(),
+             object["description"].toString(),
+             object["command"].toString(),
+             object["title"].toString().contains("{}")} {
   url_ = object["url"].toString();
 
   auto alt = object["alt"].toObject();

@@ -10,7 +10,7 @@
 #include <memory>
 
 #include "../core/input.h"
-#include "../models/baseresult.h"
+#include "../models/result.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,7 +22,7 @@ class SearchResult : public QWidget {
   Q_OBJECT
 
  public:
-  explicit SearchResult(const std::shared_ptr<BaseResult>& base_result,
+  explicit SearchResult(const std::shared_ptr<Result>& result,
                         const Input& input, const QString& argument, int index,
                         QWidget* parent = nullptr);
 

@@ -14,14 +14,14 @@
 Application::Application(const QString& name, const QString& icon,
                          uintmax_t icon_size, const QString& description,
                          const QString& exec)
-    : BaseResult{Crypto::Djb2(description),
-                 icon,
-                 name,
-                 QString{},
-                 QString{},
-                 description,
-                 name,
-                 false},
+    : Result{Crypto::Djb2(description),
+             icon,
+             name,
+             QString{},
+             QString{},
+             description,
+             name,
+             false},
       exec_{exec} {
   if (icon_size >= 1000000) {  // 1 MB
     pixmap_key_ = QPixmapCache::insert(

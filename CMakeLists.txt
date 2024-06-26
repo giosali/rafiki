@@ -45,8 +45,6 @@ set(PROJECT_SOURCES
         src/main.cpp
         src/models/application.cpp
         src/models/application.h
-        src/models/baseresult.cpp
-        src/models/baseresult.h
         src/models/calculator.cpp
         src/models/calculator.h
         src/models/filesystementry.cpp
@@ -57,6 +55,8 @@ set(PROJECT_SOURCES
         src/models/processedresult.h
         src/models/processedresultbuilder.cpp
         src/models/processedresultbuilder.h
+        src/models/result.cpp
+        src/models/result.h
         src/models/trash.cpp
         src/models/trash.h
         src/models/url.cpp

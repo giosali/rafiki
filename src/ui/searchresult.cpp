@@ -10,7 +10,7 @@
 #include "../core/config.h"
 #include "./ui_searchresult.h"
 
-SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
+SearchResult::SearchResult(const std::shared_ptr<Result>& result,
                            const Input& input, const QString& argument,
                            int index, QWidget* parent)
     : QWidget{parent},
@@ -43,12 +43,12 @@ SearchResult::SearchResult(const std::shared_ptr<BaseResult>& base_result,
   ui_->description->setMouseTracking(true);
   ui_->shortcut->setMouseTracking(true);
 
-  SetIcon(base_result->GetIcon(Config::search_result_icon_size_));
-  SetTitle(base_result->FormatTitle(argument));
-  SetDescription(base_result->GetDescription());
+  SetIcon(result->GetIcon(Config::search_result_icon_size_));
+  SetTitle(result->FormatTitle(argument));
+  SetDescription(result->GetDescription());
   SetShortcut(index);
 
-  auto interactable = base_result.get();
+  auto interactable = result.get();
   connect(this, &SearchResult::Dragged, interactable, &Interactable::Drag);
   connect(this, &SearchResult::KeyPressed, interactable,
           &Interactable::ProcessKeyPress);
