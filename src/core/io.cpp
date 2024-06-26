@@ -275,3 +275,17 @@ void Io::UpdateDefaultResults() {
     }
   }
 }
+
+Autocompleter Io::autocompleter_{};
+
+std::unordered_map<QString, std::vector<std::shared_ptr<Result>>>
+  Io::results_map_{};
+
+std::vector<std::shared_ptr<Result>> Io::default_results_{};
+
+std::vector<std::shared_ptr<ProcessedResult>> Io::processed_results_{};
+
+std::vector<std::shared_ptr<ProcessedResultBuilder>>
+  Io::processed_result_builders_{};
+
+std::unordered_map<std::string, QString> Io::mimetype_icons_;

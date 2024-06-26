@@ -51,16 +51,14 @@ class Io {
   static void ParseJsonToResults(const QString& path);
   static void UpdateDefaultResults();
 
-  static inline Autocompleter autocompleter_;
-  static inline std::unordered_map<QString,
-                                   std::vector<std::shared_ptr<Result>>>
+  static Autocompleter autocompleter_;
+  static std::unordered_map<QString, std::vector<std::shared_ptr<Result>>>
     results_map_;
-  static inline std::vector<std::shared_ptr<Result>> default_results_;
-  static inline std::vector<std::shared_ptr<ProcessedResult>>
-    processed_results_;
-  static inline std::vector<std::shared_ptr<ProcessedResultBuilder>>
+  static std::vector<std::shared_ptr<Result>> default_results_;
+  static std::vector<std::shared_ptr<ProcessedResult>> processed_results_;
+  static std::vector<std::shared_ptr<ProcessedResultBuilder>>
     processed_result_builders_;
-  static inline std::unordered_map<std::string, QString> mimetype_icons_;
+  static std::unordered_map<std::string, QString> mimetype_icons_;
 };
 
 #endif  // PROJECT_H
