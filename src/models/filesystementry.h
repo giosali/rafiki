@@ -4,6 +4,7 @@
 #include <QChar>
 #include <QKeyCombination>
 #include <QString>
+#include <cstdint>
 #include <filesystem>
 #include <string>
 #include <vector>
@@ -35,7 +36,7 @@ class FileSystemEntry : public ProcessedResultBuilder {
   static const QString kCommand;
   static const QString kDescription;
   static const QString kIcon;
-  static const QString kId;
+  static const uint64_t kId;
   static const QChar kInternalCommand;
   static const QString kTitle;
   static const QString kTitlePlaceholder;

@@ -6,8 +6,8 @@
 #include "../core/io.h"
 #include "../core/utils.h"
 
-BaseResult::BaseResult(const QString &id, const QString &icon,
-                       const QString &title, const QString &title_placeholder,
+BaseResult::BaseResult(uint64_t id, const QString &icon, const QString &title,
+                       const QString &title_placeholder,
                        const QString &alt_title, const QString &description,
                        const QString &command, bool append_space_to_command)
     : alt_title_{alt_title},
@@ -16,7 +16,7 @@ BaseResult::BaseResult(const QString &id, const QString &icon,
       description_{description},
       icon_{QFile::exists(icon) ? icon
                                 : Io::GetIcon(Io::ImageFile::kQuestionMark)},
-      id_{QUuid::fromString(id)},
+      id_{id},
       is_enabled_{true},
       is_title_formattable_{title.contains(kFormat)},
       title_placeholder_{title_placeholder},
@@ -47,7 +47,7 @@ QPixmap BaseResult::GetIcon(int size) const {
   return QIcon{icon_}.pixmap(size);
 }
 
-QUuid BaseResult::GetId() const { return id_; }
+uint64_t BaseResult::GetId() const { return id_; }
 
 bool BaseResult::HasCommand() const { return !command_.isNull(); }
 

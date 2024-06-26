@@ -79,6 +79,9 @@ set(PROJECT_SOURCES
         src/ui/settingswindow.cpp
         src/ui/settingswindow.h
         src/ui/settingswindow.ui
+        src/ui/websearchdialog.cpp
+        src/ui/websearchdialog.h
+        src/ui/websearchdialog.ui
         ${RES_FILES}
         ${TS_FILES}
 )

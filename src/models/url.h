@@ -1,6 +1,8 @@
 #ifndef URL_H
 #define URL_H
 
+#include <cstdint>
+
 #include "processedresult.h"
 
 class Url : public ProcessedResult {
@@ -24,7 +26,7 @@ class Url : public ProcessedResult {
   static const QString kCommand;
   static const QString kDescription;
   static const QString kIcon;
-  static const QString kId;
+  static const uint64_t kId;
   static const QString kInfoDescription;
   static const QString kTitle;
   static const QString kTitlePlaceholder;

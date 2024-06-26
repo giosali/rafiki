@@ -9,11 +9,12 @@
 #include <thread>
 
 #include "../core/config.h"
+#include "../core/crypto.h"
 
 Application::Application(const QString& name, const QString& icon,
                          uintmax_t icon_size, const QString& description,
                          const QString& exec)
-    : BaseResult{QUuid::createUuid().toString(),
+    : BaseResult{Crypto::Djb2(description),
                  icon,
                  name,
                  QString{},

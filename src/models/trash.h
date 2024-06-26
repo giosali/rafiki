@@ -3,6 +3,7 @@
 
 #include <QKeyCombination>
 #include <QString>
+#include <cstdint>
 #include <filesystem>
 
 #include "baseresult.h"
@@ -26,7 +27,7 @@ class Trash : public BaseResult {
   static const QString kCommand;
   static const QString kDescription;
   static const QString kIcon;
-  static const QString kId;
+  static const uint64_t kId;
   static const QString kTitle;
   static const QString kTitlePlaceholder;
 

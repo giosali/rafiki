@@ -10,6 +10,7 @@
 #include <QUuid>
 #include <QtSystemDetection>
 #include <algorithm>
+#include <cstdint>
 #include <set>
 
 #ifdef Q_OS_LINUX
@@ -259,17 +260,17 @@ void Io::UpdateDefaultBaseResults() {
   // Takes the IDs of the default search results and stores them in a set.
   user_settings.beginGroup("DefaultSearchResults");
 
-  auto guid_set = std::set<QUuid>();
+  auto ids = std::set<uint64_t>();
   for (const auto& key : user_settings.allKeys()) {
-    guid_set.insert(QUuid::fromString(user_settings.value(key).toString()));
+    ids.insert(user_settings.value(key).toULongLong());
   }
 
   user_settings.endGroup();
 
   for (const auto& [_, results] : base_results_map_) {
-    for (auto result : results) {
+    for (const auto& result : results) {
       // TODO: update syntax in C++20.
-      if (guid_set.find(result->GetId()) == guid_set.end()) {
+      if (ids.find(result->GetId()) == ids.end()) {
         continue;
       }
 

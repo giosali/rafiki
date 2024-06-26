@@ -5,7 +5,7 @@
 #include <QPixmap>
 #include <QPixmapCache>
 #include <QString>
-#include <QUuid>
+#include <cstdint>
 
 #include "interactable.h"
 
@@ -13,8 +13,8 @@ class BaseResult : public Interactable {
   Q_OBJECT
 
  public:
-  explicit BaseResult(const QString& id, const QString& icon,
-                      const QString& title, const QString& title_placeholder,
+  explicit BaseResult(uint64_t id, const QString& icon, const QString& title,
+                      const QString& title_placeholder,
                       const QString& alt_title, const QString& description,
                       const QString& command, bool append_space_to_command);
 
@@ -25,7 +25,7 @@ class BaseResult : public Interactable {
   QString GetCommand() const;
   QString GetDescription() const;
   QPixmap GetIcon(int size) const;
-  QUuid GetId() const;
+  uint64_t GetId() const;
   bool HasCommand() const;
   bool IsEnabled() const;
 
@@ -42,7 +42,7 @@ class BaseResult : public Interactable {
   bool append_space_to_command_;
   QString command_;
   QString icon_;
-  QUuid id_;
+  uint64_t id_;
   bool is_enabled_;
   bool is_title_formattable_;
 };

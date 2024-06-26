@@ -2,7 +2,6 @@
 
 #include <QStandardPaths>
 #include <Qt>
-#include <cstdlib>
 #include <iterator>
 #include <system_error>
 #include <vector>
@@ -51,7 +50,7 @@ const QString Trash::kDescription{};
 
 const QString Trash::kIcon{Io::GetIcon(Io::ImageFile::kTrash)};
 
-const QString Trash::kId{"9056b806-9219-4f6a-b180-bb087b892bae"};
+const uint64_t Trash::kId{17};
 
 const QString Trash::kTitle{"Empty trash"};
 

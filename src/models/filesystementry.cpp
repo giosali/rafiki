@@ -5,6 +5,7 @@
 #include <QUrl>
 #include <memory>
 
+#include "../core/crypto.h"
 #include "../core/io.h"
 
 FileSystemEntry::FileSystemEntry()
@@ -31,7 +32,7 @@ FileSystemEntry::FileSystemEntry()
       is_entry_{false} {}
 
 FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
-    : ProcessedResultBuilder{kId,
+    : ProcessedResultBuilder{Crypto::Djb2(path),
                              Io::GetIcon(path),
                              QString::fromUtf8(path.filename().string()),
                              kTitlePlaceholder,
@@ -125,7 +126,7 @@ const QString FileSystemEntry::kDescription{
 const QString FileSystemEntry::kIcon{
   Io::GetIcon(Io::ImageFile::kFileSystemEntry)};
 
-const QString FileSystemEntry::kId{"397662aa-d686-48e3-b454-2d059cbd7ea0"};
+const uint64_t FileSystemEntry::kId{16};
 
 const QChar FileSystemEntry::kInternalCommand{'\''};
 

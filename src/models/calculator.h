@@ -3,6 +3,7 @@
 
 #include <QKeyCombination>
 #include <QString>
+#include <cstdint>
 
 #include "../core/input.h"
 #include "processedresult.h"
@@ -28,7 +29,7 @@ class Calculator : public ProcessedResult {
   static const QString kCommand;
   static const QString kDescription;
   static const QString kIcon;
-  static const QString kId;
+  static const uint64_t kId;
   static const QString kInfoDescription;
   static const QString kTitle;
   static const QString kTitlePlaceholder;

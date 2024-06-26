@@ -4,6 +4,8 @@
 #include <QCloseEvent>
 #include <QMainWindow>
 #include <QShowEvent>
+#include <QUuid>
+#include <cstdint>
 #include <memory>
 
 QT_BEGIN_NAMESPACE
@@ -23,6 +25,9 @@ class SettingsWindow : public QMainWindow {
  protected:
   void closeEvent(QCloseEvent* event) override;
   void showEvent(QShowEvent* event) override;
+
+ private:
+  void ProcessStateChange(int state, uint64_t id) const;
 
  private:
   std::unique_ptr<Ui::SettingsWindow> ui_;

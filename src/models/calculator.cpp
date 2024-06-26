@@ -71,7 +71,7 @@ const QString Calculator::kDescription{"Copy to clipboard"};
 
 const QString Calculator::kIcon{Io::GetIcon(Io::ImageFile::kCalculator)};
 
-const QString Calculator::kId{"7cddc690-1b3d-49d5-bbe4-adbad5a51833"};
+const uint64_t Calculator::kId{15};
 
 const QString Calculator::kInfoDescription{"Please enter a valid expression"};
 

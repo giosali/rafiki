@@ -3,16 +3,16 @@
 
 #include <QListWidget>
 #include <QListWidgetItem>
-#include <QUuid>
+#include <cstdint>
 
 class SearchResultItem : public QListWidgetItem {
  public:
-  explicit SearchResultItem(const QUuid& id, QListWidget* parent = nullptr);
+  explicit SearchResultItem(uint64_t id, QListWidget* parent = nullptr);
 
-  QUuid GetId() const;
+  uint64_t GetId() const;
 
  private:
-  QUuid id_;
+  uint64_t id_;
 };
 
 #endif

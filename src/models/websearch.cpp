@@ -8,7 +8,7 @@
 #include "../core/utils.h"
 
 WebSearch::WebSearch(const QJsonObject& object)
-    : BaseResult{object["id"].toString(),
+    : BaseResult{object["id"].toString().toULongLong(),
                  object["icon"].toString(),
                  object["title"].toString(),
                  object["placeholder"].toString(),
