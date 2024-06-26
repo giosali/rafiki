@@ -11,15 +11,15 @@
 #include "../core/config.h"
 #include "../core/crypto.h"
 
-Application::Application(const QString& name, const QString& icon,
-                         uintmax_t icon_size, const QString& description,
+Application::Application(const QString& desktop_entry_path, const QString& name,
+                         const QString& icon, uintmax_t icon_size,
                          const QString& exec)
-    : Result{Crypto::Djb2(description),
+    : Result{Crypto::Djb2(desktop_entry_path),
              icon,
              name,
              QString{},
              QString{},
-             description,
+             desktop_entry_path,
              name,
              false},
       exec_{exec} {

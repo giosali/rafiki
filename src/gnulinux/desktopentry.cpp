@@ -5,12 +5,11 @@
 
 namespace gnulinux {
 DesktopEntry::DesktopEntry(
-  const std::filesystem::path& desktop_entry_path,
+  const std::filesystem::path& path,
   const std::unordered_map<
     std::string, std::pair<uintmax_t, std::filesystem::path>>& icon_map)
-    : description_{QString::fromStdString(desktop_entry_path)},
-      no_display_{false} {
-  auto file = IniFile(desktop_entry_path);
+    : no_display_{false}, path_{QString::fromStdString(path)} {
+  auto file = IniFile(path);
   file.BeginSection("Desktop Entry");
 
   if (std::any_cast<bool>(file.GetValue<bool>("NoDisplay", false))) {
@@ -31,8 +30,6 @@ DesktopEntry::DesktopEntry(
   }
 }
 
-QString DesktopEntry::GetDescription() const { return description_; }
-
 QString DesktopEntry::GetExec() const { return exec_; }
 
 QString DesktopEntry::GetIcon() const { return icon_; }
@@ -43,6 +40,8 @@ uintmax_t DesktopEntry::GetIconSize() const {
 }
 
 QString DesktopEntry::GetName() const { return name_; }
+
+QString DesktopEntry::GetPath() const { return path_; }
 
 bool DesktopEntry::NoDisplay() const { return no_display_; }
 

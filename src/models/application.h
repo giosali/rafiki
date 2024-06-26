@@ -10,8 +10,8 @@ class Application : public Result {
   Q_OBJECT
 
  public:
-  explicit Application(const QString& name, const QString& icon,
-                       uintmax_t icon_size, const QString& description,
+  explicit Application(const QString& desktop_entry_path, const QString& name,
+                       const QString& icon, uintmax_t icon_size,
                        const QString& exec);
 
  public slots:

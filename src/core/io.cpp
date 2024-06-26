@@ -153,9 +153,8 @@ void Io::Initialize() {
   auto desktop_entries = gnulinux::Io::ParseDesktopEntries();
   for (const auto& desktop_entry : desktop_entries) {
     auto application = std::make_shared<Application>(
-      desktop_entry.GetName(), desktop_entry.GetIcon(),
-      desktop_entry.GetIconSize(), desktop_entry.GetDescription(),
-      desktop_entry.GetExec());
+      desktop_entry.GetPath(), desktop_entry.GetName(), desktop_entry.GetIcon(),
+      desktop_entry.GetIconSize(), desktop_entry.GetExec());
     auto cmd = application->FormatCommand();
     autocompleter_.Insert(cmd);
     results_map_[cmd].push_back(application);
