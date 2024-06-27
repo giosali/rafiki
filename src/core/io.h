@@ -32,33 +32,45 @@ class Io {
 
   Io() = delete;
 
+  template <typename T>
+  static std::vector<std::shared_ptr<T>> FilterResults() {
+    auto results = std::vector<std::shared_ptr<T>>{};
+    for (const auto& result : results_) {
+      auto i = std::dynamic_pointer_cast<T>(result);
+      if (i != nullptr) {
+        results.push_back(i);
+      }
+    }
+
+    return results;
+  };
   static std::vector<std::shared_ptr<Result>> FindResults(const Input& input);
   static std::vector<std::shared_ptr<Result>> GetDefaultResults();
   static QString GetIcon(ImageFile file);
   static QString GetIcon(const std::filesystem::path& path);
-  static std::vector<std::shared_ptr<WebSearch>> GetWebSearches();
   static void Initialize();
 
  private:
-  static void AddResult(const std::shared_ptr<Result>& result);
   static void AddProcessedResult(
-    const std::shared_ptr<ProcessedResult>& processed_result);
+    const std::shared_ptr<ProcessedResult>& result);
   static void AddProcessedResultBuilder(
     const std::shared_ptr<ProcessedResultBuilder>& builder);
+  static void AddResult(const std::shared_ptr<Result>& result);
   static QSettings GetFile(ConfigFile file);
   static QString GetFile(DataFile file);
   template <typename T>
-  static void ParseJsonToResults(const QString& path);
+  static void ParseJson(const QString& path);
   static void UpdateDefaultResults();
 
   static Autocompleter autocompleter_;
-  static std::unordered_map<QString, std::vector<std::shared_ptr<Result>>>
-    results_map_;
   static std::vector<std::shared_ptr<Result>> default_results_;
-  static std::vector<std::shared_ptr<ProcessedResult>> processed_results_;
+  static std::unordered_map<std::string, QString> mimetype_icons_;
   static std::vector<std::shared_ptr<ProcessedResultBuilder>>
     processed_result_builders_;
-  static std::unordered_map<std::string, QString> mimetype_icons_;
+  static std::vector<std::shared_ptr<ProcessedResult>> processed_results_;
+  static std::vector<std::shared_ptr<Result>> results_;
+  static std::unordered_map<QString, std::vector<std::shared_ptr<Result>>>
+    results_map_;
 };
 
 #endif  // PROJECT_H

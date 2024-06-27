@@ -107,26 +107,6 @@ QString Io::GetIcon(const std::filesystem::path& path) {
            : search->second;
 }
 
-std::vector<std::shared_ptr<WebSearch>> Io::GetWebSearches() {
-  auto path = GetFile(DataFile::kWebSearches);
-  auto file = QFile{path};
-  if (!file.exists()) {
-    return std::vector<std::shared_ptr<WebSearch>>{};
-  }
-
-  file.open(QIODevice::ReadOnly | QIODevice::Text);
-  auto doc = QJsonDocument::fromJson(file.readAll());
-
-  auto v = std::vector<std::shared_ptr<WebSearch>>{};
-  auto arr = doc.array();
-  for (auto it = arr.begin(); it != arr.end(); ++it) {
-    auto web_search = std::make_shared<WebSearch>(it->toObject());
-    v.push_back(web_search);
-  }
-
-  return v;
-}
-
 void Io::Initialize() {
   // Sets up default settings.
   auto default_settings = GetFile(ConfigFile::kDefault);
@@ -168,7 +148,7 @@ void Io::Initialize() {
 #endif
 
   // Sets up search results based on data files.
-  ParseJsonToResults<WebSearch>(GetFile(DataFile::kWebSearches));
+  ParseJson<WebSearch>(GetFile(DataFile::kWebSearches));
 
   // Sets up built-in search results not based on data files.
   AddResult(std::make_shared<Trash>());
@@ -181,6 +161,8 @@ void Io::Initialize() {
 }
 
 void Io::AddResult(const std::shared_ptr<Result>& result) {
+  results_.push_back(result);
+
   if (!result->HasCommand()) {
     return;
   }
@@ -190,18 +172,19 @@ void Io::AddResult(const std::shared_ptr<Result>& result) {
   results_map_[cmd].push_back(result);
 }
 
-void Io::AddProcessedResult(
-  const std::shared_ptr<ProcessedResult>& processed_result) {
-  if (processed_result->HasCommand()) {
-    auto cmd = processed_result->FormatCommand();
+void Io::AddProcessedResult(const std::shared_ptr<ProcessedResult>& result) {
+  results_.push_back(result);
+  if (result->HasCommand()) {
+    auto cmd = result->FormatCommand();
     autocompleter_.Insert(cmd);
   }
 
-  processed_results_.push_back(processed_result);
+  results_.push_back(result);
 }
 
 void Io::AddProcessedResultBuilder(
   const std::shared_ptr<ProcessedResultBuilder>& builder) {
+  results_.push_back(builder);
   processed_result_builders_.push_back(builder);
 }
 
@@ -232,21 +215,20 @@ QString Io::GetFile(DataFile file) {
 }
 
 template <typename T>
-void Io::ParseJsonToResults(const QString& path) {
+void Io::ParseJson(const QString& path) {
   auto file = QFile{path};
   if (!file.exists()) {
     return;
   }
 
   file.open(QIODevice::ReadOnly | QIODevice::Text);
-  auto doc = QJsonDocument::fromJson(file.readAll());
-
-  auto arr = doc.array();
-  for (auto it = arr.begin(); it != arr.end(); ++it) {
-    auto result = std::make_shared<T>(it->toObject());
-    auto cmd = result->FormatCommand();
-    autocompleter_.Insert(cmd);
-    results_map_[cmd].push_back(result);
+  auto document = QJsonDocument::fromJson(file.readAll());
+  if (document.isObject()) {
+    AddResult(std::make_shared<T>(document.object()));
+  } else if (document.isArray()) {
+    for (const auto& i : document.array()) {
+      AddResult(std::make_shared<T>(i.toObject()));
+    }
   }
 }
 
@@ -278,14 +260,16 @@ void Io::UpdateDefaultResults() {
 
 Autocompleter Io::autocompleter_{};
 
-std::unordered_map<QString, std::vector<std::shared_ptr<Result>>>
-  Io::results_map_{};
-
 std::vector<std::shared_ptr<Result>> Io::default_results_{};
 
-std::vector<std::shared_ptr<ProcessedResult>> Io::processed_results_{};
+std::unordered_map<std::string, QString> Io::mimetype_icons_{};
 
 std::vector<std::shared_ptr<ProcessedResultBuilder>>
   Io::processed_result_builders_{};
 
-std::unordered_map<std::string, QString> Io::mimetype_icons_;
+std::vector<std::shared_ptr<ProcessedResult>> Io::processed_results_{};
+
+std::vector<std::shared_ptr<Result>> Io::results_{};
+
+std::unordered_map<QString, std::vector<std::shared_ptr<Result>>>
+  Io::results_map_{};
