@@ -38,7 +38,7 @@ void SettingsWindow::closeEvent(QCloseEvent* event) {
 }
 
 void SettingsWindow::showEvent(QShowEvent* event) {
-  const auto web_searches = Io::GetWebSearches();
+  const auto web_searches = Io::FilterResults<WebSearch>();
   for (size_t i = 0; i < web_searches.size(); ++i) {
     auto web_search = web_searches[i];
     ui_->tableWidget->setRowCount(i + 1);
