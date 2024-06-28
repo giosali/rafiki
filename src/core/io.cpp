@@ -7,11 +7,9 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
-#include <QUuid>
 #include <QtSystemDetection>
 #include <algorithm>
 #include <cstdint>
-#include <set>
 
 #ifdef Q_OS_LINUX
 #include "../gnulinux/desktopentry.h"
@@ -128,6 +126,14 @@ void Io::Initialize() {
     user_settings.endGroup();
   }
 
+  // Transfers currently disabled IDs to member variable.
+  auto disabled_ids = user_settings.value("Results/DisabledIDs", "")
+                        .toString()
+                        .split(',', Qt::SkipEmptyParts);
+  for (const auto& id : disabled_ids) {
+    disabled_ids_.insert(id.toULongLong());
+  }
+
 #ifdef Q_OS_LINUX
   // Sets up applications.
   auto desktop_entries = gnulinux::Io::ParseDesktopEntries();
@@ -181,42 +187,48 @@ void Io::ToggleResult(uint64_t id, bool enable) {
   if (enable) {
     if (auto i = disabled_ids.indexOf(id_string); i != -1) {
       disabled_ids.removeAt(i);
+      disabled_ids_.erase(id);
     }
   } else {
     // Otherwise, since we're disabling the result, we need to add it to the
     // list of currently disabled IDs.
     disabled_ids.push_back(id_string);
+    disabled_ids_.insert(id);
   }
 
   // Queues saving disabled IDs to file.
   user_settings.setValue("DisabledIDs", disabled_ids.join(','));
 }
 
-void Io::AddResult(const std::shared_ptr<Result>& result) {
-  results_.insert({result->GetId(), result});
-
-  if (!result->HasCommand()) {
-    return;
-  }
-
-  auto cmd = result->FormatCommand();
-  autocompleter_.Insert(cmd);
-  results_map_[cmd].push_back(result);
+void Io::AddProcessedResult(const std::shared_ptr<ProcessedResult>& result) {
+  AddResultHelper(result);
+  processed_results_.push_back(result);
 }
 
-void Io::AddProcessedResult(const std::shared_ptr<ProcessedResult>& result) {
-  results_.insert({result->GetId(), result});
+void Io::AddProcessedResultBuilder(
+  const std::shared_ptr<ProcessedResultBuilder>& result) {
+  AddResultHelper(result);
+  processed_result_builders_.push_back(result);
+}
+
+void Io::AddResult(const std::shared_ptr<Result>& result) {
+  AddResultHelper(result);
 
   if (result->HasCommand()) {
     auto cmd = result->FormatCommand();
     autocompleter_.Insert(cmd);
+    results_map_[cmd].push_back(result);
   }
 }
 
-void Io::AddProcessedResultBuilder(
-  const std::shared_ptr<ProcessedResultBuilder>& builder) {
-  results_.insert({builder->GetId(), builder});
-  processed_result_builders_.push_back(builder);
+void Io::AddResultHelper(const std::shared_ptr<Result>& result) {
+  auto id = result->GetId();
+  results_.insert({id, result});
+
+  // Disables the result if its ID matches a disabled id.
+  if (auto it = disabled_ids_.find(id); it != disabled_ids_.end()) {
+    result->SetIsEnabled(false);
+  }
 }
 
 QSettings Io::GetFile(ConfigFile file) {
@@ -270,7 +282,7 @@ void Io::UpdateDefaultResults() {
   // Takes the IDs of the default search results and stores them in a set.
   user_settings.beginGroup("DefaultSearchResults");
 
-  auto ids = std::set<uint64_t>();
+  auto ids = std::unordered_set<uint64_t>();
   for (const auto& key : user_settings.allKeys()) {
     ids.insert(user_settings.value(key).toULongLong());
   }
@@ -292,6 +304,8 @@ void Io::UpdateDefaultResults() {
 Autocompleter Io::autocompleter_{};
 
 std::vector<std::shared_ptr<Result>> Io::default_results_{};
+
+std::unordered_set<uint64_t> Io::disabled_ids_{};
 
 std::unordered_map<std::string, QString> Io::mimetype_icons_{};
 

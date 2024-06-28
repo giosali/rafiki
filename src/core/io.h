@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include "../models/processedresult.h"
@@ -55,8 +56,9 @@ class Io {
   static void AddProcessedResult(
     const std::shared_ptr<ProcessedResult>& result);
   static void AddProcessedResultBuilder(
-    const std::shared_ptr<ProcessedResultBuilder>& builder);
+    const std::shared_ptr<ProcessedResultBuilder>& result);
   static void AddResult(const std::shared_ptr<Result>& result);
+  static void AddResultHelper(const std::shared_ptr<Result>& result);
   static QSettings GetFile(ConfigFile file);
   static QString GetFile(DataFile file);
   template <typename T>
@@ -65,6 +67,7 @@ class Io {
 
   static Autocompleter autocompleter_;
   static std::vector<std::shared_ptr<Result>> default_results_;
+  static std::unordered_set<uint64_t> disabled_ids_;
   static std::unordered_map<std::string, QString> mimetype_icons_;
   static std::vector<std::shared_ptr<ProcessedResultBuilder>>
     processed_result_builders_;
