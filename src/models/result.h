@@ -28,6 +28,7 @@ class Result : public Interactable {
   uint64_t GetId() const;
   bool HasCommand() const;
   bool IsEnabled() const;
+  void SetIsEnabled(bool value);
 
  protected:
   QString alt_title_;

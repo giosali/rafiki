@@ -52,3 +52,5 @@ uint64_t Result::GetId() const { return id_; }
 bool Result::HasCommand() const { return !command_.isNull(); }
 
 bool Result::IsEnabled() const { return is_enabled_; }
+
+void Result::SetIsEnabled(bool value) { is_enabled_ = value; }
