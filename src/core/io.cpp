@@ -33,13 +33,16 @@ std::vector<std::shared_ptr<Result>> Io::FindResults(const Input& input) {
       continue;
     }
 
-    auto results = results_it->second;
-    all_results.insert(all_results.end(), results.begin(), results.end());
+    for (const auto& result : results_it->second) {
+      if (result->IsEnabled()) {
+        all_results.push_back(result);
+      }
+    }
   }
 
   // Input-dependent results.
   for (const auto& pbr : processed_results_) {
-    if (!pbr->ProcessInput(input)) {
+    if (!pbr->IsEnabled() || !pbr->ProcessInput(input)) {
       continue;
     }
 
@@ -48,7 +51,7 @@ std::vector<std::shared_ptr<Result>> Io::FindResults(const Input& input) {
 
   // Input-dependent results that also produce results.
   for (const auto& prb : processed_result_builders_) {
-    if (!prb->ProcessInput(input)) {
+    if (!prb->IsEnabled() || !prb->ProcessInput(input)) {
       continue;
     }
 
