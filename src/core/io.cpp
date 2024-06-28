@@ -160,8 +160,40 @@ void Io::Initialize() {
   UpdateDefaultResults();
 }
 
+void Io::ToggleResult(uint64_t id, bool enable) {
+  auto it = results_.find(id);
+  if (it == results_.end()) {
+    return;
+  }
+
+  auto result = it->second;
+  result->SetIsEnabled(enable);
+
+  auto user_settings = GetFile(ConfigFile::kUser);
+  user_settings.beginGroup("Results");
+  auto id_string = QString::number(id);
+  auto disabled_ids = user_settings.value("DisabledIDs", "")
+                        .toString()
+                        .split(',', Qt::SkipEmptyParts);
+
+  // If we're enabling the result associated with the given ID, we need to
+  // remove it from the list of currently disabled IDs.
+  if (enable) {
+    if (auto i = disabled_ids.indexOf(id_string); i != -1) {
+      disabled_ids.removeAt(i);
+    }
+  } else {
+    // Otherwise, since we're disabling the result, we need to add it to the
+    // list of currently disabled IDs.
+    disabled_ids.push_back(id_string);
+  }
+
+  // Queues saving disabled IDs to file.
+  user_settings.setValue("DisabledIDs", disabled_ids.join(','));
+}
+
 void Io::AddResult(const std::shared_ptr<Result>& result) {
-  results_.push_back(result);
+  results_.insert({result->GetId(), result});
 
   if (!result->HasCommand()) {
     return;
@@ -173,18 +205,17 @@ void Io::AddResult(const std::shared_ptr<Result>& result) {
 }
 
 void Io::AddProcessedResult(const std::shared_ptr<ProcessedResult>& result) {
-  results_.push_back(result);
+  results_.insert({result->GetId(), result});
+
   if (result->HasCommand()) {
     auto cmd = result->FormatCommand();
     autocompleter_.Insert(cmd);
   }
-
-  results_.push_back(result);
 }
 
 void Io::AddProcessedResultBuilder(
   const std::shared_ptr<ProcessedResultBuilder>& builder) {
-  results_.push_back(builder);
+  results_.insert({builder->GetId(), builder});
   processed_result_builders_.push_back(builder);
 }
 
@@ -269,7 +300,7 @@ std::vector<std::shared_ptr<ProcessedResultBuilder>>
 
 std::vector<std::shared_ptr<ProcessedResult>> Io::processed_results_{};
 
-std::vector<std::shared_ptr<Result>> Io::results_{};
+std::unordered_map<uint64_t, std::shared_ptr<Result>> Io::results_{};
 
 std::unordered_map<QString, std::vector<std::shared_ptr<Result>>>
   Io::results_map_{};

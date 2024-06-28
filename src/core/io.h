@@ -35,7 +35,7 @@ class Io {
   template <typename T>
   static std::vector<std::shared_ptr<T>> FilterResults() {
     auto results = std::vector<std::shared_ptr<T>>{};
-    for (const auto& result : results_) {
+    for (const auto& [_, result] : results_) {
       auto i = std::dynamic_pointer_cast<T>(result);
       if (i != nullptr) {
         results.push_back(i);
@@ -49,6 +49,7 @@ class Io {
   static QString GetIcon(ImageFile file);
   static QString GetIcon(const std::filesystem::path& path);
   static void Initialize();
+  static void ToggleResult(uint64_t id, bool enable);
 
  private:
   static void AddProcessedResult(
@@ -68,7 +69,7 @@ class Io {
   static std::vector<std::shared_ptr<ProcessedResultBuilder>>
     processed_result_builders_;
   static std::vector<std::shared_ptr<ProcessedResult>> processed_results_;
-  static std::vector<std::shared_ptr<Result>> results_;
+  static std::unordered_map<uint64_t, std::shared_ptr<Result>> results_;
   static std::unordered_map<QString, std::vector<std::shared_ptr<Result>>>
     results_map_;
 };
