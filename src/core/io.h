@@ -54,6 +54,9 @@ class Io {
   static void ToggleResult(uint64_t id, bool enable);
 
  private:
+  static const QString kConfigDirectory;
+  static const QString kDataDirectory;
+
   static void AddProcessedResult(
     const std::shared_ptr<ProcessedResult>& result);
   static void AddProcessedResultBuilder(

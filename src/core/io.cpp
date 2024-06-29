@@ -6,6 +6,7 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
+#include <QStandardPaths>
 #include <QtSystemDetection>
 #include <algorithm>
 #include <cstdint>
@@ -159,6 +160,7 @@ void Io::Initialize() {
 
   // Sets up search results based on data files.
   ParseJson<WebSearch>(JsonFile::kWebSearches);
+  ParseJson<WebSearch>(JsonFile::kYourWebSearches);
 
   // Sets up built-in search results not based on data files.
   AddResult(std::make_shared<Trash>());
@@ -204,6 +206,12 @@ void Io::ToggleResult(uint64_t id, bool enable) {
   user_settings.setValue("DisabledIDs", disabled_ids.join(','));
 }
 
+const QString Io::kConfigDirectory{
+  QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + '/' +
+  "QCoreApplication::organizationName()" + '/'};
+
+const QString Io::kDataDirectory{"://data/"};
+
 void Io::AddProcessedResult(const std::shared_ptr<ProcessedResult>& result) {
   AddResultHelper(result);
   processed_results_.push_back(result);
@@ -236,22 +244,13 @@ void Io::AddResultHelper(const std::shared_ptr<Result>& result) {
 }
 
 QSettings Io::GetFile(IniFile f) {
-  switch (f) {
-    case IniFile::kDefault:
-      return QSettings{GetFilePath(IniFile::kDefault), QSettings::IniFormat};
-    case IniFile::kUser:
-      return QSettings{QSettings::IniFormat, QSettings::UserScope,
-                       QCoreApplication::organizationName(),
-                       QCoreApplication::applicationName()};
-      break;
-    default:
-      return QSettings{};
-  }
+  auto path = GetFilePath(f);
+  return path.isEmpty() ? QSettings{}
+                        : QSettings{GetFilePath(f), QSettings::IniFormat};
 }
 
 QJsonDocument Io::GetFile(JsonFile f) {
-  auto path = GetFilePath(f);
-  auto file = QFile{path};
+  auto file = QFile{GetFilePath(f)};
   if (!file.exists()) {
     return QJsonDocument{};
   }
@@ -262,23 +261,22 @@ QJsonDocument Io::GetFile(JsonFile f) {
 }
 
 QString Io::GetFilePath(IniFile f) {
-  auto data_dir = QString{"://data/"};
   switch (f) {
     case IniFile::kDefault:
-      return data_dir + "settings.ini";
+      return kDataDirectory + "settings.ini";
+    case IniFile::kUser:
+      return kConfigDirectory + QCoreApplication::applicationName() + ".ini";
     default:
       return QString{};
   }
 }
 
 QString Io::GetFilePath(JsonFile f) {
-  auto data_dir = QString{"://data/"};
-  auto config_dir = QString{};
   switch (f) {
     case JsonFile::kWebSearches:
-      return data_dir + "web-searches.json";
+      return kDataDirectory + "web-searches.json";
     case JsonFile::kYourWebSearches:
-      return config_dir + "your-web-searches.json";
+      return kConfigDirectory + "your-web-searches.json";
     default:
       return QString{};
   }
