@@ -15,12 +15,20 @@ WebSearch::WebSearch(const QJsonObject& object)
              object["alt"].toObject()["title"].toString(),
              object["description"].toString(),
              object["command"].toString(),
-             object["title"].toString().contains("{}")} {
+             object["title"].toString().contains("{}")},
+      is_custom_{false} {
   url_ = object["url"].toString();
 
   auto alt = object["alt"].toObject();
   alt_url_ = alt["url"].toString();
+
+  if (auto is_custom_value = object["isCustom"];
+      !is_custom_value.isUndefined()) {
+    is_custom_ = is_custom_value.toBool();
+  }
 }
+
+bool WebSearch::IsCustom() const { return is_custom_; }
 
 void WebSearch::Drag() {}
 

@@ -13,6 +13,8 @@ class WebSearch : public Result {
  public:
   explicit WebSearch(const QJsonObject& object);
 
+  bool IsCustom() const;
+
  public slots:
   void Drag() override;
   void ProcessKeyPress(const QKeyCombination& combination,
@@ -22,6 +24,7 @@ class WebSearch : public Result {
 
  private:
   QString alt_url_;
+  bool is_custom_;
   QString url_;
 };
 
