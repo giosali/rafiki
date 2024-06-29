@@ -42,15 +42,21 @@ SettingsWindow::~SettingsWindow() {}
 
 void SettingsWindow::closeEvent(QCloseEvent* event) {
   ui_->webSearchesTableWidget->clearContents();
+  ui_->webSearchesTableWidget->setRowCount(0);
+
+  ui_->yourWebSearchesTableWidget->clearContents();
+  ui_->yourWebSearchesTableWidget->setRowCount(0);
 
   QWidget::closeEvent(event);
 }
 
 void SettingsWindow::showEvent(QShowEvent* event) {
   const auto web_searches = Io::FilterResults<WebSearch>();
-  for (size_t i = 0; i < web_searches.size(); ++i) {
-    auto web_search = web_searches[i];
-    ui_->webSearchesTableWidget->setRowCount(i + 1);
+  for (const auto& web_search : web_searches) {
+    auto table_widget = web_search->IsCustom() ? ui_->yourWebSearchesTableWidget
+                                               : ui_->webSearchesTableWidget;
+    auto row_count = table_widget->rowCount();
+    table_widget->setRowCount(row_count + 1);
 
     // Icon column.
     auto icon_widget = new QWidget{};
@@ -61,17 +67,17 @@ void SettingsWindow::showEvent(QShowEvent* event) {
     layout->setAlignment(Qt::AlignCenter);
     layout->setContentsMargins(0, 0, 0, 0);
     icon_widget->setLayout(layout);
-    ui_->webSearchesTableWidget->setCellWidget(i, 0, icon_widget);
+    table_widget->setCellWidget(row_count, 0, icon_widget);
 
     // Command column
     auto command_item = new QTableWidgetItem{web_search->GetCommand()};
     command_item->setTextAlignment(Qt::AlignCenter);
-    ui_->webSearchesTableWidget->setItem(i, 1, command_item);
+    table_widget->setItem(row_count, 1, command_item);
 
     // Example column.
     auto example_item =
       new QTableWidgetItem{web_search->FormatTitle(QString{})};
-    ui_->webSearchesTableWidget->setItem(i, 2, example_item);
+    table_widget->setItem(row_count, 2, example_item);
 
     // Enabled column.
     auto check_box_widget = new QWidget{};
@@ -91,7 +97,7 @@ void SettingsWindow::showEvent(QShowEvent* event) {
     check_box_layout->setAlignment(Qt::AlignCenter);
     check_box_layout->setContentsMargins(0, 0, 0, 0);
     check_box_widget->setLayout(check_box_layout);
-    ui_->webSearchesTableWidget->setCellWidget(i, 3, check_box_widget);
+    table_widget->setCellWidget(row_count, 3, check_box_widget);
   }
 
   QWidget::showEvent(event);
