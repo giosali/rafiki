@@ -44,7 +44,7 @@ const QString Url::kCommand{};
 
 const QString Url::kDescription{"Open URL"};
 
-const QString Url::kIcon{Io::GetIcon(Io::ImageFile::kUrl)};
+const QString Url::kIcon{Io::GetFilePath(Io::ImageFile::kUrl)};
 
 const uint64_t Url::kId{18};
 

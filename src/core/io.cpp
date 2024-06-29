@@ -4,7 +4,6 @@
 #include <QFile>
 #include <QIODevice>
 #include <QJsonArray>
-#include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonValue>
 #include <QtSystemDetection>
@@ -70,7 +69,7 @@ std::vector<std::shared_ptr<Result>> Io::GetDefaultResults() {
   return default_results_;
 }
 
-QString Io::GetIcon(ImageFile file) {
+QString Io::GetFilePath(ImageFile file) {
   auto dir = QString{"://images/"};
   switch (file) {
     case ImageFile::kCalculator:
@@ -95,23 +94,25 @@ QString Io::GetIcon(ImageFile file) {
 QString Io::GetIcon(const std::filesystem::path& path) {
   auto extension = path.extension().string();
 
-  // Exits if path doesn't contain a file extension and isn't a directory.
+  // Exits with placeholder image if path doesn't contain a file extension and
+  // isn't a directory.
   if (extension.empty() && !std::filesystem::is_directory(path)) {
-    return GetIcon(ImageFile::kFile);
+    return GetFilePath(ImageFile::kFile);
   }
 
   // Returns a generic resource image if there was no match.
   auto search = mimetype_icons_.find(extension);
   return search == mimetype_icons_.end()
-           ? GetIcon(std::filesystem::is_directory(path) ? ImageFile::kFolder
-                                                         : ImageFile::kFile)
+           ? GetFilePath(std::filesystem::is_directory(path)
+                           ? ImageFile::kFolder
+                           : ImageFile::kFile)
            : search->second;
 }
 
 void Io::Initialize() {
   // Sets up default settings.
-  auto default_settings = GetFile(ConfigFile::kDefault);
-  auto user_settings = GetFile(ConfigFile::kUser);
+  auto default_settings = GetFile(IniFile::kDefault);
+  auto user_settings = GetFile(IniFile::kUser);
 
   // Adds missing/new settings from default settings to user settings (written
   // to disk).
@@ -157,7 +158,7 @@ void Io::Initialize() {
 #endif
 
   // Sets up search results based on data files.
-  ParseJson<WebSearch>(GetFile(DataFile::kWebSearches));
+  ParseJson<WebSearch>(JsonFile::kWebSearches);
 
   // Sets up built-in search results not based on data files.
   AddResult(std::make_shared<Trash>());
@@ -178,7 +179,7 @@ void Io::ToggleResult(uint64_t id, bool enable) {
   auto result = it->second;
   result->SetIsEnabled(enable);
 
-  auto user_settings = GetFile(ConfigFile::kUser);
+  auto user_settings = GetFile(IniFile::kUser);
   user_settings.beginGroup("Results");
   auto id_string = QString::number(id);
   auto disabled_ids = user_settings.value("DisabledIDs", "")
@@ -234,11 +235,11 @@ void Io::AddResultHelper(const std::shared_ptr<Result>& result) {
   }
 }
 
-QSettings Io::GetFile(ConfigFile file) {
-  switch (file) {
-    case ConfigFile::kDefault:
-      return QSettings{GetFile(DataFile::kSettings), QSettings::IniFormat};
-    case ConfigFile::kUser:
+QSettings Io::GetFile(IniFile f) {
+  switch (f) {
+    case IniFile::kDefault:
+      return QSettings{GetFilePath(IniFile::kDefault), QSettings::IniFormat};
+    case IniFile::kUser:
       return QSettings{QSettings::IniFormat, QSettings::UserScope,
                        QCoreApplication::organizationName(),
                        QCoreApplication::applicationName()};
@@ -248,27 +249,44 @@ QSettings Io::GetFile(ConfigFile file) {
   }
 }
 
-QString Io::GetFile(DataFile file) {
-  auto dir = QString{"://data/"};
-  switch (file) {
-    case DataFile::kSettings:
-      return dir + "settings.ini";
-    case DataFile::kWebSearches:
-      return dir + "web-searches.json";
+QJsonDocument Io::GetFile(JsonFile f) {
+  auto path = GetFilePath(f);
+  auto file = QFile{path};
+  if (!file.exists()) {
+    return QJsonDocument{};
+  }
+
+  file.open(QIODevice::ReadOnly | QIODevice::Text);
+  auto document = QJsonDocument::fromJson(file.readAll());
+  return document;
+}
+
+QString Io::GetFilePath(IniFile f) {
+  auto data_dir = QString{"://data/"};
+  switch (f) {
+    case IniFile::kDefault:
+      return data_dir + "settings.ini";
+    default:
+      return QString{};
+  }
+}
+
+QString Io::GetFilePath(JsonFile f) {
+  auto data_dir = QString{"://data/"};
+  auto config_dir = QString{};
+  switch (f) {
+    case JsonFile::kWebSearches:
+      return data_dir + "web-searches.json";
+    case JsonFile::kYourWebSearches:
+      return config_dir + "your-web-searches.json";
     default:
       return QString{};
   }
 }
 
 template <typename T>
-void Io::ParseJson(const QString& path) {
-  auto file = QFile{path};
-  if (!file.exists()) {
-    return;
-  }
-
-  file.open(QIODevice::ReadOnly | QIODevice::Text);
-  auto document = QJsonDocument::fromJson(file.readAll());
+void Io::ParseJson(JsonFile f) {
+  auto document = GetFile(f);
   if (document.isObject()) {
     AddResult(std::make_shared<T>(document.object()));
   } else if (document.isArray()) {
@@ -280,7 +298,7 @@ void Io::ParseJson(const QString& path) {
 
 void Io::UpdateDefaultResults() {
   default_results_.clear();
-  auto user_settings = GetFile(ConfigFile::kUser);
+  auto user_settings = GetFile(IniFile::kUser);
 
   // Takes the IDs of the default search results and stores them in a set.
   user_settings.beginGroup("DefaultSearchResults");

@@ -1,6 +1,7 @@
 #ifndef PROJECT_H
 #define PROJECT_H
 
+#include <QJsonDocument>
 #include <QSettings>
 #include <QString>
 #include <filesystem>
@@ -19,8 +20,7 @@
 
 class Io {
  public:
-  enum class ConfigFile { kDefault, kUser };
-  enum class DataFile { kSettings, kWebSearches };
+  enum class IniFile { kDefault, kUser };
   enum class ImageFile {
     kCalculator,
     kFile,
@@ -30,6 +30,7 @@ class Io {
     kTrash,
     kUrl
   };
+  enum class JsonFile { kWebSearches, kYourWebSearches };
 
   Io() = delete;
 
@@ -47,7 +48,7 @@ class Io {
   };
   static std::vector<std::shared_ptr<Result>> FindResults(const Input& input);
   static std::vector<std::shared_ptr<Result>> GetDefaultResults();
-  static QString GetIcon(ImageFile file);
+  static QString GetFilePath(ImageFile f);
   static QString GetIcon(const std::filesystem::path& path);
   static void Initialize();
   static void ToggleResult(uint64_t id, bool enable);
@@ -59,10 +60,12 @@ class Io {
     const std::shared_ptr<ProcessedResultBuilder>& result);
   static void AddResult(const std::shared_ptr<Result>& result);
   static void AddResultHelper(const std::shared_ptr<Result>& result);
-  static QSettings GetFile(ConfigFile file);
-  static QString GetFile(DataFile file);
+  static QSettings GetFile(IniFile f);
+  static QJsonDocument GetFile(JsonFile f);
+  static QString GetFilePath(IniFile f);
+  static QString GetFilePath(JsonFile f);
   template <typename T>
-  static void ParseJson(const QString& path);
+  static void ParseJson(JsonFile f);
   static void UpdateDefaultResults();
 
   static Autocompleter autocompleter_;

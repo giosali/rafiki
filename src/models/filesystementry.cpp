@@ -124,7 +124,7 @@ const QString FileSystemEntry::kDescription{
   "Search for files on your PC and open"};
 
 const QString FileSystemEntry::kIcon{
-  Io::GetIcon(Io::ImageFile::kFileSystemEntry)};
+  Io::GetFilePath(Io::ImageFile::kFileSystemEntry)};
 
 const uint64_t FileSystemEntry::kId{16};
 

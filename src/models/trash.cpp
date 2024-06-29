@@ -48,7 +48,7 @@ const QString Trash::kCommand{"empty trash"};
 
 const QString Trash::kDescription{};
 
-const QString Trash::kIcon{Io::GetIcon(Io::ImageFile::kTrash)};
+const QString Trash::kIcon{Io::GetFilePath(Io::ImageFile::kTrash)};
 
 const uint64_t Trash::kId{17};
 

@@ -69,7 +69,7 @@ const QString Calculator::kCommand{};
 
 const QString Calculator::kDescription{"Copy to clipboard"};
 
-const QString Calculator::kIcon{Io::GetIcon(Io::ImageFile::kCalculator)};
+const QString Calculator::kIcon{Io::GetFilePath(Io::ImageFile::kCalculator)};
 
 const uint64_t Calculator::kId{15};
 

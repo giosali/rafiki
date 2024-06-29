@@ -14,8 +14,9 @@ Result::Result(uint64_t id, const QString &icon, const QString &title,
       append_space_to_command_{append_space_to_command},
       command_{command},
       description_{description},
-      icon_{QFile::exists(icon) ? icon
-                                : Io::GetIcon(Io::ImageFile::kQuestionMark)},
+      icon_{QFile::exists(icon)
+              ? icon
+              : Io::GetFilePath(Io::ImageFile::kQuestionMark)},
       id_{id},
       is_enabled_{true},
       is_title_formattable_{title.contains("{}")},

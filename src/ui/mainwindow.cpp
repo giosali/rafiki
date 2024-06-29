@@ -149,6 +149,6 @@ void MainWindow::CreateTrayIcon() {
   tray_icon->setContextMenu(tray_menu);
 
   // TODO: change icon.
-  tray_icon->setIcon(QIcon{Io::GetIcon(Io::ImageFile::kUrl)});
+  tray_icon->setIcon(QIcon{Io::GetFilePath(Io::ImageFile::kUrl)});
   tray_icon->show();
 }
