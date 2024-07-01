@@ -13,7 +13,7 @@ WebSearch::WebSearch(const QJsonObject& object)
              object["title"].toString(),
              object["placeholder"].toString(),
              object["alt"].toObject()["title"].toString(),
-             object["description"].toString(),
+             QString{},
              object["command"].toString(),
              object["title"].toString().contains("{}")},
       is_custom_{false} {

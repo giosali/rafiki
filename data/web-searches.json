@@ -6,7 +6,6 @@
     "url": "https://google.com/search?q={}",
     "title": "Search Google for '{}'",
     "placeholder": "...",
-    "description": "Google",
     "alt": {
       "url": "https://google.com",
       "title": "Visit the Google homepage"
@@ -19,7 +18,6 @@
     "url": "https://duckduckgo.com/?q={}",
     "title": "Search DuckDuckGo for '{}'",
     "placeholder": "...",
-    "description": "DuckDuckGo",
     "alt": {
       "url": "https://duckduckgo.com",
       "title": "Visit the DuckDuckGo homepage"
@@ -32,7 +30,6 @@
     "url": "https://amazon.com/s?k={}",
     "title": "Search Amazon for '{}'",
     "placeholder": "...",
-    "description": "Amazon",
     "alt": {
       "url": "https://amazon.com",
       "title": "Visit the Amazon homepage"
@@ -45,7 +42,6 @@
     "url": "https://ebay.com/sch/i.html?_nkw={}",
     "title": "Search eBay for '{}'",
     "placeholder": "...",
-    "description": "eBay",
     "alt": {
       "url": "https://ebay.com",
       "title": "Visit the eBay homepage"
@@ -58,7 +54,6 @@
     "url": "https://facebook.com/search/top?q={}",
     "title": "Search Facebook for '{}'",
     "placeholder": "...",
-    "description": "Facebook",
     "alt": {
       "url": "https://facebook.com",
       "title": "Visit the Facebook homepage"
@@ -71,7 +66,6 @@
     "url": "https://github.com/search?q={}",
     "title": "Search GitHub for '{}'",
     "placeholder": "...",
-    "description": "GitHub",
     "alt": {
       "url": "https://github.com",
       "title": "Visit the GitHub homepage"
@@ -84,7 +78,6 @@
     "url": "https://instagram.com/{}",
     "title": "Visit {}'s profile",
     "placeholder": "_",
-    "description": "Instagram",
     "alt": {
       "url": "https://instagram.com",
       "title": "Visit the Instagram homepage"
@@ -97,7 +90,6 @@
     "url": "https://pinterest.com/search/pins/?q={}",
     "title": "Search Pinterest for '{}'",
     "placeholder": "...",
-    "description": "Pinterest",
     "alt": {
       "url": "https://pinterest.com",
       "title": "Visit the Pinterest homepage"
@@ -110,7 +102,6 @@
     "url": "https://reddit.com/r/{}",
     "title": "Visit r/{}",
     "placeholder": "",
-    "description": "Reddit",
     "alt": {
       "url": "https://reddit.com",
       "title": "Visit the Reddit front page"
@@ -123,7 +114,6 @@
     "url": "https://tiktok.com/@{}",
     "title": "Visit {}'s profile",
     "placeholder": "_",
-    "description": "TikTok",
     "alt": {
       "url": "https://tiktok.com",
       "title": "Visit your TikTok FYP"
@@ -136,7 +126,6 @@
     "url": "https://twitch.tv/{}",
     "title": "Visit {}'s channel",
     "placeholder": "_",
-    "description": "Twitch",
     "alt": {
       "url": "https://twitch.tv",
       "title": "Visit the Twitch homepage"
@@ -149,7 +138,6 @@
     "url": "https://twitter.com/{}",
     "title": "Visit {}'s profile",
     "placeholder": "_",
-    "description": "Twitter",
     "alt": {
       "url": "https://twitter.com",
       "title": "Visit the Twitter homepage"
@@ -162,7 +150,6 @@
     "url": "https://twitter.com/search?q={}",
     "title": "Search Twitter for '{}'",
     "placeholder": "...",
-    "description": "Twitter",
     "alt": {
       "url": "https://twitter.com",
       "title": "Visit the Twitter homepage"
@@ -175,7 +162,6 @@
     "url": "https://wikipedia.org/wiki/Special:Search?search={}",
     "title": "Search Wikipedia for '{}'",
     "placeholder": "...",
-    "description": "Wikipedia",
     "alt": {
       "url": "https://wikipedia.org",
       "title": "Visit the Wikipedia homepage"
@@ -188,7 +174,6 @@
     "url": "https://youtube.com/results?search_query={}",
     "title": "Search YouTube for '{}'",
     "placeholder": "...",
-    "description": "YouTube",
     "alt": {
       "url": "https://youtube.com",
       "title": "Visit the YouTube homepage"
