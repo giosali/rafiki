@@ -30,17 +30,6 @@ class FileSystemEntry : public ProcessedResultBuilder {
                          const Input& input) override;
 
  private:
-  static const QString kAltDescription;
-  static const QString kAltTitle;
-  static const bool kAppendSpaceToCommand;
-  static const QString kCommand;
-  static const QString kDescription;
-  static const QString kIcon;
-  static const uint64_t kId;
-  static const QChar kInternalCommand;
-  static const QString kTitle;
-  static const QString kTitlePlaceholder;
-
   Finder finder_;
   bool is_entry_;
 };

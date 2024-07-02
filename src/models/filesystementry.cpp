@@ -9,10 +9,7 @@
 #include "../core/io.h"
 
 FileSystemEntry::FileSystemEntry()
-    : ProcessedResultBuilder{kId,       kIcon,
-                             kTitle,    kTitlePlaceholder,
-                             kAltTitle, kDescription,
-                             kCommand,  kAppendSpaceToCommand},
+    : ProcessedResultBuilder{16},
       finder_{
         QStandardPaths::writableLocation(QStandardPaths::HomeLocation)
           .toStdString(),
@@ -29,24 +26,24 @@ FileSystemEntry::FileSystemEntry()
            .toStdString(),
          QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)
            .toStdString()}},
-      is_entry_{false} {}
+      is_entry_{false} {
+  SetDescription("Search for files on your PC and open");
+  SetIcon(Io::GetFilePath(Io::ImageFile::kFileSystemEntry));
+  SetTitle("Open file");
+}
 
 FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
-    : ProcessedResultBuilder{Crypto::Djb2(path),
-                             Io::GetIcon(path),
-                             QString::fromUtf8(path.filename().string()),
-                             kTitlePlaceholder,
-                             kAltTitle,
-                             QString::fromUtf8(path.string()),
-                             kCommand,
-                             kAppendSpaceToCommand},
-      is_entry_{true} {}
+    : ProcessedResultBuilder{Crypto::Djb2(path)}, is_entry_{true} {
+  SetDescription(QString::fromUtf8(path.string()));
+  SetIcon(Io::GetIcon(path));
+  SetTitle(QString::fromUtf8(path.filename().string()));
+}
 
 bool FileSystemEntry::ProcessInput(const Input& input) {
   results_.clear();
 
   auto text = input.ToString();
-  if (text[0] != kInternalCommand) {
+  if (text[0] != '\'') {
     return false;
   }
 
@@ -69,7 +66,7 @@ bool FileSystemEntry::ProcessInput(const Input& input) {
 
 void FileSystemEntry::Drag() {
   if (is_entry_) {
-    emit Dragged(description_);
+    emit Dragged(Description());
   }
 }
 
@@ -85,16 +82,16 @@ void FileSystemEntry::ProcessKeyPress(const QKeyCombination& combination,
       auto url =
         QUrl::fromLocalFile(combination.keyboardModifiers() & Qt::AltModifier
                               ? QString::fromStdString(std::filesystem::path{
-                                  description_.toStdString()}
+                                  Description().toStdString()}
                                                          .parent_path()
                                                          .string())
-                              : description_);
+                              : Description());
       emit Hidden();
       QDesktopServices::openUrl(url);
       break;
     }
     case Qt::Key_Alt:
-      emit NewDescriptionRequested(kAltDescription);
+      emit NewDescriptionRequested("Show in folder");
       break;
   }
 }
@@ -107,29 +104,7 @@ void FileSystemEntry::ProcessKeyRelease(const QKeyCombination& combination,
 
   switch (combination.key()) {
     case Qt::Key_Alt:
-      emit NewDescriptionRequested(description_);
+      emit NewDescriptionRequested(Description());
       break;
   }
 }
-
-const QString FileSystemEntry::kAltDescription{"Show in folder"};
-
-const QString FileSystemEntry::kAltTitle{};
-
-const bool FileSystemEntry::kAppendSpaceToCommand{false};
-
-const QString FileSystemEntry::kCommand{};
-
-const QString FileSystemEntry::kDescription{
-  "Search for files on your PC and open"};
-
-const QString FileSystemEntry::kIcon{
-  Io::GetFilePath(Io::ImageFile::kFileSystemEntry)};
-
-const uint64_t FileSystemEntry::kId{16};
-
-const QChar FileSystemEntry::kInternalCommand{'\''};
-
-const QString FileSystemEntry::kTitle{"Open file"};
-
-const QString FileSystemEntry::kTitlePlaceholder{};

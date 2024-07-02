@@ -9,12 +9,14 @@
 #include "../core/io.h"
 
 Trash::Trash()
-    : Result{kId,       kIcon,        kTitle,   kTitlePlaceholder,
-             kAltTitle, kDescription, kCommand, kAppendSpaceToCommand} {
-  auto home_location =
-    QStandardPaths::writableLocation(QStandardPaths::HomeLocation);
-  auto home = std::filesystem::path{home_location.toStdString()};
-  path_ = home / ".local/share/Trash";
+    : Result{17},
+      path_{std::filesystem::path{
+              QStandardPaths::writableLocation(QStandardPaths::HomeLocation)
+                .toStdString()} /
+            ".local/share/Trash"} {
+  SetCommand("empty trash");
+  SetIcon(Io::GetFilePath(Io::ImageFile::kTrash));
+  SetTitle("Empty trash");
 }
 
 void Trash::Drag() {}
@@ -39,22 +41,6 @@ void Trash::ProcessKeyRelease(const QKeyCombination& combination,
                               const Input& input) {
   return;
 }
-
-const QString Trash::kAltTitle{};
-
-const bool Trash::kAppendSpaceToCommand{false};
-
-const QString Trash::kCommand{"empty trash"};
-
-const QString Trash::kDescription{};
-
-const QString Trash::kIcon{Io::GetFilePath(Io::ImageFile::kTrash)};
-
-const uint64_t Trash::kId{17};
-
-const QString Trash::kTitle{"Empty trash"};
-
-const QString Trash::kTitlePlaceholder{};
 
 void Trash::Empty() const {
   if (!std::filesystem::exists(path_)) {

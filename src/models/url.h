@@ -19,17 +19,6 @@ class Url : public ProcessedResult {
                        const Input& input) override;
   void ProcessKeyRelease(const QKeyCombination& combination,
                          const Input& input) override;
-
- private:
-  static const QString kAltTitle;
-  static const bool kAppendSpaceToCommand;
-  static const QString kCommand;
-  static const QString kDescription;
-  static const QString kIcon;
-  static const uint64_t kId;
-  static const QString kInfoDescription;
-  static const QString kTitle;
-  static const QString kTitlePlaceholder;
 };
 
 #endif  // URL_H

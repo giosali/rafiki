@@ -3,25 +3,26 @@
 #include <QFile>
 #include <QIcon>
 
+#include "../core/config.h"
 #include "../core/io.h"
 #include "../core/utils.h"
 
-Result::Result(uint64_t id, const QString &icon, const QString &title,
-               const QString &title_placeholder, const QString &alt_title,
-               const QString &description, const QString &command,
-               bool append_space_to_command)
-    : alt_title_{alt_title},
-      append_space_to_command_{append_space_to_command},
-      command_{command},
-      description_{description},
-      icon_{QFile::exists(icon)
-              ? icon
-              : Io::GetFilePath(Io::ImageFile::kQuestionMark)},
+Result::Result(uint64_t id)
+    : alt_title_{QString{}},
+      append_space_to_command_{false},
+      command_{QString{}},
+      description_{QString{}},
+      icon_{QString{}},
       id_{id},
       is_enabled_{true},
-      is_title_formattable_{title.contains("{}")},
-      title_placeholder_{title_placeholder},
-      title_{title} {}
+      is_title_formattable_{false},
+      pixmap_key_{QPixmapCache::Key{}},
+      title_{QString{}},
+      title_placeholder_{QString{}} {}
+
+QString Result::Command() const { return command_; }
+
+QString Result::Description() const { return description_; }
 
 QString Result::FormatCommand() const {
   return append_space_to_command_ ? command_ + " " : command_;
@@ -33,11 +34,9 @@ QString Result::FormatTitle(const QString &arg) const {
            : title_;
 }
 
-QString Result::GetCommand() const { return command_; }
+bool Result::HasCommand() const { return !command_.isNull(); }
 
-QString Result::GetDescription() const { return description_; }
-
-QPixmap Result::GetIcon(int size) const {
+QPixmap Result::Icon(int size) const {
   // Tries to search for a cached QPixmap first.
   if (pixmap_key_.isValid()) {
     if (auto pixmap = QPixmap{}; QPixmapCache::find(pixmap_key_, &pixmap)) {
@@ -48,10 +47,43 @@ QPixmap Result::GetIcon(int size) const {
   return QIcon{icon_}.pixmap(size);
 }
 
-uint64_t Result::GetId() const { return id_; }
-
-bool Result::HasCommand() const { return !command_.isNull(); }
+uint64_t Result::Id() const { return id_; }
 
 bool Result::IsEnabled() const { return is_enabled_; }
 
 void Result::SetIsEnabled(bool value) { is_enabled_ = value; }
+
+void Result::SetAltTitle(const QString &value) { alt_title_ = value; }
+
+void Result::SetAppendSpaceToCommand(bool value) {
+  append_space_to_command_ = value;
+}
+
+void Result::SetCommand(const QString &value) { command_ = value; }
+
+void Result::SetDescription(const QString &value) { description_ = value; }
+
+void Result::SetIcon(const QString &value) {
+  icon_ = QFile::exists(value) ? value
+                               : Io::GetFilePath(Io::ImageFile::kQuestionMark);
+}
+
+void Result::SetPixmapKey(const QString &icon, uintmax_t icon_size) {
+  if (icon_size >= 1000000) {  // 1 MB
+    pixmap_key_ = QPixmapCache::insert(
+      QIcon{icon}.pixmap(Config::search_result_icon_size_));
+  }
+}
+
+void Result::SetTitle(const QString &value) {
+  title_ = value;
+  is_title_formattable_ = value.contains("{}");
+}
+
+void Result::SetTitlePlaceholder(const QString &value) {
+  title_placeholder_ = value;
+}
+
+QString Result::Title() const { return title_; }
+
+QString Result::TitlePlaceholder() const { return title_placeholder_; }

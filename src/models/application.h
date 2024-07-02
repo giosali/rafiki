@@ -22,8 +22,6 @@ class Application : public Result {
                          const Input& input) override;
 
  private:
-  static const QString kAltDescription;
-
   QString exec_;
 };
 

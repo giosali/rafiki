@@ -24,15 +24,7 @@ class Calculator : public ProcessedResult {
                          const Input& input) override;
 
  private:
-  static const QString kAltTitle;
-  static const bool kAppendSpaceToCommand;
-  static const QString kCommand;
   static const QString kDescription;
-  static const QString kIcon;
-  static const uint64_t kId;
-  static const QString kInfoDescription;
-  static const QString kTitle;
-  static const QString kTitlePlaceholder;
 
   QString FormatNumber(QString number) const;
 };

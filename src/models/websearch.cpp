@@ -8,18 +8,19 @@
 #include "../core/utils.h"
 
 WebSearch::WebSearch(const QJsonObject& object)
-    : Result{object["id"].toString().toULongLong(),
-             object["icon"].toString(),
-             object["title"].toString(),
-             object["placeholder"].toString(),
-             object["alt"].toObject()["title"].toString(),
-             QString{},
-             object["command"].toString(),
-             object["title"].toString().contains("{}")},
-      is_custom_{false} {
-  url_ = object["url"].toString();
-
+    : Result{object["id"].toString().toULongLong()},
+      is_custom_{false},
+      url_{object["url"].toString()} {
   auto alt = object["alt"].toObject();
+  auto title = object["title"].toString();
+
+  SetAltTitle(alt["title"].toString());
+  SetAppendSpaceToCommand(title.contains("{}"));
+  SetCommand(object["command"].toString());
+  SetIcon(object["icon"].toString());
+  SetTitle(title);
+  SetTitlePlaceholder(object["placeholder"].toString());
+
   alt_url_ = alt["url"].toString();
 
   if (auto is_custom_value = object["isCustom"];
@@ -68,7 +69,7 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
       break;
     }
     case Qt::Key_Alt:
-      emit NewTitleRequested(alt_title_);
+      emit NewTitleRequested(Title());
       break;
   }
 }

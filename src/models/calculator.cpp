@@ -8,10 +8,11 @@
 #include "../core/io.h"
 #include "../core/shuntingyardalgorithm.h"
 
-Calculator::Calculator()
-    : ProcessedResult{
-        kId,       kIcon,        kTitle,   kTitlePlaceholder,
-        kAltTitle, kDescription, kCommand, kAppendSpaceToCommand} {}
+Calculator::Calculator() : ProcessedResult{15} {
+  SetDescription(kDescription);
+  SetIcon(Io::GetFilePath(Io::ImageFile::kCalculator));
+  SetTitlePlaceholder("...");
+}
 
 bool Calculator::ProcessInput(const Input& input) {
   auto result = ShuntingYardAlgorithm::TryParse(input.ToString().toStdString());
@@ -21,11 +22,11 @@ bool Calculator::ProcessInput(const Input& input) {
 
   auto value = result.value();
   if (value.empty()) {
-    title_ = title_placeholder_;
-    description_ = kInfoDescription;
+    SetTitle(TitlePlaceholder());
+    SetDescription("Please enter a valid expression");
   } else {
-    title_ = QString::fromStdString(value);
-    description_ = kDescription;
+    SetTitle(QString::fromStdString(value));
+    SetDescription(kDescription);
   }
 
   return true;
@@ -35,19 +36,21 @@ void Calculator::Drag() {}
 
 void Calculator::ProcessKeyPress(const QKeyCombination& combination,
                                  const Input& input) {
+  auto title = Title();
+
   switch (combination.key()) {
     case Qt::Key_Return: {
-      if (title_ == title_placeholder_) {
+      if (title == TitlePlaceholder()) {
         break;
       }
 
       emit Hidden();
       auto clipboard = QGuiApplication::clipboard();
-      clipboard->setText(title_);
+      clipboard->setText(title);
       break;
     }
     case Qt::Key_Alt:
-      emit NewTitleRequested(FormatNumber(title_));
+      emit NewTitleRequested(FormatNumber(title));
       break;
   }
 }
@@ -56,28 +59,12 @@ void Calculator::ProcessKeyRelease(const QKeyCombination& combination,
                                    const Input& input) {
   switch (combination.key()) {
     case Qt::Key_Alt:
-      emit NewTitleRequested(title_);
+      emit NewTitleRequested(Title());
       break;
   }
 }
 
-const QString Calculator::kAltTitle{};
-
-const bool Calculator::kAppendSpaceToCommand{false};
-
-const QString Calculator::kCommand{};
-
 const QString Calculator::kDescription{"Copy to clipboard"};
-
-const QString Calculator::kIcon{Io::GetFilePath(Io::ImageFile::kCalculator)};
-
-const uint64_t Calculator::kId{15};
-
-const QString Calculator::kInfoDescription{"Please enter a valid expression"};
-
-const QString Calculator::kTitle{};
-
-const QString Calculator::kTitlePlaceholder{"..."};
 
 QString Calculator::FormatNumber(QString number) const {
   // Ignores values like "1e+15".
