@@ -9,7 +9,7 @@ class SearchResultItem : public QListWidgetItem {
  public:
   explicit SearchResultItem(uint64_t id, QListWidget* parent = nullptr);
 
-  uint64_t GetId() const;
+  uint64_t Id() const;
 
  private:
   uint64_t id_;

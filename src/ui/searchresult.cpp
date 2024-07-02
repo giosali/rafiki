@@ -43,9 +43,9 @@ SearchResult::SearchResult(const std::shared_ptr<Result>& result,
   ui_->description->setMouseTracking(true);
   ui_->shortcut->setMouseTracking(true);
 
-  SetIcon(result->GetIcon(Config::search_result_icon_size_));
+  SetIcon(result->Icon(Config::search_result_icon_size_));
   SetTitle(result->FormatTitle(argument));
-  SetDescription(result->GetDescription());
+  SetDescription(result->Description());
   SetShortcut(index);
 
   auto interactable = result.get();
