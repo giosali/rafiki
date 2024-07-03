@@ -63,6 +63,8 @@ set(PROJECT_SOURCES
         src/models/url.h
         src/models/websearch.cpp
         src/models/websearch.h
+        src/ui/interactivelabel.cpp
+        src/ui/interactivelabel.h
         src/ui/mainwindow.cpp
         src/ui/mainwindow.h
         src/ui/mainwindow.ui
