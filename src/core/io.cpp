@@ -234,7 +234,7 @@ void Io::AddResult(const std::shared_ptr<Result>& result) {
 }
 
 void Io::AddResultHelper(const std::shared_ptr<Result>& result) {
-  auto id = result->GetId();
+  auto id = result->Id();
   results_.insert({id, result});
 
   // Disables the result if its ID matches a disabled id.
@@ -311,7 +311,7 @@ void Io::UpdateDefaultResults() {
   for (const auto& [_, results] : results_map_) {
     for (const auto& result : results) {
       // TODO: update syntax in C++20.
-      if (ids.find(result->GetId()) == ids.end()) {
+      if (ids.find(result->Id()) == ids.end()) {
         continue;
       }
 
