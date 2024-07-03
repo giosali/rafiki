@@ -5,9 +5,10 @@
 #include "../core/io.h"
 #include "../core/urlparser.h"
 
-Url::Url() : ProcessedResult{18} {
+Url::Url() {
   SetDescription("Open URL");
   SetIcon(Io::GetFilePath(Io::ImageFile::kUrl));
+  SetId(19);
 }
 
 bool Url::ProcessInput(const Input& input) {

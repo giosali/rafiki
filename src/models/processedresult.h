@@ -8,8 +8,6 @@ class ProcessedResult : public Result {
   Q_OBJECT
 
  public:
-  using Result::Result;
-
   virtual bool ProcessInput(const Input& input) = 0;
 };
 

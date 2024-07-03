@@ -9,13 +9,13 @@
 #include "../core/io.h"
 
 Trash::Trash()
-    : Result{17},
-      path_{std::filesystem::path{
+    : path_{std::filesystem::path{
               QStandardPaths::writableLocation(QStandardPaths::HomeLocation)
                 .toStdString()} /
             ".local/share/Trash"} {
   SetCommand("empty trash");
   SetIcon(Io::GetFilePath(Io::ImageFile::kTrash));
+  SetId(18);
   SetTitle("Empty trash");
 }
 

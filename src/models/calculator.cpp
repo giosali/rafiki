@@ -8,9 +8,10 @@
 #include "../core/io.h"
 #include "../core/shuntingyardalgorithm.h"
 
-Calculator::Calculator() : ProcessedResult{15} {
+Calculator::Calculator() {
   SetDescription(kDescription);
   SetIcon(Io::GetFilePath(Io::ImageFile::kCalculator));
+  SetId(16);
   SetTitlePlaceholder("...");
 }
 

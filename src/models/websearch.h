@@ -4,6 +4,7 @@
 #include <QJsonObject>
 #include <QKeyCombination>
 #include <QString>
+#include <cstdint>
 
 #include "result.h"
 

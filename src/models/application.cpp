@@ -15,8 +15,9 @@
 Application::Application(const QString& desktop_entry_path, const QString& name,
                          const QString& icon, uintmax_t icon_size,
                          const QString& exec)
-    : Result{Crypto::Djb2(desktop_entry_path)}, exec_{exec} {
+    : exec_{exec} {
   SetIcon(icon);
+  SetId(Crypto::Djb2(desktop_entry_path));
   SetTitle(name);
   SetCommand(name);
   SetDescription(desktop_entry_path);

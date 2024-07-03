@@ -10,8 +10,6 @@ class ProcessedResultBuilder : public ProcessedResult {
   Q_OBJECT
 
  public:
-  using ProcessedResult::ProcessedResult;
-
   std::vector<std::shared_ptr<ProcessedResult>> GetResults() const;
 
  protected:

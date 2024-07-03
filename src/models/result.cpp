@@ -7,13 +7,13 @@
 #include "../core/io.h"
 #include "../core/utils.h"
 
-Result::Result(uint64_t id)
+Result::Result()
     : alt_title_{QString{}},
       append_space_to_command_{false},
       command_{QString{}},
       description_{QString{}},
       icon_{QString{}},
-      id_{id},
+      id_{0},
       is_enabled_{true},
       is_title_formattable_{false},
       pixmap_key_{QPixmapCache::Key{}},
@@ -67,6 +67,8 @@ void Result::SetIcon(const QString &value) {
   icon_ = QFile::exists(value) ? value
                                : Io::GetFilePath(Io::ImageFile::kQuestionMark);
 }
+
+void Result::SetId(uint64_t value) { id_ = value; }
 
 void Result::SetPixmapKey(const QString &icon, uintmax_t icon_size) {
   if (icon_size >= 1000000) {  // 1 MB

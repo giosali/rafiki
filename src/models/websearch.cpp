@@ -8,9 +8,7 @@
 #include "../core/utils.h"
 
 WebSearch::WebSearch(const QJsonObject& object)
-    : Result{object["id"].toString().toULongLong()},
-      is_custom_{false},
-      url_{object["url"].toString()} {
+    : is_custom_{false}, url_{object["url"].toString()} {
   auto alt = object["alt"].toObject();
   auto title = object["title"].toString();
 
@@ -18,6 +16,7 @@ WebSearch::WebSearch(const QJsonObject& object)
   SetAppendSpaceToCommand(title.contains("{}"));
   SetCommand(object["command"].toString());
   SetIcon(object["icon"].toString());
+  SetId(object["id"].toString().toULongLong());
   SetTitle(title);
   SetTitlePlaceholder(object["placeholder"].toString());
 

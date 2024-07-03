@@ -9,33 +9,36 @@
 #include "../core/io.h"
 
 FileSystemEntry::FileSystemEntry()
-    : ProcessedResultBuilder{16},
-      finder_{
-        QStandardPaths::writableLocation(QStandardPaths::HomeLocation)
-          .toStdString(),
-        10,
-        {QStandardPaths::writableLocation(QStandardPaths::DesktopLocation)
-           .toStdString(),
-         QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
-           .toStdString(),
-         QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)
-           .toStdString(),
-         QStandardPaths::writableLocation(QStandardPaths::MusicLocation)
-           .toStdString(),
-         QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)
-           .toStdString(),
-         QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)
-           .toStdString()}},
+    : finder_{QStandardPaths::writableLocation(QStandardPaths::HomeLocation)
+                .toStdString(),
+              10,
+              {QStandardPaths::writableLocation(QStandardPaths::DesktopLocation)
+                 .toStdString(),
+               QStandardPaths::writableLocation(
+                 QStandardPaths::DocumentsLocation)
+                 .toStdString(),
+               QStandardPaths::writableLocation(
+                 QStandardPaths::DownloadLocation)
+                 .toStdString(),
+               QStandardPaths::writableLocation(QStandardPaths::MusicLocation)
+                 .toStdString(),
+               QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)
+                 .toStdString(),
+               QStandardPaths::writableLocation(
+                 QStandardPaths::PicturesLocation)
+                 .toStdString()}},
       is_entry_{false} {
   SetDescription("Search for files on your PC and open");
   SetIcon(Io::GetFilePath(Io::ImageFile::kFileSystemEntry));
+  SetId(17);
   SetTitle("Open file");
 }
 
 FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
-    : ProcessedResultBuilder{Crypto::Djb2(path)}, is_entry_{true} {
+    : is_entry_{true} {
   SetDescription(QString::fromUtf8(path.string()));
   SetIcon(Io::GetIcon(path));
+  SetId(Crypto::Djb2(path));
   SetTitle(QString::fromUtf8(path.filename().string()));
 }
 

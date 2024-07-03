@@ -12,7 +12,7 @@ class Result : public Interactable {
   Q_OBJECT
 
  public:
-  explicit Result(uint64_t id);
+  Result();
 
   virtual ~Result() = default;
 
@@ -32,6 +32,7 @@ class Result : public Interactable {
   void SetCommand(const QString& value);
   void SetDescription(const QString& value);
   void SetIcon(const QString& value);
+  void SetId(uint64_t value);
   void SetPixmapKey(const QString& icon, uintmax_t icon_size);
   void SetTitle(const QString& value);
   void SetTitlePlaceholder(const QString& value);
