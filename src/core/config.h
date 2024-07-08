@@ -1,8 +1,13 @@
 #ifndef CONFIG_H
 #define CONFIG_H
 
+#include <cstdint>
+
 class Config {
  public:
+  static const uint64_t kApplicationAuthorId;
+  static const uint64_t kUserAuthorId;
+
   Config() = delete;
 
   static int search_result_icon_size_;

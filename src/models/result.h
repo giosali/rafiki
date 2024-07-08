@@ -6,6 +6,7 @@
 #include <QString>
 #include <cstdint>
 
+#include "../core/id.h"
 #include "interactable.h"
 
 class Result : public Interactable {
@@ -16,28 +17,28 @@ class Result : public Interactable {
 
   virtual ~Result() = default;
 
-  QString Command() const;
-  QString Description() const;
   QString FormatCommand() const;
   QString FormatTitle(const QString& arg) const;
+  QString GetCommand() const;
+  QString GetDescription() const;
+  QPixmap GetIcon(int size) const;
+  Id GetId() const;
   bool HasCommand() const;
-  QPixmap Icon(int size) const;
-  uint64_t Id() const;
   bool IsEnabled() const;
   void SetIsEnabled(bool value);
 
  protected:
+  QString GetTitle() const;
+  QString GetTitlePlaceholder() const;
   void SetAltTitle(const QString& value);
   void SetAppendSpaceToCommand(bool value);
   void SetCommand(const QString& value);
   void SetDescription(const QString& value);
   void SetIcon(const QString& value);
-  void SetId(uint64_t value);
+  void SetId(uint64_t author_id, uint64_t id);
   void SetPixmapKey(const QString& icon, uintmax_t icon_size);
   void SetTitle(const QString& value);
   void SetTitlePlaceholder(const QString& value);
-  QString Title() const;
-  QString TitlePlaceholder() const;
 
  private:
   QString alt_title_;
@@ -45,7 +46,7 @@ class Result : public Interactable {
   QString command_;
   QString description_;
   QString icon_;
-  uint64_t id_;
+  Id id_;
   bool is_enabled_;
   bool is_title_formattable_;
   QPixmapCache::Key pixmap_key_;

@@ -6,6 +6,7 @@
 #include <system_error>
 #include <vector>
 
+#include "../core/config.h"
 #include "../core/io.h"
 
 Trash::Trash()
@@ -14,8 +15,8 @@ Trash::Trash()
                 .toStdString()} /
             ".local/share/Trash"} {
   SetCommand("empty trash");
-  SetIcon(Io::GetFilePath(Io::ImageFile::kTrash));
-  SetId(18);
+  SetIcon(Io::GetFilePath(Io::Image::kTrash));
+  SetId(Config::kApplicationAuthorId, 18);
   SetTitle("Empty trash");
 }
 

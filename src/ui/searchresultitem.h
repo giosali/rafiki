@@ -5,14 +5,16 @@
 #include <QListWidgetItem>
 #include <cstdint>
 
+#include "../core/id.h"
+
 class SearchResultItem : public QListWidgetItem {
  public:
-  explicit SearchResultItem(uint64_t id, QListWidget* parent = nullptr);
+  explicit SearchResultItem(const Id& id, QListWidget* parent = nullptr);
 
-  uint64_t Id() const;
+  Id GetId() const;
 
  private:
-  uint64_t id_;
+  Id id_;
 };
 
 #endif

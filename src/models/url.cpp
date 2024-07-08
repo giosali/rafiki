@@ -2,13 +2,14 @@
 
 #include <QDesktopServices>
 
+#include "../core/config.h"
 #include "../core/io.h"
 #include "../core/urlparser.h"
 
 Url::Url() {
   SetDescription("Open URL");
-  SetIcon(Io::GetFilePath(Io::ImageFile::kUrl));
-  SetId(19);
+  SetIcon(Io::GetFilePath(Io::Image::kUrl));
+  SetId(Config::kApplicationAuthorId, 19);
 }
 
 bool Url::ProcessInput(const Input& input) {
@@ -28,7 +29,7 @@ void Url::ProcessKeyPress(const QKeyCombination& combination,
   switch (combination.key()) {
     case Qt::Key_Return: {
       emit Hidden();
-      QDesktopServices::openUrl(QUrl(Title()));
+      QDesktopServices::openUrl(QUrl(GetTitle()));
       break;
     }
   }

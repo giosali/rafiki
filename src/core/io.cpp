@@ -70,22 +70,22 @@ std::vector<std::shared_ptr<Result>> Io::GetDefaultResults() {
   return default_results_;
 }
 
-QString Io::GetFilePath(ImageFile file) {
+QString Io::GetFilePath(Image file) {
   auto dir = QString{"://images/"};
   switch (file) {
-    case ImageFile::kCalculator:
+    case Image::kCalculator:
       return dir + "calculator.png";
-    case ImageFile::kFile:
+    case Image::kFile:
       return dir + "file.svg";
-    case ImageFile::kFileSystemEntry:
+    case Image::kFileSystemEntry:
       return dir + "filesystementry.svg";
-    case ImageFile::kFolder:
+    case Image::kFolder:
       return dir + "folder.svg";
-    case ImageFile::kQuestionMark:
+    case Image::kQuestionMark:
       return dir + "question-mark.png";
-    case ImageFile::kTrash:
+    case Image::kTrash:
       return dir + "trash.svg";
-    case ImageFile::kUrl:
+    case Image::kUrl:
       return dir + "url.svg";
     default:
       return QString{};
@@ -98,22 +98,26 @@ QString Io::GetIcon(const std::filesystem::path& path) {
   // Exits with placeholder image if path doesn't contain a file extension and
   // isn't a directory.
   if (extension.empty() && !std::filesystem::is_directory(path)) {
-    return GetFilePath(ImageFile::kFile);
+    return GetFilePath(Image::kFile);
   }
 
   // Returns a generic resource image if there was no match.
   auto search = mimetype_icons_.find(extension);
   return search == mimetype_icons_.end()
-           ? GetFilePath(std::filesystem::is_directory(path)
-                           ? ImageFile::kFolder
-                           : ImageFile::kFile)
+           ? GetFilePath(std::filesystem::is_directory(path) ? Image::kFolder
+                                                             : Image::kFile)
            : search->second;
 }
 
 void Io::Initialize() {
+  config_directory_ =
+    QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + '/' +
+    QCoreApplication::organizationName() + '/' +
+    QCoreApplication::applicationName() + '/';
+
   // Sets up default settings.
-  auto default_settings = GetFile(IniFile::kDefault);
-  auto user_settings = GetFile(IniFile::kUser);
+  auto default_settings = GetFile(Ini::kDefault);
+  auto user_settings = GetFile(Ini::kUser);
 
   // Adds missing/new settings from default settings to user settings (written
   // to disk).
@@ -121,7 +125,7 @@ void Io::Initialize() {
     default_settings.beginGroup(group);
     user_settings.beginGroup(group);
 
-    for (const auto& key : default_settings.childKeys()) {
+    for (const auto& key : default_settings.allKeys()) {
       if (!user_settings.contains(key)) {
         user_settings.setValue(key, default_settings.value(key));
       }
@@ -136,7 +140,7 @@ void Io::Initialize() {
                         .toString()
                         .split(',', Qt::SkipEmptyParts);
   for (const auto& id : disabled_ids) {
-    disabled_ids_.insert(id.toULongLong());
+    disabled_ids_.insert(Id{id});
   }
 
 #ifdef Q_OS_LINUX
@@ -159,8 +163,8 @@ void Io::Initialize() {
 #endif
 
   // Sets up search results based on data files.
-  ParseJson<WebSearch>(JsonFile::kWebSearches);
-  ParseJson<WebSearch>(JsonFile::kYourWebSearches);
+  ParseJson<WebSearch>(Json::kWebSearches);
+  ParseJson<WebSearch>(Json::kYourWebSearches);
 
   // Sets up built-in search results not based on data files.
   AddResult(std::make_shared<Trash>());
@@ -172,7 +176,7 @@ void Io::Initialize() {
   UpdateDefaultResults();
 }
 
-void Io::ToggleResult(uint64_t id, bool enable) {
+void Io::ToggleResult(const Id& id, bool enable) {
   auto it = results_.find(id);
   if (it == results_.end()) {
     return;
@@ -181,9 +185,9 @@ void Io::ToggleResult(uint64_t id, bool enable) {
   auto result = it->second;
   result->SetIsEnabled(enable);
 
-  auto user_settings = GetFile(IniFile::kUser);
+  auto user_settings = GetFile(Ini::kUser);
   user_settings.beginGroup("Results");
-  auto id_string = QString::number(id);
+  auto id_string = id.ToString();
   auto disabled_ids = user_settings.value("DisabledIDs", "")
                         .toString()
                         .split(',', Qt::SkipEmptyParts);
@@ -205,10 +209,6 @@ void Io::ToggleResult(uint64_t id, bool enable) {
   // Queues saving disabled IDs to file.
   user_settings.setValue("DisabledIDs", disabled_ids.join(','));
 }
-
-const QString Io::kConfigDirectory{
-  QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + '/' +
-  "QCoreApplication::organizationName()" + '/'};
 
 const QString Io::kDataDirectory{"://data/"};
 
@@ -234,7 +234,7 @@ void Io::AddResult(const std::shared_ptr<Result>& result) {
 }
 
 void Io::AddResultHelper(const std::shared_ptr<Result>& result) {
-  auto id = result->Id();
+  auto id = result->GetId();
   results_.insert({id, result});
 
   // Disables the result if its ID matches a disabled id.
@@ -243,13 +243,12 @@ void Io::AddResultHelper(const std::shared_ptr<Result>& result) {
   }
 }
 
-QSettings Io::GetFile(IniFile f) {
+QSettings Io::GetFile(Ini f) {
   auto path = GetFilePath(f);
-  return path.isEmpty() ? QSettings{}
-                        : QSettings{GetFilePath(f), QSettings::IniFormat};
+  return path.isEmpty() ? QSettings{} : QSettings{path, QSettings::IniFormat};
 }
 
-QJsonDocument Io::GetFile(JsonFile f) {
+QJsonDocument Io::GetFile(Json f) {
   auto file = QFile{GetFilePath(f)};
   if (!file.exists()) {
     return QJsonDocument{};
@@ -260,30 +259,30 @@ QJsonDocument Io::GetFile(JsonFile f) {
   return document;
 }
 
-QString Io::GetFilePath(IniFile f) {
+QString Io::GetFilePath(Ini f) {
   switch (f) {
-    case IniFile::kDefault:
+    case Ini::kDefault:
       return kDataDirectory + "settings.ini";
-    case IniFile::kUser:
-      return kConfigDirectory + QCoreApplication::applicationName() + ".ini";
+    case Ini::kUser:
+      return config_directory_ + "settings.ini";
     default:
       return QString{};
   }
 }
 
-QString Io::GetFilePath(JsonFile f) {
+QString Io::GetFilePath(Json f) {
   switch (f) {
-    case JsonFile::kWebSearches:
+    case Json::kWebSearches:
       return kDataDirectory + "web-searches.json";
-    case JsonFile::kYourWebSearches:
-      return kConfigDirectory + "your-web-searches.json";
+    case Json::kYourWebSearches:
+      return config_directory_ + "your-web-searches.json";
     default:
       return QString{};
   }
 }
 
 template <typename T>
-void Io::ParseJson(JsonFile f) {
+void Io::ParseJson(Json f) {
   auto document = GetFile(f);
   if (document.isObject()) {
     AddResult(std::make_shared<T>(document.object()));
@@ -296,14 +295,15 @@ void Io::ParseJson(JsonFile f) {
 
 void Io::UpdateDefaultResults() {
   default_results_.clear();
-  auto user_settings = GetFile(IniFile::kUser);
+  auto user_settings = GetFile(Ini::kUser);
 
   // Takes the IDs of the default search results and stores them in a set.
   user_settings.beginGroup("DefaultSearchResults");
 
-  auto ids = std::unordered_set<uint64_t>();
+  auto ids = std::unordered_set<Id>{};
   for (const auto& key : user_settings.allKeys()) {
-    ids.insert(user_settings.value(key).toULongLong());
+    auto id = Id{user_settings.value(key)};
+    ids.insert(id);
   }
 
   user_settings.endGroup();
@@ -311,7 +311,7 @@ void Io::UpdateDefaultResults() {
   for (const auto& [_, results] : results_map_) {
     for (const auto& result : results) {
       // TODO: update syntax in C++20.
-      if (ids.find(result->Id()) == ids.end()) {
+      if (ids.find(result->GetId()) == ids.end()) {
         continue;
       }
 
@@ -322,9 +322,11 @@ void Io::UpdateDefaultResults() {
 
 Autocompleter Io::autocompleter_{};
 
+QString Io::config_directory_{};
+
 std::vector<std::shared_ptr<Result>> Io::default_results_{};
 
-std::unordered_set<uint64_t> Io::disabled_ids_{};
+std::unordered_set<Id> Io::disabled_ids_{};
 
 std::unordered_map<std::string, QString> Io::mimetype_icons_{};
 
@@ -333,7 +335,7 @@ std::vector<std::shared_ptr<ProcessedResultBuilder>>
 
 std::vector<std::shared_ptr<ProcessedResult>> Io::processed_results_{};
 
-std::unordered_map<uint64_t, std::shared_ptr<Result>> Io::results_{};
+std::unordered_map<Id, std::shared_ptr<Result>> Io::results_{};
 
 std::unordered_map<QString, std::vector<std::shared_ptr<Result>>>
   Io::results_map_{};

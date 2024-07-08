@@ -5,6 +5,7 @@
 #include <QUrl>
 #include <memory>
 
+#include "../core/config.h"
 #include "../core/crypto.h"
 #include "../core/io.h"
 
@@ -29,8 +30,8 @@ FileSystemEntry::FileSystemEntry()
                  .toStdString()}},
       is_entry_{false} {
   SetDescription("Search for files on your PC and open");
-  SetIcon(Io::GetFilePath(Io::ImageFile::kFileSystemEntry));
-  SetId(17);
+  SetIcon(Io::GetFilePath(Io::Image::kFileSystemEntry));
+  SetId(Config::kApplicationAuthorId, 17);
   SetTitle("Open file");
 }
 
@@ -38,7 +39,7 @@ FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
     : is_entry_{true} {
   SetDescription(QString::fromUtf8(path.string()));
   SetIcon(Io::GetIcon(path));
-  SetId(Crypto::Djb2(path));
+  SetId(Config::kApplicationAuthorId, Crypto::Djb2(path));
   SetTitle(QString::fromUtf8(path.filename().string()));
 }
 
@@ -69,7 +70,7 @@ bool FileSystemEntry::ProcessInput(const Input& input) {
 
 void FileSystemEntry::Drag() {
   if (is_entry_) {
-    emit Dragged(Description());
+    emit Dragged(GetDescription());
   }
 }
 
@@ -85,10 +86,10 @@ void FileSystemEntry::ProcessKeyPress(const QKeyCombination& combination,
       auto url =
         QUrl::fromLocalFile(combination.keyboardModifiers() & Qt::AltModifier
                               ? QString::fromStdString(std::filesystem::path{
-                                  Description().toStdString()}
+                                  GetDescription().toStdString()}
                                                          .parent_path()
                                                          .string())
-                              : Description());
+                              : GetDescription());
       emit Hidden();
       QDesktopServices::openUrl(url);
       break;
@@ -107,7 +108,7 @@ void FileSystemEntry::ProcessKeyRelease(const QKeyCombination& combination,
 
   switch (combination.key()) {
     case Qt::Key_Alt:
-      emit NewDescriptionRequested(Description());
+      emit NewDescriptionRequested(GetDescription());
       break;
   }
 }

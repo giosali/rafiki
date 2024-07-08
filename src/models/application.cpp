@@ -17,7 +17,7 @@ Application::Application(const QString& desktop_entry_path, const QString& name,
                          const QString& exec)
     : exec_{exec} {
   SetIcon(icon);
-  SetId(Crypto::Djb2(desktop_entry_path));
+  SetId(Config::kApplicationAuthorId, Crypto::Djb2(desktop_entry_path));
   SetTitle(name);
   SetCommand(name);
   SetDescription(desktop_entry_path);
@@ -32,7 +32,7 @@ void Application::ProcessKeyPress(const QKeyCombination& combination,
     case Qt::Key_Return: {
       if (combination.keyboardModifiers() & Qt::AltModifier) {
         // TODO: inform user that the action did not work.
-        auto description = Description();
+        auto description = GetDescription();
         if (description.isEmpty()) {
           break;
         }
@@ -63,7 +63,7 @@ void Application::ProcessKeyRelease(const QKeyCombination& combination,
                                     const Input& input) {
   switch (combination.key()) {
     case Qt::Key_Alt:
-      emit NewDescriptionRequested(Description());
+      emit NewDescriptionRequested(GetDescription());
       break;
   }
 }

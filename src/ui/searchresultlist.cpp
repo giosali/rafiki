@@ -157,7 +157,8 @@ void SearchResultList::ProcessResults(
       AddItem(results[i], input, argument, i);
     }
   } else {
-    auto current_id = static_cast<SearchResultItem*>(item(current_row))->Id();
+    auto current_id =
+      static_cast<SearchResultItem*>(item(current_row))->GetId();
 
     clear();  // Helps prevent flicker.
 
@@ -169,7 +170,7 @@ void SearchResultList::ProcessResults(
       auto result = results[i];
       AddItem(result, input, argument, i);
 
-      if (!found_id && result->Id() == current_id) {
+      if (!found_id && result->GetId() == current_id) {
         row = i;
         found_id = true;
       }
@@ -254,7 +255,7 @@ void SearchResultList::AddItem(const std::shared_ptr<Result>& result,
           &SearchBox::SetText);
   connect(interactable, &Interactable::Hidden, main_window_, &MainWindow::Hide);
 
-  auto item = new SearchResultItem(result->Id(), this);
+  auto item = new SearchResultItem(result->GetId(), this);
 
   // Sets the actual height of search result items and prevents unusual sizing
   // differences between items.

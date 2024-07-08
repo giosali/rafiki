@@ -5,13 +5,14 @@
 #include <QLocale>
 #include <Qt>
 
+#include "../core/config.h"
 #include "../core/io.h"
 #include "../core/shuntingyardalgorithm.h"
 
 Calculator::Calculator() {
   SetDescription(kDescription);
-  SetIcon(Io::GetFilePath(Io::ImageFile::kCalculator));
-  SetId(16);
+  SetIcon(Io::GetFilePath(Io::Image::kCalculator));
+  SetId(Config::kApplicationAuthorId, 16);
   SetTitlePlaceholder("...");
 }
 
@@ -23,7 +24,7 @@ bool Calculator::ProcessInput(const Input& input) {
 
   auto value = result.value();
   if (value.empty()) {
-    SetTitle(TitlePlaceholder());
+    SetTitle(GetTitlePlaceholder());
     SetDescription("Please enter a valid expression");
   } else {
     SetTitle(QString::fromStdString(value));
@@ -37,11 +38,11 @@ void Calculator::Drag() {}
 
 void Calculator::ProcessKeyPress(const QKeyCombination& combination,
                                  const Input& input) {
-  auto title = Title();
+  auto title = GetTitle();
 
   switch (combination.key()) {
     case Qt::Key_Return: {
-      if (title == TitlePlaceholder()) {
+      if (title == GetTitlePlaceholder()) {
         break;
       }
 
@@ -60,7 +61,7 @@ void Calculator::ProcessKeyRelease(const QKeyCombination& combination,
                                    const Input& input) {
   switch (combination.key()) {
     case Qt::Key_Alt:
-      emit NewTitleRequested(Title());
+      emit NewTitleRequested(GetTitle());
       break;
   }
 }

@@ -5,6 +5,7 @@
 #include <QUrl>
 #include <Qt>
 
+#include "../core/config.h"
 #include "../core/utils.h"
 
 WebSearch::WebSearch(const QJsonObject& object)
@@ -16,7 +17,6 @@ WebSearch::WebSearch(const QJsonObject& object)
   SetAppendSpaceToCommand(title.contains("{}"));
   SetCommand(object["command"].toString());
   SetIcon(object["icon"].toString());
-  SetId(object["id"].toString().toULongLong());
   SetTitle(title);
   SetTitlePlaceholder(object["placeholder"].toString());
 
@@ -25,6 +25,9 @@ WebSearch::WebSearch(const QJsonObject& object)
   if (auto is_custom_value = object["isCustom"];
       !is_custom_value.isUndefined()) {
     is_custom_ = is_custom_value.toBool();
+    SetId(Config::kUserAuthorId, object["id"].toString().toULongLong());
+  } else {
+    SetId(Config::kApplicationAuthorId, object["id"].toString().toULongLong());
   }
 }
 
@@ -68,7 +71,7 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
       break;
     }
     case Qt::Key_Alt:
-      emit NewTitleRequested(Title());
+      emit NewTitleRequested(GetTitle());
       break;
   }
 }
