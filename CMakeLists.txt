@@ -29,6 +29,8 @@ set(PROJECT_SOURCES
         src/core/crypto.h
         src/core/finder.cpp
         src/core/finder.h
+        src/core/id.cpp
+        src/core/id.h
         src/core/inifile.cpp
         src/core/inifile.h
         src/core/input.cpp
