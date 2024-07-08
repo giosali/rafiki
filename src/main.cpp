@@ -21,8 +21,8 @@ int main(int argc, char *argv[]) {
 #endif
 
   auto a = QApplication{argc, argv};
-  QApplication::setApplicationName(PROJECT_NAME);
-  auto application_name = QApplication::applicationName();
+  auto application_name = QString{PROJECT_NAME};
+  QApplication::setApplicationName(application_name);
   QApplication::setApplicationVersion(PROJECT_VERSION);
   QApplication::setOrganizationName(application_name);
   QApplication::setOrganizationDomain(application_name + ".com");
