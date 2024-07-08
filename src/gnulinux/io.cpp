@@ -30,12 +30,9 @@ std::unordered_map<std::string, QString> Io::GetMimeTypeIcons() {
   // "index.theme" MUST exist.
   auto theme_index = IniFile{theme_path / "index.theme"};
 
-  // "Directories" is a required value.
-  auto directories_value = std::any_cast<std::string>(
-    theme_index.GetValue<std::string>("Icon Theme/Directories"));
-
-  // All lists in index.theme are comma-separated.
-  auto directories = utils::Split(directories_value, ',');
+  // "Directories" is a required value. All lists in index.theme are
+  // comma-separated.
+  auto directories = theme_index.GetValue("Icon Theme/Directories").split(',');
 
   auto current_size = 0;
   auto mimetypes_directory = std::string{};
@@ -44,18 +41,16 @@ std::unordered_map<std::string, QString> Io::GetMimeTypeIcons() {
 
     // "Context" is a required value.
     // Searches for the "Context" that is set to "MimeTypes".
-    if (auto context = std::any_cast<std::string>(
-          theme_index.GetValue<std::string>("Context"));
+    if (auto context = theme_index.GetValue("Context");
         context != "MimeTypes") {
       theme_index.EndSection();
       continue;
     }
 
     // "Size" is a required value.
-    if (auto size = std::any_cast<int>(theme_index.GetValue<int>("Size"));
-        size > current_size) {
+    if (auto size = theme_index.GetValue("Size").toInt(); size > current_size) {
       current_size = size;
-      mimetypes_directory = directory;
+      mimetypes_directory = directory.toStdString();
     }
 
     theme_index.EndSection();

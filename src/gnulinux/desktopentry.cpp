@@ -1,5 +1,7 @@
 #include "desktopentry.h"
 
+#include <QVariant>
+
 #include "../core/inifile.h"
 #include "../core/utils.h"
 
@@ -12,17 +14,15 @@ DesktopEntry::DesktopEntry(
   auto file = IniFile(path);
   file.BeginSection("Desktop Entry");
 
-  if (std::any_cast<bool>(file.GetValue<bool>("NoDisplay", false))) {
+  if (QVariant{file.GetValue("NoDisplay", "false")}.toBool()) {
     no_display_ = true;
     return;
   }
 
-  exec_ = RemoveFieldCodes(
-    std::any_cast<std::string>(file.GetValue<std::string>("Exec")));
-  name_ = QString::fromStdString(
-    std::any_cast<std::string>(file.GetValue<std::string>("Name")));
+  exec_ = RemoveFieldCodes(file.GetValue("Exec").toStdString());
+  name_ = file.GetValue("Name");
 
-  auto icon = std::any_cast<std::string>(file.GetValue<std::string>("Icon"));
+  auto icon = file.GetValue("Icon").toStdString();
   if (std::filesystem::exists(icon)) {
     icon_ = QString::fromStdString(icon);
   } else if (auto it = icon_map.find(icon); it != icon_map.end()) {
