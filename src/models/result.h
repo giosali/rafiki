@@ -31,6 +31,8 @@ class Result : public Interactable {
   void SetIsEnabled(bool value);
 
  protected:
+  QString GetAltTitle() const;
+  QString GetAltTitlePlaceholder() const;
   QString GetTitle() const;
   QString GetTitlePlaceholder() const;
   void SetAltTitle(const QString& value);

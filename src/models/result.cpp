@@ -66,6 +66,12 @@ void Result::SetId(uint64_t author_id, uint64_t id) { id_ = Id{author_id, id}; }
 
 void Result::SetIsEnabled(bool value) { is_enabled_ = value; }
 
+QString Result::GetAltTitle() const { return alt_title_; }
+
+QString Result::GetAltTitlePlaceholder() const {
+  return alt_title_placeholder_;
+}
+
 QString Result::GetTitle() const { return title_; }
 
 QString Result::GetTitlePlaceholder() const { return title_placeholder_; }
