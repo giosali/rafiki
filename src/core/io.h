@@ -35,6 +35,7 @@ class Io {
 
   Io() = delete;
 
+  static void AddWebSearch(const std::shared_ptr<WebSearch>& web_search);
   template <typename T>
   static std::vector<std::shared_ptr<T>> FilterResults() {
     auto results = std::vector<std::shared_ptr<T>>{};

@@ -20,7 +20,27 @@
 #include "../models/filesystementry.h"
 #include "../models/trash.h"
 #include "../models/url.h"
+#include "config.h"
 #include "utils.h"
+
+void Io::AddWebSearch(const std::shared_ptr<WebSearch>& web_search) {
+  auto user_settings = GetFile(Ini::kUser);
+  auto current_id = user_settings.value("YourResults/CurrentID").toULongLong();
+  web_search->SetId(Config::kUserAuthorId, ++current_id);
+  AddResult(web_search);
+  user_settings.setValue("YourResults/CurrentID", current_id);
+
+  // Adds web search to the document's array.
+  auto your_web_searches = GetFile(Json::kYourWebSearches);
+  auto array = your_web_searches.array();
+  array.append(web_search->ToJsonObject());
+  your_web_searches.setArray(array);
+
+  // Saves web search to disk on user's machine.
+  auto file = QFile{GetFilePath(Json::kYourWebSearches)};
+  file.open(QFile::WriteOnly);
+  file.write(your_web_searches.toJson(QJsonDocument::Compact));
+}
 
 std::vector<std::shared_ptr<Result>> Io::FindResults(const Input& input) {
   auto all_results = std::vector<std::shared_ptr<Result>>{};
