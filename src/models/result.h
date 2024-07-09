@@ -22,6 +22,7 @@ class Result : public Interactable {
   QString FormatTitle(const QString& arg) const;
   QString GetCommand() const;
   QString GetDescription() const;
+  QString GetIcon() const;
   QPixmap GetIcon(int size) const;
   Id GetId() const;
   bool HasCommand() const;

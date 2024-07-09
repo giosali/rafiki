@@ -43,6 +43,8 @@ QString Result::GetCommand() const { return command_; }
 
 QString Result::GetDescription() const { return description_; }
 
+QString Result::GetIcon() const { return icon_; }
+
 QPixmap Result::GetIcon(int size) const {
   // Tries to search for a cached QPixmap first.
   if (pixmap_key_.isValid()) {
