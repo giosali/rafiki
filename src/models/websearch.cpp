@@ -14,7 +14,7 @@ WebSearch::WebSearch(const QJsonObject& object)
   auto title = object["title"].toString();
 
   SetAltTitle(alt["title"].toString());
-  SetAppendSpaceToCommand(title.contains("{}"));
+  SetAppendSpaceToCommand(ShouldAppendSpaceToCommand(title));
   SetCommand(object["command"].toString());
   SetIcon(object["icon"].toString());
   SetTitle(title);
@@ -31,7 +31,40 @@ WebSearch::WebSearch(const QJsonObject& object)
   }
 }
 
+WebSearch::WebSearch(const QString& url, const QString& title,
+                     const QString& title_placeholder, const QString& command,
+                     const QString& icon, const QString& alt_url,
+                     const QString& alt_title,
+                     const QString& alt_title_placeholder)
+    : alt_url_{alt_url}, is_custom_{true}, url_{url} {
+  SetAltTitle(alt_title);
+  SetAltTitlePlaceholder(alt_title_placeholder);
+  SetAppendSpaceToCommand(ShouldAppendSpaceToCommand(title));
+  SetCommand(command);
+  SetIcon(icon);
+  SetTitle(title);
+  SetTitlePlaceholder(title_placeholder);
+}
+
 bool WebSearch::IsCustom() const { return is_custom_; }
+
+QJsonObject WebSearch::ToJsonObject() const {
+  auto object = QJsonObject{};
+  object.insert("id", GetId().ToString());
+  object.insert("command", GetCommand());
+  object.insert("icon", GetIcon());
+  object.insert("url", url_);
+  object.insert("title", GetTitle());
+  object.insert("placeholder", GetTitlePlaceholder());
+
+  auto alt_object = QJsonObject{};
+  alt_object.insert("url", alt_url_);
+  alt_object.insert("title", GetAltTitle());
+  alt_object.insert("placeholder", GetAltTitlePlaceholder());
+  object.insert("alt", alt_object);
+
+  return object;
+}
 
 void WebSearch::Drag() {}
 
@@ -83,4 +116,8 @@ void WebSearch::ProcessKeyRelease(const QKeyCombination& combination,
       emit NewTitleRequested(FormatTitle(input.Argument()));
       break;
   }
+}
+
+bool WebSearch::ShouldAppendSpaceToCommand(const QString& title) const {
+  return title.contains("{}");
 }
