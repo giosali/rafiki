@@ -102,7 +102,7 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
       break;
     }
     case Qt::Key_Alt:
-      emit NewTitleRequested(GetTitle());
+      emit NewTitleRequested(GetAltTitle());
       break;
   }
 }
