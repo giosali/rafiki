@@ -20,7 +20,7 @@ uint64_t Id::GetAuthorId() const { return author_id_; }
 uint64_t Id::GetResultId() const { return result_id_; }
 
 QString Id::ToString() const {
-  return QString{"%1:%2"}.arg(author_id_, result_id_);
+  return QString{"%1:%2"}.arg(author_id_).arg(result_id_);
 }
 
 bool Id::operator==(const Id& id) const {
