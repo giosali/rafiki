@@ -41,6 +41,7 @@ class Result : public Interactable {
   void SetCommand(const QString& value);
   void SetDescription(const QString& value);
   void SetIcon(const QString& value);
+  void SetId(const QString& value);
   void SetPixmapKey(const QString& icon, uintmax_t icon_size);
   void SetTitle(const QString& value);
   void SetTitlePlaceholder(const QString& value);

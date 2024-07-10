@@ -96,6 +96,8 @@ void Result::SetIcon(const QString &value) {
     QFile::exists(value) ? value : Io::GetFilePath(Io::Image::kQuestionMark);
 }
 
+void Result::SetId(const QString &value) { id_ = Id{value}; }
+
 void Result::SetPixmapKey(const QString &icon, uintmax_t icon_size) {
   if (icon_size >= 1000000) {  // 1 MB
     pixmap_key_ = QPixmapCache::insert(
