@@ -40,8 +40,7 @@ class Io {
   static std::vector<std::shared_ptr<T>> FilterResults() {
     auto results = std::vector<std::shared_ptr<T>>{};
     for (const auto& [_, result] : results_) {
-      auto i = std::dynamic_pointer_cast<T>(result);
-      if (i != nullptr) {
+      if (auto i = std::dynamic_pointer_cast<T>(result); i != nullptr) {
         results.push_back(i);
       }
     }
