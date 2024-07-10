@@ -17,17 +17,14 @@ WebSearch::WebSearch(const QJsonObject& object)
   SetAppendSpaceToCommand(ShouldAppendSpaceToCommand(title));
   SetCommand(object["command"].toString());
   SetIcon(object["icon"].toString());
+  SetId(object["id"].toString());
   SetTitle(title);
   SetTitlePlaceholder(object["placeholder"].toString());
 
   alt_url_ = alt["url"].toString();
 
-  if (auto is_custom_value = object["isCustom"];
-      !is_custom_value.isUndefined()) {
-    is_custom_ = is_custom_value.toBool();
-    SetId(Config::kUserAuthorId, object["id"].toString().toULongLong());
-  } else {
-    SetId(Config::kApplicationAuthorId, object["id"].toString().toULongLong());
+  if (auto v = object["isCustom"]; !v.isUndefined()) {
+    is_custom_ = v.toBool();
   }
 }
 
@@ -56,6 +53,7 @@ QJsonObject WebSearch::ToJsonObject() const {
   object.insert("url", url_);
   object.insert("title", GetTitle());
   object.insert("placeholder", GetTitlePlaceholder());
+  object.insert("isCustom", is_custom_);
 
   auto alt_object = QJsonObject{};
   alt_object.insert("url", alt_url_);
