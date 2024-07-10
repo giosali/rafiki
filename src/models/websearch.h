@@ -16,8 +16,7 @@ class WebSearch : public Result {
   explicit WebSearch(const QString& url, const QString& title,
                      const QString& title_placeholder, const QString& command,
                      const QString& icon, const QString& alt_url,
-                     const QString& alt_title,
-                     const QString& alt_title_placeholder);
+                     const QString& alt_title);
 
   bool IsCustom() const;
   QJsonObject ToJsonObject() const;

@@ -31,11 +31,9 @@ WebSearch::WebSearch(const QJsonObject& object)
 WebSearch::WebSearch(const QString& url, const QString& title,
                      const QString& title_placeholder, const QString& command,
                      const QString& icon, const QString& alt_url,
-                     const QString& alt_title,
-                     const QString& alt_title_placeholder)
+                     const QString& alt_title)
     : alt_url_{alt_url}, is_custom_{true}, url_{url} {
   SetAltTitle(alt_title);
-  SetAltTitlePlaceholder(alt_title_placeholder);
   SetAppendSpaceToCommand(ShouldAppendSpaceToCommand(title));
   SetCommand(command);
   SetIcon(icon);
@@ -58,7 +56,6 @@ QJsonObject WebSearch::ToJsonObject() const {
   auto alt_object = QJsonObject{};
   alt_object.insert("url", alt_url_);
   alt_object.insert("title", GetAltTitle());
-  alt_object.insert("placeholder", GetAltTitlePlaceholder());
   object.insert("alt", alt_object);
 
   return object;
