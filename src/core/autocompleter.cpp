@@ -27,8 +27,8 @@ void Autocompleter::Insert(const QString& text) {
     if (ch.isUpper()) {
       ch = ch.toLower();
 
-      // Allows for keys such as "ProtonVPN" to be  accessed, for example,
-      // through of the following consecutive letters: "pvpn"
+      // Ultimately allows for keys such as "ProtonVPN" to be  accessed, for
+      // example, through of the following consecutive letters: "pvpn"
       acronym_key += ch;
     }
 
