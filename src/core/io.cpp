@@ -31,15 +31,46 @@ void Io::AddWebSearch(const std::shared_ptr<WebSearch>& web_search) {
   user_settings.setValue("YourResults/CurrentID", current_id);
 
   // Adds web search to the document's array.
-  auto your_web_searches = GetFile(Json::kYourWebSearches);
-  auto array = your_web_searches.array();
+  auto document = GetFile(Json::kYourWebSearches);
+  auto array = document.array();
   array.append(web_search->ToJsonObject());
-  your_web_searches.setArray(array);
+  document.setArray(array);
+  SaveYourWebSearches(document);
+}
 
-  // Saves web search to disk on user's machine.
-  auto file = QFile{GetFilePath(Json::kYourWebSearches)};
-  file.open(QFile::WriteOnly);
-  file.write(your_web_searches.toJson(QJsonDocument::Compact));
+void Io::DeleteWebSearch(const Id& id) {
+  auto it = results_.find(id);
+  if (it == results_.end()) {
+    // Returns early if the ID isn't found.
+    return;
+  }
+
+  auto web_search = std::dynamic_pointer_cast<WebSearch>(it->second);
+  if (web_search == nullptr) {
+    // Returns early if the Result isn't a WebSearch.
+    return;
+  }
+
+  RemoveResult(web_search);
+
+  // Gets the remaining web searches.
+  auto web_searches = std::vector<std::shared_ptr<WebSearch>>{};
+  for (const auto& ws : FilterResults<WebSearch>()) {
+    if (ws->IsCustom()) {
+      web_searches.push_back(ws);
+    }
+  }
+
+  // Writes the remaining web searches to disk.
+  // Adds web searches to the document's array.
+  auto document = GetFile(Json::kYourWebSearches);
+  auto array = QJsonArray{};
+  for (const auto& web_search : web_searches) {
+    array.append(web_search->ToJsonObject());
+  }
+
+  document.setArray(array);
+  SaveYourWebSearches(document);
 }
 
 std::vector<std::shared_ptr<Result>> Io::FindResults(const Input& input) {
@@ -311,6 +342,49 @@ void Io::ParseJson(Json f) {
       AddResult(std::make_shared<T>(i.toObject()));
     }
   }
+}
+
+void Io::RemoveResult(const std::shared_ptr<Result>& result) {
+  auto id = result->GetId();
+
+  // This must occur before removing the result from any containers.
+  ToggleResult(id, false);
+
+  results_.erase(id);
+
+  if (result->HasCommand()) {
+    // We purposely don't remove the result from the autocompleter. The
+    // autocompleter is too complex to have it be removed.
+    auto command = result->FormatCommand();
+    auto it = results_map_.find(command);
+    if (it == results_map_.end()) {
+      return;
+    }
+
+    auto current_results = it->second;
+    for (auto it = current_results.begin(); it != current_results.end();) {
+      if ((*it)->GetId() == id) {
+        it = current_results.erase(it);
+      } else {
+        ++it;
+      }
+    }
+
+    if (current_results.empty()) {
+      // If there are no results in the vector, its corresponding command can be
+      // removed.
+      results_map_.erase(command);
+    } else {
+      results_map_[command] = current_results;
+    }
+  }
+}
+
+void Io::SaveYourWebSearches(const QJsonDocument& document) {
+  // Saves web search to disk on user's machine.
+  auto file = QFile{GetFilePath(Json::kYourWebSearches)};
+  file.open(QFile::WriteOnly);
+  file.write(document.toJson(QJsonDocument::Compact));
 }
 
 void Io::UpdateDefaultResults() {
