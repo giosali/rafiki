@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>WebSearchDialog</class>
+ <widget class="QDialog" name="WebSearchDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Web Search</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <layout class="QVBoxLayout" name="verticalLayout">
+     <item>
+      <layout class="QFormLayout" name="formLayout">
+       <item row="0" column="0">
+        <widget class="QLabel" name="urlLabel">
+         <property name="text">
+          <string>URL*</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <layout class="QVBoxLayout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="urlLineEdit">
+           <property name="placeholderText">
+            <string>https://google.com/search?q={}</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <property name="maximumHeight">
+            <number>40</number>
+           </property>
+           <property name="text">
+            <string>The curly bracket '{}' will be replaced with your query. A curly bracket is not required in the URL.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="1" column="0">
+        <widget class="QLabel" name="titleLabel">
+         <property name="text">
+          <string>Title*</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="1">
+        <layout class="QVBoxLayout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="titleLineEdit">
+           <property name="placeholderText">
+            <string>Search Google for '{}'</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <property name="maximumHeight">
+            <number>40</number>
+           </property>
+           <property name="text">
+            <string>The curly bracket '{}' will be replaced by either your query or the placeholder. A curly bracket is not required in the title.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="placeholderLabel">
+         <property name="text">
+          <string>Placeholder*</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="placeholderComboBox">
+         <property name="maximumWidth">
+          <number>50</number>
+         </property>
+         <item>
+          <property name="text">
+           <string>...</string>
+          </property>
+         </item>
+         <item>
+          <property name="text">
+           <string>_</string>
+          </property>
+         </item>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="commandLabel">
+         <property name="text">
+          <string>Command*</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="QLineEdit" name="commandLineEdit">
+         <property name="placeholderText">
+          <string>google</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="0">
+        <widget class="QLabel" name="iconLabel">
+         <property name="text">
+          <string>Icon</string>
+         </property>
+        </widget>
+       </item>
+       <item row="4" column="1">
+        <widget class="InteractiveLabel" name="interactiveIconLabel" native="true">
+         <property name="scaledContents">
+          <bool>true</bool>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QFrame {
+	border: 1px solid gray;
+	border-radius: 0px;
+	max-height: 100px;
+	max-width: 100px;
+}</string>
+         </property>
+         <property name="font">
+          <font>
+           <pointsize>10</pointsize>
+          </font>
+         </property>
+         <property name="text">
+          <string>Click to add</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="0">
+        <widget class="QLabel" name="altUrlLabel">
+         <property name="text">
+          <string>Alt URL</string>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="QLineEdit" name="altUrlLineEdit">
+         <property name="placeholderText">
+          <string>https://google.com</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="0">
+        <widget class="QLabel" name="altTitleLabel">
+         <property name="text">
+          <string>Alt Title</string>
+         </property>
+        </widget>
+       </item>
+       <item row="6" column="1">
+        <layout class="QVBoxLayout">
+         <property name="spacing">
+          <number>0</number>
+         </property>
+         <item>
+          <widget class="QLineEdit" name="altTitleLineEdit">
+           <property name="placeholderText">
+            <string>Go to the Google homepage</string>
+           </property>
+          </widget>
+         </item>
+         <item>
+          <widget class="QLabel">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <property name="maximumHeight">
+            <number>40</number>
+           </property>
+           <property name="text">
+            <string>This appears when the web search is selected and the Alt key is pressed. "Alt URL" and "Alt Title" are only optional if they are both empty. They can contain a curly bracket '{}'.</string>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+       <item row="8" column="0">
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="8" column="1">
+        <widget class="QDialogButtonBox" name="buttonBox">
+         <property name="standardButtons">
+          <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>InteractiveLabel</class>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>
