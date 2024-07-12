@@ -19,6 +19,8 @@ uint64_t Id::GetAuthorId() const { return author_id_; }
 
 uint64_t Id::GetResultId() const { return result_id_; }
 
+bool Id::IsNull() const { return author_id_ == 0 && result_id_ == 0; }
+
 QString Id::ToString() const {
   return QString{"%1:%2"}.arg(author_id_).arg(result_id_);
 }

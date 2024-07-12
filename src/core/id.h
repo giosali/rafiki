@@ -15,6 +15,7 @@ class Id {
 
   uint64_t GetAuthorId() const;
   uint64_t GetResultId() const;
+  bool IsNull() const;
   QString ToString() const;
   bool operator==(const Id& id) const;
 
