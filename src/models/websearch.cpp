@@ -41,7 +41,15 @@ WebSearch::WebSearch(const QString& url, const QString& title,
   SetTitlePlaceholder(title_placeholder);
 }
 
+QString WebSearch::GetAltUrl() const { return alt_url_; }
+
+QString WebSearch::GetUrl() const { return url_; }
+
 bool WebSearch::IsCustom() const { return is_custom_; }
+
+void WebSearch::SetAltUrl(const QString& value) { alt_url_ = value; }
+
+void WebSearch::SetUrl(const QString& value) { url_ = value; }
 
 QJsonObject WebSearch::ToJsonObject() const {
   auto object = QJsonObject{};

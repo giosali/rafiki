@@ -18,7 +18,11 @@ class WebSearch : public Result {
                      const QString& icon, const QString& alt_url,
                      const QString& alt_title);
 
+  QString GetAltUrl() const;
+  QString GetUrl() const;
   bool IsCustom() const;
+  void SetAltUrl(const QString& value);
+  void SetUrl(const QString& value);
   QJsonObject ToJsonObject() const;
 
  public slots:
