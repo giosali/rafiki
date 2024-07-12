@@ -30,6 +30,8 @@ QString Result::FormatTitle(const QString &arg) const {
            : title_;
 }
 
+QString Result::GetAltTitle() const { return alt_title_; }
+
 QString Result::GetCommand() const { return command_; }
 
 QString Result::GetDescription() const { return description_; }
@@ -49,27 +51,34 @@ QPixmap Result::GetIcon(int size) const {
 
 Id Result::GetId() const { return id_; }
 
+QString Result::GetTitle() const { return title_; }
+
+QString Result::GetTitlePlaceholder() const { return title_placeholder_; }
+
 bool Result::HasCommand() const { return !command_.isNull(); }
 
 bool Result::IsEnabled() const { return is_enabled_; }
+
+void Result::SetAltTitle(const QString &value) { alt_title_ = value; }
+
+void Result::SetCommand(const QString &value) { command_ = value; }
 
 void Result::SetId(uint64_t author_id, uint64_t id) { id_ = Id{author_id, id}; }
 
 void Result::SetIsEnabled(bool value) { is_enabled_ = value; }
 
-QString Result::GetAltTitle() const { return alt_title_; }
+void Result::SetTitle(const QString &value) {
+  title_ = value;
+  is_title_formattable_ = value.contains("{}");
+}
 
-QString Result::GetTitle() const { return title_; }
-
-QString Result::GetTitlePlaceholder() const { return title_placeholder_; }
-
-void Result::SetAltTitle(const QString &value) { alt_title_ = value; }
+void Result::SetTitlePlaceholder(const QString &value) {
+  title_placeholder_ = value;
+}
 
 void Result::SetAppendSpaceToCommand(bool value) {
   append_space_to_command_ = value;
 }
-
-void Result::SetCommand(const QString &value) { command_ = value; }
 
 void Result::SetDescription(const QString &value) { description_ = value; }
 
@@ -85,13 +94,4 @@ void Result::SetPixmapKey(const QString &icon, uintmax_t icon_size) {
     pixmap_key_ = QPixmapCache::insert(
       QIcon{icon}.pixmap(Config::search_result_icon_size_));
   }
-}
-
-void Result::SetTitle(const QString &value) {
-  title_ = value;
-  is_title_formattable_ = value.contains("{}");
-}
-
-void Result::SetTitlePlaceholder(const QString &value) {
-  title_placeholder_ = value;
 }
