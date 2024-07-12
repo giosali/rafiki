@@ -37,6 +37,8 @@ class Io {
 
   static void AddWebSearch(const std::shared_ptr<WebSearch>& web_search);
   static void DeleteWebSearch(const Id& id);
+  static void EditWebSearch(const std::shared_ptr<WebSearch>& web_search,
+                            const QString& command);
   template <typename T>
   static std::vector<std::shared_ptr<T>> FilterResults() {
     auto results = std::vector<std::shared_ptr<T>>{};
@@ -48,6 +50,7 @@ class Io {
 
     return results;
   };
+  static std::shared_ptr<Result> FindResult(const Id& id);
   static std::vector<std::shared_ptr<Result>> FindResults(const Input& input);
   static std::vector<std::shared_ptr<Result>> GetDefaultResults();
   static QString GetFilePath(Image f);
@@ -71,6 +74,7 @@ class Io {
   template <typename T>
   static void ParseJson(Json f);
   static void RemoveResult(const std::shared_ptr<Result>& result);
+  static void SaveYourWebSearches();
   static void SaveYourWebSearches(const QJsonDocument& document);
   static void UpdateDefaultResults();
 
