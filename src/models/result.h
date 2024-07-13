@@ -31,6 +31,7 @@ class Result : public Interactable {
   bool IsEnabled() const;
   void SetAltTitle(const QString& value);
   void SetCommand(const QString& value);
+  void SetIcon(const QString& value);
   void SetId(uint64_t author_id, uint64_t id);
   void SetIsEnabled(bool value);
   void SetTitle(const QString& value);
@@ -39,9 +40,7 @@ class Result : public Interactable {
  protected:
   void SetAppendSpaceToCommand(bool value);
   void SetDescription(const QString& value);
-  void SetIcon(const QString& value);
   void SetId(const QString& value);
-  void SetPixmapKey(const QString& icon, uintmax_t icon_size);
 
  private:
   QString alt_title_;

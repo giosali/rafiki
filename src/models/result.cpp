@@ -1,6 +1,7 @@
 #include "result.h"
 
 #include <QFile>
+#include <QFileInfo>
 #include <QIcon>
 
 #include "../core/config.h"
@@ -63,6 +64,27 @@ void Result::SetAltTitle(const QString &value) { alt_title_ = value; }
 
 void Result::SetCommand(const QString &value) { command_ = value; }
 
+void Result::SetIcon(const QString &value) {
+  // Removes current pixmap key if it's set.
+  if (pixmap_key_.isValid()) {
+    QPixmapCache::remove(pixmap_key_);
+  }
+
+  if (!QFile::exists(value)) {
+    icon_ = Io::GetFilePath(Io::Image::kQuestionMark);
+    return;
+  }
+
+  icon_ = value;
+
+  // Caches pixmap if too large; necessary for performance.
+  auto info = QFileInfo{value};
+  if (info.size() >= 1000000) {  // 1 MB
+    pixmap_key_ = QPixmapCache::insert(
+      QIcon{value}.pixmap(Config::search_result_icon_size_));
+  }
+}
+
 void Result::SetId(uint64_t author_id, uint64_t id) { id_ = Id{author_id, id}; }
 
 void Result::SetIsEnabled(bool value) { is_enabled_ = value; }
@@ -82,16 +104,4 @@ void Result::SetAppendSpaceToCommand(bool value) {
 
 void Result::SetDescription(const QString &value) { description_ = value; }
 
-void Result::SetIcon(const QString &value) {
-  icon_ =
-    QFile::exists(value) ? value : Io::GetFilePath(Io::Image::kQuestionMark);
-}
-
 void Result::SetId(const QString &value) { id_ = Id{value}; }
-
-void Result::SetPixmapKey(const QString &icon, uintmax_t icon_size) {
-  if (icon_size >= 1000000) {  // 1 MB
-    pixmap_key_ = QPixmapCache::insert(
-      QIcon{icon}.pixmap(Config::search_result_icon_size_));
-  }
-}
