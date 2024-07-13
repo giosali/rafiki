@@ -11,8 +11,7 @@ class Application : public Result {
 
  public:
   explicit Application(const QString& desktop_entry_path, const QString& name,
-                       const QString& icon, uintmax_t icon_size,
-                       const QString& exec);
+                       const QString& icon, const QString& exec);
 
  public slots:
   void Drag() override;

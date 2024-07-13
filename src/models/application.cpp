@@ -13,15 +13,13 @@
 #include "../core/crypto.h"
 
 Application::Application(const QString& desktop_entry_path, const QString& name,
-                         const QString& icon, uintmax_t icon_size,
-                         const QString& exec)
+                         const QString& icon, const QString& exec)
     : exec_{exec} {
   SetIcon(icon);
   SetId(Config::kApplicationAuthorId, Crypto::Djb2(desktop_entry_path));
   SetTitle(name);
   SetCommand(name);
   SetDescription(desktop_entry_path);
-  SetPixmapKey(icon, icon_size);
 }
 
 void Application::Drag() {};
