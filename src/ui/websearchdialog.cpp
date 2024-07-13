@@ -103,6 +103,7 @@ void WebSearchDialog::AcceptWebSearch() {
     web_search->SetUrl(url);
     web_search->SetTitle(title);
     web_search->SetTitlePlaceholder(title_placeholder);
+    web_search->SetIcon(icon_);
     web_search->SetAltUrl(alt_url);
     web_search->SetAltTitle(alt_title);
     Io::EditWebSearch(web_search, command);
