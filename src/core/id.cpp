@@ -15,6 +15,10 @@ Id::Id(const QString& tuple) {
 
 Id::Id(const QVariant& tuple) : Id{tuple.toString()} {}
 
+QString Id::Escape() const {
+  return QString{"%1_%2"}.arg(author_id_).arg(result_id_);
+}
+
 uint64_t Id::GetAuthorId() const { return author_id_; }
 
 uint64_t Id::GetResultId() const { return result_id_; }

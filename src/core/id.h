@@ -13,6 +13,7 @@ class Id {
   explicit Id(const QString& tuple);
   explicit Id(const QVariant& tuple);
 
+  QString Escape() const;
   uint64_t GetAuthorId() const;
   uint64_t GetResultId() const;
   bool IsNull() const;
