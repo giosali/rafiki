@@ -4,6 +4,7 @@
 #include <QFileDialog>
 #include <QGuiApplication>
 #include <QPushButton>
+#include <vector>
 
 #include "../core/io.h"
 #include "./ui_websearchdialog.h"
@@ -17,22 +18,23 @@ WebSearchDialog::WebSearchDialog(QWidget* parent)
   ui_->setupUi(this);
   ui_->interactiveIconLabel->setAlignment(Qt::AlignCenter);
   ui_->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
+  ToggleSaveButton(false);  // Disabled when adding a WebSearch.
 
   connect(ui_->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
   connect(ui_->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
   connect(this, &QDialog::accepted, this, &WebSearchDialog::AcceptWebSearch);
   connect(ui_->commandLineEdit, &QLineEdit::textEdited, this,
           &WebSearchDialog::CleanCommandField);
-  for (const auto& line_edit : MainLineEdits()) {
-    connect(line_edit, &QLineEdit::textEdited, this,
-            &WebSearchDialog::CheckMainFields);
-  }
-
-  for (const auto& line_edit : AltLineEdits()) {
-    connect(line_edit, &QLineEdit::textEdited, this,
-            &WebSearchDialog::CheckAltFields);
-  }
-
+  connect(ui_->urlLineEdit, &QLineEdit::textEdited, this,
+          &WebSearchDialog::CheckMainFields);
+  connect(ui_->titleLineEdit, &QLineEdit::textEdited, this,
+          &WebSearchDialog::CheckMainFields);
+  connect(ui_->commandLineEdit, &QLineEdit::textEdited, this,
+          &WebSearchDialog::CheckMainFields);
+  connect(ui_->altUrlLineEdit, &QLineEdit::textEdited, this,
+          &WebSearchDialog::CheckAltFields);
+  connect(ui_->altTitleLineEdit, &QLineEdit::textEdited, this,
+          &WebSearchDialog::CheckAltFields);
   connect(ui_->interactiveIconLabel, &InteractiveLabel::Clicked, this,
           &WebSearchDialog::OpenFile);
   connect(ui_->interactiveIconLabel, &InteractiveLabel::MouseEntered,
@@ -43,6 +45,8 @@ WebSearchDialog::WebSearchDialog(QWidget* parent)
 
 WebSearchDialog::WebSearchDialog(const Id& id, QWidget* parent)
     : WebSearchDialog{parent} {
+  ToggleSaveButton(true);  // Enabled when editing a WebSearch.
+
   auto web_search = std::dynamic_pointer_cast<WebSearch>(Io::FindResult(id));
   if (web_search == nullptr) {
     // Returns early if the Result isn't a WebSearch or wasn't found.
@@ -111,21 +115,21 @@ void WebSearchDialog::AcceptWebSearch() {
 }
 
 void WebSearchDialog::CheckAltFields(const QString& text) {
-  bool one_empty = false;
-  bool one_filled = false;
-  for (const auto& line_edit : AltLineEdits()) {
-    if (line_edit->text().isEmpty()) {
-      one_empty = true;
-    } else {
-      one_filled = true;
-    }
-  }
+  auto alt_url_empty = ui_->altUrlLineEdit->text().isEmpty();
+  auto alt_title_empty = ui_->altTitleLineEdit->text().isEmpty();
 
-  ToggleSaveButton(one_empty && one_filled ? false : true);
+  if ((alt_url_empty && !alt_title_empty) ||
+      (!alt_url_empty && alt_title_empty)) {
+    ToggleSaveButton(false);
+  } else {
+    ToggleSaveButton(true);
+  }
 }
 
 void WebSearchDialog::CheckMainFields(const QString& text) {
-  for (const auto& line_edit : MainLineEdits()) {
+  auto main_line_edits =
+    std::vector<QLineEdit*>{ui_->altUrlLineEdit, ui_->altTitleLineEdit};
+  for (const auto& line_edit : main_line_edits) {
     if (line_edit->text().isEmpty()) {
       ToggleSaveButton(false);
       return;
@@ -163,15 +167,6 @@ void WebSearchDialog::showEvent(QShowEvent* event) {
   if (close_on_show_) {
     close();
   }
-}
-
-std::vector<QLineEdit*> WebSearchDialog::AltLineEdits() const {
-  return std::vector<QLineEdit*>{ui_->altUrlLineEdit, ui_->altTitleLineEdit};
-}
-
-std::vector<QLineEdit*> WebSearchDialog::MainLineEdits() const {
-  return std::vector<QLineEdit*>{ui_->urlLineEdit, ui_->titleLineEdit,
-                                 ui_->commandLineEdit};
 }
 
 void WebSearchDialog::ToggleSaveButton(bool enable) const {

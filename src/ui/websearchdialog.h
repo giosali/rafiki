@@ -6,7 +6,6 @@
 #include <QShowEvent>
 #include <Qt>
 #include <memory>
-#include <vector>
 
 #include "../core/id.h"
 #include "../models/websearch.h"
@@ -27,12 +26,10 @@ class WebSearchDialog : public QDialog {
 
   ~WebSearchDialog();
 
-  QString Test() { return "hello"; }
-
  public slots:
   void AcceptWebSearch();
-  void CheckAltFields(const QString& text);
-  void CheckMainFields(const QString& text);
+  void CheckAltFields(const QString& text = {});
+  void CheckMainFields(const QString& text = {});
   void CleanCommandField(const QString& text);
   void OpenFile();
 
@@ -43,8 +40,6 @@ class WebSearchDialog : public QDialog {
   void showEvent(QShowEvent* event) override;
 
  private:
-  std::vector<QLineEdit*> AltLineEdits() const;
-  std::vector<QLineEdit*> MainLineEdits() const;
   void ToggleSaveButton(bool enable) const;
 
   bool close_on_show_;
