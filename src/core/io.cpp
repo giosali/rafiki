@@ -2,6 +2,7 @@
 
 #include <QCoreApplication>
 #include <QFile>
+#include <QFileInfo>
 #include <QIODevice>
 #include <QJsonArray>
 #include <QJsonObject>
@@ -10,6 +11,7 @@
 #include <QtSystemDetection>
 #include <algorithm>
 #include <cstdint>
+#include <system_error>
 
 #ifdef Q_OS_LINUX
 #include "../gnulinux/desktopentry.h"
@@ -23,12 +25,31 @@
 #include "config.h"
 #include "utils.h"
 
+void Io::AddIcon(const std::shared_ptr<Result>& result) {
+  auto from = std::filesystem::path{result->GetIcon().toStdString()};
+  auto to =
+    std::filesystem::path{
+      GetDirectoryPath(Directory::kYourIcons).toStdString()} /
+    (result->GetId().Escape().toStdString() + from.extension().string());
+
+  // Writes new icon file to disk in config.
+  auto ec = std::error_code{};
+  std::filesystem::create_directories(to.parent_path(), ec);
+  std::filesystem::copy(from, to,
+                        std::filesystem::copy_options::overwrite_existing, ec);
+
+  if (ec.value() == 0) {
+    result->SetIcon(QString::fromStdString(to));
+  }
+}
+
 void Io::AddWebSearch(const std::shared_ptr<WebSearch>& web_search) {
   auto user_settings = GetFile(Ini::kUser);
   auto current_id = user_settings.value("YourResults/CurrentID").toULongLong();
   web_search->SetId(Config::kUserAuthorId, ++current_id);
-  AddResult(web_search);
   user_settings.setValue("YourResults/CurrentID", current_id);
+  AddResult(web_search);
+  AddIcon(web_search);
 
   // Adds web search to the document's array.
   auto document = GetFile(Json::kYourWebSearches);
@@ -61,8 +82,9 @@ void Io::EditWebSearch(const std::shared_ptr<WebSearch>& web_search,
 
   // Result must be "removed" before changing the command.
   web_search->SetCommand(command);
-  AddResult(web_search);
 
+  AddResult(web_search);
+  AddIcon(web_search);
   SaveYourWebSearches();
 }
 
@@ -117,6 +139,15 @@ std::vector<std::shared_ptr<Result>> Io::FindResults(const Input& input) {
 
 std::vector<std::shared_ptr<Result>> Io::GetDefaultResults() {
   return default_results_;
+}
+
+QString Io::GetDirectoryPath(Directory directory) {
+  switch (directory) {
+    case Directory::kYourIcons:
+      return config_directory_ + "your_icons/";
+    default:
+      return {};
+  }
 }
 
 QString Io::GetFilePath(Image file) {
@@ -198,7 +229,7 @@ void Io::Initialize() {
   for (const auto& desktop_entry : desktop_entries) {
     auto application = std::make_shared<Application>(
       desktop_entry.GetPath(), desktop_entry.GetName(), desktop_entry.GetIcon(),
-      desktop_entry.GetIconSize(), desktop_entry.GetExec());
+      desktop_entry.GetExec());
     auto cmd = application->FormatCommand();
     autocompleter_.Insert(cmd);
     results_map_[cmd].push_back(application);

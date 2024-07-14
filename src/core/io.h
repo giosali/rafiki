@@ -21,6 +21,7 @@
 
 class Io {
  public:
+  enum class Directory { kYourIcons };
   enum class Ini { kDefault, kUser };
   enum class Image {
     kCalculator,
@@ -35,6 +36,7 @@ class Io {
 
   Io() = delete;
 
+  static void AddIcon(const std::shared_ptr<Result>& result);
   static void AddWebSearch(const std::shared_ptr<WebSearch>& web_search);
   static void DeleteWebSearch(const Id& id);
   static void EditWebSearch(const std::shared_ptr<WebSearch>& web_search,
@@ -53,6 +55,7 @@ class Io {
   static std::shared_ptr<Result> FindResult(const Id& id);
   static std::vector<std::shared_ptr<Result>> FindResults(const Input& input);
   static std::vector<std::shared_ptr<Result>> GetDefaultResults();
+  static QString GetDirectoryPath(Directory directory);
   static QString GetFilePath(Image f);
   static QString GetIcon(const std::filesystem::path& path);
   static void Initialize();
