@@ -23,18 +23,16 @@ WebSearchDialog::WebSearchDialog(QWidget* parent)
   connect(ui_->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
   connect(ui_->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
   connect(this, &QDialog::accepted, this, &WebSearchDialog::AcceptWebSearch);
-  connect(ui_->commandLineEdit, &QLineEdit::textEdited, this,
-          &WebSearchDialog::CleanCommandField);
-  connect(ui_->urlLineEdit, &QLineEdit::textEdited, this,
-          &WebSearchDialog::CheckMainFields);
-  connect(ui_->titleLineEdit, &QLineEdit::textEdited, this,
-          &WebSearchDialog::CheckMainFields);
-  connect(ui_->commandLineEdit, &QLineEdit::textEdited, this,
-          &WebSearchDialog::CheckMainFields);
-  connect(ui_->altUrlLineEdit, &QLineEdit::textEdited, this,
-          &WebSearchDialog::CheckAltFields);
-  connect(ui_->altTitleLineEdit, &QLineEdit::textEdited, this,
-          &WebSearchDialog::CheckAltFields);
+  connect(ui_->urlLineEdit, &QLineEdit::textChanged, this,
+          &WebSearchDialog::CheckFields);
+  connect(ui_->titleLineEdit, &QLineEdit::textChanged, this,
+          &WebSearchDialog::CheckFields);
+  connect(ui_->commandLineEdit, &QLineEdit::textChanged, this,
+          &WebSearchDialog::CheckFields);
+  connect(ui_->altUrlLineEdit, &QLineEdit::textChanged, this,
+          &WebSearchDialog::CheckFields);
+  connect(ui_->altTitleLineEdit, &QLineEdit::textChanged, this,
+          &WebSearchDialog::CheckFields);
   connect(ui_->interactiveIconLabel, &InteractiveLabel::Clicked, this,
           &WebSearchDialog::OpenFile);
   connect(ui_->interactiveIconLabel, &InteractiveLabel::MouseEntered,
@@ -114,35 +112,35 @@ void WebSearchDialog::AcceptWebSearch() {
   }
 }
 
-void WebSearchDialog::CheckAltFields(const QString& text) {
-  auto alt_url_empty = ui_->altUrlLineEdit->text().isEmpty();
-  auto alt_title_empty = ui_->altTitleLineEdit->text().isEmpty();
-
-  if ((alt_url_empty && !alt_title_empty) ||
-      (!alt_url_empty && alt_title_empty)) {
-    ToggleSaveButton(false);
-  } else {
-    ToggleSaveButton(true);
-  }
-}
-
-void WebSearchDialog::CheckMainFields(const QString& text) {
-  auto main_line_edits =
-    std::vector<QLineEdit*>{ui_->altUrlLineEdit, ui_->altTitleLineEdit};
-  for (const auto& line_edit : main_line_edits) {
-    if (line_edit->text().isEmpty()) {
-      ToggleSaveButton(false);
-      return;
-    }
+void WebSearchDialog::CheckFields(const QString& text) {
+  // Returns early if the command contains a space or is not lowercase, "cleans"
+  // the command, and then sets the command edit widget to the clean command. We
+  // return early because programmatically setting the text will trigger this
+  // slot function again.
+  auto command = ui_->commandLineEdit->text();
+  if (command.contains(' ') || !command.isLower()) {
+    auto clean_command = command.simplified().replace(" ", "").toLower();
+    ui_->commandLineEdit->setText(clean_command);
+    return;
   }
 
-  // Ensures commands don't contain spaces.
-  if (auto command = ui_->commandLineEdit->text(); command.contains(' ')) {
+  // Disables save button if any of the main fields are empty.
+  auto url = ui_->urlLineEdit->text();
+  auto title = ui_->titleLineEdit->text();
+  if (url.isEmpty() || title.isEmpty() || command.isEmpty()) {
     ToggleSaveButton(false);
     return;
   }
 
-  // This will only be reached if none of the line edits are empty.
+  // Disables save button if only one of the alt fields is filled.
+  auto alt_url_empty = ui_->altUrlLineEdit->text().isEmpty();
+  auto alt_title_empty = ui_->altTitleLineEdit->text().isEmpty();
+  if ((alt_url_empty && !alt_title_empty) ||
+      (!alt_url_empty && alt_title_empty)) {
+    ToggleSaveButton(false);
+    return;
+  }
+
   ToggleSaveButton(true);
 }
 

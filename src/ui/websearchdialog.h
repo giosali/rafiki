@@ -28,8 +28,7 @@ class WebSearchDialog : public QDialog {
 
  public slots:
   void AcceptWebSearch();
-  void CheckAltFields(const QString& text = {});
-  void CheckMainFields(const QString& text = {});
+  void CheckFields(const QString& text);
   void CleanCommandField(const QString& text);
   void OpenFile();
 
