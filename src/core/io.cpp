@@ -72,6 +72,12 @@ void Io::DeleteWebSearch(const Id& id) {
     return;
   }
 
+  // Deletes saved icon from user's disk.
+  auto icon = web_search->GetIcon();
+  if (QFileInfo{icon}.isNativePath()) {
+    QFile{icon}.remove();
+  }
+
   RemoveResult(web_search);
   SaveYourWebSearches();
 }
