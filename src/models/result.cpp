@@ -78,8 +78,7 @@ void Result::SetIcon(const QString &value) {
   icon_ = value;
 
   // Caches pixmap if too large; necessary for performance.
-  auto info = QFileInfo{value};
-  if (info.size() >= 1000000) {  // 1 MB
+  if (QFileInfo{value}.size() >= 1000000) {  // 1 MB
     pixmap_key_ = QPixmapCache::insert(
       QIcon{value}.pixmap(Config::search_result_icon_size_));
   }
