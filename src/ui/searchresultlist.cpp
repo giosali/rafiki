@@ -253,7 +253,7 @@ void SearchResultList::AddItem(const std::shared_ptr<Result>& result,
   auto interactable = result.get();
   connect(interactable, &Interactable::NewSearchBoxTextRequested, search_box_,
           &SearchBox::SetText);
-  connect(interactable, &Interactable::Hidden, main_window_, &QWidget::hide);
+  connect(interactable, &Interactable::Hidden, main_window_, &MainWindow::Hide);
 
   auto item = new SearchResultItem(result->GetId(), this);
 
