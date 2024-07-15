@@ -37,6 +37,7 @@ class MainWindow : public QMainWindow {
 
  private:
   void CreateTrayIcon();
+  void ToggleVisibility();
 
   std::unique_ptr<SettingsWindow> settings_window_;
   std::unique_ptr<Ui::MainWindow> ui_;

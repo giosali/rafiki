@@ -21,23 +21,13 @@ MainWindow::MainWindow(QWidget* parent)
       settings_window_{std::make_unique<SettingsWindow>(this)},
       ui_{std::make_unique<Ui::MainWindow>()} {
   ui_->setupUi(this);
-  setWindowFlag(Qt::WindowStaysOnTopHint);
-
-  // TODO: uncomment this when a proper exit method has been developed.
-  // setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
+  setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
 
   // Prevents child widgets from changing the width of the window.
   setFixedWidth(width());
 
   // Sets opening window size to just the SearchBox.
   resize(width(), 0);
-
-  // Horizontally centers and properly vertically aligns the window. On Linux,
-  // this will only work on X11 or XWayland.
-  auto screen_geometry = screen()->geometry();
-  auto p = screen_geometry.center() - frameGeometry().center();
-  p.setY(static_cast<int>(screen_geometry.height() * 0.175));
-  move(p);
 
   auto box = new SearchBox(this);
   auto list = new SearchResultList(box, this);
@@ -72,7 +62,7 @@ void MainWindow::ProcessActivationReason(
   QSystemTrayIcon::ActivationReason reason) {
   switch (reason) {
     case QSystemTrayIcon::ActivationReason::MiddleClick:
-      setVisible(!isVisible());
+      ToggleVisibility();
       break;
   }
 }
@@ -91,18 +81,12 @@ void MainWindow::ProcessCommandLineArguments(const QString& args) {
   QCommandLineOption quitOption("quit", "Quits the application.");
   parser.addOption(quitOption);
 
-  auto arg_list = args.split(" ");
-  if (!parser.parse(arg_list)) {
+  if (!parser.parse(args.split(" "))) {
     return;
   }
 
   if (parser.isSet(toggleOption)) {
-    if (isVisible()) {
-      hide();
-    } else {
-      show();
-      activateWindow();
-    }
+    ToggleVisibility();
   }
 
   if (parser.isSet(quitOption)) {
@@ -113,11 +97,27 @@ void MainWindow::ProcessCommandLineArguments(const QString& args) {
 void MainWindow::SetHeight(int height) {
   // The minimum height of the window being already set prevents the window from
   // shrinking down all the way to 0, which is a good thing.
-  resize(width(), height == 0 ? 0 : minimumHeight() + height);
+  resize(width(), minimumHeight() + height);
 }
 
 bool MainWindow::event(QEvent* event) {
   switch (event->type()) {
+    case QEvent::WindowActivate: {
+      // Repositions the window whenever it becomes activated.
+      // I opted for `screen()->size()` rather than `screen()->geometry()`
+      // because only the `width` and `height` are relevant. The `x` and `y`
+      // properties don't matter and seem to always be `0,0`; I'm not sure if
+      // they're always `0,0` though.
+      // On Linux, this only works on X11 or XWayland.
+      auto screen_size = screen()->size() / 2;  // "Centers" the size.
+      auto window_size = frameSize() / 2;       // "Centers" the size.
+      auto screen_point = QPoint{screen_size.width(), screen_size.height()};
+      auto window_point = QPoint{window_size.width(), window_size.height()};
+      auto point = screen_point - window_point;
+      point.setY(static_cast<int>(screen_size.height() * 0.35));
+      move(point);
+      break;
+    }
     case QEvent::WindowDeactivate:  // Window lost focus.
       if (!isHidden()) {
         Hide();
@@ -151,4 +151,14 @@ void MainWindow::CreateTrayIcon() {
   // TODO: change icon.
   tray_icon->setIcon(QIcon{Io::GetFilePath(Io::Image::kUrl)});
   tray_icon->show();
+}
+
+void MainWindow::ToggleVisibility() {
+  if (isHidden()) {
+    show();
+    activateWindow();
+    raise();
+  } else {
+    Hide();
+  }
 }
