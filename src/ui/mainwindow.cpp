@@ -21,13 +21,9 @@ MainWindow::MainWindow(QWidget* parent)
       settings_window_{std::make_unique<SettingsWindow>(this)},
       ui_{std::make_unique<Ui::MainWindow>()} {
   ui_->setupUi(this);
-  setWindowFlags(Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint);
 
   // Prevents child widgets from changing the width of the window.
   setFixedWidth(width());
-
-  // Sets opening window size to just the SearchBox.
-  resize(width(), 0);
 
   auto box = new SearchBox(this);
   auto list = new SearchResultList(box, this);
