@@ -22,9 +22,6 @@
       </property>
       <item>
        <widget class="QTabWidget" name="mainTabWidget">
-        <property name="currentIndex">
-         <number>1</number>
-        </property>
         <widget class="QWidget" name="generalTab">
          <attribute name="title">
           <string>General</string>
@@ -37,9 +34,6 @@
          <layout class="QVBoxLayout" name="mainTabWidgetVerticalLayout">
           <item>
            <widget class="QTabWidget" name="featuresSubTabWidget">
-            <property name="currentIndex">
-             <number>1</number>
-            </property>
             <widget class="QWidget" name="webSearchesTab">
              <attribute name="title">
               <string>Web Searches</string>
