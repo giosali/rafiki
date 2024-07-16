@@ -13,10 +13,10 @@
   <property name="windowTitle">
    <string>Settings - Rafiki</string>
   </property>
-  <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout">
+  <widget class="QWidget">
+   <layout class="QGridLayout">
     <item row="0" column="0">
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout">
       <property name="spacing">
        <number>0</number>
       </property>
@@ -31,14 +31,14 @@
          <attribute name="title">
           <string>Features</string>
          </attribute>
-         <layout class="QVBoxLayout" name="mainTabWidgetVerticalLayout">
+         <layout class="QVBoxLayout">
           <item>
            <widget class="QTabWidget" name="featuresSubTabWidget">
             <widget class="QWidget" name="webSearchesTab">
              <attribute name="title">
               <string>Web Searches</string>
              </attribute>
-             <layout class="QHBoxLayout" name="webSearchesTabHorizontalLayout">
+             <layout class="QHBoxLayout">
               <item>
                <widget class="QTableWidget" name="webSearchesTableWidget">
                 <property name="editTriggers">
@@ -64,7 +64,7 @@
              <attribute name="title">
               <string>Your Web Searches</string>
              </attribute>
-             <layout class="QVBoxLayout" name="yourWebSearchesTabVerticalLayout">
+             <layout class="QVBoxLayout">
               <item>
                <widget class="QTableWidget" name="yourWebSearchesTableWidget">
                 <property name="editTriggers">
@@ -85,9 +85,9 @@
                </widget>
               </item>
               <item>
-               <layout class="QHBoxLayout" name="yourWebSearchesHorizontalLayout">
+               <layout class="QHBoxLayout">
                 <item>
-                 <spacer name="horizontalSpacer">
+                 <spacer>
                   <property name="orientation">
                    <enum>Qt::Horizontal</enum>
                   </property>
