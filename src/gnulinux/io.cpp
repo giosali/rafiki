@@ -13,6 +13,12 @@
 #include "../core/utils.h"
 
 namespace gnulinux {
+/// @brief Fetches icon theme on Linux (for GNOME) and adds MIME types.
+/// For more info:
+/// https://stackoverflow.com/a/44629154
+/// https://github.com/cerebroapp/cerebro/issues/17
+/// @return An unordered map of MIME icons accessible through their file
+/// extension.
 std::unordered_map<std::string, QString> Io::GetMimeTypeIcons() {
   auto mimetype_extensions = std::unordered_map<std::string, QString>{};
 
