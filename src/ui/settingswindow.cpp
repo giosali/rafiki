@@ -39,6 +39,10 @@ SettingsWindow::SettingsWindow(QWidget* parent)
   ui_->yourWebSearchesTableWidget->horizontalHeader()->setSectionResizeMode(
     2, QHeaderView::Stretch);
 
+  // TODO: &QCheckBox::stateChanged is deprecated and superseded by
+  // &QCheckBox::checkStateChanged in 6.7.
+  connect(ui_->startupCheckBox, &QCheckBox::stateChanged, this,
+          &SettingsWindow::ToggleStartup);
   connect(ui_->yourWebSearchesTableWidget, &QTableWidget::itemSelectionChanged,
           this, &SettingsWindow::SetEnabledButtons);
   connect(ui_->editWebSearchButton, &QAbstractButton::clicked, this,
@@ -75,6 +79,14 @@ void SettingsWindow::EditWebSearch(bool checked) const {
       break;
     }
   }
+}
+
+void SettingsWindow::ToggleResult(int state, const Id& id) const {
+  Io::ToggleResult(id, state == Qt::Checked);
+}
+
+void SettingsWindow::ToggleStartup(int state) const {
+  Io::ToggleDesktopEntry(state == Qt::Checked);
 }
 
 void SettingsWindow::SetEnabledButtons() const {
@@ -151,7 +163,7 @@ void SettingsWindow::LoadWebSearches() const {
     // TODO: &QCheckBox::stateChanged is deprecated and superseded by
     // &QCheckBox::checkStateChanged in 6.7.
     connect(check_box, &QCheckBox::stateChanged,
-            [this, id](int state) { ProcessStateChange(state, id); });
+            [this, id](int state) { ToggleResult(state, id); });
 
     check_box_layout->addWidget(check_box);
     check_box_layout->setAlignment(Qt::AlignCenter);
@@ -168,17 +180,6 @@ void SettingsWindow::OpenWebSearchDialog(const Id& id) const {
     case QDialog::Accepted:
       ClearWebSearches();
       LoadWebSearches();
-      break;
-  }
-}
-
-void SettingsWindow::ProcessStateChange(int state, const Id& id) const {
-  switch (state) {
-    case Qt::Unchecked:
-      Io::ToggleResult(id, false);
-      break;
-    case Qt::Checked:
-      Io::ToggleResult(id, true);
       break;
   }
 }

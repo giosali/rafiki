@@ -28,6 +28,8 @@ class SettingsWindow : public QMainWindow {
   void DeleteWebSearch(bool checked) const;
   void EditWebSearch(bool checked) const;
   void SetEnabledButtons() const;
+  void ToggleResult(int state, const Id& id) const;
+  void ToggleStartup(int state) const;
 
  protected:
   void closeEvent(QCloseEvent* event) override;
@@ -37,7 +39,6 @@ class SettingsWindow : public QMainWindow {
   void ClearWebSearches() const;
   void LoadWebSearches() const;
   void OpenWebSearchDialog(const Id& id) const;
-  void ProcessStateChange(int state, const Id& id) const;
 
  private:
   std::unique_ptr<Ui::SettingsWindow> ui_;
