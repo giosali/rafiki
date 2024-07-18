@@ -29,6 +29,7 @@ class Io {
     kFileSystemEntry,
     kFolder,
     kQuestionMark,
+    kRafiki,
     kTrash,
     kUrl
   };

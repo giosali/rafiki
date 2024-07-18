@@ -172,6 +172,8 @@ QString Io::GetFilePath(Image file) {
       return dir + "folder.svg";
     case Image::kQuestionMark:
       return dir + "question-mark.png";
+    case Image::kRafiki:
+      return dir + "rafiki.png";
     case Image::kTrash:
       return dir + "trash.svg";
     case Image::kUrl:
