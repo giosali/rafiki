@@ -149,6 +149,9 @@ std::vector<std::shared_ptr<Result>> Io::GetDefaultResults() {
 
 QString Io::GetDirectoryPath(Directory directory) {
   switch (directory) {
+    case Directory::kAutostart:
+      return QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) +
+             "/" + "autostart/";
     case Directory::kYourIcons:
       return config_directory_ + "your_icons/";
     default:
@@ -296,6 +299,17 @@ void Io::ToggleResult(const Id& id, bool enable) {
   user_settings.setValue("DisabledIDs", disabled_ids.join(','));
 }
 
+void Io::ToggleDesktopEntry(bool create) {
+  auto autostart_directory = GetDirectoryPath(Directory::kAutostart);
+  if (create) {
+    auto file = QFile{GetFilePath(Ini::kRafikiDesktopEntry)};
+    file.copy(autostart_directory + "rafiki.desktop");
+  } else {
+    auto file = QFile{autostart_directory + "rafiki.desktop"};
+    file.remove();
+  }
+}
+
 const QString Io::kDataDirectory{"://data/"};
 
 void Io::AddProcessedResult(const std::shared_ptr<ProcessedResult>& result) {
@@ -349,6 +363,8 @@ QString Io::GetFilePath(Ini f) {
   switch (f) {
     case Ini::kDefault:
       return kDataDirectory + "settings.ini";
+    case Ini::kRafikiDesktopEntry:
+      return kDataDirectory + "rafiki.desktop";
     case Ini::kUser:
       return config_directory_ + "settings.ini";
     default:

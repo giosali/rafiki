@@ -21,8 +21,8 @@
 
 class Io {
  public:
-  enum class Directory { kYourIcons };
-  enum class Ini { kDefault, kUser };
+  enum class Directory { kAutostart, kYourIcons };
+  enum class Ini { kDefault, kRafikiDesktopEntry, kUser };
   enum class Image {
     kCalculator,
     kFile,
@@ -60,6 +60,7 @@ class Io {
   static QString GetIcon(const std::filesystem::path& path);
   static void Initialize();
   static void ToggleResult(const Id& id, bool enable);
+  static void ToggleDesktopEntry(bool create);
 
  private:
   static const QString kDataDirectory;
