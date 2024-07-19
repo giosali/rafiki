@@ -9,6 +9,13 @@ IniFile::IniFile(const std::string& path) : path_{path} { Parse(); }
 void IniFile::BeginSection(const QString& section) { section_ = section; }
 
 bool IniFile::Contains(const QString& key) const {
+  // Checks if `key` is composed of: <section>/<actual-key>
+  if (section_.isEmpty()) {
+    if (auto it = properties_.find(key); it != properties_.end()) {
+      return true;
+    }
+  }
+
   auto section_name = SectionName();
   auto it = properties_.find(Key(section_name, key));
   return it != properties_.end();
@@ -35,6 +42,13 @@ QStringList IniFile::Keys() const {
 }
 
 QString IniFile::GetValue(const QString& key, const QString& fallback) const {
+  // Checks if `key` is composed of: <section>/<actual-key>
+  if (section_.isEmpty()) {
+    if (auto it = properties_.find(key); it != properties_.end()) {
+      return it->second;
+    }
+  }
+
   auto it = properties_.find(Key(SectionName(), key));
   return it == properties_.end() ? fallback : it->second;
 }
