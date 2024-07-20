@@ -7,7 +7,7 @@
 
 #include "../core/config.h"
 #include "../core/crypto.h"
-#include "../core/io.h"
+#include "../core/paths.h"
 
 FileSystemEntry::FileSystemEntry()
     : finder_{QStandardPaths::writableLocation(QStandardPaths::HomeLocation)
@@ -30,7 +30,7 @@ FileSystemEntry::FileSystemEntry()
                  .toStdString()}},
       is_entry_{false} {
   SetDescription("Search for files on your PC and open");
-  SetIcon(Io::GetFilePath(Io::Image::kFileSystemEntry));
+  SetIcon(Paths::Path(Paths::Image::kFileSystemEntry));
   SetId(Config::kApplicationAuthorId, 17);
   SetTitle("Open file");
 }
@@ -38,7 +38,7 @@ FileSystemEntry::FileSystemEntry()
 FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
     : is_entry_{true} {
   SetDescription(QString::fromUtf8(path.string()));
-  SetIcon(Io::GetIcon(path));
+  SetIcon(Paths::Icon(path));
   SetId(Config::kApplicationAuthorId, Crypto::Djb2(path));
   SetTitle(QString::fromUtf8(path.filename().string()));
 }

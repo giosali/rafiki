@@ -1,14 +1,15 @@
 #include "url.h"
 
 #include <QDesktopServices>
+#include <QUrl>
 
 #include "../core/config.h"
-#include "../core/io.h"
+#include "../core/paths.h"
 #include "../core/urlparser.h"
 
 Url::Url() {
   SetDescription("Open URL");
-  SetIcon(Io::GetFilePath(Io::Image::kUrl));
+  SetIcon(Paths::Path(Paths::Image::kUrl));
   SetId(Config::kApplicationAuthorId, 19);
 }
 

@@ -7,12 +7,13 @@
 #include <vector>
 
 #include "../core/io.h"
+#include "../core/paths.h"
 #include "./ui_websearchdialog.h"
 
 WebSearchDialog::WebSearchDialog(QWidget* parent)
     : QDialog{parent},
       close_on_show_{false},
-      icon_{Io::GetFilePath(Io::Image::kUrl)},
+      icon_{Paths::Path(Paths::Image::kUrl)},
       id_{},
       ui_{std::make_unique<Ui::WebSearchDialog>()} {
   ui_->setupUi(this);

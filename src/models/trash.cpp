@@ -7,7 +7,7 @@
 #include <vector>
 
 #include "../core/config.h"
-#include "../core/io.h"
+#include "../core/paths.h"
 
 Trash::Trash()
     : path_{std::filesystem::path{
@@ -15,7 +15,7 @@ Trash::Trash()
                 .toStdString()} /
             ".local/share/Trash"} {
   SetCommand("empty trash");
-  SetIcon(Io::GetFilePath(Io::Image::kTrash));
+  SetIcon(Paths::Path(Paths::Image::kTrash));
   SetId(Config::kApplicationAuthorId, 18);
   SetTitle("Empty trash");
 }

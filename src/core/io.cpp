@@ -7,7 +7,6 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonValue>
-#include <QStandardPaths>
 #include <QtSystemDetection>
 #include <algorithm>
 #include <cstdint>
@@ -23,13 +22,14 @@
 #include "../models/trash.h"
 #include "../models/url.h"
 #include "config.h"
+#include "paths.h"
 #include "utils.h"
 
 void Io::AddIcon(const std::shared_ptr<Result>& result) {
   auto from = std::filesystem::path{result->GetIcon().toStdString()};
   auto to =
     std::filesystem::path{
-      GetDirectoryPath(Directory::kYourIcons).toStdString()} /
+      Paths::Path(Paths::Directory::kYourIcons).toStdString()} /
     (result->GetId().Escape().toStdString() + from.extension().string());
 
   // Writes new icon file to disk in config.
@@ -44,7 +44,7 @@ void Io::AddIcon(const std::shared_ptr<Result>& result) {
 }
 
 void Io::AddWebSearch(const std::shared_ptr<WebSearch>& web_search) {
-  auto user_settings = GetFile(Ini::kUser);
+  auto user_settings = GetFile(Paths::Ini::kUser);
   auto current_id = user_settings.value("YourResults/CurrentID").toULongLong();
   web_search->SetId(Config::kUserAuthorId, ++current_id);
   user_settings.setValue("YourResults/CurrentID", current_id);
@@ -52,7 +52,7 @@ void Io::AddWebSearch(const std::shared_ptr<WebSearch>& web_search) {
   AddIcon(web_search);
 
   // Adds web search to the document's array.
-  auto document = GetFile(Json::kYourWebSearches);
+  auto document = GetFile(Paths::Json::kYourWebSearches);
   auto array = document.array();
   array.append(web_search->ToJsonObject());
   document.setArray(array);
@@ -147,68 +147,10 @@ std::vector<std::shared_ptr<Result>> Io::GetDefaultResults() {
   return default_results_;
 }
 
-QString Io::GetDirectoryPath(Directory directory) {
-  switch (directory) {
-    case Directory::kAutostart:
-      return QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) +
-             "/" + "autostart/";
-    case Directory::kYourIcons:
-      return config_directory_ + "your_icons/";
-    default:
-      return {};
-  }
-}
-
-QString Io::GetFilePath(Image file) {
-  auto dir = QString{"://images/"};
-  switch (file) {
-    case Image::kCalculator:
-      return dir + "calculator.png";
-    case Image::kFile:
-      return dir + "file.svg";
-    case Image::kFileSystemEntry:
-      return dir + "filesystementry.svg";
-    case Image::kFolder:
-      return dir + "folder.svg";
-    case Image::kQuestionMark:
-      return dir + "question-mark.png";
-    case Image::kRafiki:
-      return dir + "rafiki.png";
-    case Image::kTrash:
-      return dir + "trash.svg";
-    case Image::kUrl:
-      return dir + "url.svg";
-    default:
-      return QString{};
-  }
-}
-
-QString Io::GetIcon(const std::filesystem::path& path) {
-  auto extension = path.extension().string();
-
-  // Exits with placeholder image if path doesn't contain a file extension and
-  // isn't a directory.
-  if (extension.empty() && !std::filesystem::is_directory(path)) {
-    return GetFilePath(Image::kFile);
-  }
-
-  // Returns a generic resource image if there was no match.
-  auto search = mimetype_icons_.find(extension);
-  return search == mimetype_icons_.end()
-           ? GetFilePath(std::filesystem::is_directory(path) ? Image::kFolder
-                                                             : Image::kFile)
-           : search->second;
-}
-
 void Io::Initialize() {
-  config_directory_ =
-    QStandardPaths::writableLocation(QStandardPaths::ConfigLocation) + '/' +
-    QCoreApplication::organizationName() + '/' +
-    QCoreApplication::applicationName() + '/';
-
   // Sets up default settings.
-  auto default_settings = GetFile(Ini::kDefault);
-  auto user_settings = GetFile(Ini::kUser);
+  auto default_settings = GetFile(Paths::Ini::kDefault);
+  auto user_settings = GetFile(Paths::Ini::kUser);
 
   // Adds missing/new settings from default settings to user settings (written
   // to disk).
@@ -245,17 +187,11 @@ void Io::Initialize() {
     autocompleter_.Insert(cmd);
     results_map_[cmd].push_back(application);
   }
-
-  // Fetches icon theme on Linux (for GNOME) and adds MIME types.
-  // For more info:
-  // https://stackoverflow.com/a/44629154
-  // https://github.com/cerebroapp/cerebro/issues/17
-  mimetype_icons_ = gnulinux::Io::GetMimeTypeIcons();
 #endif
 
   // Sets up search results based on data files.
-  ParseJson<WebSearch>(Json::kWebSearches);
-  ParseJson<WebSearch>(Json::kYourWebSearches);
+  ParseJson<WebSearch>(Paths::Json::kWebSearches);
+  ParseJson<WebSearch>(Paths::Json::kYourWebSearches);
 
   // Sets up built-in search results not based on data files.
   AddResult(std::make_shared<Trash>());
@@ -276,7 +212,7 @@ void Io::ToggleResult(const Id& id, bool enable) {
   auto result = it->second;
   result->SetIsEnabled(enable);
 
-  auto user_settings = GetFile(Ini::kUser);
+  auto user_settings = GetFile(Paths::Ini::kUser);
   user_settings.beginGroup("Results");
   auto id_string = id.ToString();
   auto disabled_ids = user_settings.value("DisabledIDs", "")
@@ -302,17 +238,15 @@ void Io::ToggleResult(const Id& id, bool enable) {
 }
 
 void Io::ToggleDesktopEntry(bool create) {
-  auto autostart_directory = GetDirectoryPath(Directory::kAutostart);
+  auto autostart_directory = Paths::Path(Paths::Directory::kAutostart);
   if (create) {
-    auto file = QFile{GetFilePath(Ini::kRafikiDesktopEntry)};
+    auto file = QFile{Paths::Path(Paths::Ini::kRafikiDesktopEntry)};
     file.copy(autostart_directory + "rafiki.desktop");
   } else {
     auto file = QFile{autostart_directory + "rafiki.desktop"};
     file.remove();
   }
 }
-
-const QString Io::kDataDirectory{"://data/"};
 
 void Io::AddProcessedResult(const std::shared_ptr<ProcessedResult>& result) {
   AddResultHelper(result);
@@ -345,13 +279,13 @@ void Io::AddResultHelper(const std::shared_ptr<Result>& result) {
   }
 }
 
-QSettings Io::GetFile(Ini f) {
-  auto path = GetFilePath(f);
+QSettings Io::GetFile(Paths::Ini f) {
+  auto path = Paths::Path(f);
   return path.isEmpty() ? QSettings{} : QSettings{path, QSettings::IniFormat};
 }
 
-QJsonDocument Io::GetFile(Json f) {
-  auto file = QFile{GetFilePath(f)};
+QJsonDocument Io::GetFile(Paths::Json f) {
+  auto file = QFile{Paths::Path(f)};
   if (!file.exists()) {
     return QJsonDocument{};
   }
@@ -361,32 +295,8 @@ QJsonDocument Io::GetFile(Json f) {
   return document;
 }
 
-QString Io::GetFilePath(Ini f) {
-  switch (f) {
-    case Ini::kDefault:
-      return kDataDirectory + "settings.ini";
-    case Ini::kRafikiDesktopEntry:
-      return kDataDirectory + "rafiki.desktop";
-    case Ini::kUser:
-      return config_directory_ + "settings.ini";
-    default:
-      return QString{};
-  }
-}
-
-QString Io::GetFilePath(Json f) {
-  switch (f) {
-    case Json::kWebSearches:
-      return kDataDirectory + "web-searches.json";
-    case Json::kYourWebSearches:
-      return config_directory_ + "your-web-searches.json";
-    default:
-      return QString{};
-  }
-}
-
 template <typename T>
-void Io::ParseJson(Json f) {
+void Io::ParseJson(Paths::Json f) {
   auto document = GetFile(f);
   if (document.isObject()) {
     AddResult(std::make_shared<T>(document.object()));
@@ -449,7 +359,7 @@ void Io::SaveYourWebSearches() {
 
   // Writes the remaining web searches to disk.
   // Adds web searches to the document's array.
-  auto document = GetFile(Json::kYourWebSearches);
+  auto document = GetFile(Paths::Json::kYourWebSearches);
   auto array = QJsonArray{};
   for (const auto& web_search : custom_web_searches) {
     array.append(web_search->ToJsonObject());
@@ -461,14 +371,14 @@ void Io::SaveYourWebSearches() {
 
 void Io::SaveYourWebSearches(const QJsonDocument& document) {
   // Saves web search to disk on user's machine.
-  auto file = QFile{GetFilePath(Json::kYourWebSearches)};
+  auto file = QFile{Paths::Path(Paths::Json::kYourWebSearches)};
   file.open(QFile::WriteOnly);
   file.write(document.toJson(QJsonDocument::Compact));
 }
 
 void Io::UpdateDefaultResults() {
   default_results_.clear();
-  auto user_settings = GetFile(Ini::kUser);
+  auto user_settings = GetFile(Paths::Ini::kUser);
 
   // Takes the IDs of the default search results and stores them in a set.
   user_settings.beginGroup("DefaultSearchResults");
@@ -495,13 +405,9 @@ void Io::UpdateDefaultResults() {
 
 Autocompleter Io::autocompleter_{};
 
-QString Io::config_directory_{};
-
 std::vector<std::shared_ptr<Result>> Io::default_results_{};
 
 std::unordered_set<Id> Io::disabled_ids_{};
-
-std::unordered_map<std::string, QString> Io::mimetype_icons_{};
 
 std::vector<std::shared_ptr<ProcessedResultBuilder>>
   Io::processed_result_builders_{};

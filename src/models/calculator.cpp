@@ -6,12 +6,12 @@
 #include <Qt>
 
 #include "../core/config.h"
-#include "../core/io.h"
+#include "../core/paths.h"
 #include "../core/shuntingyardalgorithm.h"
 
 Calculator::Calculator() {
   SetDescription(kDescription);
-  SetIcon(Io::GetFilePath(Io::Image::kCalculator));
+  SetIcon(Paths::Path(Paths::Image::kCalculator));
   SetId(Config::kApplicationAuthorId, 16);
   SetTitlePlaceholder("...");
 }

@@ -5,7 +5,7 @@
 #include <QIcon>
 
 #include "../core/config.h"
-#include "../core/io.h"
+#include "../core/paths.h"
 #include "../core/utils.h"
 
 Result::Result()
@@ -71,7 +71,7 @@ void Result::SetIcon(const QString &value) {
   }
 
   if (!QFile::exists(value)) {
-    icon_ = Io::GetFilePath(Io::Image::kQuestionMark);
+    icon_ = Paths::Path(Paths::Image::kQuestionMark);
     return;
   }
 

@@ -6,7 +6,6 @@
 #include <QString>
 #include <filesystem>
 #include <memory>
-#include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
@@ -18,23 +17,10 @@
 #include "autocompleter.h"
 #include "id.h"
 #include "input.h"
+#include "paths.h"
 
 class Io {
  public:
-  enum class Directory { kAutostart, kYourIcons };
-  enum class Ini { kDefault, kRafikiDesktopEntry, kUser };
-  enum class Image {
-    kCalculator,
-    kFile,
-    kFileSystemEntry,
-    kFolder,
-    kQuestionMark,
-    kRafiki,
-    kTrash,
-    kUrl
-  };
-  enum class Json { kWebSearches, kYourWebSearches };
-
   Io() = delete;
 
   static void AddIcon(const std::shared_ptr<Result>& result);
@@ -56,38 +42,29 @@ class Io {
   static std::shared_ptr<Result> FindResult(const Id& id);
   static std::vector<std::shared_ptr<Result>> FindResults(const Input& input);
   static std::vector<std::shared_ptr<Result>> GetDefaultResults();
-  static QString GetDirectoryPath(Directory directory);
-  static QString GetFilePath(Image f);
-  static QString GetIcon(const std::filesystem::path& path);
   static void Initialize();
   static void ToggleResult(const Id& id, bool enable);
   static void ToggleDesktopEntry(bool create);
 
  private:
-  static const QString kDataDirectory;
-
   static void AddProcessedResult(
     const std::shared_ptr<ProcessedResult>& result);
   static void AddProcessedResultBuilder(
     const std::shared_ptr<ProcessedResultBuilder>& result);
   static void AddResult(const std::shared_ptr<Result>& result);
   static void AddResultHelper(const std::shared_ptr<Result>& result);
-  static QSettings GetFile(Ini f);
-  static QJsonDocument GetFile(Json f);
-  static QString GetFilePath(Ini f);
-  static QString GetFilePath(Json f);
+  static QSettings GetFile(Paths::Ini f);
+  static QJsonDocument GetFile(Paths::Json f);
   template <typename T>
-  static void ParseJson(Json f);
+  static void ParseJson(Paths::Json f);
   static void RemoveResult(const std::shared_ptr<Result>& result);
   static void SaveYourWebSearches();
   static void SaveYourWebSearches(const QJsonDocument& document);
   static void UpdateDefaultResults();
 
   static Autocompleter autocompleter_;
-  static QString config_directory_;
   static std::vector<std::shared_ptr<Result>> default_results_;
   static std::unordered_set<Id> disabled_ids_;
-  static std::unordered_map<std::string, QString> mimetype_icons_;
   static std::vector<std::shared_ptr<ProcessedResultBuilder>>
     processed_result_builders_;
   static std::vector<std::shared_ptr<ProcessedResult>> processed_results_;
