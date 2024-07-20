@@ -37,6 +37,8 @@ set(PROJECT_SOURCES
         src/core/input.h
         src/core/io.cpp
         src/core/io.h
+        src/core/paths.cpp
+        src/core/paths.h
         src/core/server.cpp
         src/core/server.h
         src/core/shuntingyardalgorithm.cpp
