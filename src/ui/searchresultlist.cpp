@@ -12,7 +12,7 @@
 #include <cstdlib>
 
 #include "../core/config.h"
-#include "../core/io.h"
+#include "../core/crud.h"
 #include "searchresultitem.h"
 
 SearchResultList::SearchResultList(SearchBox* search_box, MainWindow* parent)
@@ -286,9 +286,9 @@ void Worker::ProcessInput(const Input& input) {
   // --> Reselect the previously selected item.
   static bool last_results_were_defaults = false;
 
-  auto results = Io::FindResults(input);
+  auto results = Crud::ReadResults(input);
   if (results.empty()) {
-    emit ResultsReadied(Io::GetDefaultResults(), input, input.ToString(),
+    emit ResultsReadied(Crud::ReadDefaultResults(), input, input.ToString(),
                         !last_results_were_defaults);
     last_results_were_defaults = true;
   } else {

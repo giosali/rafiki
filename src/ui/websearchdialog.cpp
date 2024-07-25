@@ -6,7 +6,7 @@
 #include <QPushButton>
 #include <vector>
 
-#include "../core/io.h"
+#include "../core/crud.h"
 #include "../core/paths.h"
 #include "./ui_websearchdialog.h"
 
@@ -46,7 +46,7 @@ WebSearchDialog::WebSearchDialog(const Id& id, QWidget* parent)
     : WebSearchDialog{parent} {
   ToggleSaveButton(true);  // Enabled when editing a WebSearch.
 
-  auto web_search = std::dynamic_pointer_cast<WebSearch>(Io::FindResult(id));
+  auto web_search = std::dynamic_pointer_cast<WebSearch>(Crud::ReadResult(id));
   if (web_search == nullptr) {
     // Returns early if the Result isn't a WebSearch or wasn't found.
     close_on_show_ = true;
@@ -92,12 +92,13 @@ void WebSearchDialog::AcceptWebSearch() {
   if (id_.IsNull()) {
     // Means a WebSearch object is being created.
 
-    Io::AddWebSearch(std::make_shared<WebSearch>(
+    Crud::CreateWebSearch(std::make_shared<WebSearch>(
       url, title, title_placeholder, command, icon_, alt_url, alt_title));
   } else {
     // Means a WebSearch object is being edited.
 
-    auto web_search = std::dynamic_pointer_cast<WebSearch>(Io::FindResult(id_));
+    auto web_search =
+      std::dynamic_pointer_cast<WebSearch>(Crud::ReadResult(id_));
     if (web_search == nullptr) {
       // Returns early if the Result isn't a WebSearch or wasn't found.
       return;
@@ -109,7 +110,7 @@ void WebSearchDialog::AcceptWebSearch() {
     web_search->SetIcon(icon_);
     web_search->SetAltUrl(alt_url);
     web_search->SetAltTitle(alt_title);
-    Io::EditWebSearch(web_search, command);
+    Crud::UpdateWebSearch(web_search, command);
   }
 }
 

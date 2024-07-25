@@ -25,6 +25,8 @@ set(PROJECT_SOURCES
         src/core/client.h
         src/core/config.cpp
         src/core/config.h
+        src/core/crud.cpp
+        src/core/crud.h
         src/core/crypto.cpp
         src/core/crypto.h
         src/core/finder.cpp

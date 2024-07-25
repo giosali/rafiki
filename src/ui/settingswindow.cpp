@@ -13,7 +13,7 @@
 #include <Qt>
 
 #include "../core/config.h"
-#include "../core/io.h"
+#include "../core/crud.h"
 #include "./ui_settingswindow.h"
 #include "websearchdialog.h"
 
@@ -64,7 +64,7 @@ void SettingsWindow::DeleteWebSearch(bool checked) const {
   for (const auto& item : items) {
     auto data = item->data(Qt::UserRole);
     if (!data.isNull()) {
-      Io::DeleteWebSearch(Id{data.toString()});
+      Crud::DeleteWebSearch(Id{data.toString()});
       ClearWebSearches();
       LoadWebSearches();
       break;
@@ -82,11 +82,11 @@ void SettingsWindow::EditWebSearch(bool checked) const {
 }
 
 void SettingsWindow::ToggleResult(int state, const Id& id) const {
-  Io::ToggleResult(id, state == Qt::Checked);
+  Crud::ToggleResult(id, state == Qt::Checked);
 }
 
 void SettingsWindow::ToggleStartup(int state) const {
-  Io::ToggleDesktopEntry(state == Qt::Checked);
+  Crud::ToggleDesktopEntry(state == Qt::Checked);
 }
 
 void SettingsWindow::SetEnabledButtons() const {
@@ -122,7 +122,7 @@ void SettingsWindow::ClearWebSearches() const {
 }
 
 void SettingsWindow::LoadWebSearches() const {
-  auto web_searches = Io::FilterResults<WebSearch>();
+  auto web_searches = Crud::ReadResults<WebSearch>();
   for (const auto& web_search : web_searches) {
     auto table_widget = web_search->IsCustom() ? ui_->yourWebSearchesTableWidget
                                                : ui_->webSearchesTableWidget;
