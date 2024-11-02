@@ -20,75 +20,42 @@ set(TS_FILES translations/${CMAKE_PROJECT_NAME}_en.ts)
 
 set(PROJECT_SOURCES
         src/core/autocompleter.cpp
-        src/core/autocompleter.h
         src/core/client.cpp
-        src/core/client.h
         src/core/config.cpp
-        src/core/config.h
         src/core/crud.cpp
-        src/core/crud.h
         src/core/crypto.cpp
-        src/core/crypto.h
         src/core/finder.cpp
-        src/core/finder.h
         src/core/id.cpp
-        src/core/id.h
         src/core/inifile.cpp
-        src/core/inifile.h
         src/core/input.cpp
-        src/core/input.h
         src/core/io.cpp
-        src/core/io.h
         src/core/paths.cpp
-        src/core/paths.h
         src/core/server.cpp
-        src/core/server.h
         src/core/shuntingyardalgorithm.cpp
-        src/core/shuntingyardalgorithm.h
         src/core/urlparser.cpp
-        src/core/urlparser.h
-        src/core/utils.h
         src/main.cpp
         src/models/application.cpp
-        src/models/application.h
         src/models/calculator.cpp
-        src/models/calculator.h
         src/models/filesystementry.cpp
-        src/models/filesystementry.h
         src/models/interactable.cpp
-        src/models/interactable.h
         src/models/processedresult.cpp
-        src/models/processedresult.h
         src/models/processedresultbuilder.cpp
-        src/models/processedresultbuilder.h
         src/models/result.cpp
-        src/models/result.h
         src/models/trash.cpp
-        src/models/trash.h
         src/models/url.cpp
-        src/models/url.h
         src/models/websearch.cpp
-        src/models/websearch.h
         src/ui/interactivelabel.cpp
-        src/ui/interactivelabel.h
         src/ui/mainwindow.cpp
-        src/ui/mainwindow.h
         src/ui/mainwindow.ui
         src/ui/searchbox.cpp
-        src/ui/searchbox.h
         src/ui/searchbox.ui
         src/ui/searchresult.cpp
-        src/ui/searchresult.h
         src/ui/searchresultitem.cpp
-        src/ui/searchresultitem.h
         src/ui/searchresult.ui
         src/ui/searchresultlist.cpp
-        src/ui/searchresultlist.h
         src/ui/settingswindow.cpp
-        src/ui/settingswindow.h
         src/ui/settingswindow.ui
         src/ui/websearchdialog.cpp
-        src/ui/websearchdialog.h
         src/ui/websearchdialog.ui
         ${RES_FILES}
         ${TS_FILES}
