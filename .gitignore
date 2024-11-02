@@ -75,3 +75,5 @@ CMakeLists.txt.user*
 # Visual Studio Code
 build-*/
 CMakeUserPresets.json
+
+.cache/
