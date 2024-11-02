@@ -10,5 +10,8 @@
   "[xml]": {
     "editor.tabSize": 1
   },
+  "files.associations": {
+    ".clangd": "yaml"
+  },
   "C_Cpp.autoAddFileAssociations": false
 }
