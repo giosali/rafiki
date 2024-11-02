@@ -66,9 +66,7 @@ if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
     set(PROJECT_SOURCES
         ${PROJECT_SOURCES}
         src/gnulinux/desktopentry.cpp
-        src/gnulinux/desktopentry.h
         src/gnulinux/io.cpp
-        src/gnulinux/io.h
     )
 endif()
 
