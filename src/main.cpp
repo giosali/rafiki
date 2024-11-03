@@ -10,7 +10,6 @@
 #include "core/client.h"
 #include "core/crud.h"
 #include "core/server.h"
-#include "core/utils.h"
 #include "ui/mainwindow.h"
 
 int main(int argc, char *argv[]) {
