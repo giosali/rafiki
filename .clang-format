@@ -5,6 +5,7 @@ IndentWidth: 2
 InsertNewlineAtEOF: true
 Language: Cpp
 MaxEmptyLinesToKeep: 1
+DerivePointerAlignment: false
 PointerAlignment: Left
 SpacesBeforeTrailingComments: 2
 Standard: c++17
