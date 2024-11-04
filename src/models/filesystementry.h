@@ -1,13 +1,9 @@
 #ifndef FILESYSTEMENTRY_H
 #define FILESYSTEMENTRY_H
 
-#include <QChar>
 #include <QKeyCombination>
 #include <QString>
-#include <cstdint>
 #include <filesystem>
-#include <string>
-#include <vector>
 
 #include "../core/finder.h"
 #include "../core/input.h"

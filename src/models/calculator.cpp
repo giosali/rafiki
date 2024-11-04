@@ -5,14 +5,13 @@
 #include <QLocale>
 #include <Qt>
 
-#include "../core/config.h"
 #include "../core/paths.h"
 #include "../core/shuntingyardalgorithm.h"
 
 Calculator::Calculator() {
   SetDescription(kDescription);
   SetIcon(Paths::Path(Paths::Image::kCalculator));
-  SetId(Config::kApplicationAuthorId, 16);
+  SetId(16);
   SetTitlePlaceholder("...");
 }
 
@@ -54,6 +53,8 @@ void Calculator::ProcessKeyPress(const QKeyCombination& combination,
     case Qt::Key_Alt:
       emit NewTitleRequested(FormatNumber(title));
       break;
+    default:
+      break;
   }
 }
 
@@ -62,6 +63,8 @@ void Calculator::ProcessKeyRelease(const QKeyCombination& combination,
   switch (combination.key()) {
     case Qt::Key_Alt:
       emit NewTitleRequested(GetTitle());
+      break;
+    default:
       break;
   }
 }

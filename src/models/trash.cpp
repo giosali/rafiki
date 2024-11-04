@@ -6,7 +6,6 @@
 #include <system_error>
 #include <vector>
 
-#include "../core/config.h"
 #include "../core/paths.h"
 
 Trash::Trash()
@@ -16,7 +15,7 @@ Trash::Trash()
             ".local/share/Trash"} {
   SetCommand("empty trash");
   SetIcon(Paths::Path(Paths::Image::kTrash));
-  SetId(Config::kApplicationAuthorId, 18);
+  SetId(18);
   SetTitle("Empty trash");
 }
 
@@ -35,13 +34,13 @@ void Trash::ProcessKeyPress(const QKeyCombination& combination,
       emit Hidden();
       Empty();
       break;
+    default:
+      break;
   }
 }
 
 void Trash::ProcessKeyRelease(const QKeyCombination& combination,
-                              const Input& input) {
-  return;
-}
+                              const Input& input) {}
 
 void Trash::Empty() const {
   if (!std::filesystem::exists(path_)) {

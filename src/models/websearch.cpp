@@ -5,7 +5,6 @@
 #include <QUrl>
 #include <Qt>
 
-#include "../core/config.h"
 #include "../core/utils.h"
 
 WebSearch::WebSearch(const QJsonObject& object)
@@ -17,7 +16,7 @@ WebSearch::WebSearch(const QJsonObject& object)
   SetAppendSpaceToCommand(ShouldAppendSpaceToCommand(title));
   SetCommand(object["command"].toString());
   SetIcon(object["icon"].toString());
-  SetId(object["id"].toString());
+  SetId(object["id"].toString().toULongLong());
   SetTitle(title);
   SetTitlePlaceholder(object["placeholder"].toString());
 
@@ -53,7 +52,7 @@ void WebSearch::SetUrl(const QString& value) { url_ = value; }
 
 QJsonObject WebSearch::ToJsonObject() const {
   auto object = QJsonObject{};
-  object.insert("id", GetId().ToString());
+  object.insert("id", QString::number(GetId()));
   object.insert("command", GetCommand());
   object.insert("icon", GetIcon());
   object.insert("url", url_);
@@ -109,6 +108,8 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
     case Qt::Key_Alt:
       emit NewTitleRequested(GetAltTitle());
       break;
+    default:
+      break;
   }
 }
 
@@ -117,6 +118,8 @@ void WebSearch::ProcessKeyRelease(const QKeyCombination& combination,
   switch (combination.key()) {
     case Qt::Key_Alt:
       emit NewTitleRequested(FormatTitle(input.Argument()));
+      break;
+    default:
       break;
   }
 }

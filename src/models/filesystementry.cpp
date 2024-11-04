@@ -5,7 +5,6 @@
 #include <QUrl>
 #include <memory>
 
-#include "../core/config.h"
 #include "../core/crypto.h"
 #include "../core/paths.h"
 
@@ -31,7 +30,7 @@ FileSystemEntry::FileSystemEntry()
       is_entry_{false} {
   SetDescription("Search for files on your PC and open");
   SetIcon(Paths::Path(Paths::Image::kFileSystemEntry));
-  SetId(Config::kApplicationAuthorId, 17);
+  SetId(17);
   SetTitle("Open file");
 }
 
@@ -39,7 +38,7 @@ FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
     : is_entry_{true} {
   SetDescription(QString::fromUtf8(path.string()));
   SetIcon(Paths::Icon(path));
-  SetId(Config::kApplicationAuthorId, Crypto::Djb2(path));
+  SetId(Crypto::Djb2(path));
   SetTitle(QString::fromUtf8(path.filename().string()));
 }
 
@@ -97,6 +96,8 @@ void FileSystemEntry::ProcessKeyPress(const QKeyCombination& combination,
     case Qt::Key_Alt:
       emit NewDescriptionRequested("Show in folder");
       break;
+    default:
+      break;
   }
 }
 
@@ -109,6 +110,8 @@ void FileSystemEntry::ProcessKeyRelease(const QKeyCombination& combination,
   switch (combination.key()) {
     case Qt::Key_Alt:
       emit NewDescriptionRequested(GetDescription());
+      break;
+    default:
       break;
   }
 }

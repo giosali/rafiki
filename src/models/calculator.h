@@ -3,7 +3,6 @@
 
 #include <QKeyCombination>
 #include <QString>
-#include <cstdint>
 
 #include "../core/input.h"
 #include "processedresult.h"

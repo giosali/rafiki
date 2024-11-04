@@ -3,7 +3,6 @@
 
 #include <QKeyCombination>
 #include <QString>
-#include <cstdint>
 #include <filesystem>
 
 #include "result.h"

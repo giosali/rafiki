@@ -1,8 +1,6 @@
 #ifndef URL_H
 #define URL_H
 
-#include <cstdint>
-
 #include "processedresult.h"
 
 class Url : public ProcessedResult {
