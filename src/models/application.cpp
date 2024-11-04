@@ -6,20 +6,25 @@
 #include <QUrl>
 #include <QUuid>
 #include <cstdlib>
-#include <filesystem>
 #include <thread>
 
-#include "../core/config.h"
 #include "../core/crypto.h"
 
-Application::Application(const QString& desktop_entry_path, const QString& name,
-                         const QString& icon, const QString& exec)
-    : exec_{exec} {
+Application::Application(const std::filesystem::path& desktop_entry_path,
+                         QSettings& desktop_entry_file, const QString& icon)
+    : exec_{desktop_entry_file.value("Exec").toString()} {
+  desktop_entry_file.beginGroup("Desktop Entry");
+  auto id = Crypto::Djb2(desktop_entry_path);
+  auto name = desktop_entry_file.value("Name").toString();
+  auto description = QString::fromStdString(desktop_entry_path);
+
   SetIcon(icon);
-  SetId(Config::kApplicationAuthorId, Crypto::Djb2(desktop_entry_path));
+  SetId(id);
   SetTitle(name);
   SetCommand(name);
-  SetDescription(desktop_entry_path);
+  SetDescription(description);
+
+  desktop_entry_file.endGroup();
 }
 
 void Application::Drag() {};
@@ -54,6 +59,8 @@ void Application::ProcessKeyPress(const QKeyCombination& combination,
     case Qt::Key_Alt:
       emit NewDescriptionRequested("Reveal in folder");
       break;
+    default:
+      break;
   }
 }
 
@@ -62,6 +69,8 @@ void Application::ProcessKeyRelease(const QKeyCombination& combination,
   switch (combination.key()) {
     case Qt::Key_Alt:
       emit NewDescriptionRequested(GetDescription());
+      break;
+    default:
       break;
   }
 }

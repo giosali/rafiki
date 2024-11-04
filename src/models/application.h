@@ -2,7 +2,9 @@
 #define APPLICATION_H
 
 #include <QKeyCombination>
+#include <QSettings>
 #include <QString>
+#include <filesystem>
 
 #include "result.h"
 
@@ -10,8 +12,8 @@ class Application : public Result {
   Q_OBJECT
 
  public:
-  explicit Application(const QString& desktop_entry_path, const QString& name,
-                       const QString& icon, const QString& exec);
+  explicit Application(const std::filesystem::path& desktop_entry_path,
+                       QSettings& desktop_entry_file, const QString& icon);
 
  public slots:
   void Drag() override;
