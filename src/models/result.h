@@ -13,7 +13,7 @@ class Result : public Interactable {
   Q_OBJECT
 
  public:
-  Result();
+  Result() = default;
 
   virtual ~Result() = default;
 
@@ -43,17 +43,17 @@ class Result : public Interactable {
   void SetId(const QString& value);
 
  private:
-  QString alt_title_;
-  bool append_space_to_command_;
-  QString command_;
-  QString description_;
-  QString icon_;
-  Id id_;
-  bool is_enabled_;
-  bool is_title_formattable_;
-  QPixmapCache::Key pixmap_key_;
-  QString title_;
-  QString title_placeholder_;
+  QString alt_title_{};
+  bool append_space_to_command_{false};
+  QString command_{};
+  QString description_{};
+  QString icon_{};
+  Id id_{0, 0};
+  bool is_enabled_{true};
+  bool is_title_formattable_{false};
+  QPixmapCache::Key pixmap_key_{};
+  QString title_{};
+  QString title_placeholder_{};
 };
 
 #endif  // RESULT_H

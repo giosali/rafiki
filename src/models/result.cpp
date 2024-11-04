@@ -8,24 +8,11 @@
 #include "../core/paths.h"
 #include "../core/utils.h"
 
-Result::Result()
-    : alt_title_{},
-      append_space_to_command_{false},
-      command_{},
-      description_{},
-      icon_{},
-      id_{0, 0},
-      is_enabled_{true},
-      is_title_formattable_{false},
-      pixmap_key_{},
-      title_{},
-      title_placeholder_{} {}
-
 QString Result::FormatCommand() const {
   return append_space_to_command_ ? command_ + " " : command_;
 }
 
-QString Result::FormatTitle(const QString &arg) const {
+QString Result::FormatTitle(const QString& arg) const {
   return is_title_formattable_
            ? utils::Format(title_, arg.isEmpty() ? title_placeholder_ : arg)
            : title_;
@@ -60,11 +47,11 @@ bool Result::HasCommand() const { return !command_.isNull(); }
 
 bool Result::IsEnabled() const { return is_enabled_; }
 
-void Result::SetAltTitle(const QString &value) { alt_title_ = value; }
+void Result::SetAltTitle(const QString& value) { alt_title_ = value; }
 
-void Result::SetCommand(const QString &value) { command_ = value; }
+void Result::SetCommand(const QString& value) { command_ = value; }
 
-void Result::SetIcon(const QString &value) {
+void Result::SetIcon(const QString& value) {
   // Removes current pixmap key if it's set.
   if (pixmap_key_.isValid()) {
     QPixmapCache::remove(pixmap_key_);
@@ -88,12 +75,12 @@ void Result::SetId(uint64_t author_id, uint64_t id) { id_ = Id{author_id, id}; }
 
 void Result::SetIsEnabled(bool value) { is_enabled_ = value; }
 
-void Result::SetTitle(const QString &value) {
+void Result::SetTitle(const QString& value) {
   title_ = value;
   is_title_formattable_ = value.contains("{}");
 }
 
-void Result::SetTitlePlaceholder(const QString &value) {
+void Result::SetTitlePlaceholder(const QString& value) {
   title_placeholder_ = value;
 }
 
@@ -101,6 +88,6 @@ void Result::SetAppendSpaceToCommand(bool value) {
   append_space_to_command_ = value;
 }
 
-void Result::SetDescription(const QString &value) { description_ = value; }
+void Result::SetDescription(const QString& value) { description_ = value; }
 
-void Result::SetId(const QString &value) { id_ = Id{value}; }
+void Result::SetId(const QString& value) { id_ = Id{value}; }
