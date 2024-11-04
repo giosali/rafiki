@@ -21,6 +21,8 @@ void InteractiveLabel::mousePressEvent(QMouseEvent* event) {
     case Qt::LeftButton:
       emit Clicked();
       break;
+    default:
+      break;
   }
 
   QLabel::mousePressEvent(event);
