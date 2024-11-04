@@ -16,7 +16,6 @@
 #include "../models/result.h"
 #include "mainwindow.h"
 #include "searchbox.h"
-#include "searchresult.h"
 
 class SearchResultList : public QListWidget {
   Q_OBJECT
