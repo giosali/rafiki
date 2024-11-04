@@ -1,7 +1,6 @@
 <RCC>
     <qresource prefix="/data">
       <file>rafiki.desktop</file>
-      <file>settings.ini</file>
       <file>web-searches.json</file>
     </qresource>
 </RCC>
