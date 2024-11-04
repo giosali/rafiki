@@ -37,7 +37,7 @@ QPixmap Result::GetIcon(int size) const {
   return QIcon{icon_}.pixmap(size);
 }
 
-Id Result::GetId() const { return id_; }
+uint64_t Result::GetId() const { return id_; }
 
 QString Result::GetTitle() const { return title_; }
 
@@ -71,7 +71,7 @@ void Result::SetIcon(const QString& value) {
   }
 }
 
-void Result::SetId(uint64_t author_id, uint64_t id) { id_ = Id{author_id, id}; }
+void Result::SetId(uint64_t value) { id_ = value; }
 
 void Result::SetIsEnabled(bool value) { is_enabled_ = value; }
 
@@ -89,5 +89,3 @@ void Result::SetAppendSpaceToCommand(bool value) {
 }
 
 void Result::SetDescription(const QString& value) { description_ = value; }
-
-void Result::SetId(const QString& value) { id_ = Id{value}; }
