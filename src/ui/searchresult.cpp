@@ -43,7 +43,7 @@ SearchResult::SearchResult(const std::shared_ptr<Result>& result,
   ui_->description->setMouseTracking(true);
   ui_->shortcut->setMouseTracking(true);
 
-  SetIcon(result->GetIcon(Config::search_result_icon_size_));
+  SetPixmap(result->GetPixmap());
   SetTitle(result->FormatTitle(argument));
   SetDescription(result->GetDescription());
   SetShortcut(index);
@@ -73,7 +73,7 @@ void SearchResult::SetDescription(const QString& description) const {
   ui_->description->show();
 }
 
-void SearchResult::SetIcon(const QPixmap& pixmap) const {
+void SearchResult::SetPixmap(const QPixmap& pixmap) const {
   // If the height of the icon is greater than the fixed height of the search
   // result, the icon height will take precedence over the fixed height, thus
   // overriding the fixed height.

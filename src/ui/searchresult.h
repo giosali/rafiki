@@ -29,7 +29,7 @@ class SearchResult : public QWidget {
   ~SearchResult();
 
   void SetDescription(const QString& description) const;
-  void SetIcon(const QPixmap& pixmap) const;
+  void SetPixmap(const QPixmap& pixmap) const;
   void SetShortcut(int row);
   void SetShortcut(const QString& text) const;
   void SetTitle(const QString& title) const;
