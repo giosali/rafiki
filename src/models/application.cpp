@@ -9,11 +9,13 @@
 #include <thread>
 
 #include "../core/crypto.h"
+#include "../core/utils.h"
 
 Application::Application(const std::filesystem::path& desktop_entry_path,
-                         QSettings& desktop_entry_file, const QString& icon)
-    : exec_{desktop_entry_file.value("Exec").toString()} {
+                         QSettings& desktop_entry_file, const QString& icon) {
   desktop_entry_file.beginGroup("Desktop Entry");
+  exec_ =
+    RemoveFieldCodes(desktop_entry_file.value("Exec").toString().toStdString());
   auto id = Crypto::Djb2(desktop_entry_path);
   auto name = desktop_entry_file.value("Name").toString();
   auto description = QString::fromStdString(desktop_entry_path);
@@ -73,4 +75,39 @@ void Application::ProcessKeyRelease(const QKeyCombination& combination,
     default:
       break;
   }
+}
+
+QString Application::RemoveFieldCodes(const std::string& exec) const {
+  auto parts = utils::Split(exec);
+  auto filtered_parts = std::vector<std::string>{};
+  for (const auto& part : parts) {
+    // https://specifications.freedesktop.org/desktop-entry-spec/desktop-entry-spec-latest.html#exec-variables
+    if (part.length() == 2 && part[0] == '%') {
+      switch (part[1]) {
+        case 'f':
+        case 'F':
+        case 'u':
+        case 'U':
+        case 'd':
+        case 'D':
+        case 'n':
+        case 'N':
+        case 'i':
+        case 'c':
+        case 'k':
+        case 'v':
+        case 'm':
+          continue;
+      }
+    }
+
+    filtered_parts.push_back(part);
+  }
+
+  switch (exec[0]) {
+    case 'a':
+      break;
+  }
+
+  return QString::fromStdString(utils::Join(filtered_parts, " "));
 }

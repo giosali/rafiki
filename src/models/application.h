@@ -23,6 +23,8 @@ class Application : public Result {
                          const Input& input) override;
 
  private:
+  QString RemoveFieldCodes(const std::string& exec) const;
+
   QString exec_;
 };
 
