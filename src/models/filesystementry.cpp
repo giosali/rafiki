@@ -29,16 +29,16 @@ FileSystemEntry::FileSystemEntry()
                  .toStdString()}},
       is_entry_{false} {
   SetDescription("Search for files on your PC and open");
-  SetIcon(Paths::Path(Paths::Image::kFileSystemEntry));
   SetId(17);
+  SetPixmap(Paths::Path(Paths::Image::kFileSystemEntry));
   SetTitle("Open file");
 }
 
 FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
     : is_entry_{true} {
   SetDescription(QString::fromUtf8(path.string()));
-  SetIcon(Paths::Icon(path));
   SetId(Crypto::Djb2(path));
+  SetPixmap(Paths::Icon(path));
   SetTitle(QString::fromUtf8(path.filename().string()));
 }
 

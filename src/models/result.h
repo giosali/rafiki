@@ -1,8 +1,8 @@
 #ifndef RESULT_H
 #define RESULT_H
 
+#include <QIcon>
 #include <QPixmap>
-#include <QPixmapCache>
 #include <QString>
 #include <cstdint>
 
@@ -21,16 +21,17 @@ class Result : public Interactable {
   QString GetAltTitle() const;
   QString GetCommand() const;
   QString GetDescription() const;
-  QString GetIcon() const;
-  QPixmap GetIcon(int size) const;
   uint64_t GetId() const;
+  QPixmap GetPixmap() const;
+  QString GetPixmapPath() const;
   QString GetTitle() const;
   QString GetTitlePlaceholder() const;
   bool HasCommand() const;
   bool IsEnabled() const;
   void SetAltTitle(const QString& value);
   void SetCommand(const QString& value);
-  void SetIcon(const QString& value);
+  void SetPixmap(const QIcon& value);
+  void SetPixmap(const QString& value);
   void SetId(uint64_t value);
   void SetIsEnabled(bool value);
   void SetTitle(const QString& value);
@@ -45,11 +46,11 @@ class Result : public Interactable {
   bool append_space_to_command_{false};
   QString command_{};
   QString description_{};
-  QString icon_{};
   uint64_t id_{0};
   bool is_enabled_{true};
   bool is_title_formattable_{false};
-  QPixmapCache::Key pixmap_key_{};
+  QPixmap pixmap_{};
+  QString pixmap_path_{};
   QString title_{};
   QString title_placeholder_{};
 };

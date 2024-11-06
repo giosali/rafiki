@@ -10,8 +10,8 @@
 
 Calculator::Calculator() {
   SetDescription(kDescription);
-  SetIcon(Paths::Path(Paths::Image::kCalculator));
   SetId(16);
+  SetPixmap(Paths::Path(Paths::Image::kCalculator));
   SetTitlePlaceholder("...");
 }
 

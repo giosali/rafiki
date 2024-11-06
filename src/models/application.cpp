@@ -18,8 +18,8 @@ Application::Application(const std::filesystem::path& desktop_entry_path,
   auto name = desktop_entry_file.value("Name").toString();
   auto description = QString::fromStdString(desktop_entry_path);
 
-  SetIcon(icon);
   SetId(id);
+  SetPixmap(icon);
   SetTitle(name);
   SetCommand(name);
   SetDescription(description);

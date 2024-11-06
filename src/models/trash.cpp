@@ -14,8 +14,8 @@ Trash::Trash()
                 .toStdString()} /
             ".local/share/Trash"} {
   SetCommand("empty trash");
-  SetIcon(Paths::Path(Paths::Image::kTrash));
   SetId(18);
+  SetPixmap(Paths::Path(Paths::Image::kTrash));
   SetTitle("Empty trash");
 }
 

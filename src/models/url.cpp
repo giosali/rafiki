@@ -8,8 +8,8 @@
 
 Url::Url() {
   SetDescription("Open URL");
-  SetIcon(Paths::Path(Paths::Image::kUrl));
   SetId(19);
+  SetPixmap(Paths::Path(Paths::Image::kUrl));
 }
 
 bool Url::ProcessInput(const Input& input) {

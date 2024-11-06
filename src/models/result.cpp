@@ -4,7 +4,6 @@
 #include <QFileInfo>
 #include <QIcon>
 
-#include "../core/config.h"
 #include "../core/paths.h"
 #include "../core/utils.h"
 
@@ -24,20 +23,11 @@ QString Result::GetCommand() const { return command_; }
 
 QString Result::GetDescription() const { return description_; }
 
-QString Result::GetIcon() const { return icon_; }
-
-QPixmap Result::GetIcon(int size) const {
-  // Tries to search for a cached QPixmap first.
-  if (pixmap_key_.isValid()) {
-    if (auto pixmap = QPixmap{}; QPixmapCache::find(pixmap_key_, &pixmap)) {
-      return pixmap;
-    }
-  }
-
-  return QIcon{icon_}.pixmap(size);
-}
-
 uint64_t Result::GetId() const { return id_; }
+
+QPixmap Result::GetPixmap() const { return pixmap_; }
+
+QString Result::GetPixmapPath() const { return pixmap_path_; }
 
 QString Result::GetTitle() const { return title_; }
 
@@ -51,24 +41,12 @@ void Result::SetAltTitle(const QString& value) { alt_title_ = value; }
 
 void Result::SetCommand(const QString& value) { command_ = value; }
 
-void Result::SetIcon(const QString& value) {
-  // Removes current pixmap key if it's set.
-  if (pixmap_key_.isValid()) {
-    QPixmapCache::remove(pixmap_key_);
-  }
+void Result::SetPixmap(const QIcon& value) { pixmap_ = value.pixmap(128); }
 
-  if (!QFile::exists(value)) {
-    icon_ = Paths::Path(Paths::Image::kQuestionMark);
-    return;
-  }
-
-  icon_ = value;
-
-  // Caches pixmap if too large; necessary for performance.
-  if (QFileInfo{value}.size() >= 1000000) {  // 1 MB
-    pixmap_key_ = QPixmapCache::insert(
-      QIcon{value}.pixmap(Config::search_result_icon_size_));
-  }
+void Result::SetPixmap(const QString& value) {
+  pixmap_path_ =
+    QFile::exists(value) ? value : Paths::Path(Paths::Image::kQuestionMark);
+  pixmap_ = QIcon{pixmap_path_}.pixmap(128);
 }
 
 void Result::SetId(uint64_t value) { id_ = value; }

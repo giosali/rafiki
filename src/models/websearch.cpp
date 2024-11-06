@@ -15,8 +15,8 @@ WebSearch::WebSearch(const QJsonObject& object)
   SetAltTitle(alt["title"].toString());
   SetAppendSpaceToCommand(ShouldAppendSpaceToCommand(title));
   SetCommand(object["command"].toString());
-  SetIcon(object["icon"].toString());
   SetId(object["id"].toString().toULongLong());
+  SetPixmap(object["icon"].toString());
   SetTitle(title);
   SetTitlePlaceholder(object["placeholder"].toString());
 
@@ -35,7 +35,7 @@ WebSearch::WebSearch(const QString& url, const QString& title,
   SetAltTitle(alt_title);
   SetAppendSpaceToCommand(ShouldAppendSpaceToCommand(title));
   SetCommand(command);
-  SetIcon(icon);
+  SetPixmap(icon);
   SetTitle(title);
   SetTitlePlaceholder(title_placeholder);
 }
@@ -54,7 +54,7 @@ QJsonObject WebSearch::ToJsonObject() const {
   auto object = QJsonObject{};
   object.insert("id", QString::number(GetId()));
   object.insert("command", GetCommand());
-  object.insert("icon", GetIcon());
+  object.insert("icon", GetPixmapPath());
   object.insert("url", url_);
   object.insert("title", GetTitle());
   object.insert("placeholder", GetTitlePlaceholder());
