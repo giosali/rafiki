@@ -4,6 +4,9 @@
 #include <QKeyCombination>
 #include <QString>
 #include <filesystem>
+#include <string>
+#include <unordered_map>
+#include <utility>
 
 #include "../core/finder.h"
 #include "../core/input.h"
@@ -26,6 +29,9 @@ class FileSystemEntry : public ProcessedResultBuilder {
                          const Input& input) override;
 
  private:
+  static const std::unordered_map<std::string, std::pair<QString, QString>>
+    kMimeTypePairs;
+
   Finder finder_;
   bool is_entry_;
 };
