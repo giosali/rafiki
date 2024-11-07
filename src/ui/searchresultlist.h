@@ -12,7 +12,9 @@
 #include <memory>
 #include <vector>
 
+#include "../core/indexer.h"
 #include "../core/input.h"
+#include "../core/settings.h"
 #include "../models/result.h"
 #include "mainwindow.h"
 #include "searchbox.h"
@@ -72,6 +74,10 @@ class Worker : public QObject {
   void ResultsReadied(const std::vector<std::shared_ptr<Result>>& results,
                       const Input& input, const QString& text,
                       bool set_row_to_zero);
+
+ private:
+  Indexer& indexer_{Indexer::GetInstance()};
+  Settings& settings_{Settings::GetInstance()};
 };
 }  // namespace searchresultlist
 

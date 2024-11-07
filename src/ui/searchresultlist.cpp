@@ -12,7 +12,7 @@
 #include <cstdlib>
 
 #include "../core/config.h"
-#include "../core/crud.h"
+#include "searchresult.h"
 #include "searchresultitem.h"
 
 SearchResultList::SearchResultList(SearchBox* search_box, MainWindow* parent)
@@ -231,6 +231,8 @@ void SearchResultList::mousePressEvent(QMouseEvent* event) {
       }
 
       break;
+    default:
+      break;
   }
 
   QListWidget::mousePressEvent(event);
@@ -286,9 +288,32 @@ void Worker::ProcessInput(const Input& input) {
   // --> Reselect the previously selected item.
   static bool last_results_were_defaults = false;
 
-  auto results = Crud::ReadResults(input);
+  // Handles query processing.
+  auto ids = std::unordered_set<uint64_t>{};
+  auto trie = indexer_.GetResultsTrie();
+  auto range = trie.equal_prefix_range(input.ToString().toStdString());
+  for (auto it = range.first; it != range.second; ++it) {
+    auto value = it.value();
+    ids.insert(value.begin(), value.end());
+  }
+
+  auto results = std::vector<std::shared_ptr<Result>>{};
+  results.reserve(ids.size());
+  auto results_map = indexer_.GetResultsMap();
+  for (auto id : ids) {
+    results.push_back(results_map[id]);
+  }
+
+  // Handles the results of query processing.
   if (results.empty()) {
-    emit ResultsReadied(Crud::ReadDefaultResults(), input, input.ToString(),
+    const auto default_ids = settings_.GetDefaultSearchResultIds();
+    for (size_t i = 0; i < default_ids.size(); ++i) {
+      auto id = default_ids[i];
+      results.push_back(results_map[id]);
+    }
+
+    // `results` are default results
+    emit ResultsReadied(results, input, input.ToString(),
                         !last_results_were_defaults);
     last_results_were_defaults = true;
   } else {
