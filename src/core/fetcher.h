@@ -9,7 +9,6 @@ class Fetcher {
  public:
   Fetcher() = default;
 
-  std::vector<std::filesystem::path> FetchApplicationIconPaths() const;
   std::vector<std::filesystem::path> FetchDesktopEntryPaths() const;
   std::vector<QJsonObject> FetchWebSearchObjects() const;
 
