@@ -12,16 +12,17 @@
 #include "../core/utils.h"
 
 Application::Application(const std::filesystem::path& desktop_entry_path,
-                         QSettings& desktop_entry_file, const QString& icon) {
+                         QSettings& desktop_entry_file) {
   desktop_entry_file.beginGroup("Desktop Entry");
   exec_ =
     RemoveFieldCodes(desktop_entry_file.value("Exec").toString().toStdString());
   auto id = Crypto::Djb2(desktop_entry_path);
   auto name = desktop_entry_file.value("Name").toString();
+  auto icon = desktop_entry_file.value("Icon").toString();
   auto description = QString::fromStdString(desktop_entry_path);
 
   SetId(id);
-  SetPixmap(icon);
+  SetPixmap(QIcon::fromTheme(icon));
   SetTitle(name);
   SetCommand(name);
   SetDescription(description);

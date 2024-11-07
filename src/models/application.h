@@ -13,7 +13,7 @@ class Application : public Result {
 
  public:
   explicit Application(const std::filesystem::path& desktop_entry_path,
-                       QSettings& desktop_entry_file, const QString& icon);
+                       QSettings& desktop_entry_file);
 
  public slots:
   void Drag() override;
