@@ -5,6 +5,8 @@
 #include <QPixmap>
 #include <QString>
 #include <cstdint>
+#include <string>
+#include <unordered_set>
 
 #include "interactable.h"
 
@@ -16,6 +18,7 @@ class Result : public Interactable {
 
   virtual ~Result() = default;
 
+  virtual std::unordered_set<std::string> Tokenize() const;
   QString FormatCommand() const;
   QString FormatTitle(const QString& arg) const;
   QString GetAltTitle() const;

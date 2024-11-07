@@ -8,6 +8,11 @@
 #include "../core/paths.h"
 #include "../core/utils.h"
 
+std::unordered_set<std::string> Result::Tokenize() const {
+  auto command = append_space_to_command_ ? command_ + " " : command_;
+  return std::unordered_set<std::string>{command.toLower().toStdString()};
+}
+
 QString Result::FormatCommand() const {
   return append_space_to_command_ ? command_ + " " : command_;
 }
