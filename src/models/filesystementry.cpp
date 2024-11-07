@@ -41,8 +41,6 @@ FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
   SetId(Crypto::Djb2(path));
   SetTitle(QString::fromUtf8(path.filename().string()));
 
-  // SetPixmap(Paths::Icon(path));
-
   // Exits early if the filesystem entry is a directory and sets icon to that
   // of a folder.
   if (std::filesystem::is_directory(path)) {
