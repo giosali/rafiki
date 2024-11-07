@@ -4,6 +4,7 @@
 #include <QFileInfo>
 #include <QIcon>
 
+#include "../core/config.h"
 #include "../core/paths.h"
 #include "../core/utils.h"
 
@@ -46,7 +47,7 @@ void Result::SetPixmap(const QIcon& value) { pixmap_ = value.pixmap(128); }
 void Result::SetPixmap(const QString& value) {
   pixmap_path_ =
     QFile::exists(value) ? value : Paths::Path(Paths::Image::kQuestionMark);
-  pixmap_ = QIcon{pixmap_path_}.pixmap(128);
+  pixmap_ = QIcon{pixmap_path_}.pixmap(Config::search_result_icon_size_);
 }
 
 void Result::SetId(uint64_t value) { id_ = value; }
