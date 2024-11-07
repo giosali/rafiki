@@ -2,9 +2,7 @@
 
 #include <QDesktopServices>
 #include <QIcon>
-#include <QPixmapCache>
 #include <QUrl>
-#include <QUuid>
 #include <cstdlib>
 #include <thread>
 
@@ -28,6 +26,63 @@ Application::Application(const std::filesystem::path& desktop_entry_path,
   SetDescription(description);
 
   desktop_entry_file.endGroup();
+}
+
+std::unordered_set<std::string> Application::Tokenize() const {
+  auto tokens = Result::Tokenize();
+
+  // Keeps track of uppercase letters to convert, for example, ProtonVPN to
+  // pvpn.
+  auto acronym = QString{};
+  auto capitalized_strings = std::vector<QString>{};
+  auto capitalized_string = QString{};
+  for (auto ch : GetCommand()) {
+    if (ch.isUpper()) {
+      // Handles acronymizing the command.
+      acronym += ch;
+
+      // Handles detecting capitalized words within the command.
+      if (!capitalized_string.isEmpty()) {
+        capitalized_strings.push_back(capitalized_string);
+        capitalized_string.clear();
+      }
+
+      capitalized_string += ch;
+      continue;
+    } else if (ch.isSpace() && !capitalized_string.isEmpty()) {
+      // Handles detecting capitalized words within the command.
+      capitalized_strings.push_back(capitalized_string);
+      capitalized_string.clear();
+      continue;
+    }
+
+    if (!capitalized_string.isEmpty()) {
+      capitalized_string += ch;
+    }
+  }
+
+  if (!capitalized_string.isEmpty()) {
+    capitalized_strings.push_back(capitalized_string);
+  }
+
+  // Takes pvpn, for example, and breaks it down to:
+  // p, v, p, n
+  // pv, vp, pn
+  // pvp, vpn
+  // pvpn
+  for (size_t i = 1, l = acronym.length(); i <= l; ++i) {
+    // j += i
+    for (size_t j = 0; j + i <= l; ++j) {
+      auto token = acronym.sliced(j, i).toLower().toStdString();
+      tokens.insert(token);
+    }
+  }
+
+  for (const auto& string : capitalized_strings) {
+    tokens.insert(string.toLower().toStdString());
+  }
+
+  return tokens;
 }
 
 void Application::Drag() {};

@@ -5,6 +5,8 @@
 #include <QSettings>
 #include <QString>
 #include <filesystem>
+#include <string>
+#include <unordered_set>
 
 #include "result.h"
 
@@ -14,6 +16,8 @@ class Application : public Result {
  public:
   explicit Application(const std::filesystem::path& desktop_entry_path,
                        QSettings& desktop_entry_file);
+
+  std::unordered_set<std::string> Tokenize() const override;
 
  public slots:
   void Drag() override;
