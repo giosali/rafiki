@@ -9,8 +9,8 @@
 #include "../core/utils.h"
 
 std::unordered_set<std::string> Result::Tokenize() const {
-  auto command = append_space_to_command_ ? command_ + " " : command_;
-  return std::unordered_set<std::string>{command.toLower().toStdString()};
+  auto command = FormatCommand().toLower().toStdString();
+  return std::unordered_set<std::string>{command};
 }
 
 QString Result::FormatCommand() const {
