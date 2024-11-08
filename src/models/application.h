@@ -5,7 +5,6 @@
 #include <QSettings>
 #include <QString>
 #include <filesystem>
-#include <string>
 #include <unordered_set>
 
 #include "result.h"
@@ -27,8 +26,6 @@ class Application : public Result {
                          const Input& input) override;
 
  private:
-  QString RemoveFieldCodes(const std::string& exec) const;
-
   QString exec_;
 };
 
