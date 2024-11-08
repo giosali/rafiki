@@ -2,8 +2,6 @@
 
 #include <cctype>
 
-#include "utils.h"
-
 UrlParser::UrlParser(const QString& url) : url_{url.trimmed()} {
   Parse(url_.toStdString());
 }
