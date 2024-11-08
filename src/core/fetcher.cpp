@@ -10,7 +10,7 @@
 
 #include "file.h"
 #include "paths.h"
-#include "utils.h"
+#include "utilities.h"
 
 std::vector<std::filesystem::path> Fetcher::FetchDesktopEntryPaths() const {
   // https://wiki.archlinux.org/title/desktop_entries#Application_entry
@@ -22,7 +22,7 @@ std::vector<std::filesystem::path> Fetcher::FetchDesktopEntryPaths() const {
   // These are typically for applications installed as Flatpaks/Snaps/etc.
   if (auto xdg_data_dirs = std::getenv("XDG_DATA_DIRS");
       xdg_data_dirs != nullptr) {
-    for (const auto& directory : utils::Split(xdg_data_dirs, ':')) {
+    for (const auto& directory : Utilities::Split(xdg_data_dirs, ":")) {
       auto subdirectory = std::filesystem::path{directory} / "applications";
       if (std::find(desktop_entry_locations.begin(),
                     desktop_entry_locations.end(),
