@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "../core/utils.h"
+#include "utilities.h"
 
 Finder::Finder(const std::string& location, size_t max_count,
                const std::vector<std::filesystem::path> home_dirs)
@@ -47,7 +47,7 @@ std::vector<std::filesystem::path> Finder::Iterate(
 
     // Skips entry if its name doesn't contain the input.
     std::transform(filename.begin(), filename.end(), filename.begin(),
-                   utils::ToLower);
+                   Utilities::ToLower);
     if (filename.find(input) == std::string::npos) {
       continue;
     }
@@ -102,7 +102,7 @@ std::vector<std::filesystem::path> Finder::Reiterate(
 
     // Skips entry if its name doesn't contain the input.
     std::transform(filename.begin(), filename.end(), filename.begin(),
-                   utils::ToLower);
+                   Utilities::ToLower);
     if (filename.find(input) == std::string::npos) {
       continue;
     }
