@@ -6,7 +6,6 @@
 
 #include "../core/config.h"
 #include "../core/paths.h"
-#include "../core/utils.h"
 
 std::unordered_set<std::string> Result::Tokenize() const {
   auto command = FormatCommand().toLower().toStdString();
@@ -18,9 +17,11 @@ QString Result::FormatCommand() const {
 }
 
 QString Result::FormatTitle(const QString& arg) const {
-  return is_title_formattable_
-           ? utils::Format(title_, arg.isEmpty() ? title_placeholder_ : arg)
-           : title_;
+  if (!title_.contains("%1")) {
+    return title_;
+  }
+
+  return title_.arg(arg.isEmpty() ? title_placeholder_ : arg);
 }
 
 QString Result::GetAltTitle() const { return alt_title_; }
@@ -61,10 +62,7 @@ void Result::SetId(uint64_t value) { id_ = value; }
 
 void Result::SetIsEnabled(bool value) { is_enabled_ = value; }
 
-void Result::SetTitle(const QString& value) {
-  title_ = value;
-  is_title_formattable_ = value.contains("{}");
-}
+void Result::SetTitle(const QString& value) { title_ = value; }
 
 void Result::SetTitlePlaceholder(const QString& value) {
   title_placeholder_ = value;

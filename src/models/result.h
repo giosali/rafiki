@@ -51,7 +51,6 @@ class Result : public Interactable {
   QString description_{};
   uint64_t id_{0};
   bool is_enabled_{true};
-  bool is_title_formattable_{false};
   QPixmap pixmap_{};
   QString pixmap_path_{};
   QString title_{};

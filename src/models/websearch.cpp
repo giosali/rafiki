@@ -5,8 +5,6 @@
 #include <QUrl>
 #include <Qt>
 
-#include "../core/utils.h"
-
 WebSearch::WebSearch(const QJsonObject& object)
     : is_custom_{false}, url_{object["url"].toString()} {
   auto alt = object["alt"].toObject();
@@ -82,15 +80,14 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
     case Qt::Key_Return: {
       auto url =
         combination.keyboardModifiers() & Qt::AltModifier ? alt_url_ : url_;
-      if (!url.contains("{}")) {
+      if (!url.contains("%1")) {
         emit Hidden();
-        QDesktopServices::openUrl(QUrl(url));
+        QDesktopServices::openUrl(QUrl{url});
         break;
       }
 
-      auto argument = input.Argument();
-
       // Means arg is equal to: QString().
+      auto argument = input.Argument();
       if (argument.isNull()) {
         emit NewSearchBoxTextRequested(FormatCommand());
         break;
@@ -102,7 +99,7 @@ void WebSearch::ProcessKeyPress(const QKeyCombination& combination,
       }
 
       emit Hidden();
-      QDesktopServices::openUrl(QUrl(utils::Format(url, argument)));
+      QDesktopServices::openUrl(QUrl{url.arg(argument)});
       break;
     }
     case Qt::Key_Alt:
