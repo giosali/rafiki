@@ -1,6 +1,10 @@
 #include "indexer.h"
 
 #include "../models/application.h"
+#include "../models/calculator.h"
+#include "../models/filesystementry.h"
+#include "../models/trash.h"
+#include "../models/url.h"
 #include "../models/websearch.h"
 #include "INIReader.h"
 #include "fetcher.h"
@@ -30,6 +34,7 @@ void Indexer::Initialize() {
   settings.Update(document);
 
   IndexApplications();
+  IndexGenericResults();
   IndexWebSearches();
 }
 
@@ -52,31 +57,39 @@ void Indexer::IndexApplications() {
 
     // Maps ID to Application instance.
     auto application = std::make_shared<Application>(path, reader);
-    auto id = application->GetId();
-    results_map_.insert({id, application});
+    IndexResult(application);
+  }
+}
 
-    // Inserts Application ID into trie.
-    auto tokens = application->Tokenize();
-    for (const auto& token : tokens) {
-      auto pair = results_trie_.insert(token, std::unordered_set<uint64_t>{});
-      pair.first->insert(id);
-    }
+void Indexer::IndexGenericResults() {
+  auto calculator = std::make_shared<Calculator>();
+  auto file_system_entry = std::make_shared<FileSystemEntry>();
+  auto trash = std::make_shared<Trash>();
+  auto url = std::make_shared<Url>();
+
+  IndexResult(calculator);
+  IndexResult(file_system_entry);
+  IndexResult(trash);
+  IndexResult(url);
+}
+
+void Indexer::IndexResult(const std::shared_ptr<Result>& result) {
+  // Maps ID to Result instance.
+  auto id = result->GetId();
+  results_map_.insert({id, result});
+
+  // Inserts Result ID into tokens of Result.
+  auto tokens = result->Tokenize();
+  for (const auto& token : tokens) {
+    auto pair = results_trie_.insert(token, std::unordered_set<uint64_t>{});
+    pair.first->insert(id);
   }
 }
 
 void Indexer::IndexWebSearches() {
   auto fetcher = Fetcher{};
   for (const auto& object : fetcher.FetchWebSearchObjects()) {
-    // Maps ID to WebSearch instance.
     auto web_search = std::make_shared<WebSearch>(object);
-    auto id = web_search->GetId();
-    results_map_.insert({id, web_search});
-
-    // Inserts WebSearch ID into trie.
-    auto tokens = web_search->Tokenize();
-    for (const auto& token : tokens) {
-      auto pair = results_trie_.insert(token, std::unordered_set<uint64_t>{});
-      pair.first->insert(id);
-    }
+    IndexResult(web_search);
   }
 }

@@ -21,6 +21,8 @@ class Indexer final {
   Indexer(const Indexer&) = delete;
 
   void IndexApplications();
+  void IndexGenericResults();
+  void IndexResult(const std::shared_ptr<Result>& result);
   void IndexWebSearches();
   Indexer operator=(const Indexer&) = delete;
 
