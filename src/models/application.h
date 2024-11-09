@@ -2,11 +2,12 @@
 #define APPLICATION_H
 
 #include <QKeyCombination>
-#include <QSettings>
 #include <QString>
 #include <filesystem>
 #include <unordered_set>
+#include <vector>
 
+#include "INIReader.h"
 #include "result.h"
 
 class Application : public Result {
@@ -14,7 +15,7 @@ class Application : public Result {
 
  public:
   explicit Application(const std::filesystem::path& desktop_entry_path,
-                       QSettings& desktop_entry_file);
+                       const INIReader& reader);
 
   std::unordered_set<std::string> Tokenize() const override;
 
@@ -27,6 +28,7 @@ class Application : public Result {
 
  private:
   QString exec_;
+  std::vector<QString> keywords_;
 };
 
 #endif  // APPLICATION_H
