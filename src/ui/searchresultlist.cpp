@@ -291,7 +291,8 @@ void Worker::ProcessInput(const Input& input) {
   // Handles query processing.
   auto ids = std::unordered_set<uint64_t>{};
   auto trie = indexer_.GetResultsTrie();
-  auto range = trie.equal_prefix_range(input.ToString().toStdString());
+  auto range =
+    trie.equal_prefix_range(input.ToString().toLower().toStdString());
   for (auto it = range.first; it != range.second; ++it) {
     auto value = it.value();
     ids.insert(value.begin(), value.end());
