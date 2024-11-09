@@ -1,9 +1,8 @@
 #include "indexer.h"
 
-#include <QSettings>
-
 #include "../models/application.h"
 #include "../models/websearch.h"
+#include "INIReader.h"
 #include "fetcher.h"
 #include "file.h"
 #include "paths.h"
@@ -37,21 +36,22 @@ void Indexer::Initialize() {
 void Indexer::IndexApplications() {
   auto fetcher = Fetcher{};
   for (const auto& path : fetcher.FetchDesktopEntryPaths()) {
-    auto file = QSettings{QString::fromStdString(path), QSettings::IniFormat};
+    auto reader = INIReader{path};
+    if (reader.ParseError() < 0) {
+      continue;
+    }
 
     // Ignores desktop entries that have NoDisplayset to true. NoDisplay means
     // "this application exists, but don't display it in the menus."
     // Most desktop entry files that are meant to be displayed won't have a
     // NoDisplay key, so that should default to false.
-    file.beginGroup("Desktop Entry");
-    if (auto value = file.value("NoDisplay", false); value.toBool()) {
+    auto no_display = reader.GetBoolean("Desktop Entry", "NoDisplay", false);
+    if (no_display) {
       continue;
     }
 
-    file.endGroup();
-
     // Maps ID to Application instance.
-    auto application = std::make_shared<Application>(path, file);
+    auto application = std::make_shared<Application>(path, reader);
     auto id = application->GetId();
     results_map_.insert({id, application});
 
