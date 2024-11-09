@@ -98,6 +98,9 @@ void Application::Drag() {};
 void Application::ProcessKeyPress(const QKeyCombination& combination,
                                   const Input& input) {
   switch (combination.key()) {
+    case Qt::Key_Tab:
+      emit NewSearchBoxTextRequested(FormatCommand());
+      break;
     case Qt::Key_Return: {
       if (combination.keyboardModifiers() & Qt::AltModifier) {
         // TODO: inform user that the action did not work.
