@@ -3,19 +3,7 @@
 #include <QStandardPaths>
 #include <QtSystemDetection>
 
-#ifdef Q_OS_LINUX
-#include "../gnulinux/io.h"
-#endif
-
 QString Paths::Icon(const std::filesystem::path& p) {
-  // Only runs once when first invoked.
-  static auto _ = []() {
-#ifdef Q_OS_LINUX
-    mimetype_icons_ = gnulinux::Io::GetMimeTypeIcons();
-#endif
-    return true;
-  }();
-
   auto extension = p.extension().string();
   auto is_directory = std::filesystem::is_directory(p);
 
@@ -39,44 +27,18 @@ QString Paths::Path(Directory d) {
       path =
         QStandardPaths::writableLocation(QStandardPaths::AppConfigLocation);
       break;
-    case Directory::kAutostart:
-      path = Combine(
-        QStandardPaths::writableLocation(QStandardPaths::ConfigLocation),
-        "autostart");
-      break;
     case Directory::kDataResources:
       path = "://data";
       break;
     case Directory::kImageResources:
       path = "://images";
       break;
-    case Directory::kYourIcons:
-      path = Combine(Path(Directory::kAppConfig), "youricons");
+    case Directory::kUserIcons:
+      path = Combine(Path(Directory::kAppConfig), "icons");
       break;
   }
 
   return path;
-}
-
-QString Paths::Path(Ini f) {
-  auto directory = QString{};
-  auto filename = QString{};
-  switch (f) {
-    case Ini::kDefault:
-      directory = Path(Directory::kDataResources);
-      filename = "settings.ini";
-      break;
-    case Ini::kRafikiDesktopEntry:
-      directory = Path(Directory::kDataResources);
-      filename = "rafiki.desktop";
-      break;
-    case Ini::kUser:
-      directory = Path(Directory::kAppConfig);
-      filename = "settings.ini";
-      break;
-  }
-
-  return Combine(directory, filename);
 }
 
 QString Paths::Path(Image f) {
@@ -117,13 +79,17 @@ QString Paths::Path(Json f) {
   auto directory = QString{};
   auto filename = QString{};
   switch (f) {
+    case Json::kUserSettings:
+      directory = Path(Directory::kAppConfig);
+      filename = "settings.json";
+      break;
+    case Json::kUserWebSearches:
+      directory = Path(Directory::kAppConfig);
+      filename = "your-web-searches.json";
+      break;
     case Json::kWebSearches:
       directory = Path(Directory::kDataResources);
       filename = "web-searches.json";
-      break;
-    case Json::kYourWebSearches:
-      directory = Path(Directory::kAppConfig);
-      filename = "your-web-searches.json";
       break;
   }
 

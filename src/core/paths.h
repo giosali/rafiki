@@ -11,12 +11,10 @@ class Paths {
  public:
   enum class Directory {
     kAppConfig,
-    kAutostart,
     kDataResources,
     kImageResources,
-    kYourIcons
+    kUserIcons
   };
-  enum class Ini { kDefault, kRafikiDesktopEntry, kUser };
   enum class Image {
     kCalculator,
     kFile,
@@ -27,13 +25,12 @@ class Paths {
     kTrash,
     kUrl
   };
-  enum class Json { kWebSearches, kYourWebSearches };
+  enum class Json { kUserSettings, kUserWebSearches, kWebSearches };
 
   Paths() = delete;
 
   static QString Icon(const std::filesystem::path& p);
   static QString Path(Directory d);
-  static QString Path(Ini f);
   static QString Path(Image f);
   static QString Path(Json f);
 
