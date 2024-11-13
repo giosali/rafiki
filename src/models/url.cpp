@@ -9,7 +9,7 @@
 Url::Url() {
   SetDescription("Open URL");
   SetId(19);
-  SetPixmap(Paths::Path(Paths::Image::kUrl));
+  SetPixmap(Paths::GetPath(Paths::Image::kUrl));
 }
 
 bool Url::ProcessInput(const Input& input) {

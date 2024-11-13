@@ -54,7 +54,7 @@ void Result::SetPixmap(const QIcon& value) {
 
 void Result::SetPixmap(const QString& value) {
   pixmap_path_ =
-    QFile::exists(value) ? value : Paths::Path(Paths::Image::kQuestionMark);
+    QFile::exists(value) ? value : Paths::GetPath(Paths::Image::kQuestionMark);
   SetPixmap(QIcon{pixmap_path_});
 }
 

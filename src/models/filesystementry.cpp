@@ -31,7 +31,7 @@ FileSystemEntry::FileSystemEntry()
       is_entry_{false} {
   SetDescription("Search for files on your PC and open");
   SetId(17);
-  SetPixmap(Paths::Path(Paths::Image::kFileSystemEntry));
+  SetPixmap(Paths::GetPath(Paths::Image::kFileSystemEntry));
   SetTitle("Open file");
 }
 
@@ -53,7 +53,7 @@ FileSystemEntry::FileSystemEntry(const std::filesystem::path& path)
   // file extension or if the file extension isn't in the MIME type map.
   auto extension = path.extension().string();
   if (extension.empty() || !kMimeTypePairs.contains(extension)) {
-    SetPixmap(Paths::Path(Paths::Image::kFile));
+    SetPixmap(Paths::GetPath(Paths::Image::kFile));
     return;
   }
 

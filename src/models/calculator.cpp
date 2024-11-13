@@ -11,7 +11,7 @@
 Calculator::Calculator() {
   SetDescription(kDescription);
   SetId(16);
-  SetPixmap(Paths::Path(Paths::Image::kCalculator));
+  SetPixmap(Paths::GetPath(Paths::Image::kCalculator));
   SetTitlePlaceholder("...");
 }
 

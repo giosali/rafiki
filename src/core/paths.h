@@ -28,9 +28,9 @@ class Paths {
 
   Paths() = delete;
 
-  static QString Path(Directory d);
-  static QString Path(Image f);
-  static QString Path(Json f);
+  static QString GetPath(Directory d);
+  static QString GetPath(Image f);
+  static QString GetPath(Json f);
 
  private:
   static QString Combine(const QString& p1, const QString& p2);

@@ -15,7 +15,7 @@ Trash::Trash()
             ".local/share/Trash"} {
   SetCommand("empty trash");
   SetId(18);
-  SetPixmap(Paths::Path(Paths::Image::kTrash));
+  SetPixmap(Paths::GetPath(Paths::Image::kTrash));
   SetTitle("Empty trash");
 }
 

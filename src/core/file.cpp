@@ -19,7 +19,7 @@ void File::Write(const std::filesystem::path& path, const std::string& buffer) {
 }
 
 QJsonDocument File::Read(Paths::Json filename) {
-  auto file = QFile{Paths::Path(filename)};
+  auto file = QFile{Paths::GetPath(filename)};
   if (!file.exists()) {
     return {};
   }

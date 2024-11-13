@@ -3,7 +3,7 @@
 #include <QStandardPaths>
 #include <QtSystemDetection>
 
-QString Paths::Path(Directory d) {
+QString Paths::GetPath(Directory d) {
   auto path = QString{};
   switch (d) {
     case Directory::kAppConfig:
@@ -17,14 +17,14 @@ QString Paths::Path(Directory d) {
       path = "://images";
       break;
     case Directory::kUserIcons:
-      path = Combine(Path(Directory::kAppConfig), "icons");
+      path = Combine(GetPath(Directory::kAppConfig), "icons");
       break;
   }
 
   return path;
 }
 
-QString Paths::Path(Image f) {
+QString Paths::GetPath(Image f) {
   auto filename = QString{};
   switch (f) {
     case Image::kCalculator:
@@ -55,23 +55,23 @@ QString Paths::Path(Image f) {
 
   return filename.isEmpty()
            ? filename
-           : Combine(Path(Directory::kImageResources), filename);
+           : Combine(GetPath(Directory::kImageResources), filename);
 }
 
-QString Paths::Path(Json f) {
+QString Paths::GetPath(Json f) {
   auto directory = QString{};
   auto filename = QString{};
   switch (f) {
     case Json::kUserSettings:
-      directory = Path(Directory::kAppConfig);
+      directory = GetPath(Directory::kAppConfig);
       filename = "settings.json";
       break;
     case Json::kUserWebSearches:
-      directory = Path(Directory::kAppConfig);
+      directory = GetPath(Directory::kAppConfig);
       filename = "your-web-searches.json";
       break;
     case Json::kWebSearches:
-      directory = Path(Directory::kDataResources);
+      directory = GetPath(Directory::kDataResources);
       filename = "web-searches.json";
       break;
   }
