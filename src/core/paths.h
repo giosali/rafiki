@@ -3,7 +3,6 @@
 
 #include <QSettings>
 #include <QString>
-#include <filesystem>
 #include <string>
 #include <unordered_map>
 
@@ -29,7 +28,6 @@ class Paths {
 
   Paths() = delete;
 
-  static QString Icon(const std::filesystem::path& p);
   static QString Path(Directory d);
   static QString Path(Image f);
   static QString Path(Json f);

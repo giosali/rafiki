@@ -3,23 +3,6 @@
 #include <QStandardPaths>
 #include <QtSystemDetection>
 
-QString Paths::Icon(const std::filesystem::path& p) {
-  auto extension = p.extension().string();
-  auto is_directory = std::filesystem::is_directory(p);
-
-  // Exits with placeholder image if path doesn't contain a file extension and
-  // isn't a directory.
-  if (extension.empty() && !is_directory) {
-    return Path(Image::kFile);
-  }
-
-  // Returns a generic resource image if there was no match.
-  auto it = mimetype_icons_.find(extension);
-  return it == mimetype_icons_.end()
-           ? Path(is_directory ? Image::kFolder : Image::kFile)
-           : it->second;
-}
-
 QString Paths::Path(Directory d) {
   auto path = QString{};
   switch (d) {
