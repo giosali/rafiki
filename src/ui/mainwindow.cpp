@@ -144,7 +144,7 @@ void MainWindow::CreateTrayIcon() {
           &MainWindow::ProcessActivationReason);
   tray_icon->setContextMenu(tray_menu);
 
-  tray_icon->setIcon(QIcon{Paths::Path(Paths::Image::kRafiki)});
+  tray_icon->setIcon(QIcon{Paths::GetPath(Paths::Image::kRafiki)});
   tray_icon->show();
 }
 
