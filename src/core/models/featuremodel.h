@@ -1,0 +1,59 @@
+#pragma once
+
+#include <QIcon>
+#include <QPixmap>
+#include <QString>
+#include <cstdint>
+#include <memory>
+#include <string>
+#include <unordered_set>
+
+#include "../bridges/featurebridge.h"
+#include "../visitors/featurevisitable.h"
+
+class FeatureModel : public FeatureVisitable {
+ public:
+  explicit FeatureModel(std::unique_ptr<FeatureBridge> bridge);
+
+  virtual ~FeatureModel() = default;
+
+  virtual bool ReceivesInput() const;
+  virtual std::unordered_set<std::string> Tokenize() const;
+  QString FormatCommand() const;
+  QString GetAltTitle() const;
+  QString GetAltTitlePlaceholder() const;
+  QString GetAltDescription() const;
+  QString GetCommand() const;
+  QString GetDescription() const;
+  FeatureBridge* GetFeatureBridge() const;
+  QPixmap GetIcon() const;
+  QString GetIconPath() const;
+  uint64_t GetId() const;
+  QString GetTitle() const;
+  QString GetTitlePlaceholder() const;
+
+ protected:
+  void SetAltDescription(const QString& value);
+  void SetAltTitle(const QString& value);
+  void SetAltTitlePlaceholder(const QString& value);
+  void SetCommand(const QString& value);
+  void SetDescription(const QString& value);
+  void SetIcon(const QIcon& value);
+  void SetIcon(const QString& value);
+  void SetId(uint64_t value);
+  void SetTitle(const QString& value);
+  void SetTitlePlaceholder(const QString& value);
+
+ private:
+  QString alt_title_{};
+  QString alt_title_placeholder_{};
+  QString alt_description_{};
+  QString command_{};
+  QString description_{};
+  std::unique_ptr<FeatureBridge> feature_bridge_{nullptr};
+  QPixmap icon_{};
+  QString icon_path_{};
+  uint64_t id_{};
+  QString title_{};
+  QString title_placeholder_{};
+};
