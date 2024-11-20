@@ -19,8 +19,6 @@ std::vector<std::shared_ptr<FeatureObject>> CalculatorBridge::ProcessInput(
   }
 
   auto objects = std::vector<std::shared_ptr<FeatureObject>>{};
-  objects.reserve(1);
-
   auto model = static_cast<const CalculatorModel*>(feature_model);
   objects.push_back(std::make_shared<CalculatorObject>(model, result.value()));
   return objects;

@@ -6,7 +6,6 @@
 std::vector<std::shared_ptr<FeatureObject>> WebSearchBridge::ProcessInput(
   const FeatureModel* feature_model, const QString& input) {
   auto objects = std::vector<std::shared_ptr<FeatureObject>>{};
-  objects.reserve(1);
 
   auto model = static_cast<const WebSearchModel*>(feature_model);
   auto pair = ParseInput(model->GetCommand(), input, model->ReceivesInput());
