@@ -60,6 +60,8 @@ void MainWindow::ProcessActivationReason(
     case QSystemTrayIcon::ActivationReason::MiddleClick:
       ToggleVisibility();
       break;
+    default:
+      break;
   }
 }
 
@@ -119,6 +121,8 @@ bool MainWindow::event(QEvent* event) {
         Hide();
       }
 
+      break;
+    default:
       break;
   }
 
