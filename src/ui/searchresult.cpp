@@ -10,12 +10,10 @@
 #include "../core/config.h"
 #include "./ui_searchresult.h"
 
-SearchResult::SearchResult(const std::shared_ptr<Result>& result,
-                           const Input& input, const QString& argument,
+SearchResult::SearchResult(FeatureObject* object, const QString& text,
                            int index, QWidget* parent)
     : QWidget{parent},
       index_{index},
-      input_{input},
       parent_width_{parent->width()},
       ui_{std::make_unique<Ui::SearchResult>()} {
   ui_->setupUi(this);
@@ -43,21 +41,20 @@ SearchResult::SearchResult(const std::shared_ptr<Result>& result,
   ui_->description->setMouseTracking(true);
   ui_->shortcut->setMouseTracking(true);
 
-  SetPixmap(result->GetPixmap());
-  SetTitle(result->FormatTitle(argument));
-  SetDescription(result->GetDescription());
+  SetIcon(object->GetIcon());
+  SetTitle(object->GetTitle());
+  SetDescription(object->GetDescription());
   SetShortcut(index);
 
-  auto interactable = result.get();
-  connect(this, &SearchResult::Dragged, interactable, &Interactable::Drag);
-  connect(this, &SearchResult::KeyPressed, interactable,
-          &Interactable::ProcessKeyPress);
-  connect(this, &SearchResult::KeyReleased, interactable,
-          &Interactable::ProcessKeyRelease);
-  connect(interactable, &Interactable::Dragged, this, &SearchResult::Drop);
-  connect(interactable, &Interactable::NewDescriptionRequested, this,
+  connect(this, &SearchResult::Dragged, object, &FeatureObject::Drag);
+  connect(this, &SearchResult::KeyPressed, object,
+          &FeatureObject::ProcessKeyPress);
+  connect(this, &SearchResult::KeyReleased, object,
+          &FeatureObject::ProcessKeyRelease);
+  connect(object, &FeatureObject::Dragged, this, &SearchResult::Drop);
+  connect(object, &FeatureObject::NewDescriptionRequested, this,
           &SearchResult::SetDescription);
-  connect(interactable, &Interactable::NewTitleRequested, this,
+  connect(object, &FeatureObject::NewTitleRequested, this,
           &SearchResult::SetTitle);
 }
 
@@ -73,7 +70,7 @@ void SearchResult::SetDescription(const QString& description) const {
   ui_->description->show();
 }
 
-void SearchResult::SetPixmap(const QPixmap& pixmap) const {
+void SearchResult::SetIcon(const QPixmap& pixmap) const {
   // If the height of the icon is greater than the fixed height of the search
   // result, the icon height will take precedence over the fixed height, thus
   // overriding the fixed height.
@@ -127,13 +124,13 @@ void SearchResult::Drop(const QString& text) {
 
 void SearchResult::ProcessKeyPress(const QKeyCombination& combination) {
   if (is_selected_) {
-    emit KeyPressed(combination, input_);
+    emit KeyPressed(combination);
   }
 }
 
 void SearchResult::ProcessKeyRelease(const QKeyCombination& combination) {
   if (is_selected_) {
-    emit KeyReleased(combination, input_);
+    emit KeyReleased(combination);
   }
 }
 

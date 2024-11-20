@@ -7,10 +7,8 @@
 #include <QResizeEvent>
 #include <QString>
 #include <QWidget>
-#include <memory>
 
-#include "../core/input.h"
-#include "../models/result.h"
+#include "../core/objects/featureobject.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,14 +20,13 @@ class SearchResult : public QWidget {
   Q_OBJECT
 
  public:
-  explicit SearchResult(const std::shared_ptr<Result>& result,
-                        const Input& input, const QString& argument, int index,
+  explicit SearchResult(FeatureObject* object, const QString& text, int index,
                         QWidget* parent = nullptr);
 
   ~SearchResult();
 
   void SetDescription(const QString& description) const;
-  void SetPixmap(const QPixmap& pixmap) const;
+  void SetIcon(const QPixmap& pixmap) const;
   void SetShortcut(int row);
   void SetShortcut(const QString& text) const;
   void SetTitle(const QString& title) const;
@@ -44,8 +41,8 @@ class SearchResult : public QWidget {
 
  signals:
   void Dragged();
-  void KeyPressed(const QKeyCombination& combination, const Input& input);
-  void KeyReleased(const QKeyCombination& combination, const Input& input);
+  void KeyPressed(const QKeyCombination& combination);
+  void KeyReleased(const QKeyCombination& combination);
 
  protected:
   void resizeEvent(QResizeEvent* event) override;
@@ -59,7 +56,6 @@ class SearchResult : public QWidget {
   static const int kVerticalMargin;
 
   int index_;
-  Input input_;
   bool is_selected_;
   int parent_width_;
   QString previous_shortcut_;
