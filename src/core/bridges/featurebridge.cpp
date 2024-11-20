@@ -18,7 +18,7 @@ std::pair<QString, QString> FeatureBridge::ParseInput(
   }
 
   // Returns input split into command and argument portions.
-  auto index =
-    input.indexOf(receives_input ? model_command + " " : model_command);
-  return {input.sliced(0, index), input.sliced(index)};
+  auto command = receives_input ? model_command + " " : model_command;
+  auto argument = input.sliced(command.length());
+  return {command, argument};
 }
