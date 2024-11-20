@@ -7,8 +7,6 @@
 #include <QWidget>
 #include <memory>
 
-#include "../core/input.h"
-
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class SearchBox;
@@ -24,7 +22,7 @@ class SearchBox : public QWidget {
   ~SearchBox();
 
   int Height() const;
-  Input GetText() const;
+  QString GetText() const;
 
  public slots:
   void Clear();
@@ -33,7 +31,7 @@ class SearchBox : public QWidget {
  signals:
   void KeyPressed(const QKeyCombination& combination);
   void KeyReleased(const QKeyCombination& combination);
-  void TextChanged(const Input& input);
+  void TextChanged(const QString& text);
 
  protected:
   void keyPressEvent(QKeyEvent* event) override;
