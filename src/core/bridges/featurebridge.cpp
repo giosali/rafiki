@@ -10,8 +10,8 @@ std::pair<QString, QString> FeatureBridge::ParseInput(
     return {input, {}};
   }
 
-  // Checks commands that contain spaces and
-  // ignores models that are inputless.
+  // Checks commands that contain spaces and ignores models that are inputless.
+  // when input is provided.
   if (!input.startsWith(model_command) ||
       (!receives_input && input.length() > model_command.length())) {
     return {};
