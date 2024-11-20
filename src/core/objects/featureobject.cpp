@@ -15,11 +15,22 @@ FeatureObject::FeatureObject(const FeatureModel* model, const QString& input)
       description_{model->GetDescription()},
       icon_{model->GetIcon()},
       id_{model->GetId()} {
+  auto is_input_empty = input.isEmpty();
+
   auto title = model->GetTitle();
-  title_ = title.contains("%1") ? title.arg(input) : title;
+  if (title.contains("%1")) {
+    title_ = title.arg(is_input_empty ? model->GetTitlePlaceholder() : input);
+  } else {
+    title_ = title;
+  }
 
   auto alt_title = model->GetAltTitle();
-  alt_title_ = alt_title.contains("%1") ? alt_title.arg(input) : alt_title;
+  if (alt_title.contains("%1")) {
+    alt_title_ =
+      alt_title.arg(is_input_empty ? model->GetAltTitlePlaceholder() : input);
+  } else {
+    alt_title_ = alt_title;
+  }
 }
 
 QString FeatureObject::GetDescription() const { return description_; }
