@@ -7,11 +7,13 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets Network LinguistTools)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Network LinguistTools)
+
+include_directories(${PROJECT_SOURCE_DIR}/include)
 
 set(RES_FILES
     data/resources.qrc
@@ -20,31 +22,45 @@ set(RES_FILES
 set(TS_FILES translations/${CMAKE_PROJECT_NAME}_en.ts)
 
 set(PROJECT_SOURCES
-        src/core/autocompleter.cpp
+        src/core/bridges/applicationbridge.cpp
+        src/core/bridges/calculatorbridge.cpp
+        src/core/bridges/featurebridge.cpp
+        src/core/bridges/filesystementrybridge.cpp
+        src/core/bridges/trashbridge.cpp
+        src/core/bridges/urlbridge.cpp
+        src/core/bridges/websearchbridge.cpp
+        src/core/models/applicationmodel.cpp
+        src/core/models/calculatormodel.cpp
+        src/core/models/featuremodel.cpp
+        src/core/models/filesystementrymodel.cpp
+        src/core/models/trashmodel.cpp
+        src/core/models/urlmodel.cpp
+        src/core/models/websearchmodel.cpp
+        src/core/objects/applicationobject.cpp
+        src/core/objects/calculatorobject.cpp
+        src/core/objects/featureobject.cpp
+        src/core/objects/filesystementryobject.cpp
+        src/core/objects/trashobject.cpp
+        src/core/objects/urlobject.cpp
+        src/core/objects/websearchobject.cpp
+        src/core/visitors/featurevisitable.cpp
+        src/core/visitors/featurevisitor.cpp
+        src/core/visitors/objectvisitor.cpp
         src/core/client.cpp
         src/core/config.cpp
-        src/core/crud.cpp
         src/core/crypto.cpp
+        src/core/fetcher.cpp
+        src/core/file.cpp
         src/core/finder.cpp
-        src/core/id.cpp
-        src/core/inifile.cpp
+        src/core/indexer.cpp
         src/core/input.cpp
-        src/core/io.cpp
         src/core/paths.cpp
         src/core/server.cpp
+        src/core/settings.cpp
         src/core/shuntingyardalgorithm.cpp
         src/core/urlparser.cpp
+        src/core/utilities.cpp
         src/main.cpp
-        src/models/application.cpp
-        src/models/calculator.cpp
-        src/models/filesystementry.cpp
-        src/models/interactable.cpp
-        src/models/processedresult.cpp
-        src/models/processedresultbuilder.cpp
-        src/models/result.cpp
-        src/models/trash.cpp
-        src/models/url.cpp
-        src/models/websearch.cpp
         src/ui/interactivelabel.cpp
         src/ui/mainwindow.cpp
         src/ui/mainwindow.ui
@@ -61,15 +77,6 @@ set(PROJECT_SOURCES
         ${RES_FILES}
         ${TS_FILES}
 )
-
-# https://cmake.org/cmake/help/latest/variable/CMAKE_SYSTEM_NAME.html
-if(CMAKE_SYSTEM_NAME STREQUAL "Linux")
-    set(PROJECT_SOURCES
-        ${PROJECT_SOURCES}
-        src/gnulinux/desktopentry.cpp
-        src/gnulinux/io.cpp
-    )
-endif()
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(${CMAKE_PROJECT_NAME}
