@@ -44,6 +44,8 @@ void SearchBox::keyPressEvent(QKeyEvent* event) {
     case Qt::Key_6:
       emit KeyPressed(combination);
       break;
+    default:
+      break;
   }
 }
 
@@ -52,6 +54,8 @@ void SearchBox::keyReleaseEvent(QKeyEvent* event) {
   switch (combination.key()) {
     case Qt::Key_Alt:
       emit KeyReleased(combination);
+      break;
+    default:
       break;
   }
 }
