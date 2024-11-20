@@ -1,14 +1,16 @@
 #include "indexer.h"
 
-#include "../models/application.h"
-#include "../models/calculator.h"
-#include "../models/filesystementry.h"
-#include "../models/trash.h"
-#include "../models/url.h"
-#include "../models/websearch.h"
+#include <utility>
+
 #include "INIReader.h"
 #include "fetcher.h"
 #include "file.h"
+#include "models/applicationmodel.h"
+#include "models/calculatormodel.h"
+#include "models/filesystementrymodel.h"
+#include "models/trashmodel.h"
+#include "models/urlmodel.h"
+#include "models/websearchmodel.h"
 #include "paths.h"
 #include "settings.h"
 
@@ -18,14 +20,20 @@ Indexer& Indexer::GetInstance() {
   return instance;
 }
 
-std::unordered_map<uint64_t, std::shared_ptr<Result>> Indexer::GetResultsMap()
-  const {
-  return results_map_;
+std::unordered_set<uint64_t> Indexer::GetIds(const std::string& input) const {
+  auto ids = std::unordered_set<uint64_t>{};
+
+  auto range = models_trie_.equal_prefix_range(input);
+  for (auto it = range.first; it != range.second; ++it) {
+    auto value = it.value();
+    ids.insert(value.begin(), value.end());
+  }
+
+  return ids;
 }
 
-tsl::htrie_map<char, std::unordered_set<uint64_t>> Indexer::GetResultsTrie()
-  const {
-  return results_trie_;
+FeatureModel* Indexer::GetModel(uint64_t id) const {
+  return models_map_.at(id).get();
 }
 
 void Indexer::Initialize() {
@@ -34,7 +42,7 @@ void Indexer::Initialize() {
   settings.Update(document);
 
   IndexApplications();
-  IndexGenericResults();
+  IndexGenericModels();
   IndexWebSearches();
 }
 
@@ -56,40 +64,35 @@ void Indexer::IndexApplications() {
     }
 
     // Maps ID to Application instance.
-    auto application = std::make_shared<Application>(path, reader);
-    IndexResult(application);
+    IndexModel(std::make_unique<ApplicationModel>(path, reader));
   }
 }
 
-void Indexer::IndexGenericResults() {
-  auto calculator = std::make_shared<Calculator>();
-  auto file_system_entry = std::make_shared<FileSystemEntry>();
-  auto trash = std::make_shared<Trash>();
-  auto url = std::make_shared<Url>();
-
-  IndexResult(calculator);
-  IndexResult(file_system_entry);
-  IndexResult(trash);
-  IndexResult(url);
-}
-
-void Indexer::IndexResult(const std::shared_ptr<Result>& result) {
+void Indexer::IndexModel(std::unique_ptr<FeatureModel> model) {
   // Maps ID to Result instance.
-  auto id = result->GetId();
-  results_map_.insert({id, result});
+  auto id = model->GetId();
 
-  // Inserts Result ID into tokens of Result.
-  auto tokens = result->Tokenize();
+  // Inserts Result ID into tokens of Result. This must be done prior to moving
+  // the unique_ptr to the model.
+  auto tokens = model->Tokenize();
   for (const auto& token : tokens) {
-    auto pair = results_trie_.insert(token, std::unordered_set<uint64_t>{});
+    auto pair = models_trie_.insert(token, std::unordered_set<uint64_t>{});
     pair.first->insert(id);
   }
+
+  models_map_.insert({id, std::move(model)});
+}
+
+void Indexer::IndexGenericModels() {
+  IndexModel(std::make_unique<CalculatorModel>());
+  IndexModel(std::make_unique<FileSystemEntryModel>());
+  IndexModel(std::make_unique<TrashModel>());
+  IndexModel(std::make_unique<UrlModel>());
 }
 
 void Indexer::IndexWebSearches() {
   auto fetcher = Fetcher{};
   for (const auto& object : fetcher.FetchWebSearchObjects()) {
-    auto web_search = std::make_shared<WebSearch>(object);
-    IndexResult(web_search);
+    IndexModel(std::make_unique<WebSearchModel>(object));
   }
 }

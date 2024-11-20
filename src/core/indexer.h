@@ -6,14 +6,14 @@
 #include <unordered_map>
 #include <unordered_set>
 
-#include "../models/result.h"
+#include "models/featuremodel.h"
 #include "tsl/htrie_map.h"
 
 class Indexer final {
  public:
   static Indexer& GetInstance();
-  std::unordered_map<uint64_t, std::shared_ptr<Result>> GetResultsMap() const;
-  tsl::htrie_map<char, std::unordered_set<uint64_t>> GetResultsTrie() const;
+  std::unordered_set<uint64_t> GetIds(const std::string& input) const;
+  FeatureModel* GetModel(uint64_t id) const;
   void Initialize();
 
  private:
@@ -21,13 +21,13 @@ class Indexer final {
   Indexer(const Indexer&) = delete;
 
   void IndexApplications();
-  void IndexGenericResults();
-  void IndexResult(const std::shared_ptr<Result>& result);
+  void IndexModel(std::unique_ptr<FeatureModel> model);
+  void IndexGenericModels();
   void IndexWebSearches();
   Indexer operator=(const Indexer&) = delete;
 
-  std::unordered_map<uint64_t, std::shared_ptr<Result>> results_map_{};
-  tsl::htrie_map<char, std::unordered_set<uint64_t>> results_trie_{};
+  std::unordered_map<uint64_t, std::unique_ptr<FeatureModel>> models_map_{};
+  tsl::htrie_map<char, std::unordered_set<uint64_t>> models_trie_{};
 };
 
 #endif  // INDEXER_H
