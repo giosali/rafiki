@@ -22,9 +22,10 @@ std::vector<std::shared_ptr<FeatureObject>> FileSystemEntryBridge::ProcessInput(
 
   // Converts found std::filesystem::path objects into FileSystemEntryObject
   // objects.
-  const auto paths =
-    finder_.Search(input.sliced(command.length()).toStdString());
-  for (size_t i = 0; i < paths.size(); ++i) {
+  auto paths = finder_.Search(input.sliced(command.length()).toStdString());
+  auto paths_size = paths.size();
+  objects.reserve(paths_size);
+  for (size_t i = 0; i < paths_size; ++i) {
     objects.push_back(std::make_shared<FileSystemEntryObject>(model, paths[i]));
   }
 
