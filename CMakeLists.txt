@@ -53,7 +53,6 @@ set(PROJECT_SOURCES
         src/core/file.cpp
         src/core/finder.cpp
         src/core/indexer.cpp
-        src/core/input.cpp
         src/core/paths.cpp
         src/core/server.cpp
         src/core/settings.cpp
