@@ -51,13 +51,10 @@ set(PROJECT_SOURCES
         src/core/crypto.cpp
         src/core/fetcher.cpp
         src/core/file.cpp
-        src/core/finder.cpp
         src/core/indexer.cpp
         src/core/paths.cpp
         src/core/server.cpp
         src/core/settings.cpp
-        src/core/shuntingyardalgorithm.cpp
-        src/core/urlparser.cpp
         src/core/utilities.cpp
         src/main.cpp
         src/ui/interactivelabel.cpp
