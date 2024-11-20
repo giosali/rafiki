@@ -13,9 +13,8 @@
 #include <vector>
 
 #include "../core/indexer.h"
-#include "../core/input.h"
+#include "../core/objects/featureobject.h"
 #include "../core/settings.h"
-#include "../models/result.h"
 #include "mainwindow.h"
 #include "searchbox.h"
 
@@ -31,28 +30,26 @@ class SearchResultList : public QListWidget {
   void ActivateItem(QListWidgetItem* item);
   void AdjustSize(int height);
   void CheckSelectedItem(QListWidgetItem* current, QListWidgetItem* previous);
-  void ProcessInput(const Input& input);
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
-  void ProcessResults(const std::vector<std::shared_ptr<Result>>& results,
-                      const Input& input, const QString& argument,
-                      bool set_row_to_zero);
+  void ProcessObjects(std::vector<std::shared_ptr<FeatureObject>> objects,
+                      const QString& text, bool set_row_to_zero);
+  void ProcessText(const QString& text);
   void SetUserSelectedItem(bool value);
 
  signals:
   void ItemDragged();
-  void InputReceived(const Input& input);
   void ItemsChanged(int height);
   void KeyPressReceived(const QKeyCombination& combination);
   void KeyReleaseReceived(const QKeyCombination& combination);
+  void TextReceived(const QString& input);
 
  protected:
   void mouseMoveEvent(QMouseEvent* event) override;
   void mousePressEvent(QMouseEvent* event) override;
 
  private:
-  void AddItem(const std::shared_ptr<Result>& result, const Input& input,
-               const QString& argument, int index);
+  void AddItem(FeatureObject* object, const QString& text, int index);
   int Height() const;
 
   bool entered_;
@@ -68,12 +65,11 @@ class Worker : public QObject {
   Q_OBJECT
 
  public slots:
-  void ProcessInput(const Input& input);
+  void ProcessText(const QString& text);
 
  signals:
-  void ResultsReadied(const std::vector<std::shared_ptr<Result>>& results,
-                      const Input& input, const QString& text,
-                      bool set_row_to_zero);
+  void ObjectsReadied(std::vector<std::shared_ptr<FeatureObject>> objects,
+                      const QString& text, bool set_row_to_zero);
 
  private:
   Indexer& indexer_{Indexer::GetInstance()};

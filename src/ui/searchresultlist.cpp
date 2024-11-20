@@ -12,6 +12,8 @@
 #include <cstdlib>
 
 #include "../core/config.h"
+#include "../core/models/featuremodel.h"
+#include "../core/visitors/objectvisitor.h"
 #include "searchresult.h"
 #include "searchresultitem.h"
 
@@ -77,14 +79,14 @@ void SearchResultList::CheckSelectedItem(QListWidgetItem* current,
   }
 }
 
-void SearchResultList::ProcessInput(const Input& input) {
+void SearchResultList::ProcessText(const QString& text) {
   // This is necessary for when CPU intensive operations are currently underway.
   // Most of the time, this will be redundant.
   worker_thread_.exit();
 
   entered_ = false;
 
-  if (input.IsEmpty()) {
+  if (text.isEmpty()) {
     clear();                      // Helps prevent flicker.
     user_selected_item_ = false;  // Resets.
     emit ItemsChanged(Height());
@@ -96,13 +98,13 @@ void SearchResultList::ProcessInput(const Input& input) {
 
   worker->moveToThread(&worker_thread_);
   connect(&worker_thread_, &QThread::finished, worker, &QObject::deleteLater);
-  connect(this, &SearchResultList::InputReceived, worker,
-          &searchresultlist::Worker::ProcessInput);
-  connect(worker, &searchresultlist::Worker::ResultsReadied, this,
-          &SearchResultList::ProcessResults);
+  connect(this, &SearchResultList::TextReceived, worker,
+          &searchresultlist::Worker::ProcessText);
+  connect(worker, &searchresultlist::Worker::ObjectsReadied, this,
+          &SearchResultList::ProcessObjects);
   worker_thread_.start();
 
-  emit InputReceived(input);
+  emit TextReceived(text);
 }
 
 void SearchResultList::ProcessKeyPress(const QKeyCombination& combination) {
@@ -141,9 +143,9 @@ void SearchResultList::ProcessKeyRelease(const QKeyCombination& combination) {
   emit KeyReleaseReceived(combination);
 }
 
-void SearchResultList::ProcessResults(
-  const std::vector<std::shared_ptr<Result>>& results, const Input& input,
-  const QString& argument, bool set_row_to_zero) {
+void SearchResultList::ProcessObjects(
+  std::vector<std::shared_ptr<FeatureObject>> objects, const QString& text,
+  bool set_row_to_zero) {
   if (set_row_to_zero) {
     user_selected_item_ = false;
   }
@@ -153,8 +155,8 @@ void SearchResultList::ProcessResults(
       current_row == -1 || !user_selected_item_) {
     clear();  // Helps prevent flicker.
 
-    for (size_t i = 0; i < results.size(); ++i) {
-      AddItem(results[i], input, argument, i);
+    for (size_t i = 0; i < objects.size(); ++i) {
+      AddItem(objects[i].get(), text, i);
     }
   } else {
     auto current_id =
@@ -166,11 +168,11 @@ void SearchResultList::ProcessResults(
     // match.
     bool found_id = false;
 
-    for (size_t i = 0; i < results.size(); ++i) {
-      auto result = results[i];
-      AddItem(result, input, argument, i);
+    for (size_t i = 0; i < objects.size(); ++i) {
+      auto object = objects[i].get();
+      AddItem(object, text, i);
 
-      if (!found_id && result->GetId() == current_id) {
+      if (!found_id && object->GetId() == current_id) {
         row = i;
         found_id = true;
       }
@@ -238,10 +240,10 @@ void SearchResultList::mousePressEvent(QMouseEvent* event) {
   QListWidget::mousePressEvent(event);
 }
 
-void SearchResultList::AddItem(const std::shared_ptr<Result>& result,
-                               const Input& input, const QString& argument,
+void SearchResultList::AddItem(FeatureObject* object, const QString& text,
                                int index) {
-  auto widget = new SearchResult(result, input, argument, index, this);
+  auto widget = new SearchResult{object, text, index, this};
+
   connect(verticalScrollBar(), &QScrollBar::valueChanged, widget,
           &SearchResult::UpdateShortcut);
   connect(this, &QListWidget::currentRowChanged, widget,
@@ -252,12 +254,11 @@ void SearchResultList::AddItem(const std::shared_ptr<Result>& result,
   connect(this, &SearchResultList::KeyReleaseReceived, widget,
           &SearchResult::ProcessKeyRelease);
 
-  auto interactable = result.get();
-  connect(interactable, &Interactable::NewSearchBoxTextRequested, search_box_,
+  connect(object, &FeatureObject::NewSearchBoxTextRequested, search_box_,
           &SearchBox::SetText);
-  connect(interactable, &Interactable::Hidden, main_window_, &MainWindow::Hide);
+  connect(object, &FeatureObject::Hidden, main_window_, &MainWindow::Hide);
 
-  auto item = new SearchResultItem(result->GetId(), this);
+  auto item = new SearchResultItem(object->GetId(), this);
 
   // Sets the actual height of search result items and prevents unusual sizing
   // differences between items.
@@ -278,7 +279,7 @@ int SearchResultList::Height() const {
 }
 
 namespace searchresultlist {
-void Worker::ProcessInput(const Input& input) {
+void Worker::ProcessText(const QString& text) {
   // When the user:
   // - ***is just now*** receiving default search results
   // - deletes all input
@@ -288,38 +289,38 @@ void Worker::ProcessInput(const Input& input) {
   // --> Reselect the previously selected item.
   static bool last_results_were_defaults = false;
 
-  // Handles query processing.
-  auto ids = std::unordered_set<uint64_t>{};
-  auto trie = indexer_.GetResultsTrie();
-  auto range =
-    trie.equal_prefix_range(input.ToString().toLower().toStdString());
-  for (auto it = range.first; it != range.second; ++it) {
-    auto value = it.value();
-    ids.insert(value.begin(), value.end());
+  // Attempts to extract everything before the first space character and use
+  // that as a key for the trie containing the models.
+  auto command = text.toLower().toStdString();
+  if (auto i = command.find(' '); i != std::string::npos) {
+    command = command.substr(0, i);
   }
 
-  auto results = std::vector<std::shared_ptr<Result>>{};
-  results.reserve(ids.size());
-  auto results_map = indexer_.GetResultsMap();
+  // Handles query processing.
+  auto ids = indexer_.GetIds(command);
+  auto visitor = ObjectVisitor{text};
   for (auto id : ids) {
-    results.push_back(results_map[id]);
+    auto model = indexer_.GetModel(id);
+    model->Accept(visitor);
   }
+
+  auto objects = visitor.GetFeatureObjects();
 
   // Handles the results of query processing.
-  if (results.empty()) {
+  if (objects.empty()) {
     const auto default_ids = settings_.GetDefaultSearchResultIds();
     for (size_t i = 0; i < default_ids.size(); ++i) {
-      auto id = default_ids[i];
-      results.push_back(results_map[id]);
+      auto model = indexer_.GetModel(default_ids[i]);
+      model->Accept(visitor);
     }
 
+    objects = visitor.GetFeatureObjects();
+
     // `results` are default results
-    emit ResultsReadied(results, input, input.ToString(),
-                        !last_results_were_defaults);
+    emit ObjectsReadied(objects, text, !last_results_were_defaults);
     last_results_were_defaults = true;
   } else {
-    emit ResultsReadied(results, input, input.Argument(),
-                        last_results_were_defaults);
+    emit ObjectsReadied(objects, text, last_results_were_defaults);
     last_results_were_defaults = false;
   }
 }
