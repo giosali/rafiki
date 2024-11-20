@@ -17,15 +17,13 @@ FeatureObject::FeatureObject(const FeatureModel* model, const QString& input)
       id_{model->GetId()} {
   auto is_input_empty = input.isEmpty();
 
-  auto title = model->GetTitle();
-  if (title.contains("%1")) {
+  if (auto title = model->GetTitle(); title.contains("%1")) {
     title_ = title.arg(is_input_empty ? model->GetTitlePlaceholder() : input);
   } else {
     title_ = title;
   }
 
-  auto alt_title = model->GetAltTitle();
-  if (alt_title.contains("%1")) {
+  if (auto alt_title = model->GetAltTitle(); alt_title.contains("%1")) {
     alt_title_ =
       alt_title.arg(is_input_empty ? model->GetAltTitlePlaceholder() : input);
   } else {
