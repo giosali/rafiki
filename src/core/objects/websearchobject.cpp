@@ -17,8 +17,9 @@ void WebSearchObject::Drag() {}
 void WebSearchObject::ProcessKeyPress(const QKeyCombination& combination) {
   switch (combination.key()) {
     case Qt::Key_Tab:
-      if (command_ != model_->FormatCommand()) {
-        emit NewSearchBoxTextRequested(command_);
+      if (auto formatted_command = model_->FormatCommand();
+          command_ != formatted_command) {
+        emit NewSearchBoxTextRequested(formatted_command);
       }
 
       break;
