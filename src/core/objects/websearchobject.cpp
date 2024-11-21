@@ -40,12 +40,11 @@ void WebSearchObject::ProcessKeyPress(const QKeyCombination& combination) {
       }
 
       // Means arg is equal to: QString{""}.
-      if (argument_.isEmpty()) {
-        break;
+      if (!argument_.isEmpty()) {
+        emit Hidden();
+        QDesktopServices::openUrl(QUrl{url.arg(argument_)});
       }
 
-      emit Hidden();
-      QDesktopServices::openUrl(QUrl{url.arg(argument_)});
       break;
     }
     case Qt::Key_Alt:
