@@ -143,9 +143,9 @@ void SearchResultList::ProcessKeyRelease(const QKeyCombination& combination) {
   emit KeyReleaseReceived(combination);
 }
 
-void SearchResultList::ProcessObjects(
-  std::vector<std::shared_ptr<FeatureObject>> objects, const QString& text,
-  bool set_row_to_zero) {
+void SearchResultList::ProcessObjects(std::vector<FeatureObject*> objects,
+                                      const QString& text,
+                                      bool set_row_to_zero) {
   if (set_row_to_zero) {
     user_selected_item_ = false;
   }
@@ -156,7 +156,7 @@ void SearchResultList::ProcessObjects(
     clear();  // Helps prevent flicker.
 
     for (size_t i = 0; i < objects.size(); ++i) {
-      AddItem(objects[i].get(), text, i);
+      AddItem(objects[i], text, i);
     }
   } else {
     auto current_id =
@@ -169,7 +169,7 @@ void SearchResultList::ProcessObjects(
     bool found_id = false;
 
     for (size_t i = 0; i < objects.size(); ++i) {
-      auto object = objects[i].get();
+      auto object = objects[i];
       AddItem(object, text, i);
 
       if (!found_id && object->GetId() == current_id) {

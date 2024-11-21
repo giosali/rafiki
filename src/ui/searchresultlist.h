@@ -9,7 +9,6 @@
 #include <QPointF>
 #include <QString>
 #include <QThread>
-#include <memory>
 #include <vector>
 
 #include "../core/indexer.h"
@@ -32,8 +31,8 @@ class SearchResultList : public QListWidget {
   void CheckSelectedItem(QListWidgetItem* current, QListWidgetItem* previous);
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
-  void ProcessObjects(std::vector<std::shared_ptr<FeatureObject>> objects,
-                      const QString& text, bool set_row_to_zero);
+  void ProcessObjects(std::vector<FeatureObject*> objects, const QString& text,
+                      bool set_row_to_zero);
   void ProcessText(const QString& text);
   void SetUserSelectedItem(bool value);
 
@@ -68,8 +67,8 @@ class Worker : public QObject {
   void ProcessText(const QString& text);
 
  signals:
-  void ObjectsReadied(std::vector<std::shared_ptr<FeatureObject>> objects,
-                      const QString& text, bool set_row_to_zero);
+  void ObjectsReadied(std::vector<FeatureObject*> objects, const QString& text,
+                      bool set_row_to_zero);
 
  private:
   Indexer& indexer_{Indexer::GetInstance()};
