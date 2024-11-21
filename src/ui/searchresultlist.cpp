@@ -315,11 +315,18 @@ void Worker::ProcessText(const QString& text) {
     }
 
     objects = visitor.GetFeatureObjects();
+    for (const auto& i : objects) {
+      i->moveToThread(QApplication::instance()->thread());
+    }
 
     // `results` are default results
     emit ObjectsReadied(objects, text, !last_results_were_defaults);
     last_results_were_defaults = true;
   } else {
+    for (const auto& i : objects) {
+      i->moveToThread(QApplication::instance()->thread());
+    }
+
     emit ObjectsReadied(objects, text, last_results_were_defaults);
     last_results_were_defaults = false;
   }
