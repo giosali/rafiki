@@ -5,7 +5,7 @@
 #include "../models/urlmodel.h"
 #include "../objects/urlobject.h"
 
-std::vector<std::shared_ptr<FeatureObject>> UrlBridge::ProcessInput(
+std::vector<FeatureObject*> UrlBridge::ProcessInput(
   const FeatureModel* feature_model, const QString& input) {
   auto parser = UrlParser{input};
   if (!parser.IsValid()) {
@@ -13,9 +13,7 @@ std::vector<std::shared_ptr<FeatureObject>> UrlBridge::ProcessInput(
   }
 
   auto model = static_cast<const UrlModel*>(feature_model);
-  auto objects = std::vector<std::shared_ptr<FeatureObject>>{};
-  objects.push_back(std::make_shared<UrlObject>(model, parser.Url()));
-  return objects;
+  return {new UrlObject{model, parser.Url()}};
 }
 
 UrlBridge::UrlParser::UrlParser(const QString& url) : url_{url.trimmed()} {

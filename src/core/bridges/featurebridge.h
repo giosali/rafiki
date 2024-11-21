@@ -1,7 +1,6 @@
 #pragma once
 
 #include <QString>
-#include <memory>
 #include <utility>
 #include <vector>
 
@@ -11,7 +10,7 @@ class FeatureModel;
 
 class FeatureBridge {
  public:
-  virtual std::vector<std::shared_ptr<FeatureObject>> ProcessInput(
+  virtual std::vector<FeatureObject*> ProcessInput(
     const FeatureModel* feature_model, const QString& input) = 0;
 
  protected:

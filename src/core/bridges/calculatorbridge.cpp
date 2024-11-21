@@ -10,7 +10,7 @@
 #include "../models/calculatormodel.h"
 #include "../objects/calculatorobject.h"
 
-std::vector<std::shared_ptr<FeatureObject>> CalculatorBridge::ProcessInput(
+std::vector<FeatureObject*> CalculatorBridge::ProcessInput(
   const FeatureModel* feature_model, const QString& input) {
   auto result =
     CalculatorBridge::ShuntingYardAlgorithm::TryParse(input.toStdString());
@@ -18,10 +18,8 @@ std::vector<std::shared_ptr<FeatureObject>> CalculatorBridge::ProcessInput(
     return {};
   }
 
-  auto objects = std::vector<std::shared_ptr<FeatureObject>>{};
   auto model = static_cast<const CalculatorModel*>(feature_model);
-  objects.push_back(std::make_shared<CalculatorObject>(model, result.value()));
-  return objects;
+  return {new CalculatorObject{model, result.value()}};
 }
 
 std::optional<std::string> CalculatorBridge::ShuntingYardAlgorithm::TryParse(

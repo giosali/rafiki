@@ -6,17 +6,17 @@
 #include "../objects/filesystementryobject.h"
 #include "../utilities.h"
 
-std::vector<std::shared_ptr<FeatureObject>> FileSystemEntryBridge::ProcessInput(
+std::vector<FeatureObject*> FileSystemEntryBridge::ProcessInput(
   const FeatureModel* feature_model, const QString& input) {
   auto model = static_cast<const FileSystemEntryModel*>(feature_model);
   auto command = model->GetCommand();
 
-  auto objects = std::vector<std::shared_ptr<FeatureObject>>{};
+  auto objects = std::vector<FeatureObject*>{};
 
   // Returns a basic informational result since the current input is equal to
   // the command.
   if (input == command) {
-    objects.push_back(std::make_shared<FileSystemEntryObject>(model));
+    objects.push_back(new FileSystemEntryObject{model});
     return objects;
   }
 
@@ -26,7 +26,7 @@ std::vector<std::shared_ptr<FeatureObject>> FileSystemEntryBridge::ProcessInput(
   auto paths_size = paths.size();
   objects.reserve(paths_size);
   for (size_t i = 0; i < paths_size; ++i) {
-    objects.push_back(std::make_shared<FileSystemEntryObject>(model, paths[i]));
+    objects.push_back(new FileSystemEntryObject{model, paths[i]});
   }
 
   return objects;

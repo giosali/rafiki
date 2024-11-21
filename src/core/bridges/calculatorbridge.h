@@ -8,8 +8,8 @@
 
 class CalculatorBridge final : public FeatureBridge {
  public:
-  std::vector<std::shared_ptr<FeatureObject>> ProcessInput(
-    const FeatureModel* feature_model, const QString& input) override;
+  std::vector<FeatureObject*> ProcessInput(const FeatureModel* feature_model,
+                                           const QString& input) override;
 
  private:
   class ShuntingYardAlgorithm {
