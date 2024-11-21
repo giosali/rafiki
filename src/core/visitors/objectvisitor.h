@@ -1,6 +1,5 @@
 #pragma once
 
-#include <memory>
 #include <vector>
 
 #include "../bridges/featurebridge.h"
@@ -17,9 +16,9 @@ class ObjectVisitor final : public FeatureVisitor {
   void Visit(TrashModel* model) override;
   void Visit(UrlModel* model) override;
   void Visit(WebSearchModel* model) override;
-  std::vector<std::shared_ptr<FeatureObject>> GetFeatureObjects();
+  std::vector<FeatureObject*> GetFeatureObjects();
 
  private:
-  std::vector<std::shared_ptr<FeatureObject>> feature_objects_{};
+  std::vector<FeatureObject*> feature_objects_{};
   QString input_{};
 };
