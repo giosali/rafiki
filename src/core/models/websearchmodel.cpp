@@ -16,6 +16,7 @@ WebSearchModel::WebSearchModel(const QJsonObject& object)
 
   if (object.contains("alt")) {
     auto alt = object["alt"].toObject();
+    SetAltTitle(alt["title"].toString());
     alt_url_ = alt["url"].toString();
   }
 
