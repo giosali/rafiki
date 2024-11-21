@@ -55,6 +55,7 @@ class SearchResult : public QWidget {
   static const int kShortcutRightMargin;
   static const int kVerticalMargin;
 
+  FeatureObject* feature_object_{nullptr};
   int index_;
   bool is_selected_;
   int parent_width_;

@@ -13,6 +13,7 @@
 SearchResult::SearchResult(FeatureObject* object, const QString& text,
                            int index, QWidget* parent)
     : QWidget{parent},
+      feature_object_{object},
       index_{index},
       parent_width_{parent->width()},
       ui_{std::make_unique<Ui::SearchResult>()} {
@@ -58,7 +59,7 @@ SearchResult::SearchResult(FeatureObject* object, const QString& text,
           &SearchResult::SetTitle);
 }
 
-SearchResult::~SearchResult() {}
+SearchResult::~SearchResult() { delete feature_object_; }
 
 void SearchResult::SetDescription(const QString& description) const {
   if (description.isEmpty()) {
