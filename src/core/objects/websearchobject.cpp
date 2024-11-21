@@ -48,7 +48,10 @@ void WebSearchObject::ProcessKeyPress(const QKeyCombination& combination) {
       break;
     }
     case Qt::Key_Alt:
-      emit NewTitleRequested(GetAltTitle());
+      if (auto alt_title = GetAltTitle(); !alt_title.isNull()) {
+        emit NewTitleRequested(alt_title);
+      }
+
       break;
     default:
       break;
