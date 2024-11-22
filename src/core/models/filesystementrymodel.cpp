@@ -9,6 +9,7 @@
 FileSystemEntryModel::FileSystemEntryModel()
     : FeatureModel{std::make_unique<FileSystemEntryBridge>()} {
   SetAltDescription("Show in folder");
+  SetCommand("'");
   SetDescription("Search for files on your PC and open");
   SetIcon(Paths::GetPath(Paths::Image::kFileSystemEntry));
   SetId(17);
