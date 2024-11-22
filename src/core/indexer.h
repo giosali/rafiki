@@ -26,6 +26,7 @@ class Indexer final {
   void IndexWebSearches();
   Indexer operator=(const Indexer&) = delete;
 
+  std::unordered_set<uint64_t> commandless_ids_{};
   std::unordered_map<uint64_t, std::unique_ptr<FeatureModel>> models_map_{};
   tsl::htrie_map<char, std::unordered_set<uint64_t>> models_trie_{};
 };

@@ -21,7 +21,9 @@ Indexer& Indexer::GetInstance() {
 }
 
 std::unordered_set<uint64_t> Indexer::GetIds(const std::string& input) const {
-  auto ids = std::unordered_set<uint64_t>{};
+  // Includes ids from models that don't contain a command by default.
+  auto ids = std::unordered_set<uint64_t>{commandless_ids_.begin(),
+                                          commandless_ids_.end()};
 
   auto range = models_trie_.equal_prefix_range(input);
   for (auto it = range.first; it != range.second; ++it) {
@@ -72,12 +74,16 @@ void Indexer::IndexModel(std::unique_ptr<FeatureModel> model) {
   // Maps ID to Result instance.
   auto id = model->GetId();
 
-  // Inserts Result ID into tokens of Result. This must be done prior to moving
-  // the unique_ptr to the model.
-  auto tokens = model->Tokenize();
-  for (const auto& token : tokens) {
-    auto pair = models_trie_.insert(token, std::unordered_set<uint64_t>{});
-    pair.first->insert(id);
+  if (model->GetCommand().isNull()) {
+    commandless_ids_.insert(id);
+  } else {
+    // Inserts Result ID into tokens of Result. This must be done prior to
+    // moving the unique_ptr to the model.
+    auto tokens = model->Tokenize();
+    for (const auto& token : tokens) {
+      auto pair = models_trie_.insert(token, std::unordered_set<uint64_t>{});
+      pair.first->insert(id);
+    }
   }
 
   models_map_.insert({id, std::move(model)});
