@@ -6,6 +6,10 @@
 #include "../config.h"
 #include "../paths.h"
 
+QString FeatureModel::FormatCommand() const {
+  return ReceivesInput() ? command_ + " " : command_;
+}
+
 FeatureModel::FeatureModel(std::unique_ptr<FeatureBridge> bridge)
     : feature_bridge_{std::move(bridge)} {}
 
@@ -13,10 +17,6 @@ bool FeatureModel::ReceivesInput() const { return title_.contains("%1"); }
 
 std::unordered_set<std::string> FeatureModel::Tokenize() const {
   return std::unordered_set<std::string>{command_.toLower().toStdString()};
-}
-
-QString FeatureModel::FormatCommand() const {
-  return ReceivesInput() ? command_ + " " : command_;
 }
 
 QString FeatureModel::GetAltDescription() const { return alt_description_; }

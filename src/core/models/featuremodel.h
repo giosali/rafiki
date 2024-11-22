@@ -17,9 +17,9 @@ class FeatureModel : public FeatureVisitable {
 
   virtual ~FeatureModel() = default;
 
+  virtual QString FormatCommand() const;
   virtual bool ReceivesInput() const;
   virtual std::unordered_set<std::string> Tokenize() const;
-  QString FormatCommand() const;
   QString GetAltTitle() const;
   QString GetAltTitlePlaceholder() const;
   QString GetAltDescription() const;
