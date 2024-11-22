@@ -7,5 +7,6 @@ class FileSystemEntryModel final : public FeatureModel {
   FileSystemEntryModel();
 
   void Accept(FeatureVisitor& v) override;
+  QString FormatCommand() const override;
   bool ReceivesInput() const override;
 };
