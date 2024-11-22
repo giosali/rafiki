@@ -17,3 +17,5 @@ FileSystemEntryModel::FileSystemEntryModel()
 }
 
 void FileSystemEntryModel::Accept(FeatureVisitor& v) { v.Visit(this); }
+
+bool FileSystemEntryModel::ReceivesInput() const { return true; }

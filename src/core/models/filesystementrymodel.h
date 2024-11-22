@@ -7,4 +7,5 @@ class FileSystemEntryModel final : public FeatureModel {
   FileSystemEntryModel();
 
   void Accept(FeatureVisitor& v) override;
+  bool ReceivesInput() const override;
 };
