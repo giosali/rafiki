@@ -5,11 +5,9 @@
 #include <Qt>
 
 WebSearchObject::WebSearchObject(const WebSearchModel* model,
-                                 const QString& command,
-                                 const QString& argument)
-    : FeatureObject{model, argument},
+                                 const QString& input, const QString& argument)
+    : FeatureObject{model, input, argument},
       argument_{argument},
-      command_{command},
       model_{model} {}
 
 void WebSearchObject::Drag() {}
@@ -17,11 +15,7 @@ void WebSearchObject::Drag() {}
 void WebSearchObject::ProcessKeyPress(const QKeyCombination& combination) {
   switch (combination.key()) {
     case Qt::Key_Tab:
-      if (auto formatted_command = model_->FormatCommand();
-          command_ != formatted_command) {
-        emit NewSearchBoxTextRequested(formatted_command);
-      }
-
+      FeatureObject::ProcessKeyPress(combination);
       break;
     case Qt::Key_Return: {
       auto url = combination.keyboardModifiers() & Qt::AltModifier

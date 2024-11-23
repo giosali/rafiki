@@ -7,7 +7,7 @@ class WebSearchObject final : public FeatureObject {
   Q_OBJECT
 
  public:
-  WebSearchObject(const WebSearchModel* model, const QString& command,
+  WebSearchObject(const WebSearchModel* model, const QString& input,
                   const QString& argument);
 
  public slots:
@@ -17,6 +17,5 @@ class WebSearchObject final : public FeatureObject {
 
  private:
   QString argument_{};
-  QString command_{};
   const WebSearchModel* model_{nullptr};
 };
