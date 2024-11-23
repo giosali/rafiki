@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QStandardPaths>
 #include <filesystem>
 #include <set>
 #include <string>
@@ -41,5 +42,20 @@ class FileSystemEntryBridge final : public FeatureBridge {
   static const std::unordered_map<std::string, std::pair<QString, QString>>
     kMimeTypePairs;
 
-  Finder finder_{};
+  Finder finder_{
+    QStandardPaths::writableLocation(QStandardPaths::HomeLocation)
+      .toStdString(),
+    10,
+    {QStandardPaths::writableLocation(QStandardPaths::DesktopLocation)
+       .toStdString(),
+     QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation)
+       .toStdString(),
+     QStandardPaths::writableLocation(QStandardPaths::DownloadLocation)
+       .toStdString(),
+     QStandardPaths::writableLocation(QStandardPaths::MusicLocation)
+       .toStdString(),
+     QStandardPaths::writableLocation(QStandardPaths::MoviesLocation)
+       .toStdString(),
+     QStandardPaths::writableLocation(QStandardPaths::PicturesLocation)
+       .toStdString()}};
 };
