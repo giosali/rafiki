@@ -15,7 +15,7 @@ void Settings::Update(const QJsonDocument& document) {
     return;
   }
 
-  if (auto it = object.find("defaultSearchResults"); it != object.end()) {
+  if (auto it = object.find("defaultModels"); it != object.end()) {
     auto array = it.value().toArray();
 
     auto temp_ids = std::vector<uint64_t>{};
@@ -25,7 +25,7 @@ void Settings::Update(const QJsonDocument& document) {
       temp_ids.push_back(value.toInt());
     }
 
-    default_search_result_ids_ = temp_ids;
+    default_feature_model_ids_ = temp_ids;
   }
 
   if (auto it = object.find("runOnStartup"); it != object.end()) {
@@ -35,8 +35,8 @@ void Settings::Update(const QJsonDocument& document) {
   }
 }
 
-std::vector<uint64_t> Settings::GetDefaultSearchResultIds() const {
-  return default_search_result_ids_;
+std::vector<uint64_t> Settings::GetDefaultFeatureModelIds() const {
+  return default_feature_model_ids_;
 }
 
 bool Settings::GetRunOnStartup() const { return run_on_startup_; }
