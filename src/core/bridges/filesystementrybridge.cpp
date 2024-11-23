@@ -9,21 +9,24 @@
 std::vector<FeatureObject*> FileSystemEntryBridge::ProcessInput(
   const FeatureModel* feature_model, const QString& input) {
   auto model = static_cast<const FileSystemEntryModel*>(feature_model);
-  auto command = model->GetCommand();
 
-  auto objects = std::vector<FeatureObject*>{};
+  auto pair = ParseInput(input, model->FormatCommand(), model->ReceivesInput());
+  auto [command, argument] = pair;
+  if (command.isEmpty() && argument.isEmpty()) {
+    return {};
+  }
 
   // Returns a basic informational result since the current input is equal to
   // the command.
-  if (input == command) {
-    objects.push_back(new FileSystemEntryObject{model});
-    return objects;
+  if (argument.isEmpty()) {
+    return {new FileSystemEntryObject{model}};
   }
 
   // Converts found std::filesystem::path objects into FileSystemEntryObject
   // objects.
-  auto paths = finder_.Search(input.sliced(command.length()).toStdString());
+  auto paths = finder_.Search(argument.toStdString());
   auto paths_size = paths.size();
+  auto objects = std::vector<FeatureObject*>{};
   objects.reserve(paths_size);
   for (size_t i = 0; i < paths_size; ++i) {
     objects.push_back(new FileSystemEntryObject{model, paths[i]});
