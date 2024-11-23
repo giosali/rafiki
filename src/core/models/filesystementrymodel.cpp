@@ -18,6 +18,4 @@ FileSystemEntryModel::FileSystemEntryModel()
 
 void FileSystemEntryModel::Accept(FeatureVisitor& v) { v.Visit(this); }
 
-QString FileSystemEntryModel::FormatCommand() const { return GetCommand(); }
-
 bool FileSystemEntryModel::ReceivesInput() const { return true; }
