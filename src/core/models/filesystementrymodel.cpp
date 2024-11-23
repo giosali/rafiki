@@ -9,7 +9,7 @@
 FileSystemEntryModel::FileSystemEntryModel()
     : FeatureModel{std::make_unique<FileSystemEntryBridge>()} {
   SetAltDescription("Show in folder");
-  SetCommand("'");
+  SetCommand(kCommand);
   SetDescription("Search for files on your PC and open");
   SetIcon(Paths::GetPath(Paths::Image::kFileSystemEntry));
   SetId(17);
@@ -19,3 +19,5 @@ FileSystemEntryModel::FileSystemEntryModel()
 void FileSystemEntryModel::Accept(FeatureVisitor& v) { v.Visit(this); }
 
 bool FileSystemEntryModel::ReceivesInput() const { return true; }
+
+const QString FileSystemEntryModel::kCommand{"'"};
