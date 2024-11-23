@@ -14,6 +14,8 @@ class FeatureObject : public QObject {
  public:
   explicit FeatureObject(const FeatureModel* model);
   explicit FeatureObject(const FeatureModel* model, const QString& input);
+  explicit FeatureObject(const FeatureModel* model, const QString& input,
+                         const QString& argument);
 
   virtual ~FeatureObject() = default;
 
@@ -25,7 +27,7 @@ class FeatureObject : public QObject {
 
  public slots:
   virtual void Drag() = 0;
-  virtual void ProcessKeyPress(const QKeyCombination& combination) = 0;
+  virtual void ProcessKeyPress(const QKeyCombination& combination);
   virtual void ProcessKeyRelease(const QKeyCombination& combination) = 0;
 
  signals:
@@ -49,5 +51,7 @@ class FeatureObject : public QObject {
   QString description_{};
   QPixmap icon_{};
   uint64_t id_{};
+  QString input_{};
+  const FeatureModel* model_{nullptr};
   QString title_{};
 };

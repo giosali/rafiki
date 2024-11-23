@@ -1,5 +1,7 @@
 #include "featureobject.h"
 
+#include <Qt>
+
 #include "../models/featuremodel.h"
 
 FeatureObject::FeatureObject(const FeatureModel* model)
@@ -8,24 +10,39 @@ FeatureObject::FeatureObject(const FeatureModel* model)
       description_{model->GetDescription()},
       icon_{model->GetIcon()},
       id_{model->GetId()},
+      model_{model},
       title_{model->GetTitle()} {}
 
 FeatureObject::FeatureObject(const FeatureModel* model, const QString& input)
     : alt_description_{model->GetAltDescription()},
+      alt_title_{model->GetAltTitle()},
       description_{model->GetDescription()},
       icon_{model->GetIcon()},
-      id_{model->GetId()} {
-  auto is_input_empty = input.isEmpty();
+      id_{model->GetId()},
+      input_{input},
+      model_{model},
+      title_{model->GetTitle()} {}
+
+FeatureObject::FeatureObject(const FeatureModel* model, const QString& input,
+                             const QString& argument)
+    : alt_description_{model->GetAltDescription()},
+      description_{model->GetDescription()},
+      icon_{model->GetIcon()},
+      id_{model->GetId()},
+      input_{input},
+      model_{model} {
+  auto is_argument_empty = argument.isEmpty();
 
   if (auto title = model->GetTitle(); title.contains("%1")) {
-    title_ = title.arg(is_input_empty ? model->GetTitlePlaceholder() : input);
+    title_ =
+      title.arg(is_argument_empty ? model->GetTitlePlaceholder() : argument);
   } else {
     title_ = title;
   }
 
   if (auto alt_title = model->GetAltTitle(); alt_title.contains("%1")) {
-    alt_title_ =
-      alt_title.arg(is_input_empty ? model->GetAltTitlePlaceholder() : input);
+    alt_title_ = alt_title.arg(
+      is_argument_empty ? model->GetAltTitlePlaceholder() : argument);
   } else {
     alt_title_ = alt_title;
   }
@@ -38,6 +55,20 @@ QPixmap FeatureObject::GetIcon() const { return icon_; }
 uint64_t FeatureObject::GetId() const { return id_; }
 
 QString FeatureObject::GetTitle() const { return title_; }
+
+void FeatureObject::ProcessKeyPress(const QKeyCombination& combination) {
+  switch (combination.key()) {
+    case Qt::Key_Tab:
+      if (auto formatted_command = model_->FormatCommand();
+          !input_.startsWith(formatted_command)) {
+        emit NewSearchBoxTextRequested(formatted_command);
+      }
+
+      break;
+    default:
+      break;
+  }
+}
 
 QString FeatureObject::GetAltDescription() const { return alt_description_; }
 
