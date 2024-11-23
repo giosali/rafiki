@@ -11,7 +11,8 @@ class FileSystemEntryObject final : public FeatureObject {
  public:
   explicit FileSystemEntryObject(const FileSystemEntryModel* model);
   explicit FileSystemEntryObject(const FileSystemEntryModel* model,
-                                 const std::filesystem::path& path);
+                                 const std::filesystem::path& path,
+                                 const QString& input);
 
  public slots:
   void Drag() override;
