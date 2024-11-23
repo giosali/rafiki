@@ -17,8 +17,10 @@ class ObjectVisitor final : public FeatureVisitor {
   void Visit(UrlModel* model) override;
   void Visit(WebSearchModel* model) override;
   std::vector<FeatureObject*> GetFeatureObjects();
+  void SetNoParse(bool value);
 
  private:
   std::vector<FeatureObject*> feature_objects_{};
   QString input_{};
+  bool no_parse_{false};
 };
