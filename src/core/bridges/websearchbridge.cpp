@@ -6,8 +6,7 @@
 std::vector<FeatureObject*> WebSearchBridge::ProcessInput(
   const FeatureModel* feature_model, const QString& input) {
   auto model = static_cast<const WebSearchModel*>(feature_model);
-  auto pair = ParseInput(model->GetCommand(), input, model->ReceivesInput());
-
+  auto pair = ParseInput(input, model->FormatCommand(), model->ReceivesInput());
   if (auto [command, argument] = pair;
       command.isEmpty() && argument.isEmpty()) {
     return {};
