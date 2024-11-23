@@ -10,6 +10,8 @@ class FeatureModel;
 
 class FeatureBridge {
  public:
+  virtual std::vector<FeatureObject*> PassInput(
+    const FeatureModel* feature_model, const QString& input) const;
   virtual std::vector<FeatureObject*> ProcessInput(
     const FeatureModel* feature_model, const QString& input) = 0;
 

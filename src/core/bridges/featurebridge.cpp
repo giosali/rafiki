@@ -1,5 +1,10 @@
 #include "featurebridge.h"
 
+std::vector<FeatureObject*> FeatureBridge::PassInput(
+  const FeatureModel* feature_model, const QString& input) const {
+  return {};
+}
+
 std::pair<QString, QString> FeatureBridge::ParseInput(
   const QString& input, const QString& formatted_command,
   bool receives_input) const {
