@@ -39,6 +39,10 @@ uint64_t FeatureObject::GetId() const { return id_; }
 
 QString FeatureObject::GetTitle() const { return title_; }
 
+QString FeatureObject::GetAltDescription() const { return alt_description_; }
+
+QString FeatureObject::GetAltTitle() const { return alt_title_; }
+
 void FeatureObject::SetDescription(const QString& value) {
   description_ = value;
 }
@@ -48,7 +52,3 @@ void FeatureObject::SetIcon(const QPixmap& value) { icon_ = value; }
 void FeatureObject::SetId(uint64_t value) { id_ = value; }
 
 void FeatureObject::SetTitle(const QString& value) { title_ = value; }
-
-QString FeatureObject::GetAltDescription() const { return alt_description_; }
-
-QString FeatureObject::GetAltTitle() const { return alt_title_; }
