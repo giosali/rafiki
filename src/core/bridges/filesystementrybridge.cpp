@@ -29,7 +29,7 @@ std::vector<FeatureObject*> FileSystemEntryBridge::ProcessInput(
   auto objects = std::vector<FeatureObject*>{};
   objects.reserve(paths_size);
   for (size_t i = 0; i < paths_size; ++i) {
-    objects.push_back(new FileSystemEntryObject{model, paths[i]});
+    objects.push_back(new FileSystemEntryObject{model, paths[i], input});
   }
 
   return objects;
