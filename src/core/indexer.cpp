@@ -25,7 +25,14 @@ std::unordered_set<uint64_t> Indexer::GetIds(const std::string& input) const {
   auto ids = std::unordered_set<uint64_t>{commandless_ids_.begin(),
                                           commandless_ids_.end()};
 
-  auto range = models_trie_.equal_prefix_range(input);
+  auto index = input.find_first_not_of(' ');
+  auto trimmed_input = index == std::string::npos ? input : input.substr(index);
+  if (trimmed_input.empty()) {
+    // Returns an empty set which will force default results to be shown.
+    return {};
+  }
+
+  auto range = models_trie_.equal_prefix_range(trimmed_input);
   for (auto it = range.first; it != range.second; ++it) {
     auto value = it.value();
     ids.insert(value.begin(), value.end());
