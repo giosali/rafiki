@@ -2,6 +2,7 @@
 
 #include <Qt>
 
+#include "../core/models/filesystementrymodel.h"
 #include "./ui_searchbox.h"
 
 SearchBox::SearchBox(QWidget* parent)
@@ -9,8 +10,15 @@ SearchBox::SearchBox(QWidget* parent)
   ui_->setupUi(this);
   setFixedHeight(Height());
 
-  connect(ui_->searchBox, &QLineEdit::textChanged,
-          [this](const QString& text) { emit TextChanged(text); });
+  connect(ui_->searchBox, &QLineEdit::textChanged, [this](const QString& text) {
+    // This block is exclusively for the FileSystemEntryObject.
+    if (text == " ") {
+      ui_->searchBox->setText(FileSystemEntryModel::kCommand + " ");
+      return;
+    }
+
+    emit TextChanged(text);
+  });
 }
 
 SearchBox::~SearchBox() {}
