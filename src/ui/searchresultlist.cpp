@@ -309,7 +309,7 @@ void Worker::ProcessText(const QString& text) {
   // Handles the results of query processing.
   if (objects.empty()) {
     visitor.SetNoParse(true);
-    const auto default_ids = settings_.GetDefaultSearchResultIds();
+    const auto default_ids = settings_.GetDefaultFeatureModelIds();
     for (size_t i = 0; i < default_ids.size(); ++i) {
       auto model = indexer_.GetModel(default_ids[i]);
       model->Accept(visitor);
