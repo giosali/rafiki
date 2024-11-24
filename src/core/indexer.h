@@ -6,6 +6,7 @@
 #include <memory>
 #include <unordered_map>
 #include <unordered_set>
+#include <vector>
 
 #include "models/featuremodel.h"
 #include "tsl/htrie_map.h"
@@ -15,6 +16,18 @@ class Indexer final {
   static Indexer& GetInstance();
   std::unordered_set<uint64_t> GetIds(const QString& input) const;
   FeatureModel* GetModel(uint64_t id) const;
+  template <typename T>
+  std::vector<T*> GetModels() const {
+    auto models = std::vector<T*>{};
+    for (const auto& pair : models_map_) {
+      auto model = pair.second.get();
+      if (auto check = dynamic_cast<T*>(model); check != nullptr) {
+        models.push_back(check);
+      }
+    }
+
+    return models;
+  }
   void Initialize();
 
  private:
