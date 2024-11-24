@@ -25,17 +25,21 @@ include_directories(
 set(PROJECT_SOURCES
     ../src/core/bridges/calculatorbridge.cpp
     ../src/core/bridges/featurebridge.cpp
+    ../src/core/bridges/urlbridge.cpp
     ../src/core/bridges/websearchbridge.cpp
     ../src/core/models/calculatormodel.cpp
     ../src/core/models/featuremodel.cpp
+    ../src/core/models/urlmodel.cpp
     ../src/core/models/websearchmodel.cpp
     ../src/core/objects/calculatorobject.cpp
     ../src/core/objects/featureobject.cpp
+    ../src/core/objects/urlobject.cpp
     ../src/core/objects/websearchobject.cpp
     ../src/core/config.cpp
     ../src/core/paths.cpp
-    core/bridges/websearchbridge_test.cpp
     core/bridges/calculatorbridge_test.cpp
+    core/bridges/urlbridge_test.cpp
+    core/bridges/websearchbridge_test.cpp
     main.cpp
 )
 
