@@ -15,7 +15,7 @@ void ApplicationObject::Drag() {}
 void ApplicationObject::ProcessKeyPress(const QKeyCombination& combination) {
   switch (combination.key()) {
     case Qt::Key_Tab:
-      emit NewSearchBoxTextRequested(GetTitle());
+      FeatureObject::ProcessKeyPress(combination);
       break;
     case Qt::Key_Return: {
       if (combination.keyboardModifiers() & Qt::AltModifier) {
