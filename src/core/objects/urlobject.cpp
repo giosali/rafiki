@@ -2,7 +2,6 @@
 
 #include <QDesktopServices>
 #include <QUrl>
-#include <Qt>
 
 UrlObject::UrlObject(const UrlModel* model, const QString& url)
     : FeatureObject{model}, model_{model} {

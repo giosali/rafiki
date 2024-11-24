@@ -2,7 +2,6 @@
 
 #include <QDesktopServices>
 #include <QUrl>
-#include <Qt>
 
 WebSearchObject::WebSearchObject(const WebSearchModel* model,
                                  const QString& input, const QString& argument)

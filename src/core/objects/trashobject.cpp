@@ -1,6 +1,5 @@
 #include "trashobject.h"
 
-#include <Qt>
 #include <cstdlib>
 #include <iterator>
 #include <system_error>

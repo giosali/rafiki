@@ -3,7 +3,6 @@
 #include <QClipboard>
 #include <QGuiApplication>
 #include <QLocale>
-#include <Qt>
 
 CalculatorObject::CalculatorObject(const CalculatorModel* model,
                                    const std::string& value)
