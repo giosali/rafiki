@@ -1,5 +1,6 @@
 #include "indexer.h"
 
+#include <string>
 #include <utility>
 
 #include "INIReader.h"
@@ -20,19 +21,29 @@ Indexer& Indexer::GetInstance() {
   return instance;
 }
 
-std::unordered_set<uint64_t> Indexer::GetIds(const std::string& input) const {
-  // Includes ids from models that don't contain a command by default.
-  auto ids = std::unordered_set<uint64_t>{commandless_ids_.begin(),
-                                          commandless_ids_.end()};
+std::unordered_set<uint64_t> Indexer::GetIds(const QString& input) const {
+  auto key = input.toLower().toStdString();
 
-  auto index = input.find_first_not_of(' ');
-  auto trimmed_input = index == std::string::npos ? input : input.substr(index);
-  if (trimmed_input.empty()) {
-    // Returns an empty set which will force default results to be shown.
+  // Trims left side of input.
+  if (auto i = key.find_first_not_of(' '); i != std::string::npos) {
+    key = key.substr(i);
+  }
+
+  // Returns an empty set which will force default results to be shown.
+  if (key.empty()) {
     return {};
   }
 
-  auto range = models_trie_.equal_prefix_range(trimmed_input);
+  // Attempts to extract everything before the first space character and use
+  // that as a key for the trie containing the models.
+  if (auto i = key.find(' '); i != std::string::npos) {
+    key = key.substr(0, i);
+  }
+
+  // Includes ids from models that don't contain a command by default.
+  auto ids = commandless_ids_;
+
+  auto range = models_trie_.equal_prefix_range(key);
   for (auto it = range.first; it != range.second; ++it) {
     auto value = it.value();
     ids.insert(value.begin(), value.end());
@@ -78,14 +89,13 @@ void Indexer::IndexApplications() {
 }
 
 void Indexer::IndexModel(std::unique_ptr<FeatureModel> model) {
-  // Maps ID to Result instance.
   auto id = model->GetId();
 
   if (model->GetCommand().isNull()) {
     commandless_ids_.insert(id);
   } else {
-    // Inserts Result ID into tokens of Result. This must be done prior to
-    // moving the unique_ptr to the model.
+    // Inserts Result ID into tokens of FeatureModel. This must be done prior
+    // to moving the unique_ptr to the model.
     auto tokens = model->Tokenize();
     for (const auto& token : tokens) {
       auto pair = models_trie_.insert(token, std::unordered_set<uint64_t>{});
@@ -93,6 +103,7 @@ void Indexer::IndexModel(std::unique_ptr<FeatureModel> model) {
     }
   }
 
+  // Maps ID to FeatureModel instance.
   models_map_.insert({id, std::move(model)});
 }
 

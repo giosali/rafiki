@@ -1,9 +1,9 @@
 #ifndef INDEXER_H
 #define INDEXER_H
 
+#include <QString>
 #include <cstdint>
 #include <memory>
-#include <string>
 #include <unordered_map>
 #include <unordered_set>
 
@@ -13,7 +13,7 @@
 class Indexer final {
  public:
   static Indexer& GetInstance();
-  std::unordered_set<uint64_t> GetIds(const std::string& input) const;
+  std::unordered_set<uint64_t> GetIds(const QString& input) const;
   FeatureModel* GetModel(uint64_t id) const;
   void Initialize();
 
