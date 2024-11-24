@@ -29,6 +29,7 @@ class FeatureModel : public FeatureVisitable {
   QPixmap GetIcon() const;
   QString GetIconPath() const;
   uint64_t GetId() const;
+  bool GetIsEnabled() const;
   QString GetTitle() const;
   QString GetTitlePlaceholder() const;
 
@@ -41,6 +42,7 @@ class FeatureModel : public FeatureVisitable {
   void SetIcon(const QIcon& value);
   void SetIcon(const QString& value);
   void SetId(uint64_t value);
+  void SetIsEnabled(bool value);
   void SetTitle(const QString& value);
   void SetTitlePlaceholder(const QString& value);
 
@@ -54,6 +56,7 @@ class FeatureModel : public FeatureVisitable {
   QPixmap icon_{};
   QString icon_path_{};
   uint64_t id_{};
+  bool is_enabled_{true};
   QString title_{};
   QString title_placeholder_{};
 };
