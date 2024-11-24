@@ -12,6 +12,7 @@ class WebSearchModel final : public FeatureModel {
   void Accept(FeatureVisitor& v) override;
   bool ReceivesInput() const override;
   QString GetAltUrl() const;
+  bool GetIsCustom() const;
   QString GetUrl() const;
 
  private:

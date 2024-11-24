@@ -31,4 +31,6 @@ bool WebSearchModel::ReceivesInput() const { return url_.contains("%1"); }
 
 QString WebSearchModel::GetAltUrl() const { return alt_url_; }
 
+bool WebSearchModel::GetIsCustom() const { return is_custom_; }
+
 QString WebSearchModel::GetUrl() const { return url_; }
