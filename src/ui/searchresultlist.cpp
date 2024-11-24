@@ -289,17 +289,9 @@ void Worker::ProcessText(const QString& text) {
   // --> Reselect the previously selected item.
   static bool last_results_were_defaults = false;
 
-  // Attempts to extract everything before the first space character and use
-  // that as a key for the trie containing the models.
-  auto command = text.toLower().toStdString();
-  if (auto i = command.find(' '); i != std::string::npos) {
-    command = command.substr(0, i);
-  }
-
   // Handles query processing.
-  auto ids = indexer_.GetIds(command);
   auto visitor = ObjectVisitor{text};
-  for (auto id : ids) {
+  for (auto id : indexer_.GetIds(text)) {
     auto model = indexer_.GetModel(id);
     model->Accept(visitor);
   }
