@@ -17,6 +17,8 @@ SearchResult::SearchResult(FeatureObject* object, const QString& text,
       index_{index},
       parent_width_{parent->width()},
       ui_{std::make_unique<Ui::SearchResult>()} {
+  feature_object_->setParent(this);
+
   ui_->setupUi(this);
 
   // Padding around the search result.
@@ -59,7 +61,7 @@ SearchResult::SearchResult(FeatureObject* object, const QString& text,
           &SearchResult::SetTitle);
 }
 
-SearchResult::~SearchResult() { delete feature_object_; }
+SearchResult::~SearchResult() {}
 
 void SearchResult::SetDescription(const QString& description) const {
   if (description.isEmpty()) {
