@@ -308,6 +308,8 @@ void Worker::ProcessText(const QString& text) {
     }
 
     objects = visitor.GetFeatureObjects();
+
+    // TODO: find more efficient way of moving QObject instead of looping.
     for (const auto& i : objects) {
       i->moveToThread(QApplication::instance()->thread());
     }
@@ -316,6 +318,7 @@ void Worker::ProcessText(const QString& text) {
     emit ObjectsReadied(objects, text, !last_results_were_defaults);
     last_results_were_defaults = true;
   } else {
+    // TODO: find more efficient way of moving QObject instead of looping.
     for (const auto& i : objects) {
       i->moveToThread(QApplication::instance()->thread());
     }
