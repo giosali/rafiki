@@ -7,8 +7,6 @@
 #include <QSystemTrayIcon>
 #include <memory>
 
-#include "settingswindow.h"
-
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class MainWindow;
@@ -19,27 +17,27 @@ class MainWindow : public QMainWindow {
   Q_OBJECT
 
  public:
-  MainWindow(QWidget *parent = nullptr);
+  MainWindow(QWidget* parent = nullptr);
 
   ~MainWindow();
 
  public slots:
   void Hide();
+  void OpenSettingsWindow();
   void ProcessActivationReason(QSystemTrayIcon::ActivationReason reason);
-  void ProcessCommandLineArguments(const QString &args);
+  void ProcessCommandLineArguments(const QString& args);
   void SetHeight(int height);
 
  signals:
   void Deactivated();
 
  protected:
-  bool event(QEvent *event) override;
+  bool event(QEvent* event) override;
 
  private:
   void CreateTrayIcon();
   void ToggleVisibility();
 
-  std::unique_ptr<SettingsWindow> settings_window_;
   std::unique_ptr<Ui::MainWindow> ui_;
 };
 #endif  // MAINWINDOW_H

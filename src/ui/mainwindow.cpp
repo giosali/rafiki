@@ -15,11 +15,10 @@
 #include "./ui_mainwindow.h"
 #include "searchbox.h"
 #include "searchresultlist.h"
+#include "settingswindow.h"
 
 MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow{parent},
-      settings_window_{std::make_unique<SettingsWindow>(this)},
-      ui_{std::make_unique<Ui::MainWindow>()} {
+    : QMainWindow{parent}, ui_{std::make_unique<Ui::MainWindow>()} {
   ui_->setupUi(this);
 
   // Prevents child widgets from changing the width of the window.
@@ -52,6 +51,11 @@ MainWindow::~MainWindow() {}
 void MainWindow::Hide() {
   hide();
   emit Deactivated();
+}
+
+void MainWindow::OpenSettingsWindow() {
+  Hide();
+  (new SettingsWindow{this})->show();
 }
 
 void MainWindow::ProcessActivationReason(
@@ -131,10 +135,8 @@ bool MainWindow::event(QEvent* event) {
 
 void MainWindow::CreateTrayIcon() {
   auto settings_action = new QAction{"Settings", this};
-  connect(settings_action, &QAction::triggered, [this]() {
-    Hide();
-    settings_window_->show();
-  });
+  connect(settings_action, &QAction::triggered, this,
+          &MainWindow::OpenSettingsWindow);
 
   auto quit_action = new QAction{"Quit", this};
   connect(quit_action, &QAction::triggered, this, &QCoreApplication::quit);
