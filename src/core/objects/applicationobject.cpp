@@ -2,7 +2,6 @@
 
 #include <QDesktopServices>
 #include <QUrl>
-#include <Qt>
 #include <cstdlib>
 #include <filesystem>
 #include <thread>
@@ -37,7 +36,10 @@ void ApplicationObject::ProcessKeyPress(const QKeyCombination& combination) {
 
       // This does not execute when running through VSCode.
       auto exec = model_->GetExec().toStdString();
-      auto t = std::jthread{[&exec]() { std::system(exec.c_str()); }};
+
+      // Needs to be passed by value rather than reference otherwise the exec
+      // will contain garbage characters/gibberish.
+      auto t = std::jthread{[exec] { std::system(exec.c_str()); }};
       t.detach();
       break;
     }
