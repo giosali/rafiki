@@ -1,38 +1,50 @@
-# Useful info: https://doc.qt.io/qt-6/qttestlib-tutorial1-example.html
-
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.30)
 
 project(test LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-find_package(Qt6 REQUIRED COMPONENTS Test)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+set(CMAKE_AUTOUIC ON)
 
-include_directories(${CMAKE_CURRENT_SOURCE_DIR}/../src)
+find_package(Qt6 REQUIRED COMPONENTS 
+    Core
+    Gui
+    Test
+    Widgets
+)
+
+include_directories(
+    ../src
+    ../include
+)
 
 set(PROJECT_SOURCES
-        ../src/core/autocompleter.cpp
-        ../src/core/autocompleter.h
-        ../src/core/input.cpp
-        ../src/core/input.h
-        ../src/core/shuntingyardalgorithm.cpp
-        ../src/core/shuntingyardalgorithm.h
-        ../src/core/urlparser.cpp
-        ../src/core/urlparser.h
-        ../src/core/utils.h
-        test_autocompleter.cpp
-        test_shuntingyardalgorithm.cpp
-        test_utils.cpp
-        test_urlparser.cpp
-        utest.h
+    ../src/core/bridges/calculatorbridge.cpp
+    ../src/core/bridges/featurebridge.cpp
+    ../src/core/bridges/websearchbridge.cpp
+    ../src/core/models/calculatormodel.cpp
+    ../src/core/models/featuremodel.cpp
+    ../src/core/models/websearchmodel.cpp
+    ../src/core/objects/calculatorobject.cpp
+    ../src/core/objects/featureobject.cpp
+    ../src/core/objects/websearchobject.cpp
+    ../src/core/config.cpp
+    ../src/core/paths.cpp
+    core/bridges/websearchbridge_test.cpp
+    core/bridges/calculatorbridge_test.cpp
+    main.cpp
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${PROJECT_SOURCES})
 
-# `target_link_libraries` must appear after `add_executable`.
-target_link_libraries(${PROJECT_NAME} PRIVATE Qt6::Test)
-
-add_custom_target(run ALL
-    COMMAND ${PROJECT_NAME}
+# Link Qt libraries. This must appear after add_executable.
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
+    Qt6::Core
+    Qt6::Gui
+    Qt6::Test
+    Qt6::Widgets
 )
