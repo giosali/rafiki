@@ -12,8 +12,8 @@
 
 std::vector<FeatureObject*> CalculatorBridge::ProcessInput(
   const FeatureModel* feature_model, const QString& input) {
-  auto result =
-    CalculatorBridge::ShuntingYardAlgorithm::TryParse(input.toStdString());
+  auto result = CalculatorBridge::ShuntingYardAlgorithm::TryParse(
+    input.trimmed().toStdString());
   if (!result.has_value()) {
     return {};
   }
