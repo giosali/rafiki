@@ -16,6 +16,8 @@ class FeatureBridge {
     const FeatureModel* feature_model, const QString& input) = 0;
 
  protected:
+  bool IsInputInvalid(const QString& input, const QString& formatted_command,
+                      bool receives_input) const;
   std::pair<QString, QString> ParseInput(const QString& input,
                                          const QString& formatted_command,
                                          bool receives_input) const;

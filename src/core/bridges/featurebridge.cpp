@@ -5,6 +5,12 @@ std::vector<FeatureObject*> FeatureBridge::PassInput(
   return {};
 }
 
+bool FeatureBridge::IsInputInvalid(const QString& input,
+                                   const QString& formatted_command,
+                                   bool receives_input) const {
+  return !receives_input && input.length() > formatted_command.length();
+}
+
 std::pair<QString, QString> FeatureBridge::ParseInput(
   const QString& input, const QString& formatted_command,
   bool receives_input) const {
@@ -15,10 +21,10 @@ std::pair<QString, QString> FeatureBridge::ParseInput(
     return {input, {}};
   }
 
-  // Checks commands that contain spaces and ignores models that are inputless.
+  // Checks commands that contain spaces and ignores models that are inputless
   // when input is provided.
   if (!input.startsWith(formatted_command) ||
-      (!receives_input && input.length() > formatted_command.length())) {
+      IsInputInvalid(input, formatted_command, receives_input)) {
     return {};
   }
 
