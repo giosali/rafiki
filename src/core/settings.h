@@ -2,6 +2,7 @@
 #define SETTINGS_H
 
 #include <QJsonDocument>
+#include <QString>
 #include <cstdint>
 #include <unordered_set>
 #include <vector>
@@ -13,6 +14,7 @@ class Settings {
   std::unordered_set<uint64_t> GetDisabledFeatureModelids() const;
   bool GetRunOnStartup() const;
   void ToggleDisabledFeatureModelId(uint64_t id);
+  void Save(const QString& path) const;
   void Update(const QJsonDocument& document);
 
  private:

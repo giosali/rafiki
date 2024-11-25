@@ -3,6 +3,8 @@
 #include <QJsonArray>
 #include <QJsonObject>
 
+#include "file.h"
+
 Settings& Settings::GetInstance() {
   // Thread-safe magic static.
   static auto instance = Settings{};
@@ -25,6 +27,31 @@ void Settings::ToggleDisabledFeatureModelId(uint64_t id) {
   } else {
     disabled_feature_model_ids_.insert(id);
   }
+}
+
+void Settings::Save(const QString& path) const {
+  auto object = QJsonObject{};
+
+  // "defaultModels"
+  auto default_models = QJsonArray{};
+  for (auto id : default_feature_model_ids_) {
+    default_models.append(QString::number(id));
+  }
+
+  object.insert("defaultModels", default_models);
+
+  // "disabledModels"
+  auto disabled_models = QJsonArray{};
+  for (auto id : disabled_feature_model_ids_) {
+    disabled_models.append(QString::number(id));
+  }
+
+  object.insert("disabledModels", disabled_models);
+
+  // "runOnStartup"
+  object.insert("runOnStartup", run_on_startup_);
+
+  File::Write(path, object);
 }
 
 void Settings::Update(const QJsonDocument& document) {
