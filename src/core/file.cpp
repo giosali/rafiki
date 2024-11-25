@@ -2,7 +2,6 @@
 
 #include <QFile>
 #include <QIODeviceBase>
-#include <QJsonDocument>
 
 QJsonDocument File::Read(Paths::Json filename) {
   auto file = QFile{Paths::GetPath(filename)};
@@ -18,7 +17,16 @@ QJsonDocument File::Read(Paths::Json filename) {
 void File::Write(const QString& path, const QJsonArray& array) {
   auto document = QJsonDocument{};
   document.setArray(array);
+  Write(path, document);
+}
 
+void File::Write(const QString& path, const QJsonObject& object) {
+  auto document = QJsonDocument{};
+  document.setObject(object);
+  Write(path, document);
+}
+
+void File::Write(const QString& path, const QJsonDocument& document) {
   auto file = QFile{path};
   file.open(QFile::WriteOnly);
   file.write(document.toJson(QJsonDocument::Compact));
