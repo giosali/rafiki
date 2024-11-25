@@ -52,6 +52,9 @@ void Settings::Save(const QString& path) const {
 
   object.insert("disabledModels", disabled_models);
 
+  // "availableId"
+  object.insert("availableId", QString::number(available_id_));
+
   File::Write(path, object);
 }
 
