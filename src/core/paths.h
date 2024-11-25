@@ -3,8 +3,6 @@
 
 #include <QSettings>
 #include <QString>
-#include <string>
-#include <unordered_map>
 
 class Paths {
  public:
@@ -34,8 +32,6 @@ class Paths {
 
  private:
   static QString Combine(const QString& p1, const QString& p2);
-
-  static std::unordered_map<std::string, QString> mimetype_icons_;
 };
 
 #endif  // PATH_H

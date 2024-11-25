@@ -82,5 +82,3 @@ QString Paths::GetPath(Json f) {
 QString Paths::Combine(const QString& p1, const QString& p2) {
   return p1.isEmpty() || p2.isEmpty() ? QString{} : p1 + "/" + p2;
 }
-
-std::unordered_map<std::string, QString> Paths::mimetype_icons_{};
