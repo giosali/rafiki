@@ -40,6 +40,7 @@ set(PROJECT_SOURCES
     core/bridges/calculatorbridge_test.cpp
     core/bridges/urlbridge_test.cpp
     core/bridges/websearchbridge_test.cpp
+    include/tsl/htrie_map_test.cpp
     main.cpp
 )
 
