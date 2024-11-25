@@ -21,6 +21,36 @@ Indexer& Indexer::GetInstance() {
   return instance;
 }
 
+void Indexer::DeleteModel(uint64_t id) {
+  if (!models_map_.contains(id)) {
+    return;
+  }
+
+  auto model = models_map_[id].get();
+  auto tokens = model->Tokenize();
+  for (const auto& token : tokens) {
+    auto it = models_trie_.find(token);
+    if (it == models_trie_.end()) {
+      continue;
+    }
+
+    // Gets a reference to the corresponding id set in the trie.
+    // If there is only one id in the id set, the entire set is removed.
+    // Otherwise, only the id matching the model id is removed.
+    auto& ids = it.value();
+    if (ids.size() == 1) {
+      models_trie_.erase(token);
+      continue;
+    } else {
+      ids.erase(id);
+    }
+  }
+
+  // This must be performed last because the unique_ptr to the model will be
+  // nullptr otherwise.
+  models_map_.erase(id);
+}
+
 std::unordered_set<uint64_t> Indexer::GetIds(const QString& input) const {
   auto key = input.toLower().toStdString();
 

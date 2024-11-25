@@ -14,6 +14,7 @@
 class Indexer final {
  public:
   static Indexer& GetInstance();
+  void DeleteModel(uint64_t id);
   std::unordered_set<uint64_t> GetIds(const QString& input) const;
   FeatureModel* GetModel(uint64_t id) const;
   template <typename T>
