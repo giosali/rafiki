@@ -19,6 +19,18 @@ std::unordered_set<uint64_t> Settings::GetDisabledFeatureModelids() const {
   return disabled_feature_model_ids_;
 }
 
+int Settings::GetSearchResultIconSize() const {
+  return search_result_icon_size_;
+}
+
+int Settings::GetSearchResultListMaxCount() const {
+  return search_result_list_max_count_;
+}
+
+int Settings::GetSearchResultTitleMaxHeight() const {
+  return search_result_title_max_height_;
+}
+
 void Settings::Save(const QString& path) const {
   auto object = QJsonObject{};
 
