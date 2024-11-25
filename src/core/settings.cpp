@@ -11,6 +11,8 @@ Settings& Settings::GetInstance() {
   return instance;
 }
 
+uint64_t Settings::GetAvailableId() const { return available_id_; }
+
 std::vector<uint64_t> Settings::GetDefaultFeatureModelIds() const {
   return default_feature_model_ids_;
 }
@@ -77,5 +79,9 @@ void Settings::Update(const QJsonDocument& document) {
     }
 
     default_feature_model_ids_ = temp_ids;
+  }
+
+  if (auto it = object.find("availableId"); it != object.end()) {
+    available_id_ = it.value().toString().toULongLong();
   }
 }
