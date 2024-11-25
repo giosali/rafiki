@@ -96,6 +96,11 @@ void Indexer::Initialize() {
   IndexWebSearches();
 }
 
+void Indexer::ToggleModel(uint64_t id) const {
+  auto model = models_map_.at(id).get();
+  model->SetIsEnabled(!model->GetIsEnabled());
+}
+
 void Indexer::IndexApplications() {
   auto fetcher = Fetcher{};
   for (const auto& path : fetcher.FetchDesktopEntryPaths()) {

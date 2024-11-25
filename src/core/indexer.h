@@ -30,6 +30,7 @@ class Indexer final {
     return models;
   }
   void Initialize();
+  void ToggleModel(uint64_t id) const;
 
  private:
   Indexer() = default;
