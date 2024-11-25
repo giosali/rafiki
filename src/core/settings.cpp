@@ -19,6 +19,14 @@ std::unordered_set<uint64_t> Settings::GetDisabledFeatureModelids() const {
 
 bool Settings::GetRunOnStartup() const { return run_on_startup_; }
 
+void Settings::ToggleDisabledFeatureModelId(uint64_t id) {
+  if (disabled_feature_model_ids_.contains(id)) {
+    disabled_feature_model_ids_.erase(id);
+  } else {
+    disabled_feature_model_ids_.insert(id);
+  }
+}
+
 void Settings::Update(const QJsonDocument& document) {
   auto object = document.object();
   if (object.isEmpty()) {

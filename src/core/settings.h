@@ -12,6 +12,7 @@ class Settings {
   std::vector<uint64_t> GetDefaultFeatureModelIds() const;
   std::unordered_set<uint64_t> GetDisabledFeatureModelids() const;
   bool GetRunOnStartup() const;
+  void ToggleDisabledFeatureModelId(uint64_t id);
   void Update(const QJsonDocument& document);
 
  private:
