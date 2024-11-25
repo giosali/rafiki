@@ -14,6 +14,7 @@ class WebSearchModel final : public FeatureModel {
   QString GetAltUrl() const;
   bool GetIsCustom() const;
   QString GetUrl() const;
+  QJsonObject ToJson() const;
 
  private:
   QString alt_url_{};
