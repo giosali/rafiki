@@ -47,6 +47,8 @@ QString FeatureModel::GetTitle() const { return title_; }
 
 QString FeatureModel::GetTitlePlaceholder() const { return title_placeholder_; }
 
+void FeatureModel::SetIsEnabled(bool value) { is_enabled_ = value; }
+
 void FeatureModel::SetAltDescription(const QString& value) {
   alt_description_ = value;
 }
@@ -74,8 +76,6 @@ void FeatureModel::SetIcon(const QString& value) {
 }
 
 void FeatureModel::SetId(uint64_t value) { id_ = value; }
-
-void FeatureModel::SetIsEnabled(bool value) { is_enabled_ = value; }
 
 void FeatureModel::SetTitle(const QString& value) { title_ = value; }
 

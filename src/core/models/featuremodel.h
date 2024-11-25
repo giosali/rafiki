@@ -32,6 +32,7 @@ class FeatureModel : public FeatureVisitable {
   bool GetIsEnabled() const;
   QString GetTitle() const;
   QString GetTitlePlaceholder() const;
+  void SetIsEnabled(bool value);
 
  protected:
   void SetAltDescription(const QString& value);
@@ -42,7 +43,6 @@ class FeatureModel : public FeatureVisitable {
   void SetIcon(const QIcon& value);
   void SetIcon(const QString& value);
   void SetId(uint64_t value);
-  void SetIsEnabled(bool value);
   void SetTitle(const QString& value);
   void SetTitlePlaceholder(const QString& value);
 
