@@ -7,7 +7,7 @@
 #include <QUrl>
 #include <Qt>
 
-#include "../core/config.h"
+#include "../core/settings.h"
 #include "./ui_searchresult.h"
 
 SearchResult::SearchResult(FeatureObject* object, const QString& text,
@@ -26,12 +26,13 @@ SearchResult::SearchResult(FeatureObject* object, const QString& text,
                                             kHorizontalMargin, kVerticalMargin);
 
   // Sets height of the QLabel called `icon` to the same height of its QPixmap.
-  ui_->icon->setFixedSize(Config::search_result_icon_size_,
-                          Config::search_result_icon_size_);
+  auto icon_size = Settings::GetInstance().GetSearchResultIconSize();
+  ui_->icon->setFixedSize(icon_size, icon_size);
 
   // Prevents Search Results from having different sizes when titles contain a
   // colon.
-  ui_->title->setFixedHeight(Config::search_result_title_max_height_);
+  ui_->title->setFixedHeight(
+    Settings::GetInstance().GetSearchResultTitleMaxHeight());
 
   ui_->shortcut->setContentsMargins(0, 0, kShortcutRightMargin, 0);
 
@@ -84,7 +85,7 @@ void SearchResult::SetIcon(const QPixmap& pixmap) const {
 }
 
 void SearchResult::SetShortcut(int row) {
-  if (row < Config::search_result_list_max_count_) {
+  if (row < Settings::GetInstance().GetSearchResultListMaxCount()) {
     auto text = kShortcutModifierKey + QString::number(row + 1);
     ui_->shortcut->setText(text);
 

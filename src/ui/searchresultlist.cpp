@@ -11,7 +11,6 @@
 #include <algorithm>
 #include <cstdlib>
 
-#include "../core/config.h"
 #include "../core/models/featuremodel.h"
 #include "../core/visitors/objectvisitor.h"
 #include "searchresult.h"
@@ -273,7 +272,8 @@ int SearchResultList::Height() const {
     return 0;
   }
 
-  auto min_num_rows = std::min(count(), Config::search_result_list_max_count_);
+  auto min_num_rows =
+    std::min(count(), Settings::GetInstance().GetSearchResultListMaxCount());
   auto total_height = min_num_rows * row_height;
   return total_height;
 }

@@ -3,8 +3,8 @@
 #include <QFile>
 #include <utility>
 
-#include "../config.h"
 #include "../paths.h"
+#include "../settings.h"
 
 QString FeatureModel::FormatCommand() const {
   return ReceivesInput() ? command_ + " " : command_;
@@ -66,7 +66,7 @@ void FeatureModel::SetDescription(const QString& value) {
 }
 
 void FeatureModel::SetIcon(const QIcon& value) {
-  icon_ = value.pixmap(Config::search_result_icon_size_);
+  icon_ = value.pixmap(Settings::GetInstance().GetSearchResultIconSize());
 }
 
 void FeatureModel::SetIcon(const QString& value) {
