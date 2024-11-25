@@ -13,6 +13,10 @@ std::vector<uint64_t> Settings::GetDefaultFeatureModelIds() const {
   return default_feature_model_ids_;
 }
 
+std::unordered_set<uint64_t> Settings::GetDisabledFeatureModelids() const {
+  return disabled_feature_model_ids_;
+}
+
 bool Settings::GetRunOnStartup() const { return run_on_startup_; }
 
 void Settings::Update(const QJsonDocument& document) {
