@@ -9,6 +9,12 @@ Settings& Settings::GetInstance() {
   return instance;
 }
 
+std::vector<uint64_t> Settings::GetDefaultFeatureModelIds() const {
+  return default_feature_model_ids_;
+}
+
+bool Settings::GetRunOnStartup() const { return run_on_startup_; }
+
 void Settings::Update(const QJsonDocument& document) {
   auto object = document.object();
   if (object.isEmpty()) {
@@ -20,7 +26,6 @@ void Settings::Update(const QJsonDocument& document) {
 
     auto temp_ids = std::vector<uint64_t>{};
     temp_ids.reserve(array.size());
-
     for (auto value : array) {
       temp_ids.push_back(value.toInt());
     }
@@ -34,9 +39,3 @@ void Settings::Update(const QJsonDocument& document) {
     }
   }
 }
-
-std::vector<uint64_t> Settings::GetDefaultFeatureModelIds() const {
-  return default_feature_model_ids_;
-}
-
-bool Settings::GetRunOnStartup() const { return run_on_startup_; }
