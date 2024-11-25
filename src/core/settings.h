@@ -12,7 +12,6 @@ class Settings {
   static Settings& GetInstance();
   std::vector<uint64_t> GetDefaultFeatureModelIds() const;
   std::unordered_set<uint64_t> GetDisabledFeatureModelids() const;
-  bool GetRunOnStartup() const;
   void Save(const QString& path) const;
   void ToggleDisabledFeatureModelId(uint64_t id);
   void Update(const QJsonDocument& document);
@@ -25,7 +24,6 @@ class Settings {
 
   std::vector<uint64_t> default_feature_model_ids_{1, 2, 3};
   std::unordered_set<uint64_t> disabled_feature_model_ids_{};
-  bool run_on_startup_{true};
 };
 
 #endif  // SETTINGS_H

@@ -19,8 +19,6 @@ std::unordered_set<uint64_t> Settings::GetDisabledFeatureModelids() const {
   return disabled_feature_model_ids_;
 }
 
-bool Settings::GetRunOnStartup() const { return run_on_startup_; }
-
 void Settings::Save(const QString& path) const {
   auto object = QJsonObject{};
 
@@ -39,9 +37,6 @@ void Settings::Save(const QString& path) const {
   }
 
   object.insert("disabledModels", disabled_models);
-
-  // "runOnStartup"
-  object.insert("runOnStartup", run_on_startup_);
 
   File::Write(path, object);
 }
@@ -70,11 +65,5 @@ void Settings::Update(const QJsonDocument& document) {
     }
 
     default_feature_model_ids_ = temp_ids;
-  }
-
-  if (auto it = object.find("runOnStartup"); it != object.end()) {
-    if (auto value = it.value(); value.isBool()) {
-      run_on_startup_ = value.toBool();
-    }
   }
 }
