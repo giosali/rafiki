@@ -94,6 +94,10 @@ void Indexer::Initialize() {
   IndexApplications();
   IndexGenericModels();
   IndexWebSearches();
+
+  for (auto id : settings.GetDisabledFeatureModelids()) {
+    models_map_.at(id)->SetIsEnabled(false);
+  }
 }
 
 void Indexer::ToggleModel(uint64_t id) const {
