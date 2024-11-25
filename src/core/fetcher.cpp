@@ -3,6 +3,7 @@
 #include <QJsonArray>
 #include <QStandardPaths>
 #include <algorithm>
+#include <array>
 #include <cstdlib>
 #include <string>
 #include <system_error>
@@ -69,14 +70,16 @@ std::vector<std::filesystem::path> Fetcher::FetchDesktopEntryPaths() const {
 
 std::vector<QJsonObject> Fetcher::FetchWebSearchObjects() const {
   auto objects = std::vector<QJsonObject>{};
-  auto document = File::Read(Paths::Json::kWebSearches);
-  if (!document.isArray()) {
-    return {};
-  }
-
-  for (const auto& value : document.array()) {
-    if (value.isObject()) {
-      objects.push_back(value.toObject());
+  auto paths = std::array<Paths::Json, 2>{Paths::Json::kWebSearches,
+                                          Paths::Json::kUserWebSearches};
+  for (const auto& path : paths) {
+    auto document = File::Read(path);
+    if (document.isArray()) {
+      for (const auto& value : document.array()) {
+        if (value.isObject()) {
+          objects.push_back(value.toObject());
+        }
+      }
     }
   }
 
