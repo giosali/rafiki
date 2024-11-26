@@ -86,6 +86,25 @@ FeatureModel* Indexer::GetModel(uint64_t id) const {
   return models_map_.at(id).get();
 }
 
+void Indexer::IndexModel(std::unique_ptr<FeatureModel> model) {
+  auto id = model->GetId();
+
+  if (model->GetCommand().isNull()) {
+    commandless_ids_.insert(id);
+  } else {
+    // Inserts Result ID into tokens of FeatureModel. This must be done prior
+    // to moving the unique_ptr to the model.
+    auto tokens = model->Tokenize();
+    for (const auto& token : tokens) {
+      auto pair = models_trie_.insert(token, std::unordered_set<uint64_t>{});
+      pair.first->insert(id);
+    }
+  }
+
+  // Maps ID to FeatureModel instance.
+  models_map_.insert({id, std::move(model)});
+}
+
 void Indexer::Initialize() {
   auto& settings = Settings::GetInstance();
   auto document = File::Read(Paths::Json::kUserSettings);
@@ -154,25 +173,6 @@ void Indexer::IndexApplications() {
     // Maps ID to Application instance.
     IndexModel(std::make_unique<ApplicationModel>(path, reader));
   }
-}
-
-void Indexer::IndexModel(std::unique_ptr<FeatureModel> model) {
-  auto id = model->GetId();
-
-  if (model->GetCommand().isNull()) {
-    commandless_ids_.insert(id);
-  } else {
-    // Inserts Result ID into tokens of FeatureModel. This must be done prior
-    // to moving the unique_ptr to the model.
-    auto tokens = model->Tokenize();
-    for (const auto& token : tokens) {
-      auto pair = models_trie_.insert(token, std::unordered_set<uint64_t>{});
-      pair.first->insert(id);
-    }
-  }
-
-  // Maps ID to FeatureModel instance.
-  models_map_.insert({id, std::move(model)});
 }
 
 void Indexer::IndexGenericModels() {

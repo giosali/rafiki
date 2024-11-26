@@ -29,6 +29,7 @@ class Indexer final {
 
     return models;
   }
+  void IndexModel(std::unique_ptr<FeatureModel> model);
   void Initialize();
   void ToggleModel(uint64_t id) const;
   void UpdateTrie(uint64_t id,
@@ -40,7 +41,6 @@ class Indexer final {
   Indexer(const Indexer&) = delete;
 
   void IndexApplications();
-  void IndexModel(std::unique_ptr<FeatureModel> model);
   void IndexGenericModels();
   void IndexWebSearches();
   Indexer operator=(const Indexer&) = delete;
