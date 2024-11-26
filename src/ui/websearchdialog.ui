@@ -36,7 +36,7 @@
          <item>
           <widget class="QLineEdit" name="urlLineEdit">
            <property name="placeholderText">
-            <string>https://google.com/search?q={}</string>
+            <string>https://google.com/search?q=%1</string>
            </property>
           </widget>
          </item>
@@ -54,7 +54,7 @@
             <number>40</number>
            </property>
            <property name="text">
-            <string>The curly bracket '{}' will be replaced with your query. A curly bracket is not required in the URL.</string>
+            <string>The curly bracket '%1' will be replaced with your query. A curly bracket is not required in the URL.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -78,7 +78,7 @@
          <item>
           <widget class="QLineEdit" name="titleLineEdit">
            <property name="placeholderText">
-            <string>Search Google for '{}'</string>
+            <string>Search Google for '%1'</string>
            </property>
           </widget>
          </item>
@@ -96,7 +96,7 @@
             <number>40</number>
            </property>
            <property name="text">
-            <string>The curly bracket '{}' will be replaced by either your query or the placeholder. A curly bracket is not required in the title.</string>
+            <string>The curly bracket '%1' will be replaced by either your query or the placeholder. A curly bracket is not required in the title.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
@@ -220,7 +220,7 @@
             <number>40</number>
            </property>
            <property name="text">
-            <string>This appears when the web search is selected and the Alt key is pressed. "Alt URL" and "Alt Title" are only optional if they are both empty. They can contain a curly bracket '{}'.</string>
+            <string>This appears when the web search is selected and the Alt key is pressed. "Alt URL" and "Alt Title" are only optional if they are both empty. They can contain a curly bracket '%1'.</string>
            </property>
            <property name="wordWrap">
             <bool>true</bool>
