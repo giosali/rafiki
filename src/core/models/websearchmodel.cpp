@@ -39,6 +39,8 @@ void WebSearchModel::SetAltTitle(const QString& value) {
   FeatureModel::SetAltTitle(value);
 }
 
+void WebSearchModel::SetAltUrl(const QString& value) { alt_url_ = value; }
+
 void WebSearchModel::SetCommand(const QString& value) {
   FeatureModel::SetCommand(value);
 }
