@@ -76,15 +76,10 @@ void Settings::Update(const QJsonDocument& document) {
   }
 
   if (auto it = object.find("defaultModels"); it != object.end()) {
-    auto array = it.value().toArray();
-
-    auto temp_ids = std::vector<uint64_t>{};
-    temp_ids.reserve(array.size());
-    for (auto value : array) {
-      temp_ids.push_back(value.toInt());
+    default_feature_model_ids_.clear();
+    for (auto value : it.value().toArray()) {
+      default_feature_model_ids_.push_back(value.toString().toULongLong());
     }
-
-    default_feature_model_ids_ = temp_ids;
   }
 
   if (auto it = object.find("availableId"); it != object.end()) {
