@@ -47,7 +47,6 @@ set(PROJECT_SOURCES
         src/core/visitors/featurevisitor.cpp
         src/core/visitors/objectvisitor.cpp
         src/core/client.cpp
-        src/core/config.cpp
         src/core/crypto.cpp
         src/core/fetcher.cpp
         src/core/file.cpp
