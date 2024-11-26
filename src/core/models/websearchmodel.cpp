@@ -56,20 +56,13 @@ void WebSearchModel::SetTitlePlaceholder(const QString& value) {
 }
 
 QJsonObject WebSearchModel::ToJson() const {
-  auto object = QJsonObject{};
-  object.insert("id", QString::number(GetId()));
-  object.insert("command", GetCommand());
-  object.insert("icon", GetIconPath());
-  object.insert("url", url_);
-  object.insert("title", GetTitle());
-  object.insert("placeholder", GetTitlePlaceholder());
-  object.insert("isCustom", is_custom_);
-
-  auto alt_object = QJsonObject{};
-  alt_object.insert("url", alt_url_);
-  alt_object.insert("title", GetAltTitle());
-
-  object.insert("alt", alt_object);
-
-  return object;
+  return QJsonObject{
+    {"id", QString::number(GetId())},
+    {"command", GetCommand()},
+    {"icon", GetIconPath()},
+    {"url", url_},
+    {"title", GetTitle()},
+    {"placeholder", GetTitlePlaceholder()},
+    {"isCustom", is_custom_},
+    {"alt", QJsonObject{{"url", alt_url_}, {"title", GetAltTitle()}}}};
 }
