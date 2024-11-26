@@ -58,6 +58,8 @@ void Settings::Save(const QString& path) const {
   File::Write(path, object);
 }
 
+void Settings::SetAvailableId(uint64_t value) { available_id_ = value; }
+
 void Settings::ToggleDisabledFeatureModelId(uint64_t id) {
   if (disabled_feature_model_ids_.contains(id)) {
     disabled_feature_model_ids_.erase(id);
