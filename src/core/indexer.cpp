@@ -105,6 +105,35 @@ void Indexer::ToggleModel(uint64_t id) const {
   model->SetIsEnabled(!model->GetIsEnabled());
 }
 
+void Indexer::UpdateTrie(uint64_t id,
+                         const std::unordered_set<std::string>& old_tokens,
+                         const std::unordered_set<std::string>& new_tokens) {
+  // Removes old tokens.
+  for (const auto& token : old_tokens) {
+    auto it = models_trie_.find(token);
+    if (it == models_trie_.end()) {
+      continue;
+    }
+
+    // Gets a reference to the corresponding id set in the trie.
+    // If there is only one id in the id set, the entire set is removed.
+    // Otherwise, only the id matching the model id is removed.
+    auto& ids = it.value();
+    if (ids.size() == 1) {
+      models_trie_.erase(token);
+      continue;
+    } else {
+      ids.erase(id);
+    }
+  }
+
+  // Adds new tokens.
+  for (const auto& token : new_tokens) {
+    auto pair = models_trie_.insert(token, std::unordered_set<uint64_t>{});
+    pair.first->insert(id);
+  }
+}
+
 void Indexer::IndexApplications() {
   auto fetcher = Fetcher{};
   for (const auto& path : fetcher.FetchDesktopEntryPaths()) {
