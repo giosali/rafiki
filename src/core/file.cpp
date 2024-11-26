@@ -1,6 +1,8 @@
 #include "file.h"
 
+#include <QDir>
 #include <QFile>
+#include <QFileInfo>
 #include <QIODeviceBase>
 
 QJsonDocument File::Read(Paths::Json filename) {
@@ -28,6 +30,12 @@ void File::Write(const QString& path, const QJsonObject& object) {
 
 void File::Write(const QString& path, const QJsonDocument& document) {
   auto file = QFile{path};
+
+  // Creates any missing parent directories.
+  auto info = QFileInfo{file};
+  auto dir = info.dir();
+  dir.mkpath(dir.path());
+
   file.open(QFile::WriteOnly);
   file.write(document.toJson(QJsonDocument::Compact));
 }
