@@ -35,6 +35,26 @@ bool WebSearchModel::GetIsCustom() const { return is_custom_; }
 
 QString WebSearchModel::GetUrl() const { return url_; }
 
+void WebSearchModel::SetAltTitle(const QString& value) {
+  FeatureModel::SetAltTitle(value);
+}
+
+void WebSearchModel::SetCommand(const QString& value) {
+  FeatureModel::SetCommand(value);
+}
+
+void WebSearchModel::SetIcon(const QString& value) {
+  FeatureModel::SetIcon(value);
+}
+
+void WebSearchModel::SetTitle(const QString& value) {
+  FeatureModel::SetTitle(value);
+}
+
+void WebSearchModel::SetTitlePlaceholder(const QString& value) {
+  FeatureModel::SetTitlePlaceholder(value);
+}
+
 QJsonObject WebSearchModel::ToJson() const {
   auto object = QJsonObject{};
   object.insert("id", QString::number(GetId()));
