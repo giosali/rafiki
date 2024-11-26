@@ -4,6 +4,7 @@
 #include <QJsonObject>
 
 #include "file.h"
+#include "paths.h"
 
 Settings& Settings::GetInstance() {
   // Thread-safe magic static.
@@ -33,7 +34,7 @@ int Settings::GetSearchResultTitleMaxHeight() const {
   return search_result_title_max_height_;
 }
 
-void Settings::Save(const QString& path) const {
+void Settings::Save() const {
   auto object = QJsonObject{};
 
   // "defaultModels"
@@ -55,7 +56,7 @@ void Settings::Save(const QString& path) const {
   // "availableId"
   object.insert("availableId", QString::number(available_id_));
 
-  File::Write(path, object);
+  File::Write(Paths::GetPath(Paths::Json::kUserSettings), object);
 }
 
 void Settings::SetAvailableId(uint64_t value) { available_id_ = value; }

@@ -16,7 +16,7 @@ class Settings {
   int GetSearchResultIconSize() const;
   int GetSearchResultListMaxCount() const;
   int GetSearchResultTitleMaxHeight() const;
-  void Save(const QString& path) const;
+  void Save() const;
   void SetAvailableId(uint64_t value);
   void ToggleDisabledFeatureModelId(uint64_t id);
   void Update(const QJsonDocument& document);
