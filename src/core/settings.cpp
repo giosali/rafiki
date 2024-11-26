@@ -82,6 +82,13 @@ void Settings::Update(const QJsonDocument& document) {
     }
   }
 
+  if (auto it = object.find("disabledModels"); it != object.end()) {
+    disabled_feature_model_ids_.clear();
+    for (auto value : it.value().toArray()) {
+      disabled_feature_model_ids_.insert(value.toString().toULongLong());
+    }
+  }
+
   if (auto it = object.find("availableId"); it != object.end()) {
     available_id_ = it.value().toString().toULongLong();
   }
