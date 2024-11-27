@@ -26,6 +26,7 @@ FeatureObject::FeatureObject(const FeatureModel* model, const QString& input)
 FeatureObject::FeatureObject(const FeatureModel* model, const QString& input,
                              const QString& argument)
     : alt_description_{model->GetAltDescription()},
+      alt_title_{model->GetAltTitle()},
       description_{model->GetDescription()},
       icon_{model->GetIcon()},
       id_{model->GetId()},
@@ -38,13 +39,6 @@ FeatureObject::FeatureObject(const FeatureModel* model, const QString& input,
       title.arg(is_argument_empty ? model->GetTitlePlaceholder() : argument);
   } else {
     title_ = title;
-  }
-
-  if (auto alt_title = model->GetAltTitle(); alt_title.contains("%1")) {
-    alt_title_ = alt_title.arg(
-      is_argument_empty ? model->GetAltTitlePlaceholder() : argument);
-  } else {
-    alt_title_ = alt_title;
   }
 }
 
