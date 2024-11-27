@@ -23,10 +23,6 @@ QString FeatureModel::GetAltDescription() const { return alt_description_; }
 
 QString FeatureModel::GetAltTitle() const { return alt_title_; }
 
-QString FeatureModel::GetAltTitlePlaceholder() const {
-  return alt_title_placeholder_;
-}
-
 QString FeatureModel::GetCommand() const { return command_; }
 
 QString FeatureModel::GetDescription() const { return description_; }
@@ -54,10 +50,6 @@ void FeatureModel::SetAltDescription(const QString& value) {
 }
 
 void FeatureModel::SetAltTitle(const QString& value) { alt_title_ = value; }
-
-void FeatureModel::SetAltTitlePlaceholder(const QString& value) {
-  alt_title_placeholder_ = value;
-}
 
 void FeatureModel::SetCommand(const QString& value) { command_ = value; }
 

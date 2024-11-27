@@ -21,7 +21,6 @@ class FeatureModel : public FeatureVisitable {
   virtual bool ReceivesInput() const;
   virtual std::unordered_set<std::string> Tokenize() const;
   QString GetAltTitle() const;
-  QString GetAltTitlePlaceholder() const;
   QString GetAltDescription() const;
   QString GetCommand() const;
   QString GetDescription() const;
@@ -37,7 +36,6 @@ class FeatureModel : public FeatureVisitable {
  protected:
   void SetAltDescription(const QString& value);
   void SetAltTitle(const QString& value);
-  void SetAltTitlePlaceholder(const QString& value);
   void SetCommand(const QString& value);
   void SetDescription(const QString& value);
   void SetIcon(const QIcon& value);
@@ -48,7 +46,6 @@ class FeatureModel : public FeatureVisitable {
 
  private:
   QString alt_title_{};
-  QString alt_title_placeholder_{};
   QString alt_description_{};
   QString command_{};
   QString description_{};
