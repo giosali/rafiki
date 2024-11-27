@@ -57,6 +57,8 @@ void WebSearchModel::SetTitlePlaceholder(const QString& value) {
   FeatureModel::SetTitlePlaceholder(value);
 }
 
+void WebSearchModel::SetUrl(const QString& value) { url_ = value; }
+
 QJsonObject WebSearchModel::ToJson() const {
   return QJsonObject{
     {"id", QString::number(GetId())},
