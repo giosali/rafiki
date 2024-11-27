@@ -10,15 +10,16 @@
 class Settings {
  public:
   static Settings& GetInstance();
+  void AddDisabledFeatureModelId(uint64_t id);
   uint64_t GetAvailableId() const;
   std::vector<uint64_t> GetDefaultFeatureModelIds() const;
   std::unordered_set<uint64_t> GetDisabledFeatureModelids() const;
   int GetSearchResultIconSize() const;
   int GetSearchResultListMaxCount() const;
   int GetSearchResultTitleMaxHeight() const;
+  void RemoveDisabledFeatureModelId(uint64_t id);
   void Save() const;
   void SetAvailableId(uint64_t value);
-  void ToggleDisabledFeatureModelId(uint64_t id);
   void Update(const QJsonDocument& document);
 
  private:
