@@ -293,7 +293,9 @@ void Worker::ProcessText(const QString& text) {
   auto visitor = ObjectVisitor{text};
   for (auto id : indexer_.GetIds(text)) {
     auto model = indexer_.GetModel(id);
-    model->Accept(visitor);
+    if (model->GetIsEnabled()) {
+      model->Accept(visitor);
+    }
   }
 
   auto objects = visitor.GetFeatureObjects();
