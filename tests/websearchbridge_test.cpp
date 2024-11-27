@@ -4,8 +4,8 @@
 
 #include <memory>
 
-#include "../src/core/bridges/websearchbridge.h"
-#include "../src/core/models/websearchmodel.h"
+#include "core/bridges/websearchbridge.h"
+#include "core/models/websearchmodel.h"
 
 TestWebSearchBridge::TestWebSearchBridge() {
   object_with_formattable_title_ =

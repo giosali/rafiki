@@ -2,11 +2,11 @@
 #include <QObject>
 #include <QTest>
 
-#include "core/bridges/calculatorbridge_test.h"
-#include "core/bridges/urlbridge_test.h"
-#include "core/bridges/websearchbridge_test.h"
-#include "core/utilities_test.h"
-#include "include/tsl/htrie_map_test.h"
+#include "calculatorbridge_test.h"
+#include "htrie_map_test.h"
+#include "urlbridge_test.h"
+#include "utilities_test.h"
+#include "websearchbridge_test.h"
 
 int main(int argc, char* argv[]) {
   // Absolutely necessary for tests to run.
@@ -18,10 +18,10 @@ int main(int argc, char* argv[]) {
   };
 
   run_test(new TestCalculatorBridge);
-  run_test(new TestUrlBridge);
-  run_test(new TestWebSearchBridge);
   run_test(new TestHtrieMap);
+  run_test(new TestUrlBridge);
   run_test(new TestUtilities);
+  run_test(new TestWebSearchBridge);
 
   return status;
 }

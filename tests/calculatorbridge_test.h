@@ -4,8 +4,8 @@
 #include <QTest>
 #include <memory>
 
-#include "../src/core/bridges/calculatorbridge.h"
-#include "../src/core/models/calculatormodel.h"
+#include "core/bridges/calculatorbridge.h"
+#include "core/models/calculatormodel.h"
 
 class TestCalculatorBridge : public QObject {
   Q_OBJECT

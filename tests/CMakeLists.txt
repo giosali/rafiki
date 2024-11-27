@@ -39,11 +39,11 @@ set(PROJECT_SOURCES
     ../src/core/paths.cpp
     ../src/core/settings.cpp
     ../src/core/utilities.cpp
-    core/bridges/calculatorbridge_test.cpp
-    core/bridges/urlbridge_test.cpp
-    core/bridges/websearchbridge_test.cpp
-    core/utilities_test.cpp
-    include/tsl/htrie_map_test.cpp
+    calculatorbridge_test.cpp
+    htrie_map_test.cpp
+    urlbridge_test.cpp
+    utilities_test.cpp
+    websearchbridge_test.cpp
     main.cpp
 )
 
