@@ -35,11 +35,14 @@ set(PROJECT_SOURCES
     ../src/core/objects/featureobject.cpp
     ../src/core/objects/urlobject.cpp
     ../src/core/objects/websearchobject.cpp
-    ../src/core/config.cpp
+    ../src/core/file.cpp
     ../src/core/paths.cpp
+    ../src/core/settings.cpp
+    ../src/core/utilities.cpp
     core/bridges/calculatorbridge_test.cpp
     core/bridges/urlbridge_test.cpp
     core/bridges/websearchbridge_test.cpp
+    core/utilities_test.cpp
     include/tsl/htrie_map_test.cpp
     main.cpp
 )

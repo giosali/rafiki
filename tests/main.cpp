@@ -5,6 +5,7 @@
 #include "core/bridges/calculatorbridge_test.h"
 #include "core/bridges/urlbridge_test.h"
 #include "core/bridges/websearchbridge_test.h"
+#include "core/utilities_test.h"
 #include "include/tsl/htrie_map_test.h"
 
 int main(int argc, char* argv[]) {
@@ -20,6 +21,7 @@ int main(int argc, char* argv[]) {
   run_test(new TestUrlBridge);
   run_test(new TestWebSearchBridge);
   run_test(new TestHtrieMap);
+  run_test(new TestUtilities);
 
   return status;
 }
