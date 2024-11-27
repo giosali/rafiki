@@ -29,9 +29,6 @@ class Paths {
   static QString GetPath(Directory d);
   static QString GetPath(Image f);
   static QString GetPath(Json f);
-
- private:
-  static QString Combine(const QString& p1, const QString& p2);
 };
 
 #endif  // PATH_H

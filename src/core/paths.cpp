@@ -3,6 +3,8 @@
 #include <QStandardPaths>
 #include <QtSystemDetection>
 
+#include "utilities.h"
+
 QString Paths::GetPath(Directory d) {
   auto path = QString{};
   switch (d) {
@@ -17,7 +19,7 @@ QString Paths::GetPath(Directory d) {
       path = "://images";
       break;
     case Directory::kUserIcons:
-      path = Combine(GetPath(Directory::kAppConfig), "icons");
+      path = Utilities::Combine(GetPath(Directory::kAppConfig), "icons");
       break;
   }
 
@@ -55,7 +57,7 @@ QString Paths::GetPath(Image f) {
 
   return filename.isEmpty()
            ? filename
-           : Combine(GetPath(Directory::kImageResources), filename);
+           : Utilities::Combine(GetPath(Directory::kImageResources), filename);
 }
 
 QString Paths::GetPath(Json f) {
@@ -76,9 +78,5 @@ QString Paths::GetPath(Json f) {
       break;
   }
 
-  return Combine(directory, filename);
-}
-
-QString Paths::Combine(const QString& p1, const QString& p2) {
-  return p1.isEmpty() || p2.isEmpty() ? QString{} : p1 + "/" + p2;
+  return Utilities::Combine(directory, filename);
 }
