@@ -1,21 +1,24 @@
 #include "websearchdialog.h"
 
 #include <QDialogButtonBox>
+#include <QFile>
 #include <QFileDialog>
+#include <QFileInfo>
 #include <QGuiApplication>
+#include <QJsonObject>
 #include <QPushButton>
-#include <vector>
+#include <memory>
 
-#include "../core/crud.h"
+#include "../core/file.h"
+#include "../core/indexer.h"
+#include "../core/models/websearchmodel.h"
 #include "../core/paths.h"
+#include "../core/settings.h"
+#include "../core/utilities.h"
 #include "./ui_websearchdialog.h"
 
 WebSearchDialog::WebSearchDialog(QWidget* parent)
-    : QDialog{parent},
-      close_on_show_{false},
-      icon_{Paths::Path(Paths::Image::kUrl)},
-      id_{},
-      ui_{std::make_unique<Ui::WebSearchDialog>()} {
+    : QDialog{parent}, ui_{std::make_unique<Ui::WebSearchDialog>()} {
   ui_->setupUi(this);
   ui_->interactiveIconLabel->setAlignment(Qt::AlignCenter);
   ui_->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
@@ -42,29 +45,30 @@ WebSearchDialog::WebSearchDialog(QWidget* parent)
           &QGuiApplication::restoreOverrideCursor);
 }
 
-WebSearchDialog::WebSearchDialog(const Id& id, QWidget* parent)
+WebSearchDialog::WebSearchDialog(uint64_t id, QWidget* parent)
     : WebSearchDialog{parent} {
   ToggleSaveButton(true);  // Enabled when editing a WebSearch.
 
-  auto web_search = std::dynamic_pointer_cast<WebSearch>(Crud::ReadResult(id));
-  if (web_search == nullptr) {
-    // Returns early if the Result isn't a WebSearch or wasn't found.
-    close_on_show_ = true;
+  auto model =
+    dynamic_cast<WebSearchModel*>(Indexer::GetInstance().GetModel(id));
+  if (model == nullptr) {
+    close();
     return;
   }
 
   // In-constructor member initialization; this is important.
-  icon_ = web_search->GetIcon();
+  current_icon_path_ = model->GetIconPath();
   id_ = id;
 
   // Fills in fields before showing the dialog to the user.
-  ui_->urlLineEdit->setText(web_search->GetUrl());
-  ui_->titleLineEdit->setText(web_search->GetTitle());
-  ui_->placeholderLabel->setText(web_search->GetTitlePlaceholder());
-  ui_->commandLineEdit->setText(web_search->GetCommand());
-  ui_->interactiveIconLabel->setPixmap(icon_);
-  ui_->altUrlLineEdit->setText(web_search->GetAltUrl());
-  ui_->altTitleLineEdit->setText(web_search->GetAltTitle());
+  ui_->urlLineEdit->setText(model->GetUrl());
+  ui_->titleLineEdit->setText(model->GetTitle());
+  ui_->placeholderComboBox->setCurrentText(model->GetTitlePlaceholder());
+  // ui_->placeholderLabel->setText(model->GetTitlePlaceholder());
+  ui_->commandLineEdit->setText(model->GetCommand());
+  ui_->interactiveIconLabel->setPixmap(model->GetIcon());
+  ui_->altUrlLineEdit->setText(model->GetAltUrl());
+  ui_->altTitleLineEdit->setText(model->GetAltTitle());
 }
 
 WebSearchDialog::~WebSearchDialog() {}
@@ -89,28 +93,61 @@ void WebSearchDialog::AcceptWebSearch() {
     return;
   }
 
-  if (id_.IsNull()) {
-    // Means a WebSearch object is being created.
-
-    Crud::CreateWebSearch(std::make_shared<WebSearch>(
-      url, title, title_placeholder, command, icon_, alt_url, alt_title));
+  auto is_being_created = id_ == 0;
+  auto icon_path = QString{};
+  if (new_icon_path_.isNull()) {
+    icon_path = is_being_created ? Paths::GetPath(Paths::Image::kUrl)
+                                 : current_icon_path_;
   } else {
-    // Means a WebSearch object is being edited.
+    // Moves previosu icon to trash.
+    QFile::moveToTrash(current_icon_path_);
 
-    auto web_search =
-      std::dynamic_pointer_cast<WebSearch>(Crud::ReadResult(id_));
-    if (web_search == nullptr) {
-      // Returns early if the Result isn't a WebSearch or wasn't found.
-      return;
-    }
+    auto icon_dir = Paths::GetPath(Paths::Directory::kUserIcons);
+    auto icon_name =
+      QString{"%1.%2"}
+        .arg(is_being_created ? Settings::GetInstance().GetAvailableId() : id_)
+        .arg(QFileInfo{new_icon_path_}.suffix());
+    icon_path = Utilities::Combine(icon_dir, icon_name);
 
-    web_search->SetUrl(url);
-    web_search->SetTitle(title);
-    web_search->SetTitlePlaceholder(title_placeholder);
-    web_search->SetIcon(icon_);
-    web_search->SetAltUrl(alt_url);
-    web_search->SetAltTitle(alt_title);
-    Crud::UpdateWebSearch(web_search, command);
+    // Saves new icon to config directory.
+    File::Copy(new_icon_path_, icon_path);
+  }
+
+  auto& indexer = Indexer::GetInstance();
+  if (is_being_created) {
+    auto& settings = Settings::GetInstance();
+    auto available_id = settings.GetAvailableId();
+
+    auto object =
+      QJsonObject{{"command", command},
+                  {"icon", icon_path},
+                  {"id", QString::number(available_id)},
+                  {"title", title},
+                  {"placeholder", title_placeholder},
+                  {"url", url},
+                  {"isCustom", true},
+                  {"alt", QJsonObject{{"title", alt_title}, {"url", alt_url}}}};
+    indexer.IndexModel(std::make_unique<WebSearchModel>(object));
+
+    // Increments and saves used ID.
+    settings.SetAvailableId(available_id + 1);
+    settings.Save();
+  } else {
+    // A WebSearchModel instance is being edited.
+    auto model = dynamic_cast<WebSearchModel*>(indexer.GetModel(id_));
+    auto old_tokens = model->Tokenize();
+
+    model->SetCommand(command);
+    model->SetIcon(icon_path);
+    model->SetTitle(title);
+    model->SetTitlePlaceholder(title_placeholder);
+    model->SetUrl(url);
+    model->SetAltTitle(alt_title);
+    model->SetAltUrl(alt_url);
+
+    auto new_tokens = model->Tokenize();
+
+    indexer.UpdateTrie(model->GetId(), old_tokens, new_tokens);
   }
 }
 
@@ -151,21 +188,11 @@ void WebSearchDialog::CleanCommandField(const QString& text) {
 }
 
 void WebSearchDialog::OpenFile() {
-  auto filename = QFileDialog::getOpenFileName(this, "Open Image", QString{},
-                                               "Image (*.png *.jpg *.svg)");
-  if (filename.isEmpty()) {
-    return;
-  }
-
-  ui_->interactiveIconLabel->setPixmap(filename);
-  icon_ = filename;
-}
-
-void WebSearchDialog::showEvent(QShowEvent* event) {
-  QDialog::showEvent(event);
-
-  if (close_on_show_) {
-    close();
+  if (auto filename = QFileDialog::getOpenFileName(
+        this, "Open Image", QString{}, "Image (*.png *.jpg *.svg)");
+      !filename.isEmpty()) {
+    new_icon_path_ = filename;
+    ui_->interactiveIconLabel->setPixmap(filename);
   }
 }
 

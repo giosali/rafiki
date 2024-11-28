@@ -5,10 +5,9 @@
 #include <QLineEdit>
 #include <QShowEvent>
 #include <Qt>
+#include <cstdint>
 #include <memory>
 
-#include "../core/id.h"
-#include "../models/websearch.h"
 #include "interactivelabel.h"
 
 QT_BEGIN_NAMESPACE
@@ -22,7 +21,7 @@ class WebSearchDialog : public QDialog {
 
  public:
   explicit WebSearchDialog(QWidget* parent = nullptr);
-  explicit WebSearchDialog(const Id& id, QWidget* parent = nullptr);
+  explicit WebSearchDialog(uint64_t id, QWidget* parent = nullptr);
 
   ~WebSearchDialog();
 
@@ -35,16 +34,13 @@ class WebSearchDialog : public QDialog {
  signals:
   void Accepted();
 
- protected:
-  void showEvent(QShowEvent* event) override;
-
  private:
   void ToggleSaveButton(bool enable) const;
 
-  bool close_on_show_;
-  QString icon_;
-  Id id_;
-  std::unique_ptr<Ui::WebSearchDialog> ui_;
+  QString current_icon_path_;
+  uint64_t id_{};
+  QString new_icon_path_;
+  std::unique_ptr<Ui::WebSearchDialog> ui_{nullptr};
 };
 
 #endif  // WEBSEARCHDIALOG_H
