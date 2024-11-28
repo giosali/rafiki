@@ -134,23 +134,24 @@ bool MainWindow::event(QEvent* event) {
 }
 
 void MainWindow::CreateTrayIcon() {
+  auto tray_menu = new QMenu{};
+
+  // Handles Settings action.
   auto settings_action = new QAction{"Settings", this};
   connect(settings_action, &QAction::triggered, this,
           &MainWindow::OpenSettingsWindow);
+  tray_menu->addAction(settings_action);
 
+  // Handles Quit action.
   auto quit_action = new QAction{"Quit", this};
   connect(quit_action, &QAction::triggered, this, &QCoreApplication::quit);
-
-  auto tray_menu = new QMenu{this};
-  tray_menu->addAction(settings_action);
   tray_menu->addAction(quit_action);
 
   auto tray_icon = new QSystemTrayIcon{this};
+  tray_icon->setIcon(QIcon{Paths::GetPath(Paths::Image::kRafiki)});
   connect(tray_icon, &QSystemTrayIcon::activated, this,
           &MainWindow::ProcessActivationReason);
   tray_icon->setContextMenu(tray_menu);
-
-  tray_icon->setIcon(QIcon{Paths::GetPath(Paths::Image::kRafiki)});
   tray_icon->show();
 }
 
