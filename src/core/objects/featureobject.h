@@ -47,8 +47,6 @@ class FeatureObject : public QObject {
   void SetTitle(const QString& value);
 
  private:
-  QString alt_description_{};
-  QString alt_title_{};
   QString description_{};
   QPixmap icon_{};
   uint64_t id_{};

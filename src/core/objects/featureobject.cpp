@@ -5,18 +5,14 @@
 #include "../models/featuremodel.h"
 
 FeatureObject::FeatureObject(const FeatureModel* model)
-    : alt_description_{model->GetAltDescription()},
-      alt_title_{model->GetAltTitle()},
-      description_{model->GetDescription()},
+    : description_{model->GetDescription()},
       icon_{model->GetIcon()},
       id_{model->GetId()},
       model_{model},
       title_{model->GetTitle()} {}
 
 FeatureObject::FeatureObject(const FeatureModel* model, const QString& input)
-    : alt_description_{model->GetAltDescription()},
-      alt_title_{model->GetAltTitle()},
-      description_{model->GetDescription()},
+    : description_{model->GetDescription()},
       icon_{model->GetIcon()},
       id_{model->GetId()},
       input_{input},
@@ -25,9 +21,7 @@ FeatureObject::FeatureObject(const FeatureModel* model, const QString& input)
 
 FeatureObject::FeatureObject(const FeatureModel* model, const QString& input,
                              const QString& argument)
-    : alt_description_{model->GetAltDescription()},
-      alt_title_{model->GetAltTitle()},
-      description_{model->GetDescription()},
+    : description_{model->GetDescription()},
       icon_{model->GetIcon()},
       id_{model->GetId()},
       input_{input},
@@ -76,9 +70,11 @@ void FeatureObject::ProcessKeyPress(const QKeyCombination& combination) {
   }
 }
 
-QString FeatureObject::GetAltDescription() const { return alt_description_; }
+QString FeatureObject::GetAltDescription() const {
+  return model_->GetAltDescription();
+}
 
-QString FeatureObject::GetAltTitle() const { return alt_title_; }
+QString FeatureObject::GetAltTitle() const { return model_->GetAltTitle(); }
 
 void FeatureObject::SetDescription(const QString& value) {
   description_ = value;
