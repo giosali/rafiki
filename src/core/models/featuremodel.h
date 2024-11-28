@@ -22,6 +22,7 @@ class FeatureModel : public FeatureVisitable {
   virtual std::unordered_set<std::string> Tokenize() const;
   QString GetAltTitle() const;
   QString GetAltDescription() const;
+  uint64_t GetClickCount() const;
   QString GetCommand() const;
   QString GetDescription() const;
   FeatureBridge* GetFeatureBridge() const;
@@ -47,6 +48,7 @@ class FeatureModel : public FeatureVisitable {
  private:
   QString alt_title_{};
   QString alt_description_{};
+  uint64_t click_count_{};
   QString command_{};
   QString description_{};
   std::unique_ptr<FeatureBridge> feature_bridge_{nullptr};

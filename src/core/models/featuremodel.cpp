@@ -23,6 +23,8 @@ QString FeatureModel::GetAltDescription() const { return alt_description_; }
 
 QString FeatureModel::GetAltTitle() const { return alt_title_; }
 
+uint64_t FeatureModel::GetClickCount() const { return click_count_; }
+
 QString FeatureModel::GetCommand() const { return command_; }
 
 QString FeatureModel::GetDescription() const { return description_; }
