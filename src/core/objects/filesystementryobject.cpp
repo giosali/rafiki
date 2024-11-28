@@ -6,12 +6,12 @@
 #include "../crypto.h"
 
 FileSystemEntryObject::FileSystemEntryObject(const FileSystemEntryModel* model)
-    : FeatureObject{model}, model_{model} {}
+    : FeatureObject{model} {}
 
 FileSystemEntryObject::FileSystemEntryObject(const FileSystemEntryModel* model,
                                              const std::filesystem::path& path,
                                              const QString& input)
-    : FeatureObject{model, input}, model_{model}, path_{path} {
+    : FeatureObject{model, input}, path_{path} {
   SetDescription(QString::fromUtf8(path.string()));
   SetId(Crypto::Djb2(path));
   SetTitle(QString::fromUtf8(path.filename().string()));

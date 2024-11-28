@@ -20,6 +20,5 @@ class FileSystemEntryObject final : public FeatureObject {
   void ProcessKeyRelease(const QKeyCombination& combination) override;
 
  private:
-  const FileSystemEntryModel* model_{nullptr};
   std::filesystem::path path_{};
 };
