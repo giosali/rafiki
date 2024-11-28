@@ -53,6 +53,9 @@ SettingsWindow::SettingsWindow(QWidget* parent)
           &SettingsWindow::AddWebSearch);
   connect(ui_->deleteWebSearchButton, &QAbstractButton::clicked, this,
           &SettingsWindow::DeleteWebSearch);
+
+  LoadWebSearches();
+  SetEnabledButtons();
 }
 
 SettingsWindow::~SettingsWindow() {}
@@ -125,19 +128,6 @@ void SettingsWindow::SetEnabledButtons() const {
     ui_->editWebSearchButton->setEnabled(true);
     ui_->deleteWebSearchButton->setEnabled(true);
   }
-}
-
-void SettingsWindow::closeEvent(QCloseEvent* event) {
-  ClearWebSearches();
-
-  QMainWindow::closeEvent(event);
-}
-
-void SettingsWindow::showEvent(QShowEvent* event) {
-  LoadWebSearches();
-  SetEnabledButtons();
-
-  QMainWindow::showEvent(event);
 }
 
 void SettingsWindow::ClearWebSearches() const {

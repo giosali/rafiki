@@ -28,10 +28,6 @@ class SettingsWindow : public QMainWindow {
   void SetEnabledButtons() const;
   void ToggleModel(Qt::CheckState state, uint64_t id) const;
 
- protected:
-  void closeEvent(QCloseEvent* event) override;
-  void showEvent(QShowEvent* event) override;
-
  private:
   void ClearWebSearches() const;
   void LoadWebSearches() const;
