@@ -4,10 +4,9 @@
 #include <QCloseEvent>
 #include <QMainWindow>
 #include <QShowEvent>
+#include <Qt>
 #include <cstdint>
 #include <memory>
-
-#include "../core/id.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -28,8 +27,7 @@ class SettingsWindow : public QMainWindow {
   void DeleteWebSearch(bool checked) const;
   void EditWebSearch(bool checked) const;
   void SetEnabledButtons() const;
-  void ToggleResult(int state, const Id& id) const;
-  void ToggleStartup(int state) const;
+  void ToggleModel(Qt::CheckState state, uint64_t id) const;
 
  protected:
   void closeEvent(QCloseEvent* event) override;
@@ -38,9 +36,9 @@ class SettingsWindow : public QMainWindow {
  private:
   void ClearWebSearches() const;
   void LoadWebSearches() const;
-  void OpenWebSearchDialog(const Id& id) const;
+  void OpenWebSearchDialog(uint64_t id) const;
+  void SaveWebSearches() const;
 
- private:
   std::unique_ptr<Ui::SettingsWindow> ui_;
 };
 

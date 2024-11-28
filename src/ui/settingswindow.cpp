@@ -2,24 +2,30 @@
 
 #include <QAbstractButton>
 #include <QCheckBox>
+#include <QFile>
 #include <QHBoxLayout>
 #include <QHeaderView>
 #include <QIcon>
+#include <QJsonArray>
 #include <QLabel>
 #include <QStandardItemModel>
 #include <QString>
 #include <QStringList>
 #include <QTableWidgetItem>
-#include <Qt>
 
-#include "../core/config.h"
-#include "../core/crud.h"
+#include "../core/file.h"
+#include "../core/indexer.h"
+#include "../core/models/websearchmodel.h"
+#include "../core/paths.h"
+#include "../core/settings.h"
 #include "./ui_settingswindow.h"
 #include "websearchdialog.h"
 
 SettingsWindow::SettingsWindow(QWidget* parent)
     : QMainWindow{parent}, ui_{std::make_unique<Ui::SettingsWindow>()} {
   ui_->setupUi(this);
+
+  setAttribute(Qt::WA_DeleteOnClose);
 
   auto columns = QStringList{"Icon", "Command", "Example", "Enabled"};
 
@@ -39,10 +45,6 @@ SettingsWindow::SettingsWindow(QWidget* parent)
   ui_->yourWebSearchesTableWidget->horizontalHeader()->setSectionResizeMode(
     2, QHeaderView::Stretch);
 
-  // TODO: &QCheckBox::stateChanged is deprecated and superseded by
-  // &QCheckBox::checkStateChanged in 6.7.
-  connect(ui_->startupCheckBox, &QCheckBox::stateChanged, this,
-          &SettingsWindow::ToggleStartup);
   connect(ui_->yourWebSearchesTableWidget, &QTableWidget::itemSelectionChanged,
           this, &SettingsWindow::SetEnabledButtons);
   connect(ui_->editWebSearchButton, &QAbstractButton::clicked, this,
@@ -56,7 +58,7 @@ SettingsWindow::SettingsWindow(QWidget* parent)
 SettingsWindow::~SettingsWindow() {}
 
 void SettingsWindow::AddWebSearch(bool checked) const {
-  OpenWebSearchDialog(Id{});
+  OpenWebSearchDialog(0);
 }
 
 void SettingsWindow::DeleteWebSearch(bool checked) const {
@@ -64,7 +66,19 @@ void SettingsWindow::DeleteWebSearch(bool checked) const {
   for (const auto& item : items) {
     auto data = item->data(Qt::UserRole);
     if (!data.isNull()) {
-      Crud::DeleteWebSearch(Id{data.toString()});
+      auto id = uint64_t{data.toULongLong()};
+
+      auto& settings = Settings::GetInstance();
+      settings.RemoveDisabledFeatureModelId(id);
+      settings.Save();
+
+      auto& indexer = Indexer::GetInstance();
+      QFile::moveToTrash(indexer.GetModel(id)->GetIconPath());
+      indexer.DeleteModel(id);
+
+      SaveWebSearches();
+
+      // Refreshes table UI.
       ClearWebSearches();
       LoadWebSearches();
       break;
@@ -75,18 +89,31 @@ void SettingsWindow::DeleteWebSearch(bool checked) const {
 void SettingsWindow::EditWebSearch(bool checked) const {
   for (const auto& item : ui_->yourWebSearchesTableWidget->selectedItems()) {
     if (auto data = item->data(Qt::UserRole); !data.isNull()) {
-      OpenWebSearchDialog(Id{data.toString()});
+      OpenWebSearchDialog(data.toULongLong());
       break;
     }
   }
 }
 
-void SettingsWindow::ToggleResult(int state, const Id& id) const {
-  Crud::ToggleResult(id, state == Qt::Checked);
-}
-
-void SettingsWindow::ToggleStartup(int state) const {
-  Crud::ToggleDesktopEntry(state == Qt::Checked);
+void SettingsWindow::ToggleModel(Qt::CheckState state, uint64_t id) const {
+  switch (state) {
+    case Qt::Unchecked: {
+      Indexer::GetInstance().ToggleModel(id);
+      auto& settings = Settings::GetInstance();
+      settings.AddDisabledFeatureModelId(id);
+      settings.Save();
+      break;
+    }
+    case Qt::Checked: {
+      Indexer::GetInstance().ToggleModel(id);
+      auto& settings = Settings::GetInstance();
+      settings.RemoveDisabledFeatureModelId(id);
+      settings.Save();
+      break;
+    }
+    default:
+      break;
+  }
 }
 
 void SettingsWindow::SetEnabledButtons() const {
@@ -122,10 +149,11 @@ void SettingsWindow::ClearWebSearches() const {
 }
 
 void SettingsWindow::LoadWebSearches() const {
-  auto web_searches = Crud::ReadResults<WebSearch>();
-  for (const auto& web_search : web_searches) {
-    auto table_widget = web_search->IsCustom() ? ui_->yourWebSearchesTableWidget
-                                               : ui_->webSearchesTableWidget;
+  auto& indexer = Indexer::GetInstance();
+  auto web_search_models = indexer.GetModels<WebSearchModel>();
+  for (const auto& model : web_search_models) {
+    auto table_widget = model->GetIsCustom() ? ui_->yourWebSearchesTableWidget
+                                             : ui_->webSearchesTableWidget;
     auto row_count = table_widget->rowCount();
     table_widget->setRowCount(row_count + 1);
 
@@ -133,37 +161,37 @@ void SettingsWindow::LoadWebSearches() const {
     auto icon_widget = new QWidget{};
     auto layout = new QHBoxLayout{icon_widget};
     auto icon_label = new QLabel{};
-    icon_label->setPixmap(web_search->GetIcon(16));
+    icon_label->setPixmap(model->GetIcon().scaled(30, 30, Qt::KeepAspectRatio,
+                                                  Qt::SmoothTransformation));
     layout->addWidget(icon_label);
     layout->setAlignment(Qt::AlignCenter);
     layout->setContentsMargins(0, 0, 0, 0);
     icon_widget->setLayout(layout);
     table_widget->setCellWidget(row_count, 0, icon_widget);
 
-    auto id = web_search->GetId();
+    auto id = model->GetId();
 
     // Command column
-    auto command_item = new QTableWidgetItem{web_search->GetCommand()};
-    command_item->setData(Qt::UserRole, id.ToString());  // Stores id
+    auto command_item = new QTableWidgetItem{model->GetCommand()};
+    command_item->setData(Qt::UserRole, QString::number(id));  // Stores id
     command_item->setTextAlignment(Qt::AlignCenter);
     table_widget->setItem(row_count, 1, command_item);
 
     // Example column.
-    auto example_item =
-      new QTableWidgetItem{web_search->FormatTitle(QString{})};
+    auto title = model->GetTitle();
+    auto example_item = new QTableWidgetItem{
+      title.contains("%1") ? title.arg(model->GetTitlePlaceholder()) : title};
     table_widget->setItem(row_count, 2, example_item);
 
     // Enabled column.
     auto check_box_widget = new QWidget{};
     auto check_box_layout = new QHBoxLayout{check_box_widget};
     auto check_box = new QCheckBox{};
-    check_box->setCheckState(web_search->IsEnabled() ? Qt::Checked
-                                                     : Qt::Unchecked);
+    check_box->setCheckState(model->GetIsEnabled() ? Qt::Checked
+                                                   : Qt::Unchecked);
 
-    // TODO: &QCheckBox::stateChanged is deprecated and superseded by
-    // &QCheckBox::checkStateChanged in 6.7.
-    connect(check_box, &QCheckBox::stateChanged,
-            [this, id](int state) { ToggleResult(state, id); });
+    connect(check_box, &QCheckBox::checkStateChanged,
+            [this, id](Qt::CheckState state) { ToggleModel(state, id); });
 
     check_box_layout->addWidget(check_box);
     check_box_layout->setAlignment(Qt::AlignCenter);
@@ -173,13 +201,25 @@ void SettingsWindow::LoadWebSearches() const {
   }
 }
 
-void SettingsWindow::OpenWebSearchDialog(const Id& id) const {
-  auto dialog = id.IsNull() ? WebSearchDialog{} : WebSearchDialog{id};
+void SettingsWindow::OpenWebSearchDialog(uint64_t id) const {
+  auto dialog = id == 0 ? WebSearchDialog{} : WebSearchDialog{id};
   auto dialog_code = dialog.exec();
   switch (dialog_code) {
     case QDialog::Accepted:
+      SaveWebSearches();
       ClearWebSearches();
       LoadWebSearches();
       break;
   }
+}
+
+void SettingsWindow::SaveWebSearches() const {
+  auto array = QJsonArray{};
+  for (const auto& model : Indexer::GetInstance().GetModels<WebSearchModel>()) {
+    if (model->GetIsCustom()) {
+      array.push_back(model->ToJson());
+    }
+  }
+
+  File::Write(Paths::GetPath(Paths::Json::kUserWebSearches), array);
 }
