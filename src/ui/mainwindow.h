@@ -1,5 +1,4 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#pragma once
 
 #include <QEvent>
 #include <QMainWindow>
@@ -40,4 +39,3 @@ class MainWindow : public QMainWindow {
 
   std::unique_ptr<Ui::MainWindow> ui_;
 };
-#endif  // MAINWINDOW_H

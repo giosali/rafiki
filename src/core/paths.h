@@ -1,5 +1,4 @@
-#ifndef PATH_H
-#define PATH_H
+#pragma once
 
 #include <QSettings>
 #include <QString>
@@ -30,5 +29,3 @@ class Paths {
   static QString GetPath(Image f);
   static QString GetPath(Json f);
 };
-
-#endif  // PATH_H

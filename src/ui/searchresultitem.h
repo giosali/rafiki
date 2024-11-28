@@ -1,5 +1,4 @@
-#ifndef SEARCHRESULTITEM_H
-#define SEARCHRESULTITEM_H
+#pragma once
 
 #include <QListWidget>
 #include <QListWidgetItem>
@@ -14,5 +13,3 @@ class SearchResultItem : public QListWidgetItem {
  private:
   uint64_t id_{0};
 };
-
-#endif

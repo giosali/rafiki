@@ -1,5 +1,4 @@
-#ifndef CRYPTO_H
-#define CRYPTO_H
+#pragma once
 
 #include <QString>
 #include <cstdint>
@@ -12,5 +11,3 @@ class Crypto {
   static uint64_t Djb2(const QString& key);
   static uint64_t Djb2(const std::string& key);
 };
-
-#endif  // CRYPTO_H

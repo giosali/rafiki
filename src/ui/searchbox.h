@@ -1,5 +1,4 @@
-#ifndef SEARCHBOX_H
-#define SEARCHBOX_H
+#pragma once
 
 #include <QKeyCombination>
 #include <QKeyEvent>
@@ -40,5 +39,3 @@ class SearchBox : public QWidget {
  private:
   std::unique_ptr<Ui::SearchBox> ui_;
 };
-
-#endif  // SEARCHBOX_H

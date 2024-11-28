@@ -1,5 +1,4 @@
-#ifndef UTILITIES_H
-#define UTILITIES_H
+#pragma once
 
 #include <QString>
 #include <string>
@@ -16,5 +15,3 @@ class Utilities {
                                         int maxsplit = -1);
   static char ToLower(char c);
 };
-
-#endif  // UTILITIES_H

@@ -1,5 +1,4 @@
-#ifndef INDEXER_H
-#define INDEXER_H
+#pragma once
 
 #include <QString>
 #include <cstdint>
@@ -49,5 +48,3 @@ class Indexer final {
   std::unordered_map<uint64_t, std::unique_ptr<FeatureModel>> models_map_{};
   tsl::htrie_map<char, std::unordered_set<uint64_t>> models_trie_{};
 };
-
-#endif  // INDEXER_H

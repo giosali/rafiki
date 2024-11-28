@@ -1,5 +1,4 @@
-#ifndef SERVER_H
-#define SERVER_H
+#pragma once
 
 #include <QLocalServer>
 #include <QObject>
@@ -25,5 +24,3 @@ class Server : public QObject {
  private:
   QLocalServer server_;
 };
-
-#endif  // SERVER_H

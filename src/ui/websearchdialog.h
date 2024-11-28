@@ -1,5 +1,4 @@
-#ifndef WEBSEARCHDIALOG_H
-#define WEBSEARCHDIALOG_H
+#pragma once
 
 #include <QDialog>
 #include <QLineEdit>
@@ -42,5 +41,3 @@ class WebSearchDialog : public QDialog {
   QString new_icon_path_;
   std::unique_ptr<Ui::WebSearchDialog> ui_{nullptr};
 };
-
-#endif  // WEBSEARCHDIALOG_H

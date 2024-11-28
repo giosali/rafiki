@@ -1,5 +1,4 @@
-#ifndef CLIENT_H
-#define CLIENT_H
+#pragma once
 
 #include <QDataStream>
 #include <QLocalSocket>
@@ -24,5 +23,3 @@ class Client : public QObject {
   QDataStream out_;
   QLocalSocket socket_;
 };
-
-#endif  // CLIENT_H

@@ -1,5 +1,4 @@
-#ifndef FETCHER_H
-#define FETCHER_H
+#pragma once
 
 #include <QJsonObject>
 #include <filesystem>
@@ -14,5 +13,3 @@ class Fetcher {
 
  private:
 };
-
-#endif  // FETCHER_H

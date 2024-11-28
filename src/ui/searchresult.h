@@ -1,5 +1,4 @@
-#ifndef SEARCHRESULT_H
-#define SEARCHRESULT_H
+#pragma once
 
 #include <QKeyCombination>
 #include <QPixmap>
@@ -62,5 +61,3 @@ class SearchResult : public QWidget {
   QString previous_shortcut_;
   std::unique_ptr<Ui::SearchResult> ui_;
 };
-
-#endif  // SEARCHRESULT_H

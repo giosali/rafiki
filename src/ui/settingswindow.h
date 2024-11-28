@@ -1,5 +1,4 @@
-#ifndef SETTINGSWINDOW_H
-#define SETTINGSWINDOW_H
+#pragma once
 
 #include <QCloseEvent>
 #include <QMainWindow>
@@ -41,5 +40,3 @@ class SettingsWindow : public QMainWindow {
 
   std::unique_ptr<Ui::SettingsWindow> ui_;
 };
-
-#endif  // SETTINGSWINDOW_H

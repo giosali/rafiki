@@ -1,5 +1,4 @@
-#ifndef INTERACTIVELABEL_H
-#define INTERACTIVELABEL_H
+#pragma once
 
 #include <QEnterEvent>
 #include <QEvent>
@@ -24,5 +23,3 @@ class InteractiveLabel : public QLabel {
   void leaveEvent(QEvent* event) override;
   void mousePressEvent(QMouseEvent* event) override;
 };
-
-#endif  // INTERACTIVELABEL_H

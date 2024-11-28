@@ -1,5 +1,4 @@
-#ifndef SEARCHRESULTLIST_H
-#define SEARCHRESULTLIST_H
+#pragma once
 
 #include <QKeyCombination>
 #include <QListWidget>
@@ -75,5 +74,3 @@ class Worker : public QObject {
   Settings& settings_{Settings::GetInstance()};
 };
 }  // namespace searchresultlist
-
-#endif  // SEARCHRESULTLIST_H

@@ -1,5 +1,4 @@
-#ifndef SETTINGS_H
-#define SETTINGS_H
+#pragma once
 
 #include <QJsonDocument>
 #include <QString>
@@ -35,5 +34,3 @@ class Settings {
   int search_result_list_max_count_{6};
   int search_result_title_max_height_{25};
 };
-
-#endif  // SETTINGS_H

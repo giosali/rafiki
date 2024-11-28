@@ -1,5 +1,4 @@
-#ifndef FILE_H
-#define FILE_H
+#pragma once
 
 #include <QFile>
 #include <QJsonArray>
@@ -22,5 +21,3 @@ class File {
   static void MakeParents(const QFile& file);
   static void Write(const QString& path, const QJsonDocument& document);
 };
-
-#endif  // FILE_H
