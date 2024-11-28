@@ -42,7 +42,6 @@ class FeatureObject : public QObject {
   QString GetAltDescription() const;
   QString GetAltTitle() const;
   void SetDescription(const QString& value);
-  void SetIcon(const QPixmap& value);
   void SetId(uint64_t value);
   void SetTitle(const QString& value);
 

@@ -79,8 +79,6 @@ void FeatureObject::SetDescription(const QString& value) {
   description_ = value;
 }
 
-void FeatureObject::SetIcon(const QPixmap& value) { icon_ = value; }
-
 void FeatureObject::SetId(uint64_t value) { id_ = value; }
 
 void FeatureObject::SetTitle(const QString& value) { title_ = value; }
