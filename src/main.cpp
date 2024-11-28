@@ -8,11 +8,11 @@
 #include <memory>
 
 #include "core/client.h"
-#include "core/crud.h"
+#include "core/indexer.h"
 #include "core/server.h"
 #include "ui/mainwindow.h"
 
-int main(int argc, char *argv[]) {
+int main(int argc, char* argv[]) {
   // https://doc.qt.io/qt-5/qtglobal.html
 #ifdef Q_OS_LINUX
   // Ensures application runs on XWayland on Linux.
@@ -59,7 +59,7 @@ int main(int argc, char *argv[]) {
   // 5. /opt/foolib/foo.qm
   // 6. /opt/foolib/foo
   auto translator = QTranslator{};
-  for (const auto &locale : QLocale::system().uiLanguages()) {
+  for (const auto& locale : QLocale::system().uiLanguages()) {
     const auto base_name = application_name + "_" + QLocale(locale).name();
     if (!translator.load(":/i18n/" + base_name)) {
       continue;
@@ -69,7 +69,8 @@ int main(int argc, char *argv[]) {
     break;
   }
 
-  Crud::Initialize();
+  auto& indexer = Indexer::GetInstance();
+  indexer.Initialize();
 
   w.show();
   return a.exec();
