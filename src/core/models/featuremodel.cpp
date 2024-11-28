@@ -23,8 +23,6 @@ QString FeatureModel::GetAltDescription() const { return alt_description_; }
 
 QString FeatureModel::GetAltTitle() const { return alt_title_; }
 
-uint64_t FeatureModel::GetClickCount() const { return click_count_; }
-
 QString FeatureModel::GetCommand() const { return command_; }
 
 QString FeatureModel::GetDescription() const { return description_; }
@@ -44,6 +42,8 @@ bool FeatureModel::GetIsEnabled() const { return is_enabled_; }
 QString FeatureModel::GetTitle() const { return title_; }
 
 QString FeatureModel::GetTitlePlaceholder() const { return title_placeholder_; }
+
+uint64_t FeatureModel::GetUseCount() const { return use_count_; }
 
 void FeatureModel::SetIsEnabled(bool value) { is_enabled_ = value; }
 

@@ -22,7 +22,6 @@ class FeatureModel : public FeatureVisitable {
   virtual std::unordered_set<std::string> Tokenize() const;
   QString GetAltTitle() const;
   QString GetAltDescription() const;
-  uint64_t GetClickCount() const;
   QString GetCommand() const;
   QString GetDescription() const;
   FeatureBridge* GetFeatureBridge() const;
@@ -32,6 +31,7 @@ class FeatureModel : public FeatureVisitable {
   bool GetIsEnabled() const;
   QString GetTitle() const;
   QString GetTitlePlaceholder() const;
+  uint64_t GetUseCount() const;
   void SetIsEnabled(bool value);
 
  protected:
@@ -48,7 +48,6 @@ class FeatureModel : public FeatureVisitable {
  private:
   QString alt_title_{};
   QString alt_description_{};
-  uint64_t click_count_{};
   QString command_{};
   QString description_{};
   std::unique_ptr<FeatureBridge> feature_bridge_{nullptr};
@@ -58,4 +57,5 @@ class FeatureModel : public FeatureVisitable {
   bool is_enabled_{true};
   QString title_{};
   QString title_placeholder_{};
+  uint64_t use_count_{};
 };
