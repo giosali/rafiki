@@ -1,7 +1,5 @@
 #pragma once
 
-#include <QString>
-
 #include "../models/applicationmodel.h"
 #include "featureobject.h"
 
@@ -17,6 +15,5 @@ class ApplicationObject final : public FeatureObject {
   void ProcessKeyRelease(const QKeyCombination& combination) override;
 
  private:
-  QString input_{};
   const ApplicationModel* model_{nullptr};
 };
