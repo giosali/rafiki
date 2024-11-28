@@ -292,16 +292,13 @@ void Worker::ProcessText(const QString& text) {
   // Handles query processing.
   auto visitor = ObjectVisitor{text};
   for (auto id : indexer_.GetIds(text)) {
-    auto model = indexer_.GetModel(id);
-    if (model->GetIsEnabled()) {
+    if (auto model = indexer_.GetModel(id); model->GetIsEnabled()) {
       model->Accept(visitor);
     }
   }
 
-  auto objects = visitor.GetFeatureObjects();
-
   // Handles the results of query processing.
-  if (objects.empty()) {
+  if (auto objects = visitor.GetFeatureObjects(); objects.empty()) {
     visitor.SetNoParse(true);
     const auto default_ids = settings_.GetDefaultFeatureModelIds();
     for (size_t i = 0; i < default_ids.size(); ++i) {
