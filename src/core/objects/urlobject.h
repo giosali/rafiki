@@ -13,7 +13,4 @@ class UrlObject final : public FeatureObject {
   void Drag() override;
   void ProcessKeyPress(const QKeyCombination& combination) override;
   void ProcessKeyRelease(const QKeyCombination& combination) override;
-
- private:
-  const UrlModel* model_{nullptr};
 };

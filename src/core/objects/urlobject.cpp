@@ -4,7 +4,7 @@
 #include <QUrl>
 
 UrlObject::UrlObject(const UrlModel* model, const QString& url)
-    : FeatureObject{model}, model_{model} {
+    : FeatureObject{model} {
   SetTitle(url);
 }
 
