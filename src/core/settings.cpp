@@ -43,27 +43,21 @@ void Settings::RemoveDisabledFeatureModelId(uint64_t id) {
 }
 
 void Settings::Save() const {
-  auto object = QJsonObject{};
-
-  // "defaultModels"
   auto default_models = QJsonArray{};
   for (auto id : default_feature_model_ids_) {
     default_models.append(QString::number(id));
   }
 
-  object.insert("defaultModels", default_models);
-
-  // "disabledModels"
   auto disabled_models = QJsonArray{};
   for (auto id : disabled_feature_model_ids_) {
     disabled_models.append(QString::number(id));
   }
 
-  object.insert("disabledModels", disabled_models);
-
-  // "availableId"
-  object.insert("availableId", QString::number(available_id_));
-
+  auto object = QJsonObject{
+    {"availableId", QString::number(available_id_)},
+    {"defaultModels", default_models},
+    {"disabledModels", disabled_models},
+  };
   File::Write(Paths::GetPath(Paths::Json::kUserSettings), object);
 }
 
