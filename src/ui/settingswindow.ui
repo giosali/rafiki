@@ -60,122 +60,14 @@
              </widget>
             </item>
             <item row="0" column="1">
-             <layout class="QVBoxLayout">
-              <property name="spacing">
-               <number>6</number>
+             <widget class="QLabel">
+              <property name="openExternalLinks">
+               <bool>true</bool>
               </property>
-              <item>
-               <widget class="QLabel">
-                <property name="text">
-                 <string>Rafiki is intended to run on GNOME on Wayland. In order to set a global hotkey to launch Rafiki, follow these steps:</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <!-- Source: https://docs.fedoraproject.org/en-US/quick-docs/gnome-setting-key-shortcut/ -->
-              <item>
-               <widget class="QLabel">
-                <property name="text">
-                 <string>1. Open the "Settings" menu and select "Keyboard" from the list.</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel">
-                <property name="text">
-                 <string>2. Scroll down to the "Keyboard Shortcuts" section and click "View" and "Customize Shortcuts".</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel">
-                <property name="text">
-                 <string>3. Click on the "Custom Shortcuts" menu item. Then click "Add Shortcut".</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel">
-                <property name="text">
-                 <string>4. Enter the following details in the "Add Custom Shortcut" window:</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QVBoxLayout">
-                <property name="leftMargin">
-                 <number>8</number>
-                </property>
-                <property name="spacing">
-                 <number>6</number>
-                </property>
-                <item>
-                 <widget class="QLabel">
-                  <property name="text">
-                   <string>• Add a `Name` for your shortcut. For example: `Rafiki`</string>
-                  </property>
-                  <property name="wordWrap">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QLabel">
-                  <property name="text">
-                   <string>• Enter the following command: `rafiki --toggle`</string>
-                  </property>
-                  <property name="wordWrap">
-                   <bool>true</bool>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-              <item>
-               <widget class="QLabel">
-                <property name="text">
-                 <string>5. Click "Set Shortcut" to open the "Enter the new shortcut" dialog.</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel">
-                <property name="text">
-                 <string>6. Type a keyboard shortcut. For example: `Ctrl-Space`</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <widget class="QLabel">
-                <property name="text">
-                 <string>7. Click "Add".</string>
-                </property>
-                <property name="wordWrap">
-                 <bool>true</bool>
-                </property>
-               </widget>
-              </item>
-             </layout>
+              <property name="text">
+               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://example.com&quot;&gt;How to set up a hotkey on GNOME on Wayland&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+             </widget>
             </item>
             <item row="1" column="0">
              <widget class="QLabel">
