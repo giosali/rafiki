@@ -23,6 +23,7 @@ class FeatureObject : public QObject {
   QPixmap GetIcon() const;
   uint64_t GetId() const;
   QString GetTitle() const;
+  bool operator<(const FeatureObject& rhs) const;
   FeatureObject& operator=(const FeatureObject&) = delete;
 
  public slots:

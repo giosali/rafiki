@@ -50,6 +50,18 @@ uint64_t FeatureObject::GetId() const { return id_; }
 
 QString FeatureObject::GetTitle() const { return title_; }
 
+bool FeatureObject::operator<(const FeatureObject& rhs) const {
+  // First, compare by count in descending order.
+  if (auto left_count = model_->GetClickCount(),
+      right_count = rhs.model_->GetClickCount();
+      left_count != right_count) {
+    return left_count > right_count;
+  }
+
+  // If counts are equal, compare by name in ascending order.
+  return title_ < rhs.title_;
+}
+
 void FeatureObject::ProcessKeyPress(const QKeyCombination& combination) {
   switch (combination.key()) {
     case Qt::Key_Tab:
