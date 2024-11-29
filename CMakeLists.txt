@@ -19,7 +19,10 @@ set(RES_FILES
     data/resources.qrc
     images/resources.qrc
 )
-set(TS_FILES translations/${CMAKE_PROJECT_NAME}_en.ts)
+set(TS_FILES
+    translations/${CMAKE_PROJECT_NAME}_en.ts
+    translations/${CMAKE_PROJECT_NAME}_fr_fr.ts
+)
 
 set(PROJECT_SOURCES
         src/core/bridges/applicationbridge.cpp
