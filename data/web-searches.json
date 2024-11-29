@@ -76,7 +76,7 @@
     "command": "ig",
     "icon": "://images/instagram.png",
     "url": "https://instagram.com/%1",
-    "title": "Visit %1's profile",
+    "title": "Visit %1's Instagram profile",
     "placeholder": "_",
     "alt": {
       "url": "https://instagram.com",
@@ -112,7 +112,7 @@
     "command": "tiktok",
     "icon": "://images/tiktok.png",
     "url": "https://tiktok.com/@%1",
-    "title": "Visit %1's profile",
+    "title": "Visit %1's TikTok profile",
     "placeholder": "_",
     "alt": {
       "url": "https://tiktok.com",
@@ -124,7 +124,7 @@
     "command": "twitch",
     "icon": "://images/twitch.svg",
     "url": "https://twitch.tv/%1",
-    "title": "Visit %1's channel",
+    "title": "Visit %1's Twitch channel",
     "placeholder": "_",
     "alt": {
       "url": "https://twitch.tv",
@@ -160,7 +160,7 @@
     "command": "x",
     "icon": "://images/x.svg",
     "url": "https://x.com/%1",
-    "title": "Visit %1's profile",
+    "title": "Visit %1's X profile",
     "placeholder": "_",
     "alt": {
       "url": "https://x.com",
