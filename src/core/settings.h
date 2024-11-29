@@ -3,6 +3,7 @@
 #include <QJsonDocument>
 #include <QString>
 #include <cstdint>
+#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
@@ -33,4 +34,5 @@ class Settings {
   int search_result_icon_size_{44};
   int search_result_list_max_count_{6};
   int search_result_title_max_height_{25};
+  std::unordered_map<uint64_t, uint64_t> use_counts_{};
 };
