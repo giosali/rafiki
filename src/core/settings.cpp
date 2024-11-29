@@ -53,10 +53,18 @@ void Settings::Save() const {
     disabled_models.append(QString::number(id));
   }
 
+  auto use_counts = QJsonObject{};
+  for (const auto& pair : use_counts_) {
+    auto id = QString::number(pair.first);
+    auto count = QString::number(pair.second);
+    use_counts.insert(id, count);
+  }
+
   auto object = QJsonObject{
     {"availableId", QString::number(available_id_)},
     {"defaultModels", default_models},
     {"disabledModels", disabled_models},
+    {"useCounts", use_counts},
   };
   File::Write(Paths::GetPath(Paths::Json::kUserSettings), object);
 }
@@ -67,6 +75,10 @@ void Settings::Update(const QJsonDocument& document) {
   auto object = document.object();
   if (object.isEmpty()) {
     return;
+  }
+
+  if (auto it = object.find("availableId"); it != object.end()) {
+    available_id_ = it.value().toString().toULongLong();
   }
 
   if (auto it = object.find("defaultModels"); it != object.end()) {
@@ -83,7 +95,13 @@ void Settings::Update(const QJsonDocument& document) {
     }
   }
 
-  if (auto it = object.find("availableId"); it != object.end()) {
-    available_id_ = it.value().toString().toULongLong();
+  if (auto it = object.find("useCounts"); it != object.end()) {
+    auto use_counts = it->toObject();
+    for (const auto& key : use_counts.keys()) {
+      auto value = use_counts.value(key);
+      auto id = key.toULongLong();
+      auto count = value.toString().toULongLong();
+      use_counts_.insert({id, count});
+    }
   }
 }
