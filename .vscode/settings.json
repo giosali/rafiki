@@ -8,9 +8,15 @@
     "files.trimFinalNewlines": true
   },
   "[xml]": {
-    "editor.tabSize": 1
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
   },
   "files.associations": {
+    "*.desktop": "ini",
+    "*.qrc": "xml",
+    "*.ts": "xml",
+    "*.ui": "xml",
+    ".clang-format": "yaml",
     ".clangd": "yaml"
   },
   "C_Cpp.autoAddFileAssociations": false
