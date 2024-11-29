@@ -38,6 +38,10 @@ int Settings::GetSearchResultTitleMaxHeight() const {
   return search_result_title_max_height_;
 }
 
+std::unordered_map<uint64_t, uint64_t> Settings::GetUseCounts() const {
+  return use_counts_;
+}
+
 void Settings::RemoveDisabledFeatureModelId(uint64_t id) {
   disabled_feature_model_ids_.erase(id);
 }
