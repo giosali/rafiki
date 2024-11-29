@@ -73,6 +73,7 @@ void SettingsWindow::DeleteWebSearch(bool checked) const {
 
       auto& settings = Settings::GetInstance();
       settings.RemoveDisabledFeatureModelId(id);
+      settings.RemoveUseCount(id);
       settings.Save();
 
       auto& indexer = Indexer::GetInstance();
