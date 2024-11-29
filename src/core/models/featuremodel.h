@@ -33,6 +33,7 @@ class FeatureModel : public FeatureVisitable {
   QString GetTitlePlaceholder() const;
   uint64_t GetUseCount() const;
   void SetIsEnabled(bool value);
+  void SetUseCount(uint64_t value);
 
  protected:
   void SetAltDescription(const QString& value);

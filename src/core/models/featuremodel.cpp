@@ -47,6 +47,8 @@ uint64_t FeatureModel::GetUseCount() const { return use_count_; }
 
 void FeatureModel::SetIsEnabled(bool value) { is_enabled_ = value; }
 
+void FeatureModel::SetUseCount(uint64_t value) { use_count_ = value; }
+
 void FeatureModel::SetAltDescription(const QString& value) {
   alt_description_ = value;
 }
