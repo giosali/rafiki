@@ -298,7 +298,11 @@ void Worker::ProcessText(const QString& text) {
   }
 
   // Handles the results of query processing.
-  if (auto objects = visitor.GetFeatureObjects(); objects.empty()) {
+  auto objects = visitor.GetFeatureObjects();
+  std::sort(objects.begin(), objects.end(),
+            [](const auto lhs, const auto rhs) { return *lhs < *rhs; });
+
+  if (objects.empty()) {
     visitor.SetNoParse(true);
     const auto default_ids = settings_.GetDefaultFeatureModelIds();
     for (size_t i = 0; i < default_ids.size(); ++i) {
