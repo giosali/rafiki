@@ -1,202 +1,204 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>SettingsWindow</class>
- <widget class="QMainWindow" name="SettingsWindow">
-  <property name="geometry">
-   <rect>
-    <x>0</x>
-    <y>0</y>
-    <width>1000</width>
-    <height>600</height>
-   </rect>
-  </property>
-  <property name="windowTitle">
-   <string>Settings - Rafiki</string>
-  </property>
-  <widget class="QWidget">
-   <layout class="QGridLayout">
-    <item row="0" column="0">
-     <layout class="QVBoxLayout">
-      <property name="spacing">
-       <number>0</number>
-      </property>
-      <item>
-       <widget class="QTabWidget" name="mainTabWidget">
-        <widget class="QWidget" name="generalTab">
-         <attribute name="title">
-          <string>General</string>
-         </attribute>
-         <property name="styleSheet">
-          <string notr="true">
-           QVBoxLayout QLabel { font-size: 9px; margin: 0px; max-height: 40px; }
-          </string>
-         </property>
-         <layout class="QVBoxLayout">
-          <property name="alignment">
-           <enum>Qt::AlignHCenter | Qt::AlignTop</enum>
-          </property>
-          <item>
-           <widget class="QLabel">
-            <property name="font">
-             <font>
-              <pointsize>32</pointsize>
-             </font>
+  <class>SettingsWindow</class>
+  <widget class="QMainWindow" name="SettingsWindow">
+    <property name="geometry">
+      <rect>
+        <x>0</x>
+        <y>0</y>
+        <width>1000</width>
+        <height>600</height>
+      </rect>
+    </property>
+    <property name="windowTitle">
+      <string>Settings - Rafiki</string>
+    </property>
+    <widget class="QWidget">
+      <layout class="QGridLayout">
+        <item row="0" column="0">
+          <layout class="QVBoxLayout">
+            <property name="spacing">
+              <number>0</number>
             </property>
-            <property name="text">
-             <string>Rafiki</string>
-            </property>
-           </widget>
-          </item>
-          <item>
-           <layout class="QFormLayout">
-            <property name="formAlignment">
-             <enum>Qt::AlignHCenter</enum>
-            </property>
-            <item row="0" column="0">
-             <widget class="QLabel">
-              <property name="text">
-               <string>Hotkey</string>
-              </property>
-             </widget>
+            <item>
+              <widget class="QTabWidget" name="mainTabWidget">
+                <widget class="QWidget" name="generalTab">
+                  <attribute name="title">
+                    <string>General</string>
+                  </attribute>
+                  <property name="styleSheet">
+                    <string notr="true">
+                      QVBoxLayout QLabel { font-size: 9px; margin: 0px; max-height: 40px; }
+                    </string>
+                  </property>
+                  <layout class="QVBoxLayout">
+                    <property name="alignment">
+                      <enum>Qt::AlignHCenter | Qt::AlignTop</enum>
+                    </property>
+                    <item>
+                      <widget class="QLabel">
+                        <property name="font">
+                          <font>
+                            <pointsize>32</pointsize>
+                          </font>
+                        </property>
+                        <property name="text">
+                          <string>Rafiki</string>
+                        </property>
+                      </widget>
+                    </item>
+                    <item>
+                      <layout class="QFormLayout">
+                        <property name="formAlignment">
+                          <enum>Qt::AlignHCenter</enum>
+                        </property>
+                        <item row="0" column="0">
+                          <widget class="QLabel">
+                            <property name="text">
+                              <string>Hotkey</string>
+                            </property>
+                          </widget>
+                        </item>
+                        <item row="0" column="1">
+                          <widget class="QLabel">
+                            <property name="openExternalLinks">
+                              <bool>true</bool>
+                            </property>
+                            <property name="text">
+                              <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a
+                                href=&quot;https://example.com&quot;&gt;How to set up a hotkey on
+                                GNOME on Wayland&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                            </property>
+                          </widget>
+                        </item>
+                        <item row="1" column="0">
+                          <widget class="QLabel">
+                            <property name="text">
+                              <string>Language</string>
+                            </property>
+                          </widget>
+                        </item>
+                        <item row="1" column="1">
+                          <widget class="QComboBox">
+                            <item>
+                              <property name="text">
+                                <string>English</string>
+                              </property>
+                            </item>
+                          </widget>
+                        </item>
+                      </layout>
+                    </item>
+                  </layout>
+                </widget>
+                <widget class="QWidget" name="featuresTab">
+                  <attribute name="title">
+                    <string>Features</string>
+                  </attribute>
+                  <layout class="QVBoxLayout">
+                    <item>
+                      <widget class="QTabWidget" name="featuresSubTabWidget">
+                        <widget class="QWidget" name="webSearchesTab">
+                          <attribute name="title">
+                            <string>Web Searches</string>
+                          </attribute>
+                          <layout class="QHBoxLayout">
+                            <item>
+                              <widget class="QTableWidget" name="webSearchesTableWidget">
+                                <property name="editTriggers">
+                                  <set>QAbstractItemView::NoEditTriggers</set>
+                                </property>
+                                <property name="alternatingRowColors">
+                                  <bool>true</bool>
+                                </property>
+                                <property name="focusPolicy">
+                                  <enum>Qt::NoFocus</enum>
+                                </property>
+                                <property name="selectionBehavior">
+                                  <enum>QAbstractItemView::SelectRows</enum>
+                                </property>
+                                <property name="selectionMode">
+                                  <enum>QAbstractItemView::SingleSelection</enum>
+                                </property>
+                              </widget>
+                            </item>
+                          </layout>
+                        </widget>
+                        <widget class="QWidget" name="yourWebSearchesTab">
+                          <attribute name="title">
+                            <string>Your Web Searches</string>
+                          </attribute>
+                          <layout class="QVBoxLayout">
+                            <item>
+                              <widget class="QTableWidget" name="yourWebSearchesTableWidget">
+                                <property name="editTriggers">
+                                  <set>QAbstractItemView::NoEditTriggers</set>
+                                </property>
+                                <property name="alternatingRowColors">
+                                  <bool>true</bool>
+                                </property>
+                                <property name="focusPolicy">
+                                  <enum>Qt::NoFocus</enum>
+                                </property>
+                                <property name="selectionBehavior">
+                                  <enum>QAbstractItemView::SelectRows</enum>
+                                </property>
+                                <property name="selectionMode">
+                                  <enum>QAbstractItemView::SingleSelection</enum>
+                                </property>
+                              </widget>
+                            </item>
+                            <item>
+                              <layout class="QHBoxLayout">
+                                <item>
+                                  <spacer>
+                                    <property name="orientation">
+                                      <enum>Qt::Horizontal</enum>
+                                    </property>
+                                    <property name="sizeHint" stdset="0">
+                                      <size>
+                                        <width>40</width>
+                                        <height>20</height>
+                                      </size>
+                                    </property>
+                                  </spacer>
+                                </item>
+                                <item>
+                                  <widget class="QPushButton" name="editWebSearchButton">
+                                    <property name="text">
+                                      <string>Edit</string>
+                                    </property>
+                                  </widget>
+                                </item>
+                                <item>
+                                  <widget class="QPushButton" name="addWebSearchButton">
+                                    <property name="text">
+                                      <string>Add</string>
+                                    </property>
+                                  </widget>
+                                </item>
+                                <item>
+                                  <widget class="QPushButton" name="deleteWebSearchButton">
+                                    <property name="text">
+                                      <string>Delete</string>
+                                    </property>
+                                  </widget>
+                                </item>
+                              </layout>
+                            </item>
+                          </layout>
+                        </widget>
+                      </widget>
+                    </item>
+                  </layout>
+                </widget>
+              </widget>
             </item>
-            <item row="0" column="1">
-             <widget class="QLabel">
-              <property name="openExternalLinks">
-               <bool>true</bool>
-              </property>
-              <property name="text">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a href=&quot;https://example.com&quot;&gt;How to set up a hotkey on GNOME on Wayland&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel">
-              <property name="text">
-               <string>Language</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QComboBox">
-              <item>
-               <property name="text">
-                <string>English</string>
-               </property>
-              </item>
-             </widget>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-        <widget class="QWidget" name="featuresTab">
-         <attribute name="title">
-          <string>Features</string>
-         </attribute>
-         <layout class="QVBoxLayout">
-          <item>
-           <widget class="QTabWidget" name="featuresSubTabWidget">
-            <widget class="QWidget" name="webSearchesTab">
-             <attribute name="title">
-              <string>Web Searches</string>
-             </attribute>
-             <layout class="QHBoxLayout">
-              <item>
-               <widget class="QTableWidget" name="webSearchesTableWidget">
-                <property name="editTriggers">
-                 <set>QAbstractItemView::NoEditTriggers</set>
-                </property>
-                <property name="alternatingRowColors">
-                 <bool>true</bool>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
-                <property name="selectionBehavior">
-                 <enum>QAbstractItemView::SelectRows</enum>
-                </property>
-                <property name="selectionMode">
-                 <enum>QAbstractItemView::SingleSelection</enum>
-                </property>
-               </widget>
-              </item>
-             </layout>
-            </widget>
-            <widget class="QWidget" name="yourWebSearchesTab">
-             <attribute name="title">
-              <string>Your Web Searches</string>
-             </attribute>
-             <layout class="QVBoxLayout">
-              <item>
-               <widget class="QTableWidget" name="yourWebSearchesTableWidget">
-                <property name="editTriggers">
-                 <set>QAbstractItemView::NoEditTriggers</set>
-                </property>
-                <property name="alternatingRowColors">
-                 <bool>true</bool>
-                </property>
-                <property name="focusPolicy">
-                 <enum>Qt::NoFocus</enum>
-                </property>
-                <property name="selectionBehavior">
-                 <enum>QAbstractItemView::SelectRows</enum>
-                </property>
-                <property name="selectionMode">
-                 <enum>QAbstractItemView::SingleSelection</enum>
-                </property>
-               </widget>
-              </item>
-              <item>
-               <layout class="QHBoxLayout">
-                <item>
-                 <spacer>
-                  <property name="orientation">
-                   <enum>Qt::Horizontal</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                   <size>
-                    <width>40</width>
-                    <height>20</height>
-                   </size>
-                  </property>
-                 </spacer>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="editWebSearchButton">
-                  <property name="text">
-                   <string>Edit</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="addWebSearchButton">
-                  <property name="text">
-                   <string>Add</string>
-                  </property>
-                 </widget>
-                </item>
-                <item>
-                 <widget class="QPushButton" name="deleteWebSearchButton">
-                  <property name="text">
-                   <string>Delete</string>
-                  </property>
-                 </widget>
-                </item>
-               </layout>
-              </item>
-             </layout>
-            </widget>
-           </widget>
-          </item>
-         </layout>
-        </widget>
-       </widget>
-      </item>
-     </layout>
-    </item>
-   </layout>
+          </layout>
+        </item>
+      </layout>
+    </widget>
   </widget>
- </widget>
- <resources/>
- <connections/>
+  <resources />
+  <connections />
 </ui>
