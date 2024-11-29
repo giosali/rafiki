@@ -117,6 +117,10 @@ void Indexer::Initialize() {
   for (auto id : settings.GetDisabledFeatureModelids()) {
     models_map_.at(id)->SetIsEnabled(false);
   }
+
+  for (auto [id, count] : settings.GetUseCounts()) {
+    models_map_.at(id)->SetUseCount(count);
+  }
 }
 
 void Indexer::ToggleModel(uint64_t id) const {
