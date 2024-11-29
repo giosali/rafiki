@@ -10,10 +10,10 @@ class FeatureModel;
 
 class FeatureBridge {
  public:
-  virtual std::vector<FeatureObject*> PassInput(
-    const FeatureModel* feature_model, const QString& input) const;
-  virtual std::vector<FeatureObject*> ProcessInput(
-    const FeatureModel* feature_model, const QString& input) = 0;
+  virtual std::vector<FeatureObject*> PassInput(FeatureModel* feature_model,
+                                                const QString& input) const;
+  virtual std::vector<FeatureObject*> ProcessInput(FeatureModel* feature_model,
+                                                   const QString& input) = 0;
 
  protected:
   bool IsInputInvalid(const QString& input, const QString& formatted_command,

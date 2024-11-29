@@ -5,10 +5,10 @@
 
 #include "../crypto.h"
 
-FileSystemEntryObject::FileSystemEntryObject(const FileSystemEntryModel* model)
+FileSystemEntryObject::FileSystemEntryObject(FileSystemEntryModel* model)
     : FeatureObject{model} {}
 
-FileSystemEntryObject::FileSystemEntryObject(const FileSystemEntryModel* model,
+FileSystemEntryObject::FileSystemEntryObject(FileSystemEntryModel* model,
                                              const std::filesystem::path& path,
                                              const QString& input)
     : FeatureObject{model, input}, path_{path} {

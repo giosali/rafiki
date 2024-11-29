@@ -5,14 +5,14 @@
 #include "../models/urlmodel.h"
 #include "../objects/urlobject.h"
 
-std::vector<FeatureObject*> UrlBridge::ProcessInput(
-  const FeatureModel* feature_model, const QString& input) {
+std::vector<FeatureObject*> UrlBridge::ProcessInput(FeatureModel* feature_model,
+                                                    const QString& input) {
   auto parser = UrlParser{input};
   if (!parser.IsValid()) {
     return {};
   }
 
-  auto model = static_cast<const UrlModel*>(feature_model);
+  auto model = static_cast<UrlModel*>(feature_model);
   return {new UrlObject{model, parser.Url()}};
 }
 

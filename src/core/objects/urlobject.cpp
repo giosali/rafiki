@@ -3,7 +3,7 @@
 #include <QDesktopServices>
 #include <QUrl>
 
-UrlObject::UrlObject(const UrlModel* model, const QString& url)
+UrlObject::UrlObject(UrlModel* model, const QString& url)
     : FeatureObject{model} {
   SetTitle(url);
 }

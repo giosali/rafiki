@@ -7,7 +7,7 @@
 
 #include "../models/trashmodel.h"
 
-TrashObject::TrashObject(const FeatureModel* model) : FeatureObject{model} {}
+TrashObject::TrashObject(FeatureModel* model) : FeatureObject{model} {}
 
 void TrashObject::Drag() {}
 

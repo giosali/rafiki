@@ -4,14 +4,14 @@
 
 #include "../models/featuremodel.h"
 
-FeatureObject::FeatureObject(const FeatureModel* model)
+FeatureObject::FeatureObject(FeatureModel* model)
     : description_{model->GetDescription()},
       icon_{model->GetIcon()},
       id_{model->GetId()},
       model_{model},
       title_{model->GetTitle()} {}
 
-FeatureObject::FeatureObject(const FeatureModel* model, const QString& input)
+FeatureObject::FeatureObject(FeatureModel* model, const QString& input)
     : description_{model->GetDescription()},
       icon_{model->GetIcon()},
       id_{model->GetId()},
@@ -19,7 +19,7 @@ FeatureObject::FeatureObject(const FeatureModel* model, const QString& input)
       model_{model},
       title_{model->GetTitle()} {}
 
-FeatureObject::FeatureObject(const FeatureModel* model, const QString& input,
+FeatureObject::FeatureObject(FeatureModel* model, const QString& input,
                              const QString& argument)
     : description_{model->GetDescription()},
       icon_{model->GetIcon()},
@@ -75,7 +75,7 @@ QString FeatureObject::GetAltDescription() const {
 
 QString FeatureObject::GetAltTitle() const { return model_->GetAltTitle(); }
 
-const FeatureModel* FeatureObject::GetModel() const { return model_; }
+FeatureModel* FeatureObject::GetModel() const { return model_; }
 
 void FeatureObject::SetDescription(const QString& value) {
   description_ = value;

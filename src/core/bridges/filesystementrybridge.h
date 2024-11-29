@@ -12,7 +12,7 @@
 
 class FileSystemEntryBridge final : public FeatureBridge {
  public:
-  std::vector<FeatureObject*> ProcessInput(const FeatureModel* feature_model,
+  std::vector<FeatureObject*> ProcessInput(FeatureModel* feature_model,
                                            const QString& input) override;
 
  private:

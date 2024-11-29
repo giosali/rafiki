@@ -11,14 +11,14 @@
 #include "../objects/calculatorobject.h"
 
 std::vector<FeatureObject*> CalculatorBridge::ProcessInput(
-  const FeatureModel* feature_model, const QString& input) {
+  FeatureModel* feature_model, const QString& input) {
   auto result = CalculatorBridge::ShuntingYardAlgorithm::TryParse(
     input.trimmed().toStdString());
   if (!result.has_value()) {
     return {};
   }
 
-  auto model = static_cast<const CalculatorModel*>(feature_model);
+  auto model = static_cast<CalculatorModel*>(feature_model);
   return {new CalculatorObject{model, result.value()}};
 }
 

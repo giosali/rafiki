@@ -1,7 +1,7 @@
 #include "featurebridge.h"
 
 std::vector<FeatureObject*> FeatureBridge::PassInput(
-  const FeatureModel* feature_model, const QString& input) const {
+  FeatureModel* feature_model, const QString& input) const {
   return {};
 }
 

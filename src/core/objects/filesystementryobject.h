@@ -9,8 +9,8 @@ class FileSystemEntryObject final : public FeatureObject {
   Q_OBJECT
 
  public:
-  explicit FileSystemEntryObject(const FileSystemEntryModel* model);
-  explicit FileSystemEntryObject(const FileSystemEntryModel* model,
+  explicit FileSystemEntryObject(FileSystemEntryModel* model);
+  explicit FileSystemEntryObject(FileSystemEntryModel* model,
                                  const std::filesystem::path& path,
                                  const QString& input);
 

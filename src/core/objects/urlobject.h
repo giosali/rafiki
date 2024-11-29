@@ -7,7 +7,7 @@ class UrlObject final : public FeatureObject {
   Q_OBJECT
 
  public:
-  explicit UrlObject(const UrlModel* model, const QString& url);
+  explicit UrlObject(UrlModel* model, const QString& url);
 
  public slots:
   void Drag() override;

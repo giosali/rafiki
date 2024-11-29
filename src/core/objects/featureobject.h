@@ -12,9 +12,9 @@ class FeatureObject : public QObject {
   Q_OBJECT
 
  public:
-  explicit FeatureObject(const FeatureModel* model);
-  explicit FeatureObject(const FeatureModel* model, const QString& input);
-  explicit FeatureObject(const FeatureModel* model, const QString& input,
+  explicit FeatureObject(FeatureModel* model);
+  explicit FeatureObject(FeatureModel* model, const QString& input);
+  explicit FeatureObject(FeatureModel* model, const QString& input,
                          const QString& argument);
 
   virtual ~FeatureObject() = default;
@@ -41,7 +41,7 @@ class FeatureObject : public QObject {
  protected:
   QString GetAltDescription() const;
   QString GetAltTitle() const;
-  const FeatureModel* GetModel() const;
+  FeatureModel* GetModel() const;
   void SetDescription(const QString& value);
   void SetId(uint64_t value);
   void SetTitle(const QString& value);
@@ -51,6 +51,6 @@ class FeatureObject : public QObject {
   QPixmap icon_{};
   uint64_t id_{};
   QString input_{};
-  const FeatureModel* model_{nullptr};
+  FeatureModel* model_{nullptr};
   QString title_{};
 };

@@ -5,8 +5,8 @@
 
 #include "../models/websearchmodel.h"
 
-WebSearchObject::WebSearchObject(const FeatureModel* model,
-                                 const QString& input, const QString& argument)
+WebSearchObject::WebSearchObject(FeatureModel* model, const QString& input,
+                                 const QString& argument)
     : FeatureObject{model, input, argument}, argument_{argument} {}
 
 void WebSearchObject::Drag() {}

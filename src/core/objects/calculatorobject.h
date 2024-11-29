@@ -8,8 +8,7 @@ class CalculatorObject final : public FeatureObject {
   Q_OBJECT
 
  public:
-  explicit CalculatorObject(const FeatureModel* model,
-                            const std::string& value);
+  explicit CalculatorObject(FeatureModel* model, const std::string& value);
 
  public slots:
   void Drag() override;

@@ -9,7 +9,7 @@ class TrashObject final : public FeatureObject {
   Q_OBJECT
 
  public:
-  explicit TrashObject(const FeatureModel* model);
+  explicit TrashObject(FeatureModel* model);
 
  public slots:
   void Drag() override;

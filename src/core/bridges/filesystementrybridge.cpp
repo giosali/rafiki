@@ -7,8 +7,8 @@
 #include "../utilities.h"
 
 std::vector<FeatureObject*> FileSystemEntryBridge::ProcessInput(
-  const FeatureModel* feature_model, const QString& input) {
-  auto model = static_cast<const FileSystemEntryModel*>(feature_model);
+  FeatureModel* feature_model, const QString& input) {
+  auto model = static_cast<FileSystemEntryModel*>(feature_model);
 
   auto pair = ParseInput(input, model->FormatCommand(), model->ReceivesInput());
   auto [command, argument] = pair;

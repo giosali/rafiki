@@ -6,7 +6,7 @@
 
 #include "../models/calculatormodel.h"
 
-CalculatorObject::CalculatorObject(const FeatureModel* model,
+CalculatorObject::CalculatorObject(FeatureModel* model,
                                    const std::string& value)
     : FeatureObject{model} {
   // Evaluates the result of the calculation.

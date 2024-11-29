@@ -8,7 +8,7 @@
 
 #include "../models/applicationmodel.h"
 
-ApplicationObject::ApplicationObject(const FeatureModel* model)
+ApplicationObject::ApplicationObject(FeatureModel* model)
     : FeatureObject{model} {}
 
 void ApplicationObject::Drag() {}

@@ -6,7 +6,7 @@ class ApplicationObject final : public FeatureObject {
   Q_OBJECT
 
  public:
-  explicit ApplicationObject(const FeatureModel* model);
+  explicit ApplicationObject(FeatureModel* model);
 
  public slots:
   void Drag() override;
