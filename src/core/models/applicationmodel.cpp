@@ -24,7 +24,7 @@ ApplicationModel::ApplicationModel(
     QRegularExpression{"%[fFuUdDnNickvm]"});
   auto keywords = Utilities::Split(QString::fromStdString(keywords_val), ';');
 
-  SetAltDescription("Reveal in folder");
+  SetAltDescription("Open containing folder");
   SetCommand(name);
   SetDescription(QString::fromStdString(desktop_entry_path));
   SetIcon(QIcon::fromTheme(icon));
