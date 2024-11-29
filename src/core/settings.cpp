@@ -50,6 +50,8 @@ void Settings::RemoveDisabledFeatureModelId(uint64_t id) {
   disabled_feature_model_ids_.erase(id);
 }
 
+void Settings::RemoveUseCount(uint64_t id) { use_counts_.erase(id); }
+
 void Settings::Save() const {
   auto default_models = QJsonArray{};
   for (auto id : default_feature_model_ids_) {

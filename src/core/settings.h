@@ -20,6 +20,7 @@ class Settings {
   int GetSearchResultTitleMaxHeight() const;
   std::unordered_map<uint64_t, uint64_t> GetUseCounts() const;
   void RemoveDisabledFeatureModelId(uint64_t id);
+  void RemoveUseCount(uint64_t id);
   void Save() const;
   void SetAvailableId(uint64_t value);
   void Update(const QJsonDocument& document);
