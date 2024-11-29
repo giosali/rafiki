@@ -3,11 +3,11 @@
 #include <QDesktopServices>
 #include <QUrl>
 
-WebSearchObject::WebSearchObject(const WebSearchModel* model,
+#include "../models/websearchmodel.h"
+
+WebSearchObject::WebSearchObject(const FeatureModel* model,
                                  const QString& input, const QString& argument)
-    : FeatureObject{model, input, argument},
-      argument_{argument},
-      model_{model} {}
+    : FeatureObject{model, input, argument}, argument_{argument} {}
 
 void WebSearchObject::Drag() {}
 
@@ -17,9 +17,14 @@ void WebSearchObject::ProcessKeyPress(const QKeyCombination& combination) {
       FeatureObject::ProcessKeyPress(combination);
       break;
     case Qt::Key_Return: {
+      auto model = dynamic_cast<const WebSearchModel*>(GetModel());
+      if (model == nullptr) {
+        break;
+      }
+
       auto url = combination.keyboardModifiers() & Qt::AltModifier
-                   ? model_->GetAltUrl()
-                   : model_->GetUrl();
+                   ? model->GetAltUrl()
+                   : model->GetUrl();
       if (!url.contains("%1")) {
         emit Hidden();
         QDesktopServices::openUrl(QUrl{url});
@@ -28,7 +33,7 @@ void WebSearchObject::ProcessKeyPress(const QKeyCombination& combination) {
 
       // Means arg is equal to: QString{}.
       if (argument_.isNull()) {
-        emit NewSearchBoxTextRequested(model_->FormatCommand());
+        emit NewSearchBoxTextRequested(model->FormatCommand());
         break;
       }
 

@@ -4,9 +4,11 @@
 #include <QGuiApplication>
 #include <QLocale>
 
-CalculatorObject::CalculatorObject(const CalculatorModel* model,
+#include "../models/calculatormodel.h"
+
+CalculatorObject::CalculatorObject(const FeatureModel* model,
                                    const std::string& value)
-    : FeatureObject{model}, model_{model} {
+    : FeatureObject{model} {
   // Evaluates the result of the calculation.
   if (value.empty()) {
     SetTitle(model->GetTitlePlaceholder());
@@ -23,7 +25,8 @@ void CalculatorObject::ProcessKeyPress(const QKeyCombination& combination) {
   auto title = GetTitle();
   switch (combination.key()) {
     case Qt::Key_Return:
-      if (title != model_->GetTitlePlaceholder()) {
+      if (auto model = dynamic_cast<const CalculatorModel*>(GetModel());
+          model != nullptr && title != model->GetTitlePlaceholder()) {
         emit Hidden();
         auto clipboard = QGuiApplication::clipboard();
         clipboard->setText(title);

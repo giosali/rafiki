@@ -2,14 +2,13 @@
 
 #include <string>
 
-#include "../models/calculatormodel.h"
 #include "featureobject.h"
 
 class CalculatorObject final : public FeatureObject {
   Q_OBJECT
 
  public:
-  explicit CalculatorObject(const CalculatorModel* model,
+  explicit CalculatorObject(const FeatureModel* model,
                             const std::string& value);
 
  public slots:
@@ -19,6 +18,4 @@ class CalculatorObject final : public FeatureObject {
 
  private:
   QString FormatNumber(QString number) const;
-
-  const CalculatorModel* model_{nullptr};
 };

@@ -1,13 +1,12 @@
 #pragma once
 
-#include "../models/websearchmodel.h"
 #include "featureobject.h"
 
 class WebSearchObject final : public FeatureObject {
   Q_OBJECT
 
  public:
-  WebSearchObject(const WebSearchModel* model, const QString& input,
+  WebSearchObject(const FeatureModel* model, const QString& input,
                   const QString& argument);
 
  public slots:
@@ -17,5 +16,4 @@ class WebSearchObject final : public FeatureObject {
 
  private:
   QString argument_{};
-  const WebSearchModel* model_{nullptr};
 };

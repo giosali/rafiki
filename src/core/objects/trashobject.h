@@ -3,14 +3,13 @@
 #include <QStandardPaths>
 #include <filesystem>
 
-#include "../models/trashmodel.h"
 #include "featureobject.h"
 
 class TrashObject final : public FeatureObject {
   Q_OBJECT
 
  public:
-  explicit TrashObject(const TrashModel* model);
+  explicit TrashObject(const FeatureModel* model);
 
  public slots:
   void Drag() override;
@@ -20,7 +19,6 @@ class TrashObject final : public FeatureObject {
  private:
   void EmptyTrash() const;
 
-  const TrashModel* model_{nullptr};
   std::filesystem::path path_{
     std::filesystem::path{
       QStandardPaths::writableLocation(QStandardPaths::HomeLocation)
