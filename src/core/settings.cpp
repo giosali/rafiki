@@ -16,6 +16,10 @@ void Settings::AddDisabledFeatureModelId(uint64_t id) {
   disabled_feature_model_ids_.insert(id);
 }
 
+void Settings::AddUseCount(uint64_t id, uint64_t count) {
+  use_counts_[id] = count;
+}
+
 uint64_t Settings::GetAvailableId() const { return available_id_; }
 
 std::vector<uint64_t> Settings::GetDefaultFeatureModelIds() const {

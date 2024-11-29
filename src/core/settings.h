@@ -11,6 +11,7 @@ class Settings {
  public:
   static Settings& GetInstance();
   void AddDisabledFeatureModelId(uint64_t id);
+  void AddUseCount(uint64_t id, uint64_t count);
   uint64_t GetAvailableId() const;
   std::vector<uint64_t> GetDefaultFeatureModelIds() const;
   std::unordered_set<uint64_t> GetDisabledFeatureModelids() const;
