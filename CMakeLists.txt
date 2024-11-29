@@ -83,7 +83,13 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
 #                 ${CMAKE_CURRENT_SOURCE_DIR}/android)
 # For more information, see https://doc.qt.io/qt-6/qt-add-executable.html#target-creation
 
-    qt_add_translations(${CMAKE_PROJECT_NAME} TS_FILES ${TS_FILES})
+    # Creates .qm files from .ts files
+    qt_add_translations(${CMAKE_PROJECT_NAME}
+        TS_FILES
+            ${TS_FILES}
+        RESOURCE_PREFIX
+            "/translations"
+    )
 else()
     if(ANDROID)
         add_library(${CMAKE_PROJECT_NAME} SHARED
