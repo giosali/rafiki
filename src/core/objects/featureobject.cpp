@@ -3,6 +3,7 @@
 #include <Qt>
 
 #include "../models/featuremodel.h"
+#include "../settings.h"
 
 FeatureObject::FeatureObject(FeatureModel* model)
     : description_{model->GetDescription()},
@@ -64,6 +65,15 @@ void FeatureObject::ProcessKeyPress(const QKeyCombination& combination) {
       }
 
       break;
+    case Qt::Key_Return: {
+      auto use_count = model_->GetUseCount() + 1;
+      model_->SetUseCount(use_count);
+
+      auto& settings = Settings::GetInstance();
+      settings.AddUseCount(id_, use_count);
+      settings.Save();
+      break;
+    }
     default:
       break;
   }
