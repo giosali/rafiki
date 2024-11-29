@@ -75,6 +75,8 @@ QString FeatureObject::GetAltDescription() const {
 
 QString FeatureObject::GetAltTitle() const { return model_->GetAltTitle(); }
 
+const FeatureModel* FeatureObject::GetModel() const { return model_; }
+
 void FeatureObject::SetDescription(const QString& value) {
   description_ = value;
 }

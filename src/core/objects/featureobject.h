@@ -41,6 +41,7 @@ class FeatureObject : public QObject {
  protected:
   QString GetAltDescription() const;
   QString GetAltTitle() const;
+  const FeatureModel* GetModel() const;
   void SetDescription(const QString& value);
   void SetId(uint64_t value);
   void SetTitle(const QString& value);
