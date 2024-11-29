@@ -133,30 +133,6 @@
   },
   {
     "id": "12",
-    "command": "twitter",
-    "icon": "://images/x.svg",
-    "url": "https://twitter.com/%1",
-    "title": "Visit %1's profile",
-    "placeholder": "_",
-    "alt": {
-      "url": "https://twitter.com",
-      "title": "Visit the Twitter homepage"
-    }
-  },
-  {
-    "id": "13",
-    "command": "twitter",
-    "icon": "://images/x.svg",
-    "url": "https://twitter.com/search?q=%1",
-    "title": "Search Twitter for '%1'",
-    "placeholder": "...",
-    "alt": {
-      "url": "https://twitter.com",
-      "title": "Visit the Twitter homepage"
-    }
-  },
-  {
-    "id": "14",
     "command": "wiki",
     "icon": "://images/wikipedia.svg",
     "url": "https://wikipedia.org/wiki/Special:Search?search=%1",
@@ -168,7 +144,7 @@
     }
   },
   {
-    "id": "15",
+    "id": "13",
     "command": "youtube",
     "icon": "://images/youtube.png",
     "url": "https://youtube.com/results?search_query=%1",
@@ -178,5 +154,25 @@
       "url": "https://youtube.com",
       "title": "Visit the YouTube homepage"
     }
+  },
+  {
+    "id": "14",
+    "command": "x",
+    "icon": "://images/x.svg",
+    "url": "https://x.com/%1",
+    "title": "Visit %1's profile",
+    "placeholder": "_",
+    "alt": {
+      "url": "https://x.com",
+      "title": "Visit the X homepage"
+    }
+  },
+  {
+    "id": "15",
+    "command": "x",
+    "icon": "://images/x.svg",
+    "url": "https://x.com/search?q=%1",
+    "title": "Search X for '%1'",
+    "placeholder": "..."
   }
 ]
