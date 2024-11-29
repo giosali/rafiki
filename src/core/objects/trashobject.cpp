@@ -23,6 +23,7 @@ void TrashObject::ProcessKeyPress(const QKeyCombination& combination) {
     case Qt::Key_Return:
       emit Hidden();
       EmptyTrash();
+      FeatureObject::ProcessKeyPress(combination);
       break;
     default:
       break;

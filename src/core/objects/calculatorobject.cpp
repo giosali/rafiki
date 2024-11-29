@@ -30,6 +30,7 @@ void CalculatorObject::ProcessKeyPress(const QKeyCombination& combination) {
         emit Hidden();
         auto clipboard = QGuiApplication::clipboard();
         clipboard->setText(title);
+        FeatureObject::ProcessKeyPress(combination);
       }
 
       break;

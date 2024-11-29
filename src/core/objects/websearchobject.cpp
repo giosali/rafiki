@@ -28,6 +28,7 @@ void WebSearchObject::ProcessKeyPress(const QKeyCombination& combination) {
       if (!url.contains("%1")) {
         emit Hidden();
         QDesktopServices::openUrl(QUrl{url});
+        FeatureObject::ProcessKeyPress(combination);
         break;
       }
 
@@ -41,6 +42,7 @@ void WebSearchObject::ProcessKeyPress(const QKeyCombination& combination) {
       if (!argument_.isEmpty()) {
         emit Hidden();
         QDesktopServices::openUrl(QUrl{url.arg(argument_)});
+        FeatureObject::ProcessKeyPress(combination);
       }
 
       break;

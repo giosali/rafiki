@@ -31,6 +31,7 @@ void ApplicationObject::ProcessKeyPress(const QKeyCombination& combination) {
         auto parent = path.parent_path();
         auto dir = QUrl::fromLocalFile(QString::fromStdString(parent));
         QDesktopServices::openUrl(dir);
+        FeatureObject::ProcessKeyPress(combination);
         break;
       }
 
@@ -45,6 +46,8 @@ void ApplicationObject::ProcessKeyPress(const QKeyCombination& combination) {
         // will contain garbage characters/gibberish.
         auto t = std::jthread{[exec] { std::system(exec.c_str()); }};
         t.detach();
+
+        FeatureObject::ProcessKeyPress(combination);
       }
 
       break;
