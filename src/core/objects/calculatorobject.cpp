@@ -12,10 +12,10 @@ CalculatorObject::CalculatorObject(FeatureModel* model,
   // Evaluates the result of the calculation.
   if (value.empty()) {
     SetTitle(model->GetTitlePlaceholder());
-    SetDescription("Please enter a valid expression");
+    SetDescription(tr("Please enter a valid expression"));
   } else {
     SetTitle(QString::fromStdString(value));
-    SetDescription("Copy to clipboard");
+    SetDescription(tr("Copy to clipboard"));
   }
 }
 

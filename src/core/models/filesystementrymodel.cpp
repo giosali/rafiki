@@ -8,12 +8,12 @@
 
 FileSystemEntryModel::FileSystemEntryModel()
     : FeatureModel{std::make_unique<FileSystemEntryBridge>()} {
-  SetAltDescription("Open containing folder");
+  SetAltDescription(tr("Open containing folder"));
   SetCommand(kCommand);
-  SetDescription("Search for files on your PC and open");
+  SetDescription(tr("Search for files on your PC and open"));
   SetIcon(Paths::GetPath(Paths::Image::kFileSystemEntry));
   SetId(17);
-  SetTitle("Open file");
+  SetTitle(tr("Open file"));
 }
 
 void FileSystemEntryModel::Accept(FeatureVisitor& v) { v.Visit(this); }

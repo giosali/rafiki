@@ -11,7 +11,7 @@ TrashModel::TrashModel() : FeatureModel{std::make_unique<TrashBridge>()} {
   SetCommand("empty trash");
   SetIcon(Paths::GetPath(Paths::Image::kTrash));
   SetId(18);
-  SetTitle("Empty trash");
+  SetTitle(tr("Empty trash"));
 }
 
 void TrashModel::Accept(FeatureVisitor& v) { v.Visit(this); }

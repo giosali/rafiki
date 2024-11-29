@@ -6,22 +6,34 @@
 #include "../visitors/featurevisitor.h"
 
 WebSearchModel::WebSearchModel(const QJsonObject& object)
-    : FeatureModel{std::make_unique<WebSearchBridge>()},
-      url_{object["url"].toString()} {
-  SetCommand(object["command"].toString());
-  SetIcon(object["icon"].toString());
-  SetId(object["id"].toString().toULongLong());
-  SetTitle(object["title"].toString());
-  SetTitlePlaceholder(object["placeholder"].toString());
+    : FeatureModel{std::make_unique<WebSearchBridge>()} {
+  if (object.contains("isCustom") &&
+      (is_custom_ = object["isCustom"].toBool())) {
+    SetCommand(object["command"].toString());
+    SetIcon(object["icon"].toString());
+    SetId(object["id"].toString().toULongLong());
+    SetTitle(object["title"].toString());
+    SetTitlePlaceholder(object["placeholder"].toString());
+    SetUrl(object["url"].toString());
 
-  if (object.contains("alt")) {
-    auto alt = object["alt"].toObject();
-    SetAltTitle(alt["title"].toString());
-    alt_url_ = alt["url"].toString();
-  }
+    if (object.contains("alt")) {
+      auto alt = object["alt"].toObject();
+      SetAltTitle(alt["title"].toString());
+      alt_url_ = alt["url"].toString();
+    }
+  } else {
+    SetCommand(object["command"].toString());
+    SetIcon(object["icon"].toString());
+    SetId(object["id"].toString().toULongLong());
+    SetTitle(tr(object["title"].toString().toStdString().c_str()));
+    SetTitlePlaceholder(object["placeholder"].toString());
+    SetUrl(tr(object["url"].toString().toStdString().c_str()));
 
-  if (auto v = object["isCustom"]; !v.isUndefined()) {
-    is_custom_ = v.toBool();
+    if (object.contains("alt")) {
+      auto alt = object["alt"].toObject();
+      SetAltTitle(tr(alt["title"].toString().toStdString().c_str()));
+      alt_url_ = tr(alt["url"].toString().toStdString().c_str());
+    }
   }
 }
 

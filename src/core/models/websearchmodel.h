@@ -1,11 +1,14 @@
 #pragma once
 
+#include <QCoreApplication>
 #include <QJsonObject>
 #include <QString>
 
 #include "featuremodel.h"
 
 class WebSearchModel final : public FeatureModel {
+  Q_DECLARE_TR_FUNCTIONS(WebSearchModel)
+
  public:
   WebSearchModel(const QJsonObject& object);
 

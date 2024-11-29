@@ -7,7 +7,7 @@
 #include "../visitors/featurevisitor.h"
 
 UrlModel::UrlModel() : FeatureModel{std::make_unique<UrlBridge>()} {
-  SetDescription("Open URL");
+  SetDescription(tr("Open URL"));
   SetIcon(Paths::GetPath(Paths::Image::kUrl));
   SetId(19);
 }
