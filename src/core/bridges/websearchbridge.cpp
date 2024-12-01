@@ -12,7 +12,7 @@ std::vector<FeatureObject*> WebSearchBridge::PassInput(
 std::vector<FeatureObject*> WebSearchBridge::ProcessInput(
   FeatureModel* feature_model, const QString& input) {
   auto model = static_cast<WebSearchModel*>(feature_model);
-  auto pair = ParseInput(input, model->FormatCommand(), model->ReceivesInput());
+  auto pair = ParseInput(input, model->FormatCommand());
   if (auto [command, argument] = pair;
       command.isEmpty() && argument.isEmpty()) {
     return {};

@@ -6,9 +6,5 @@
 std::vector<FeatureObject*> TrashBridge::ProcessInput(
   FeatureModel* feature_model, const QString& input) {
   auto model = static_cast<TrashModel*>(feature_model);
-  if (IsInputInvalid(input, model->GetCommand(), model->ReceivesInput())) {
-    return {};
-  } else {
-    return {new TrashObject{model}};
-  }
+  return {new TrashObject{model}};
 }

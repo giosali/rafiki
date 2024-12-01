@@ -10,7 +10,7 @@ std::vector<FeatureObject*> FileSystemEntryBridge::ProcessInput(
   FeatureModel* feature_model, const QString& input) {
   auto model = static_cast<FileSystemEntryModel*>(feature_model);
 
-  auto pair = ParseInput(input, model->FormatCommand(), model->ReceivesInput());
+  auto pair = ParseInput(input, model->FormatCommand());
   auto [command, argument] = pair;
   if (command.isEmpty() && argument.isEmpty()) {
     return {};

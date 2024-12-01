@@ -67,7 +67,7 @@ std::unordered_set<uint64_t> Indexer::GetIds(const QString& input) const {
   // Attempts to extract everything before the first space character and use
   // that as a key for the trie containing the models.
   if (auto i = key.find(' '); i != std::string::npos) {
-    key = key.substr(0, i);
+    key = key.substr(0, i + 1);
   }
 
   // Includes ids from models that don't contain a command by default.
