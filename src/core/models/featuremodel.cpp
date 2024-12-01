@@ -16,7 +16,8 @@ FeatureModel::FeatureModel(std::unique_ptr<FeatureBridge> bridge)
 bool FeatureModel::ReceivesInput() const { return title_.contains("%1"); }
 
 std::unordered_set<std::string> FeatureModel::Tokenize() const {
-  return std::unordered_set<std::string>{command_.toLower().toStdString()};
+  return std::unordered_set<std::string>{
+    FormatCommand().toLower().toStdString()};
 }
 
 QString FeatureModel::GetAltDescription() const { return alt_description_; }
