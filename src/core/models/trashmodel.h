@@ -11,5 +11,6 @@ class TrashModel final : public FeatureModel {
   TrashModel();
 
   void Accept(FeatureVisitor& v) override;
+  bool ReceivesInput() const override;
   std::unordered_set<std::string> Tokenize() const override;
 };

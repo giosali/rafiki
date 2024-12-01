@@ -16,6 +16,8 @@ TrashModel::TrashModel() : FeatureModel{std::make_unique<TrashBridge>()} {
 
 void TrashModel::Accept(FeatureVisitor& v) { v.Visit(this); }
 
+bool TrashModel::ReceivesInput() const { return false; }
+
 std::unordered_set<std::string> TrashModel::Tokenize() const {
   auto tokens = FeatureModel::Tokenize();
 
