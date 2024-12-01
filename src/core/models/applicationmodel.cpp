@@ -37,6 +37,8 @@ ApplicationModel::ApplicationModel(
 
 void ApplicationModel::Accept(FeatureVisitor& v) { v.Visit(this); }
 
+bool ApplicationModel::ReceivesInput() const { return false; }
+
 std::unordered_set<std::string> ApplicationModel::Tokenize() const {
   auto tokens = FeatureModel::Tokenize();
 

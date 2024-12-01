@@ -15,6 +15,7 @@ class ApplicationModel final : public FeatureModel {
                             const INIReader& reader);
 
   void Accept(FeatureVisitor& v) override;
+  bool ReceivesInput() const override;
   std::unordered_set<std::string> Tokenize() const override;
   QString GetExec() const;
 
