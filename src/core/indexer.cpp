@@ -54,14 +54,15 @@ void Indexer::DeleteModel(uint64_t id) {
 std::unordered_set<uint64_t> Indexer::GetIds(const QString& input) const {
   auto key = input.toLower().toStdString();
 
-  // Trims left side of input.
-  if (auto i = key.find_first_not_of(' '); i != std::string::npos) {
-    key = key.substr(i);
-  }
+  if (auto i = key.find_first_not_of(' '); i != 0) {
+    // Means that the input consists of only spaces, and so an empty set will be
+    // returned to force default results to be shown.
+    if (i == std::string::npos) {
+      return {};
+    }
 
-  // Returns an empty set which will force default results to be shown.
-  if (key.empty()) {
-    return {};
+    // Trims left side of input.
+    key = key.substr(i);
   }
 
   // Attempts to extract everything before the first space character and use
