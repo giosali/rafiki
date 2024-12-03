@@ -7,6 +7,10 @@
     "files.insertFinalNewline": true,
     "files.trimFinalNewlines": true
   },
+  "[json]": {
+    "editor.formatOnSave": true,
+    "editor.tabSize": 2
+  },
   "[xml]": {
     "editor.formatOnSave": true,
     "editor.tabSize": 2
