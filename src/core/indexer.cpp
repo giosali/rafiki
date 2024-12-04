@@ -1,5 +1,6 @@
 #include "indexer.h"
 
+#include <array>
 #include <string>
 #include <utility>
 
@@ -103,10 +104,9 @@ void Indexer::IndexModel(std::unique_ptr<FeatureModel> model) {
   } else {
     auto receives_input = model->ReceivesInput();
 
-    // Inserts Result ID into tokens of FeatureModel. This must be done prior
-    // to moving the unique_ptr to the model.
-    auto tokens = model->Tokenize();
-    for (const auto& token : tokens) {
+    // Inserts Result ID alongside tokens of FeatureModel. This must be done
+    // prior to moving the unique_ptr to the model.
+    for (const auto& token : model->Tokenize()) {
       auto pair = (receives_input ? input_models_trie_ : inputless_models_trie_)
                     .insert(token, std::unordered_set<uint64_t>{});
       pair.first->insert(id);
@@ -143,32 +143,48 @@ void Indexer::ToggleModel(uint64_t id) const {
 void Indexer::UpdateTrie(uint64_t id,
                          const std::unordered_set<std::string>& old_tokens,
                          const std::unordered_set<std::string>& new_tokens) {
-  auto model = GetModel(id);
-  auto& trie =
-    model->ReceivesInput() ? input_models_trie_ : inputless_models_trie_;
+  // When we're removing tokens here, we only need to remove them from one
+  // trie: either the one that contains input models or the one that contains
+  // inputless models. However, when this function is called, there's a
+  // possibility that member function `ReceivesInput` on the model will return a
+  // different result than before. In order to account for this, we need to
+  // remove the tokens that are associated with the given id.
+  auto tries =
+    std::array<tsl::htrie_map<char, std::unordered_set<uint64_t>>*, 2>{
+      &input_models_trie_, &inputless_models_trie_};
 
   // Removes old tokens.
   for (const auto& token : old_tokens) {
-    auto it = trie.find(token);
-    if (it == trie.end()) {
-      continue;
-    }
+    for (const auto trie : tries) {
+      auto it = trie->find(token);
+      if (it == trie->end()) {
+        continue;
+      }
 
-    // Gets a reference to the corresponding id set in the trie.
-    // If there is only one id in the id set, the entire set is removed.
-    // Otherwise, only the id matching the model id is removed.
-    auto& ids = it.value();
-    if (ids.size() == 1) {
-      trie.erase(token);
-      continue;
-    } else {
-      ids.erase(id);
+      // This is necessary because we're checking both tries as explained
+      // previously.
+      auto& ids = it.value();
+      if (!ids.contains(id)) {
+        continue;
+      }
+
+      // Gets a reference to the corresponding id set in the trie.
+      // If there is only one id in the id set, the entire set is removed.
+      // Otherwise, only the id matching the model id is removed.
+      if (ids.size() == 1) {
+        trie->erase(token);
+        continue;
+      } else {
+        ids.erase(id);
+      }
     }
   }
 
   // Adds new tokens.
   for (const auto& token : new_tokens) {
-    auto pair = trie.insert(token, std::unordered_set<uint64_t>{});
+    auto pair = (GetModel(id)->ReceivesInput() ? input_models_trie_
+                                               : inputless_models_trie_)
+                  .insert(token, std::unordered_set<uint64_t>{});
     pair.first->insert(id);
   }
 }
