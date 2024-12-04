@@ -23,24 +23,37 @@ include_directories(
 )
 
 set(PROJECT_SOURCES
+    ../src/core/bridges/applicationbridge.cpp
     ../src/core/bridges/calculatorbridge.cpp
     ../src/core/bridges/featurebridge.cpp
+    ../src/core/bridges/filesystementrybridge.cpp
+    ../src/core/bridges/trashbridge.cpp
     ../src/core/bridges/urlbridge.cpp
     ../src/core/bridges/websearchbridge.cpp
+    ../src/core/models/applicationmodel.cpp
     ../src/core/models/calculatormodel.cpp
     ../src/core/models/featuremodel.cpp
+    ../src/core/models/filesystementrymodel.cpp
+    ../src/core/models/trashmodel.cpp
     ../src/core/models/urlmodel.cpp
     ../src/core/models/websearchmodel.cpp
+    ../src/core/objects/applicationobject.cpp
     ../src/core/objects/calculatorobject.cpp
     ../src/core/objects/featureobject.cpp
+    ../src/core/objects/filesystementryobject.cpp
+    ../src/core/objects/trashobject.cpp
     ../src/core/objects/urlobject.cpp
     ../src/core/objects/websearchobject.cpp
+    ../src/core/crypto.cpp
+    ../src/core/fetcher.cpp
     ../src/core/file.cpp
+    ../src/core/indexer.cpp
     ../src/core/paths.cpp
     ../src/core/settings.cpp
     ../src/core/utilities.cpp
     calculatorbridge_test.cpp
     htrie_map_test.cpp
+    indexer_test.cpp
     urlbridge_test.cpp
     utilities_test.cpp
     websearchbridge_test.cpp
@@ -56,3 +69,6 @@ target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE
     Qt6::Test
     Qt6::Widgets
 )
+
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resources/duckduckgo.json ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/resources/firefox.desktop ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
