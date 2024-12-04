@@ -4,6 +4,7 @@
 
 #include "calculatorbridge_test.h"
 #include "htrie_map_test.h"
+#include "indexer_test.h"
 #include "urlbridge_test.h"
 #include "utilities_test.h"
 #include "websearchbridge_test.h"
@@ -19,6 +20,7 @@ int main(int argc, char* argv[]) {
 
   run_test(new TestCalculatorBridge);
   run_test(new TestHtrieMap);
+  run_test(new TestIndexer);
   run_test(new TestUrlBridge);
   run_test(new TestUtilities);
   run_test(new TestWebSearchBridge);
