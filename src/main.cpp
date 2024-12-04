@@ -10,6 +10,7 @@
 #include "core/client.h"
 #include "core/indexer.h"
 #include "core/server.h"
+#include "core/settings.h"
 #include "ui/mainwindow.h"
 
 int main(int argc, char* argv[]) {
@@ -51,22 +52,11 @@ int main(int argc, char* argv[]) {
 
   client.reset();
 
-  // QTranslator opens translation files, for example, in the following order:
-  // 1. /opt/foolib/foo.fr_ca.qm
-  // 2. /opt/foolib/foo.fr_ca
-  // 3. /opt/foolib/foo.fr.qm
-  // 4. /opt/foolib/foo.fr
-  // 5. /opt/foolib/foo.qm
-  // 6. /opt/foolib/foo
-  auto translator = QTranslator{};
-  for (const auto& locale : QLocale::system().uiLanguages()) {
-    const auto base_name = application_name + "_" + QLocale(locale).name();
-    if (!translator.load(":/i18n/" + base_name)) {
-      continue;
-    }
-
+  auto filename = QString{":/translations/%1_%2.qm"}
+                    .arg(application_name.toLower())
+                    .arg(Settings::GetInstance().GetLocale());
+  if (auto translator = QTranslator{}; translator.load(filename)) {
     a.installTranslator(&translator);
-    break;
   }
 
   auto& indexer = Indexer::GetInstance();
