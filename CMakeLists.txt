@@ -20,8 +20,8 @@ set(RES_FILES
     images/resources.qrc
 )
 set(TS_FILES
-    translations/${CMAKE_PROJECT_NAME}_en.ts
     translations/${CMAKE_PROJECT_NAME}_fr_fr.ts
+    translations/${CMAKE_PROJECT_NAME}.ts
 )
 
 set(PROJECT_SOURCES
