@@ -1,0 +1,12 @@
+{
+  "id": "2",
+  "command": "duck",
+  "icon": "://images/duckduckgo.svg",
+  "url": "https://duckduckgo.com/?q=%1",
+  "title": "Search DuckDuckGo for '%1'",
+  "placeholder": "...",
+  "alt": {
+    "url": "https://duckduckgo.com",
+    "title": "Visit the DuckDuckGo homepage"
+  }
+}
