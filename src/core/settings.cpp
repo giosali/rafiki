@@ -30,6 +30,8 @@ std::unordered_set<uint64_t> Settings::GetDisabledFeatureModelids() const {
   return disabled_feature_model_ids_;
 }
 
+QString Settings::GetLocale() const { return locale_; }
+
 int Settings::GetSearchResultIconSize() const {
   return search_result_icon_size_;
 }

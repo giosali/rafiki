@@ -15,6 +15,7 @@ class Settings {
   uint64_t GetAvailableId() const;
   std::vector<uint64_t> GetDefaultFeatureModelIds() const;
   std::unordered_set<uint64_t> GetDisabledFeatureModelids() const;
+  QString GetLocale() const;
   int GetSearchResultIconSize() const;
   int GetSearchResultListMaxCount() const;
   int GetSearchResultTitleMaxHeight() const;
@@ -34,6 +35,7 @@ class Settings {
   uint64_t available_id_{0x8000};  // WM_APP
   std::vector<uint64_t> default_feature_model_ids_{1, 2, 3};
   std::unordered_set<uint64_t> disabled_feature_model_ids_{};
+  QString locale_{"en_us"};
   int search_result_icon_size_{44};
   int search_result_list_max_count_{6};
   int search_result_title_max_height_{25};
