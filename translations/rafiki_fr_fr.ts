@@ -35,6 +35,13 @@
     </message>
   </context>
   <context>
+    <name>SettingsModel</name>
+    <message>
+      <source>Open Rafiki settings</source>
+      <translation>Ouvrir les paramètres de Rafiki</translation>
+    </message>
+  </context>
+  <context>
     <name>TrashModel</name>
     <message>
       <source>Empty trash</source>
