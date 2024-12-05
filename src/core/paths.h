@@ -18,6 +18,7 @@ class Paths {
     kFolder,
     kQuestionMark,
     kRafiki,
+    kSettings,
     kTrash,
     kUrl
   };
