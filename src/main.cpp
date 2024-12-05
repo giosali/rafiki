@@ -1,4 +1,5 @@
 #include <QApplication>
+#include <QFile>
 #include <QLocale>
 #include <QObject>
 #include <QString>
@@ -55,7 +56,12 @@ int main(int argc, char* argv[]) {
   auto filename = QString{":/translations/%1_%2.qm"}
                     .arg(application_name.toLower())
                     .arg(Settings::GetInstance().GetLocale());
-  if (auto translator = QTranslator{}; translator.load(filename)) {
+
+  // `translator` must be instantiated outside of the if loop for some reason,
+  // otherwise the translator will never be installed.
+  auto translator = QTranslator{};
+
+  if (translator.load(filename)) {
     a.installTranslator(&translator);
   }
 
