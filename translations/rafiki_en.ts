@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en">
+<TS version="2.1" language="en_US">
   <context>
     <name>CalculatorObject</name>
     <message>
@@ -31,6 +31,13 @@
     </message>
     <message>
       <source>Open file</source>
+      <translation type=""></translation>
+    </message>
+  </context>
+  <context>
+    <name>SettingsModel</name>
+    <message>
+      <source>Open Rafiki settings</source>
       <translation type=""></translation>
     </message>
   </context>
