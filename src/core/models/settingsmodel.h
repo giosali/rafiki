@@ -5,7 +5,7 @@
 #include "featuremodel.h"
 
 class SettingsModel : public FeatureModel {
-  Q_DECLARE_TR_FUNCTIONS(TrashModel)
+  Q_DECLARE_TR_FUNCTIONS(SettingsModel)
 
  public:
   SettingsModel();
