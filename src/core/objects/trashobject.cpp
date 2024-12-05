@@ -5,8 +5,6 @@
 #include <system_error>
 #include <vector>
 
-#include "../models/trashmodel.h"
-
 TrashObject::TrashObject(FeatureModel* model) : FeatureObject{model} {}
 
 void TrashObject::Drag() {}
@@ -14,11 +12,7 @@ void TrashObject::Drag() {}
 void TrashObject::ProcessKeyPress(const QKeyCombination& combination) {
   switch (combination.key()) {
     case Qt::Key_Tab:
-      if (auto model = dynamic_cast<const TrashModel*>(GetModel());
-          model != nullptr) {
-        emit NewSearchBoxTextRequested(model->GetCommand());
-      }
-
+      FeatureObject::ProcessKeyPress(combination);
       break;
     case Qt::Key_Return:
       emit Hidden();
