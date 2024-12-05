@@ -11,7 +11,7 @@ SettingsModel::SettingsModel()
   SetCommand("settings");
   SetIcon(Paths::GetPath(Paths::Image::kSettings));
   SetId(20);
-  SetTitle(tr("Open Rafiki Settings"));
+  SetTitle(tr("Open Rafiki settings"));
 }
 
 void SettingsModel::Accept(FeatureVisitor& v) { v.Visit(this); }
