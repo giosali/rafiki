@@ -29,6 +29,7 @@ set(PROJECT_SOURCES
         src/core/bridges/calculatorbridge.cpp
         src/core/bridges/featurebridge.cpp
         src/core/bridges/filesystementrybridge.cpp
+        src/core/bridges/settingsbridge.cpp
         src/core/bridges/trashbridge.cpp
         src/core/bridges/urlbridge.cpp
         src/core/bridges/websearchbridge.cpp
@@ -36,6 +37,7 @@ set(PROJECT_SOURCES
         src/core/models/calculatormodel.cpp
         src/core/models/featuremodel.cpp
         src/core/models/filesystementrymodel.cpp
+        src/core/models/settingsmodel.cpp
         src/core/models/trashmodel.cpp
         src/core/models/urlmodel.cpp
         src/core/models/websearchmodel.cpp
@@ -43,6 +45,7 @@ set(PROJECT_SOURCES
         src/core/objects/calculatorobject.cpp
         src/core/objects/featureobject.cpp
         src/core/objects/filesystementryobject.cpp
+        src/core/objects/settingsobject.cpp
         src/core/objects/trashobject.cpp
         src/core/objects/urlobject.cpp
         src/core/objects/websearchobject.cpp
