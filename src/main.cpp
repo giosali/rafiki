@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QFile>
+#include <QIcon>
 #include <QLocale>
 #include <QObject>
 #include <QString>
@@ -52,6 +53,12 @@ int main(int argc, char* argv[]) {
   }
 
   client.reset();
+
+  auto paths = QIcon::fallbackSearchPaths();
+  if (auto path = QString{"/usr/share/pixmaps"}; !paths.contains(path)) {
+    paths.append(path);
+    QIcon::setFallbackSearchPaths(paths);
+  }
 
   auto filename = QString{":/translations/%1_%2.qm"}
                     .arg(application_name.toLower())
