@@ -10,6 +10,7 @@ class TestIndexer : public QObject {
   std::filesystem::path GetParentPath() const;
 
  private slots:
+  void Clear();
   void DeleteModel();
   void GetIds_InputfulModel();
   void GetIds_InputfulModel_data();

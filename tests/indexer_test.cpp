@@ -95,6 +95,20 @@ void TestIndexer::GetIds_InputlessModel_data() {
   QTest::newRow("input-with-space") << "duck " << 1;
 }
 
+void TestIndexer::Clear() {
+  // Setup
+  auto file = QFile{GetParentPath() / "duckduckgo.json"};
+  file.open(QIODeviceBase::ReadOnly);
+  auto document = QJsonDocument::fromJson(file.readAll());
+  auto& indexer = Indexer::GetInstance();
+  indexer.IndexModel(std::make_unique<WebSearchModel>(document.object()));
+
+  // Test
+  indexer.Clear();
+  auto ids = indexer.GetIds("duck");
+  QVERIFY(ids.empty());
+}
+
 void TestIndexer::UpdateTrie() {
   // Setup
   QFETCH(QString, old_url);
