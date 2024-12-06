@@ -23,6 +23,13 @@ Indexer& Indexer::GetInstance() {
   return instance;
 }
 
+void Indexer::Clear() {
+  commandless_ids_.clear();
+  input_models_trie_.clear();
+  inputless_models_trie_.clear();
+  models_map_.clear();
+}
+
 void Indexer::DeleteModel(uint64_t id) {
   if (!models_map_.contains(id)) {
     return;
