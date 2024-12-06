@@ -13,6 +13,7 @@ class ObjectVisitor final : public FeatureVisitor {
   void Visit(ApplicationModel* model) override;
   void Visit(CalculatorModel* model) override;
   void Visit(FileSystemEntryModel* model) override;
+  void Visit(RefreshModel* model) override;
   void Visit(SettingsModel* model) override;
   void Visit(TrashModel* model) override;
   void Visit(UrlModel* model) override;
