@@ -47,6 +47,9 @@ QString Paths::GetPath(Image f) {
     case Image::kRafiki:
       filename = "rafiki.png";
       break;
+    case Image::kRefresh:
+      filename = "refresh.svg";
+      break;
     case Image::kSettings:
       filename = "settings.svg";
       break;
