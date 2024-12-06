@@ -10,6 +10,7 @@
 #include "models/applicationmodel.h"
 #include "models/calculatormodel.h"
 #include "models/filesystementrymodel.h"
+#include "models/refreshmodel.h"
 #include "models/settingsmodel.h"
 #include "models/trashmodel.h"
 #include "models/urlmodel.h"
@@ -222,6 +223,7 @@ void Indexer::IndexApplications() {
 void Indexer::IndexGenericModels() {
   IndexModel(std::make_unique<CalculatorModel>());
   IndexModel(std::make_unique<FileSystemEntryModel>());
+  IndexModel(std::make_unique<RefreshModel>());
   IndexModel(std::make_unique<SettingsModel>());
   IndexModel(std::make_unique<TrashModel>());
   IndexModel(std::make_unique<UrlModel>());
