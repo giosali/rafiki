@@ -35,6 +35,13 @@
     </message>
   </context>
   <context>
+    <name>RefreshModel</name>
+    <message>
+      <source>Refresh Rafiki</source>
+      <translation>Rafraîchir Rafiki</translation>
+    </message>
+  </context>
+  <context>
     <name>SettingsModel</name>
     <message>
       <source>Open Rafiki settings</source>
