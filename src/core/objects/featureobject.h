@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QIcon>
 #include <QKeyCombination>
 #include <QObject>
 #include <QPixmap>
@@ -43,6 +44,7 @@ class FeatureObject : public QObject {
   QString GetAltTitle() const;
   FeatureModel* GetModel() const;
   void SetDescription(const QString& value);
+  void SetIcon(const QIcon& value);
   void SetId(uint64_t value);
   void SetTitle(const QString& value);
 

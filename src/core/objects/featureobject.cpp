@@ -91,6 +91,10 @@ void FeatureObject::SetDescription(const QString& value) {
   description_ = value;
 }
 
+void FeatureObject::SetIcon(const QIcon& value) {
+  icon_ = value.pixmap(Settings::GetInstance().GetSearchResultIconSize());
+}
+
 void FeatureObject::SetId(uint64_t value) { id_ = value; }
 
 void FeatureObject::SetTitle(const QString& value) { title_ = value; }
