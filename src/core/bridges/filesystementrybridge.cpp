@@ -1,9 +1,11 @@
 #include "filesystementrybridge.h"
 
+#include <QIcon>
 #include <algorithm>
 
 #include "../models/filesystementrymodel.h"
 #include "../objects/filesystementryobject.h"
+#include "../paths.h"
 #include "../utilities.h"
 
 std::vector<FeatureObject*> FileSystemEntryBridge::ProcessInput(
@@ -29,7 +31,36 @@ std::vector<FeatureObject*> FileSystemEntryBridge::ProcessInput(
   auto objects = std::vector<FeatureObject*>{};
   objects.reserve(paths_size);
   for (size_t i = 0; i < paths_size; ++i) {
-    objects.push_back(new FileSystemEntryObject{model, paths[i], input});
+    auto path = paths[i];
+    auto icon = QIcon{};
+
+    // In other words, if it's a directory...
+    if (auto extension = path.extension(); extension.empty()) {
+      icon = QIcon::fromTheme(kMimeTypePairs.at(extension).first);
+      if (icon.isNull()) {
+        icon = QIcon{Paths::GetPath(Paths::Image::kFolder)};
+      }
+    } else {
+      if (kMimeTypePairs.contains(extension)) {
+        auto pair = kMimeTypePairs.at(extension);
+        icon = QIcon::fromTheme(pair.first);
+
+        // Fallback icon.
+        if (icon.isNull()) {
+          icon = QIcon::fromTheme(pair.second);
+
+          // Built-in fallback icon.
+          if (icon.isNull()) {
+            icon = QIcon{Paths::GetPath(Paths::Image::kFile)};
+          }
+        }
+
+      } else {
+        icon = QIcon{Paths::GetPath(Paths::Image::kFile)};
+      }
+    }
+
+    objects.push_back(new FileSystemEntryObject{model, path, icon, input});
   }
 
   return objects;
