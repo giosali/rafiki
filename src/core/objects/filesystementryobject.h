@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QIcon>
 #include <filesystem>
 
 #include "../models/filesystementrymodel.h"
@@ -12,7 +13,7 @@ class FileSystemEntryObject final : public FeatureObject {
   explicit FileSystemEntryObject(FileSystemEntryModel* model);
   explicit FileSystemEntryObject(FileSystemEntryModel* model,
                                  const std::filesystem::path& path,
-                                 const QString& input);
+                                 const QIcon& icon, const QString& input);
 
  public slots:
   void Drag() override;

@@ -10,9 +10,11 @@ FileSystemEntryObject::FileSystemEntryObject(FileSystemEntryModel* model)
 
 FileSystemEntryObject::FileSystemEntryObject(FileSystemEntryModel* model,
                                              const std::filesystem::path& path,
+                                             const QIcon& icon,
                                              const QString& input)
     : FeatureObject{model, input}, path_{path} {
   SetDescription(QString::fromUtf8(path.string()));
+  SetIcon(icon);
   SetId(Crypto::Djb2(path));
   SetTitle(QString::fromUtf8(path.filename().string()));
 }
