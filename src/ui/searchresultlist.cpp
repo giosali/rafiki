@@ -1,6 +1,7 @@
 #include "searchresultlist.h"
 
 #include <QApplication>
+#include <QColor>
 #include <QCursor>
 #include <QFrame>
 #include <QIcon>
@@ -26,6 +27,11 @@ SearchResultList::SearchResultList(SearchBox* search_box, MainWindow* parent)
 
   setFocusPolicy(Qt::NoFocus);
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
+
+  // Sets the highlight color.
+  auto palette = this->palette();
+  palette.setColor(QPalette::Highlight, QColor{200, 98, 30});
+  setPalette(palette);
 
   // Styles the scrollbar.
   // https://doc.qt.io/qt-6/stylesheet-examples.html#customizing-qscrollbar
