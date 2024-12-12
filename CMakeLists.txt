@@ -17,7 +17,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 set(RES_FILES
     data/resources.qrc
-    images/resources.qrc
+    icons/resources.qrc
 )
 set(TS_FILES
     translations/${CMAKE_PROJECT_NAME}_en.ts
