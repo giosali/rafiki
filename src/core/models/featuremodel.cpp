@@ -3,7 +3,6 @@
 #include <QFile>
 #include <utility>
 
-#include "../paths.h"
 #include "../settings.h"
 
 QString FeatureModel::FormatCommand() const {
@@ -62,14 +61,13 @@ void FeatureModel::SetDescription(const QString& value) {
   description_ = value;
 }
 
-void FeatureModel::SetIcon(const QIcon& value) {
-  icon_ = value.pixmap(Settings::GetInstance().GetSearchResultIconSize());
-}
-
 void FeatureModel::SetIcon(const QString& value) {
-  SetIcon(QIcon{icon_path_ = QFile::exists(value)
-                               ? value
-                               : Paths::GetPath(Paths::Image::kQuestionMark)});
+  auto icon = QFile::exists(value) ? QIcon{value} : QIcon::fromTheme(value);
+  if (icon.isNull()) {
+    icon = QIcon{":/icons/question-mark.png"};
+  }
+
+  icon_ = icon.pixmap(Settings::GetInstance().GetSearchResultIconSize());
 }
 
 void FeatureModel::SetId(uint64_t value) { id_ = value; }

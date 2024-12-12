@@ -12,7 +12,6 @@
 #include "../core/file.h"
 #include "../core/indexer.h"
 #include "../core/models/websearchmodel.h"
-#include "../core/paths.h"
 #include "../core/settings.h"
 #include "../core/utilities.h"
 #include "./ui_websearchdialog.h"
@@ -96,8 +95,7 @@ void WebSearchDialog::AcceptWebSearch() {
   auto is_being_created = id_ == 0;
   auto icon_path = QString{};
   if (new_icon_path_.isNull()) {
-    icon_path = is_being_created ? Paths::GetPath(Paths::Image::kUrl)
-                                 : current_icon_path_;
+    icon_path = is_being_created ? ":/icons/url.svg" : current_icon_path_;
   } else {
     // Moves previosu icon to trash.
     QFile::moveToTrash(current_icon_path_);

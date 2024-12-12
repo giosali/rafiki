@@ -2,10 +2,10 @@
 
 #include <QIcon>
 #include <algorithm>
+#include <filesystem>
 
 #include "../models/filesystementrymodel.h"
 #include "../objects/filesystementryobject.h"
-#include "../paths.h"
 #include "../utilities.h"
 
 std::vector<FeatureObject*> FileSystemEntryBridge::ProcessInput(
@@ -32,32 +32,14 @@ std::vector<FeatureObject*> FileSystemEntryBridge::ProcessInput(
   objects.reserve(paths_size);
   for (size_t i = 0; i < paths_size; ++i) {
     auto path = paths[i];
-    auto icon = QIcon{};
+    auto is_directory = std::filesystem::is_directory(path);
+    auto icon = QIcon{is_directory ? ":/icons/folder.svg" : ":/icons/file.svg"};
 
-    // In other words, if it's a directory...
-    if (auto extension = path.extension(); extension.empty()) {
-      icon = QIcon::fromTheme(kMimeTypePairs.at(extension).first);
-      if (icon.isNull()) {
-        icon = QIcon{Paths::GetPath(Paths::Image::kFolder)};
-      }
-    } else {
-      if (kMimeTypePairs.contains(extension)) {
-        auto pair = kMimeTypePairs.at(extension);
-        icon = QIcon::fromTheme(pair.first);
-
-        // Fallback icon.
-        if (icon.isNull()) {
-          icon = QIcon::fromTheme(pair.second);
-
-          // Built-in fallback icon.
-          if (icon.isNull()) {
-            icon = QIcon{Paths::GetPath(Paths::Image::kFile)};
-          }
-        }
-
-      } else {
-        icon = QIcon{Paths::GetPath(Paths::Image::kFile)};
-      }
+    if (auto extension = path.extension(); kMimeTypePairs.contains(extension)) {
+      auto pair = kMimeTypePairs.at(extension);
+      icon = QIcon::fromTheme(pair.first, QIcon::fromTheme(pair.second, icon));
+    } else if (is_directory && extension.empty()) {
+      icon = QIcon::fromTheme("folder", icon);
     }
 
     objects.push_back(new FileSystemEntryObject{model, path, icon, input});
@@ -198,8 +180,6 @@ const std::unordered_map<std::string, std::pair<QString, QString>>
     // Archive
     {".gz", {"application-x-gzip", "application-x-gzip"}},
     {".zip", {"application-x-zip", "application-x-zip"}},
-    // Misc
-    {"", {"folder", "folder"}},
     // Image
     {".jpg", {"image-x-generic", "image-x-generic"}},
     {".jpeg", {"image-x-generic", "image-x-generic"}},

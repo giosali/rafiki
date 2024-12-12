@@ -3,12 +3,11 @@
 #include <memory>
 
 #include "../bridges/calculatorbridge.h"
-#include "../paths.h"
 #include "../visitors/featurevisitor.h"
 
 CalculatorModel::CalculatorModel()
     : FeatureModel{std::make_unique<CalculatorBridge>()} {
-  SetIcon(Paths::GetPath(Paths::Image::kCalculator));
+  SetIcon(":/icons/calculator.png");
   SetId(16);
   SetTitlePlaceholder("...");
 }

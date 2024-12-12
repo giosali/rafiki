@@ -27,7 +27,7 @@ ApplicationModel::ApplicationModel(
   SetAltDescription(tr("Open containing folder"));
   SetCommand(name);
   SetDescription(QString::fromStdString(desktop_entry_path));
-  SetIcon(QIcon::fromTheme(icon));
+  SetIcon(icon);
   SetId(Crypto::Djb2(desktop_entry_path));
   SetTitle(name);
 

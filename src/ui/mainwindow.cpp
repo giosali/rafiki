@@ -11,7 +11,6 @@
 #include <Qt>
 #include <QtGlobal>
 
-#include "../core/paths.h"
 #include "./ui_mainwindow.h"
 #include "searchbox.h"
 #include "searchresultlist.h"
@@ -148,7 +147,7 @@ void MainWindow::CreateTrayIcon() {
   tray_menu->addAction(quit_action);
 
   auto tray_icon = new QSystemTrayIcon{this};
-  tray_icon->setIcon(QIcon{Paths::GetPath(Paths::Image::kRafiki)});
+  tray_icon->setIcon(QIcon{":/icons/rafiki.png"});
   connect(tray_icon, &QSystemTrayIcon::activated, this,
           &MainWindow::ProcessActivationReason);
   tray_icon->setContextMenu(tray_menu);

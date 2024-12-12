@@ -4,12 +4,11 @@
 #include <memory>
 
 #include "../bridges/trashbridge.h"
-#include "../paths.h"
 #include "../visitors/featurevisitor.h"
 
 TrashModel::TrashModel() : FeatureModel{std::make_unique<TrashBridge>()} {
   SetCommand("empty trash");
-  SetIcon(Paths::GetPath(Paths::Image::kTrash));
+  SetIcon(":/icons/trash.svg");
   SetId(18);
   SetTitle(tr("Empty trash"));
 }

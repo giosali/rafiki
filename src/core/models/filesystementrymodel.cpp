@@ -3,7 +3,6 @@
 #include <memory>
 
 #include "../bridges/filesystementrybridge.h"
-#include "../paths.h"
 #include "../visitors/featurevisitor.h"
 
 FileSystemEntryModel::FileSystemEntryModel()
@@ -11,7 +10,7 @@ FileSystemEntryModel::FileSystemEntryModel()
   SetAltDescription(tr("Open containing folder"));
   SetCommand(kCommand);
   SetDescription(tr("Search for files on your PC and open"));
-  SetIcon(Paths::GetPath(Paths::Image::kFileSystemEntry));
+  SetIcon(":/icons/filesystementry.svg");
   SetId(17);
   SetTitle(tr("Open file"));
 }

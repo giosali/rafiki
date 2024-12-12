@@ -3,12 +3,11 @@
 #include <memory>
 
 #include "../bridges/urlbridge.h"
-#include "../paths.h"
 #include "../visitors/featurevisitor.h"
 
 UrlModel::UrlModel() : FeatureModel{std::make_unique<UrlBridge>()} {
   SetDescription(tr("Open URL"));
-  SetIcon(Paths::GetPath(Paths::Image::kUrl));
+  SetIcon(":/icons/url.svg");
   SetId(19);
 }
 
