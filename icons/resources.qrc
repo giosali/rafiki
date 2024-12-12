@@ -1,5 +1,5 @@
 <RCC>
-    <qresource prefix="/images">
+    <qresource prefix="/icons">
         <file>amazon.svg</file>
         <file>calculator.png</file>
         <file>duckduckgo.svg</file>
