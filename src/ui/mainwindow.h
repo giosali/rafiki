@@ -2,7 +2,7 @@
 
 #include <QEvent>
 #include <QMainWindow>
-#include <QString>
+#include <QStringList>
 #include <QSystemTrayIcon>
 #include <memory>
 
@@ -24,7 +24,8 @@ class MainWindow : public QMainWindow {
   void Hide();
   void OpenSettingsWindow();
   void ProcessActivationReason(QSystemTrayIcon::ActivationReason reason);
-  void ProcessCommandLineArguments(const QString& args);
+  void ProcessCommandLineArguments(const QStringList& arguments,
+                                   bool from_server);
   void SetHeight(int height);
 
  signals:

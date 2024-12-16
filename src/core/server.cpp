@@ -25,7 +25,7 @@ void Server::ReadMessage() {
   auto in = QDataStream{client_connection};
   auto message = QString{};
   in >> message;
-  emit MessageReceived(message);
+  emit MessageReceived(message.split(' '), true);
 
   client_connection->disconnectFromServer();
 }

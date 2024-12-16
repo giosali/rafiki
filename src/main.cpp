@@ -31,6 +31,8 @@ int main(int argc, char* argv[]) {
   QApplication::setQuitOnLastWindowClosed(false);
 
   auto w = MainWindow{};
+  auto arguments = QApplication::arguments();
+  w.ProcessCommandLineArguments(arguments, false);
 
   auto server = Server{&a};
   auto client = std::make_unique<Client>(&a);
@@ -45,9 +47,10 @@ int main(int argc, char* argv[]) {
   // error is processed indicating that the application unexpectedly quit, then
   // the previous server will be removed.
   // This is intended to always produce a socket error.
-  client->Connect(QApplication::arguments().join(" "));
+  client->Connect(arguments.join(' '));
 
-  // Attempts to start the server.
+  // Attempts to start the server. This is what prevents multiple instances of
+  // the application.
   if (!server.Listen()) {
     return 0;
   }

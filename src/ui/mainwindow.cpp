@@ -68,10 +68,11 @@ void MainWindow::ProcessActivationReason(
   }
 }
 
-void MainWindow::ProcessCommandLineArguments(const QString& args) {
+void MainWindow::ProcessCommandLineArguments(const QStringList& arguments,
+                                             bool from_server) {
   auto parser = QCommandLineParser{};
 
-  // Sets up builtin options.
+  // Sets up default options.
   parser.addHelpOption();
   parser.addVersionOption();
 
@@ -82,7 +83,21 @@ void MainWindow::ProcessCommandLineArguments(const QString& args) {
   QCommandLineOption quitOption("quit", "Quits the application.");
   parser.addOption(quitOption);
 
-  if (!parser.parse(args.split(" "))) {
+  // It's necessary to parse arguments this way rather than use
+  // `parser.process(app)` because the `process` function won't handle
+  // arguments passed via the local socket.
+  if (!parser.parse(arguments)) {
+    return;
+  }
+
+  if (parser.isSet("help")) {
+    parser.showHelp();
+  } else if (parser.isSet("version")) {
+    parser.showVersion();
+  }
+
+  // The custom options shouldn't be handled if the args aren't from the server.
+  if (!from_server) {
     return;
   }
 

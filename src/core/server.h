@@ -2,7 +2,7 @@
 
 #include <QLocalServer>
 #include <QObject>
-#include <QString>
+#include <QStringList>
 
 class Server : public QObject {
   Q_OBJECT
@@ -19,7 +19,7 @@ class Server : public QObject {
   void Remove();
 
  signals:
-  void MessageReceived(const QString& message);
+  void MessageReceived(const QStringList& arguments, bool from_server);
 
  private:
   QLocalServer server_;
