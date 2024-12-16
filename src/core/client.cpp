@@ -40,5 +40,7 @@ void Client::ProcessError(QLocalSocket::LocalSocketError socket_error) {
     // attempted. This should theoretically never be reached.
     case QLocalSocket::ServerNotFoundError:
       break;
+    default:
+      break;
   }
 }
