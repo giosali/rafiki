@@ -77,11 +77,11 @@ void MainWindow::ProcessCommandLineArguments(const QStringList& arguments,
   parser.addVersionOption();
 
   // Sets up custom options.
-  QCommandLineOption toggleOption(
-    "toggle", "Toggles the visibility of the main input window.");
-  parser.addOption(toggleOption);
-  QCommandLineOption quitOption("quit", "Quits the application.");
-  parser.addOption(quitOption);
+  auto toggle_option = QCommandLineOption{
+    "toggle", "Toggles the visibility of the main input window."};
+  parser.addOption(toggle_option);
+  auto quit_option = QCommandLineOption{"quit", "Quits the application."};
+  parser.addOption(quit_option);
 
   // It's necessary to parse arguments this way rather than use
   // `parser.process(app)` because the `process` function won't handle
@@ -101,11 +101,11 @@ void MainWindow::ProcessCommandLineArguments(const QStringList& arguments,
     return;
   }
 
-  if (parser.isSet(toggleOption)) {
+  if (parser.isSet(toggle_option)) {
     ToggleVisibility();
   }
 
-  if (parser.isSet(quitOption)) {
+  if (parser.isSet(quit_option)) {
     QCoreApplication::quit();
   }
 }
