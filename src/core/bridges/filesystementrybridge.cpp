@@ -6,6 +6,7 @@
 
 #include "../models/filesystementrymodel.h"
 #include "../objects/filesystementryobject.h"
+#include "../settings.h"
 #include "../utilities.h"
 
 std::vector<FeatureObject*> FileSystemEntryBridge::ProcessInput(
@@ -57,15 +58,12 @@ FileSystemEntryBridge::Finder::Finder(
   for (const auto& dir : home_dirs) {
     home_dir_names_.insert(dir.filename());
   }
-
-  // Sets directories that should be ignored while searching.
-  ignored_dirs_.emplace("node_modules");   // npm
-  ignored_dirs_.emplace("site-packages");  // Python
 }
 
 std::vector<std::filesystem::path> FileSystemEntryBridge::Finder::Search(
   const std::string& input) {
   count_ = 0;
+  ignored_dirs_ = Settings::GetInstance().GetIgnoredDirectoryNames();
   return Iterate(location_, input);
 }
 
@@ -134,7 +132,7 @@ std::vector<std::filesystem::path> FileSystemEntryBridge::Finder::Reiterate(
     }
 
     if (entry.is_directory()) {
-      if (ignored_dirs_.find(filename) != ignored_dirs_.end()) {
+      if (ignored_dirs_.contains(filename)) {
         continue;
       }
 

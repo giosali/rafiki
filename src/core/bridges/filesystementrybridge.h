@@ -5,6 +5,7 @@
 #include <set>
 #include <string>
 #include <unordered_map>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -34,7 +35,7 @@ class FileSystemEntryBridge final : public FeatureBridge {
     size_t count_;
     std::set<std::string> home_dir_names_;
     std::vector<std::filesystem::path> home_dirs_;
-    std::set<std::string> ignored_dirs_;
+    std::unordered_set<std::string> ignored_dirs_;
     std::string location_;
     size_t max_count_;
   };
