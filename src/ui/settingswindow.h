@@ -7,6 +7,9 @@
 #include <cstdint>
 #include <memory>
 
+#include "../core/models/featuremodel.h"
+#include "filesearchtab.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class SettingsWindow;
@@ -24,7 +27,9 @@ class SettingsWindow : public QMainWindow {
  public slots:
   void AddWebSearch(bool checked) const;
   void DeleteWebSearch(bool checked) const;
+  void DisableModel(FeatureModel* model) const;
   void EditWebSearch(bool checked) const;
+  void EnableModel(FeatureModel* model) const;
   void SetEnabledButtons() const;
   void ToggleModel(Qt::CheckState state, uint64_t id) const;
 

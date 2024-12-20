@@ -53,6 +53,10 @@ SettingsWindow::SettingsWindow(QWidget* parent)
           &SettingsWindow::AddWebSearch);
   connect(ui_->deleteWebSearchButton, &QAbstractButton::clicked, this,
           &SettingsWindow::DeleteWebSearch);
+  connect(ui_->file_search_tab, &FileSearchTab::ModelDisabled, this,
+          &SettingsWindow::DisableModel);
+  connect(ui_->file_search_tab, &FileSearchTab::ModelEnabled, this,
+          &SettingsWindow::EnableModel);
 
   LoadWebSearches();
   SetEnabledButtons();
@@ -90,6 +94,14 @@ void SettingsWindow::DeleteWebSearch(bool checked) const {
   }
 }
 
+void SettingsWindow::DisableModel(FeatureModel* model) const {
+  model->SetIsEnabled(false);
+
+  auto& settings = Settings::GetInstance();
+  settings.AddDisabledFeatureModelId(model->GetId());
+  settings.Save();
+}
+
 void SettingsWindow::EditWebSearch(bool checked) const {
   for (const auto& item : ui_->yourWebSearchesTableWidget->selectedItems()) {
     if (auto data = item->data(Qt::UserRole); !data.isNull()) {
@@ -99,22 +111,23 @@ void SettingsWindow::EditWebSearch(bool checked) const {
   }
 }
 
+void SettingsWindow::EnableModel(FeatureModel* model) const {
+  model->SetIsEnabled(true);
+
+  auto& settings = Settings::GetInstance();
+  settings.RemoveDisabledFeatureModelId(model->GetId());
+  settings.Save();
+}
+
 void SettingsWindow::ToggleModel(Qt::CheckState state, uint64_t id) const {
+  auto model = Indexer::GetInstance().GetModel(id);
   switch (state) {
-    case Qt::Unchecked: {
-      Indexer::GetInstance().ToggleModel(id);
-      auto& settings = Settings::GetInstance();
-      settings.AddDisabledFeatureModelId(id);
-      settings.Save();
+    case Qt::Unchecked:
+      DisableModel(model);
       break;
-    }
-    case Qt::Checked: {
-      Indexer::GetInstance().ToggleModel(id);
-      auto& settings = Settings::GetInstance();
-      settings.RemoveDisabledFeatureModelId(id);
-      settings.Save();
+    case Qt::Checked:
+      EnableModel(model);
       break;
-    }
     default:
       break;
   }
