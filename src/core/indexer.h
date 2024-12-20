@@ -31,7 +31,6 @@ class Indexer final {
   }
   void IndexModel(std::unique_ptr<FeatureModel> model);
   void Initialize();
-  void ToggleModel(uint64_t id) const;
   void UpdateTrie(uint64_t id,
                   const std::unordered_set<std::string>& old_tokens,
                   const std::unordered_set<std::string>& new_tokens);

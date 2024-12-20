@@ -144,11 +144,6 @@ void Indexer::Initialize() {
   }
 }
 
-void Indexer::ToggleModel(uint64_t id) const {
-  auto model = models_map_.at(id).get();
-  model->SetIsEnabled(!model->GetIsEnabled());
-}
-
 void Indexer::UpdateTrie(uint64_t id,
                          const std::unordered_set<std::string>& old_tokens,
                          const std::unordered_set<std::string>& new_tokens) {
