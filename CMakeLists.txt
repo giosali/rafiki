@@ -65,6 +65,7 @@ set(PROJECT_SOURCES
         src/core/settings.cpp
         src/core/utilities.cpp
         src/main.cpp
+        src/ui/filesearchtab.cpp
         src/ui/interactivelabel.cpp
         src/ui/mainwindow.cpp
         src/ui/mainwindow.ui
