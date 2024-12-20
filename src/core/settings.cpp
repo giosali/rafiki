@@ -16,8 +16,16 @@ void Settings::AddDisabledFeatureModelId(uint64_t id) {
   disabled_feature_model_ids_.insert(id);
 }
 
+void Settings::AddIgnoredDirectoryName(const std::string& name) {
+  ignored_directory_names_.insert(name);
+}
+
 void Settings::AddUseCount(uint64_t id, uint64_t count) {
   use_counts_[id] = count;
+}
+
+void Settings::ClearIgnoredDirectoryNames() {
+  ignored_directory_names_.clear();
 }
 
 uint64_t Settings::GetAvailableId() const { return available_id_; }
@@ -28,6 +36,10 @@ std::vector<uint64_t> Settings::GetDefaultFeatureModelIds() const {
 
 std::unordered_set<uint64_t> Settings::GetDisabledFeatureModelids() const {
   return disabled_feature_model_ids_;
+}
+
+std::unordered_set<std::string> Settings::GetIgnoredDirectoryNames() const {
+  return ignored_directory_names_;
 }
 
 QString Settings::GetLocale() const { return locale_; }
@@ -65,6 +77,11 @@ void Settings::Save() const {
     disabled_models.append(QString::number(id));
   }
 
+  auto ignored_directory_names = QJsonArray{};
+  for (const auto& name : ignored_directory_names_) {
+    ignored_directory_names.append(QString::fromStdString(name));
+  }
+
   auto use_counts = QJsonObject{};
   for (const auto& pair : use_counts_) {
     auto id = QString::number(pair.first);
@@ -76,6 +93,7 @@ void Settings::Save() const {
     {"availableId", QString::number(available_id_)},
     {"defaultModels", default_models},
     {"disabledModels", disabled_models},
+    {"ignoredDirectoryNames", ignored_directory_names},
     {"useCounts", use_counts},
   };
   File::Write(Paths::GetPath(Paths::Json::kUserSettings), object);
@@ -95,15 +113,22 @@ void Settings::Update(const QJsonDocument& document) {
 
   if (auto it = object.find("defaultModels"); it != object.end()) {
     default_feature_model_ids_.clear();
-    for (auto value : it.value().toArray()) {
+    for (const auto& value : it.value().toArray()) {
       default_feature_model_ids_.push_back(value.toString().toULongLong());
     }
   }
 
   if (auto it = object.find("disabledModels"); it != object.end()) {
     disabled_feature_model_ids_.clear();
-    for (auto value : it.value().toArray()) {
+    for (const auto& value : it.value().toArray()) {
       disabled_feature_model_ids_.insert(value.toString().toULongLong());
+    }
+  }
+
+  if (auto it = object.find("ignoredDirectoryNames"); it != object.end()) {
+    ClearIgnoredDirectoryNames();
+    for (const auto& value : it.value().toArray()) {
+      AddIgnoredDirectoryName(value.toString().toStdString());
     }
   }
 
