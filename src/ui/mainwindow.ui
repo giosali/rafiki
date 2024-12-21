@@ -11,7 +11,7 @@
       </rect>
     </property>
     <property name="windowFlags">
-      <enum>Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint</enum>
+      <enum>Qt::WindowStaysOnTopHint | Qt::FramelessWindowHint | Qt::Tool</enum>
     </property>
     <property name="windowTitle">
       <string>Rafiki</string>
