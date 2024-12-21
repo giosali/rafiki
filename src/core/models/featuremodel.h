@@ -40,7 +40,6 @@ class FeatureModel : public FeatureVisitable {
   void SetAltTitle(const QString& value);
   void SetCommand(const QString& value);
   void SetDescription(const QString& value);
-  void SetIcon(const QIcon& value);
   void SetIcon(const QString& value);
   void SetId(uint64_t value);
   void SetTitle(const QString& value);
