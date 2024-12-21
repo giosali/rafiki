@@ -33,8 +33,6 @@ FeatureBridge* FeatureModel::GetFeatureBridge() const {
 
 QPixmap FeatureModel::GetIcon() const { return icon_; }
 
-QString FeatureModel::GetIconPath() const { return icon_path_; }
-
 uint64_t FeatureModel::GetId() const { return id_; }
 
 bool FeatureModel::GetIsEnabled() const { return is_enabled_; }

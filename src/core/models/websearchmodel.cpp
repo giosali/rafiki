@@ -43,6 +43,8 @@ bool WebSearchModel::ReceivesInput() const { return url_.contains("%1"); }
 
 QString WebSearchModel::GetAltUrl() const { return alt_url_; }
 
+QString WebSearchModel::GetIconPath() const { return icon_path_; }
+
 bool WebSearchModel::GetIsCustom() const { return is_custom_; }
 
 QString WebSearchModel::GetUrl() const { return url_; }
@@ -59,6 +61,8 @@ void WebSearchModel::SetCommand(const QString& value) {
 
 void WebSearchModel::SetIcon(const QString& value) {
   FeatureModel::SetIcon(value);
+
+  icon_path_ = value;
 }
 
 void WebSearchModel::SetTitle(const QString& value) {

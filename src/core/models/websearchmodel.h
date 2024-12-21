@@ -15,6 +15,7 @@ class WebSearchModel final : public FeatureModel {
   void Accept(FeatureVisitor& v) override;
   bool ReceivesInput() const override;
   QString GetAltUrl() const;
+  QString GetIconPath() const;
   bool GetIsCustom() const;
   QString GetUrl() const;
   void SetAltTitle(const QString& value);
@@ -28,6 +29,7 @@ class WebSearchModel final : public FeatureModel {
 
  private:
   QString alt_url_{};
+  QString icon_path_{};
   bool is_custom_{false};
   QString url_{};
 };

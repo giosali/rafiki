@@ -26,7 +26,6 @@ class FeatureModel : public FeatureVisitable {
   QString GetDescription() const;
   FeatureBridge* GetFeatureBridge() const;
   QPixmap GetIcon() const;
-  QString GetIconPath() const;
   uint64_t GetId() const;
   bool GetIsEnabled() const;
   QString GetTitle() const;
@@ -52,7 +51,6 @@ class FeatureModel : public FeatureVisitable {
   QString description_{};
   std::unique_ptr<FeatureBridge> feature_bridge_{nullptr};
   QPixmap icon_{};
-  QString icon_path_{};
   uint64_t id_{};
   bool is_enabled_{true};
   QString title_{};
