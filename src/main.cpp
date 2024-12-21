@@ -78,6 +78,7 @@ int main(int argc, char* argv[]) {
   auto& indexer = Indexer::GetInstance();
   indexer.Initialize();
 
+  w.CreateTrayIcon();
   w.show();
   return a.exec();
 }

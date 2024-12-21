@@ -39,13 +39,35 @@ MainWindow::MainWindow(QWidget* parent)
 
   centralWidget()->layout()->addWidget(box);
   centralWidget()->layout()->addWidget(list);
-
-  if (QSystemTrayIcon::isSystemTrayAvailable()) {
-    CreateTrayIcon();
-  }
 }
 
 MainWindow::~MainWindow() {}
+
+void MainWindow::CreateTrayIcon() {
+  if (!QSystemTrayIcon::isSystemTrayAvailable()) {
+    return;
+  }
+
+  auto tray_menu = new QMenu{};
+
+  // Handles Settings action.
+  auto settings_action = new QAction{"Settings", this};
+  connect(settings_action, &QAction::triggered, this,
+          &MainWindow::OpenSettingsWindow);
+  tray_menu->addAction(settings_action);
+
+  // Handles Quit action.
+  auto quit_action = new QAction{"Quit", this};
+  connect(quit_action, &QAction::triggered, this, &QCoreApplication::quit);
+  tray_menu->addAction(quit_action);
+
+  auto tray_icon = new QSystemTrayIcon{this};
+  tray_icon->setIcon(QIcon{":/icons/rafiki.png"});
+  connect(tray_icon, &QSystemTrayIcon::activated, this,
+          &MainWindow::ProcessActivationReason);
+  tray_icon->setContextMenu(tray_menu);
+  tray_icon->show();
+}
 
 void MainWindow::Hide() {
   hide();
@@ -145,28 +167,6 @@ bool MainWindow::event(QEvent* event) {
   }
 
   return QMainWindow::event(event);
-}
-
-void MainWindow::CreateTrayIcon() {
-  auto tray_menu = new QMenu{};
-
-  // Handles Settings action.
-  auto settings_action = new QAction{"Settings", this};
-  connect(settings_action, &QAction::triggered, this,
-          &MainWindow::OpenSettingsWindow);
-  tray_menu->addAction(settings_action);
-
-  // Handles Quit action.
-  auto quit_action = new QAction{"Quit", this};
-  connect(quit_action, &QAction::triggered, this, &QCoreApplication::quit);
-  tray_menu->addAction(quit_action);
-
-  auto tray_icon = new QSystemTrayIcon{this};
-  tray_icon->setIcon(QIcon{":/icons/rafiki.png"});
-  connect(tray_icon, &QSystemTrayIcon::activated, this,
-          &MainWindow::ProcessActivationReason);
-  tray_icon->setContextMenu(tray_menu);
-  tray_icon->show();
 }
 
 void MainWindow::ToggleVisibility() {

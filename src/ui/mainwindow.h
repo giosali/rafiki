@@ -20,6 +20,8 @@ class MainWindow : public QMainWindow {
 
   ~MainWindow();
 
+  void CreateTrayIcon();
+
  public slots:
   void Hide();
   void OpenSettingsWindow();
@@ -35,7 +37,6 @@ class MainWindow : public QMainWindow {
   bool event(QEvent* event) override;
 
  private:
-  void CreateTrayIcon();
   void ToggleVisibility();
 
   std::unique_ptr<Ui::MainWindow> ui_;
