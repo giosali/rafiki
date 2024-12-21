@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget* parent)
   ui_->setupUi(this);
 
   // Prevents child widgets from changing the width of the window.
-  setFixedWidth(width());
+  setMaximumWidth(width());
 
   auto box = new SearchBox(this);
   auto list = new SearchResultList(box, this);
