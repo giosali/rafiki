@@ -81,7 +81,8 @@ void SettingsWindow::DeleteWebSearch(bool checked) const {
       settings.Save();
 
       auto& indexer = Indexer::GetInstance();
-      QFile::moveToTrash(indexer.GetModel(id)->GetIconPath());
+      auto model = static_cast<WebSearchModel*>(indexer.GetModel(id));
+      QFile::moveToTrash(model->GetIconPath());
       indexer.DeleteModel(id);
 
       SaveWebSearches();
