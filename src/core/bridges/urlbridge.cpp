@@ -1,5 +1,8 @@
 #include "urlbridge.h"
 
+#include <QFile>
+#include <QIODeviceBase>
+#include <QTextStream>
 #include <cctype>
 
 #include "../models/urlmodel.h"
@@ -7,20 +10,27 @@
 
 std::vector<FeatureObject*> UrlBridge::ProcessInput(FeatureModel* feature_model,
                                                     const QString& input) {
-  auto parser = UrlParser{input};
-  if (!parser.IsValid()) {
+  parser_.Parse(input);
+  if (!parser_.IsUrlValid()) {
     return {};
   }
 
   auto model = static_cast<UrlModel*>(feature_model);
-  return {new UrlObject{model, parser.Url()}};
+  return {new UrlObject{model, parser_.GetUrl()}};
 }
 
-UrlBridge::UrlParser::UrlParser(const QString& url) : url_{url.trimmed()} {
-  Parse(url_.toStdString());
+UrlBridge::UrlParser::UrlParser() {
+  auto file = QFile{":/data/tlds-alpha-by-domain.txt"};
+  if (!file.open(QIODeviceBase::ReadOnly | QIODeviceBase::Text)) {
+    return;
+  }
+
+  for (auto stream = QTextStream{&file}; !stream.atEnd();) {
+    tlds_.insert(stream.readLine().toLower().toStdString());
+  }
 }
 
-bool UrlBridge::UrlParser::IsValid() {
+bool UrlBridge::UrlParser::IsUrlValid() {
   // Hosts are required.
   if (host_.empty()) {
     return false;
@@ -55,7 +65,44 @@ bool UrlBridge::UrlParser::IsValid() {
   return true;
 }
 
-QString UrlBridge::UrlParser::Url() {
+void UrlBridge::UrlParser::Parse(const QString& input) {
+  url_ = input.trimmed().toLower();
+
+  auto url = input.toStdString();
+  auto not_scheme = url;
+  if (auto n = url.find(kSchemeSeparator); n != std::string::npos) {
+    scheme_ = url.substr(0, n);
+    not_scheme = url.substr(n + kSchemeSeparator.length());
+
+    // Removes "://" from "://example.com" if scheme is empty.
+    // This is cleanup; maybe this should be done elsewhere.
+    if (scheme_.empty()) {
+      url_ = url_.sliced(kSchemeSeparator.length());
+    }
+  }
+
+  if (auto n = not_scheme.find('/'); n != std::string::npos) {
+    // Excludes the path from the host (if there is one).
+    host_ = not_scheme.substr(0, n);
+  } else {
+    host_ = not_scheme;
+  }
+
+  // Separates the port from the host (if there is one).
+  if (auto n = host_.find_last_of(':'); n != std::string::npos) {
+    port_ = host_.substr(n + 1);
+
+    // This comes after since we're modifying the original `host_` property.
+    host_ = host_.substr(0, n);
+  }
+
+  // Looks for the top-level domain (if there is one).
+  if (auto n = host_.find_last_of('.'); n != std::string::npos) {
+    top_level_domain_ = host_.substr(n + 1);
+  }
+}
+
+QString UrlBridge::UrlParser::GetUrl() {
   return scheme_.empty() ? kSchemeWithSeparator + url_ : url_;
 }
 
@@ -111,52 +158,5 @@ bool UrlBridge::UrlParser::IsSchemeValid() {
 }
 
 bool UrlBridge::UrlParser::IsTopLevelDomainValid() {
-  // Top-level domains must be two characters or greater in length.
-  auto length = top_level_domain_.length();
-  if (length < 2) {
-    return false;
-  }
-
-  // Top-level domains can only consist of alphabetical characters.
-  for (size_t i = 0; i < length; ++i) {
-    if (!std::isalpha(static_cast<unsigned char>(top_level_domain_[i]))) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-void UrlBridge::UrlParser::Parse(const std::string& url) {
-  auto not_scheme = url;
-  if (auto n = url.find(kSchemeSeparator); n != std::string::npos) {
-    scheme_ = url.substr(0, n);
-    not_scheme = url.substr(n + kSchemeSeparator.length());
-
-    // Removes "://" from "://example.com" if scheme is empty.
-    // This is cleanup; maybe this should be done elsewhere.
-    if (scheme_.empty()) {
-      url_ = url_.sliced(kSchemeSeparator.length());
-    }
-  }
-
-  if (auto n = not_scheme.find('/'); n != std::string::npos) {
-    // Excludes the path from the host (if there is one).
-    host_ = not_scheme.substr(0, n);
-  } else {
-    host_ = not_scheme;
-  }
-
-  // Separates the port from the host (if there is one).
-  if (auto n = host_.find_last_of(':'); n != std::string::npos) {
-    port_ = host_.substr(n + 1);
-
-    // This comes after since we're modifying the original `host_` property.
-    host_ = host_.substr(0, n);
-  }
-
-  // Looks for the top-level domain (if there is one).
-  if (auto n = host_.find_last_of('.'); n != std::string::npos) {
-    top_level_domain_ = host_.substr(n + 1);
-  }
+  return tlds_.contains(top_level_domain_);
 }
