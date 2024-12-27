@@ -1,8 +1,6 @@
 #pragma once
 
 #include <QString>
-#include <string>
-#include <unordered_set>
 
 #include "featurebridge.h"
 
@@ -14,30 +12,27 @@ class UrlBridge final : public FeatureBridge {
  private:
   class UrlParser {
    public:
-    UrlParser();
+    explicit UrlParser(const QString& input);
 
     QString GetUrl();
     bool IsUrlValid();
-    void Parse(const QString& input);
 
    private:
-    static const std::string kLocalHost;
-    static const std::string kSchemeSeparator;
+    static const QString kLocalHost;
+    static const QString kSchemeSeparator;
     static const QString kSchemeWithSeparator;
 
     bool IsHostValid();
     bool IsPortValid();
     bool IsSchemeValid();
     bool IsTopLevelDomainValid();
+    void Parse(const QString& url);
 
     bool has_scheme_separator_;
-    std::string host_;
-    std::string port_;
-    std::string scheme_;
+    QString host_;
+    QString port_;
+    QString scheme_;
+    QString top_level_domain_;
     QString url_;
-    std::unordered_set<std::string> tlds_{};
-    std::string top_level_domain_;
   };
-
-  UrlParser parser_{};
 };
