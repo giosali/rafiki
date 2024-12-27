@@ -23,15 +23,17 @@ void TestUrlBridge::ProcessInput_Invalid_data() {
   QTest::newRow("space-in-domain") << "exa mple.com";
   QTest::newRow("scheme-missing-two-slashes") << "http:example.com";
   QTest::newRow("scheme-missing-one-slash") << "http/:example.com";
+  QTest::newRow("fake-tld") << "example.kcdncjksdjkkcndskjcnds";
 }
 
 void TestUrlBridge::ProcessInput_Valid() {
   QFETCH(QString, input);
   QFETCH(QString, expected);
 
-  auto object = bridge_.ProcessInput(model_.get(), input)[0];
-  auto actual = object->GetTitle();
+  auto objects = bridge_.ProcessInput(model_.get(), input);
+  QVERIFY(!objects.empty());
 
+  auto actual = objects[0]->GetTitle();
   QCOMPARE(actual, expected);
 }
 
@@ -80,9 +82,6 @@ void TestUrlBridge::ProcessInput_Valid_data() {
     << "localhost:80/" << "https://localhost:80/";
   QTest::newRow("localhost-with-port-and-scheme")
     << "http://localhost:80" << "http://localhost:80";
-
-  QTest::newRow("fake-tld") << "example.kcdncjksdjkkcndskjcnds"
-                            << "https://example.kcdncjksdjkkcndskjcnds";
 
   QTest::newRow("composite-url")
     << "https://subdomain.domain.com:80/path/to/something?example=example"
