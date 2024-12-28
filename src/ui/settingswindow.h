@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "../core/models/featuremodel.h"
+#include "calculatortab.h"
 #include "filesearchtab.h"
 
 QT_BEGIN_NAMESPACE

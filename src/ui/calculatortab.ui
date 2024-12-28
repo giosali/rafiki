@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+  <class>CalculatorTab</class>
+  <widget class="QWidget" name="CalculatorTab">
+    <layout class="QVBoxLayout">
+      <property name="alignment">
+        <enum>Qt::AlignTop</enum>
+      </property>
+      <item>
+        <layout class="QFormLayout">
+          <property name="formAlignment">
+            <enum>Qt::AlignHCenter</enum>
+          </property>
+          <item row="0" column="0">
+            <widget class="QLabel">
+              <property name="text">
+                <string>Enabled</string>
+              </property>
+            </widget>
+          </item>
+          <item row="0" column="1">
+            <widget class="QCheckBox" name="enabled_check_box">
+              <property name="text">
+                <string></string>
+              </property>
+            </widget>
+          </item>
+        </layout>
+      </item>
+    </layout>
+  </widget>
+</ui>

@@ -188,6 +188,11 @@
                             </item>
                           </layout>
                         </widget>
+                        <widget class="CalculatorTab" name="calculator_tab" native="true">
+                          <attribute name="title">
+                            <string>Calculator</string>
+                          </attribute>
+                        </widget>
                         <widget class="FileSearchTab" name="file_search_tab" native="true">
                           <attribute name="title">
                             <string>File Search</string>
@@ -205,6 +210,9 @@
     </widget>
   </widget>
   <customwidgets>
+    <customwidget>
+      <class>CalculatorTab</class>
+    </customwidget>
     <customwidget>
       <class>FileSearchTab</class>
     </customwidget>
