@@ -107,33 +107,33 @@ void Settings::Update(const QJsonDocument& document) {
     return;
   }
 
-  if (auto it = object.find("availableId"); it != object.end()) {
-    available_id_ = it.value().toString().toULongLong();
+  if (auto key = "availableId"; object.contains(key)) {
+    available_id_ = object[key].toString().toULongLong();
   }
 
-  if (auto it = object.find("defaultModels"); it != object.end()) {
+  if (auto key = "defaultModels"; object.contains(key)) {
     default_feature_model_ids_.clear();
-    for (const auto& value : it.value().toArray()) {
+    for (const auto& value : object[key].toArray()) {
       default_feature_model_ids_.push_back(value.toString().toULongLong());
     }
   }
 
-  if (auto it = object.find("disabledModels"); it != object.end()) {
+  if (auto key = "disabledModels"; object.contains(key)) {
     disabled_feature_model_ids_.clear();
-    for (const auto& value : it.value().toArray()) {
+    for (const auto& value : object[key].toArray()) {
       disabled_feature_model_ids_.insert(value.toString().toULongLong());
     }
   }
 
-  if (auto it = object.find("ignoredDirectoryNames"); it != object.end()) {
+  if (auto key = "ignoredDirectoryNames"; object.contains(key)) {
     ClearIgnoredDirectoryNames();
-    for (const auto& value : it.value().toArray()) {
+    for (const auto& value : object[key].toArray()) {
       AddIgnoredDirectoryName(value.toString().toStdString());
     }
   }
 
-  if (auto it = object.find("useCounts"); it != object.end()) {
-    auto use_counts = it->toObject();
+  if (auto key = "useCounts"; object.contains(key)) {
+    auto use_counts = object[key].toObject();
     for (const auto& key : use_counts.keys()) {
       auto value = use_counts.value(key);
       auto id = key.toULongLong();
