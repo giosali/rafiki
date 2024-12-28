@@ -29,9 +29,10 @@ void TestCalculatorBridge::ProcessInput_Decimals() {
   QFETCH(QString, input);
   QFETCH(QString, expected);
 
-  auto object = bridge_.ProcessInput(model_.get(), input)[0];
-  auto actual = object->GetTitle();
+  auto objects = bridge_.ProcessInput(model_.get(), input);
+  QVERIFY(!objects.empty());
 
+  auto actual = objects[0]->GetTitle();
   QCOMPARE(actual, expected);
 }
 
@@ -219,7 +220,6 @@ void TestCalculatorBridge::ProcessInput_Multiplication_data() {
   QTest::newRow("decimal") << "1.1 * 1.1" << "1.21";
   QTest::newRow("zero") << "0 * 2" << "0";
   QTest::newRow("negative") << "1 * -2" << "-2";
-  QTest::newRow("negative") << "1 * -2" << "-2";
 }
 
 void TestCalculatorBridge::ProcessInput_Negatives() {
@@ -239,8 +239,7 @@ void TestCalculatorBridge::ProcessInput_Negatives_data() {
   QTest::newRow("single-negative") << "-1" << "-1";
   QTest::newRow("double-negative") << "--1" << "1";
   QTest::newRow("triple-negative") << "---1" << "-1";
-  QTest::newRow("quadruple-negative") << "---1" << "-1";
-  QTest::newRow("quintuple-negative") << "----1" << "1";
+  QTest::newRow("quadruple-negative") << "----1" << "1";
   QTest::newRow("quintuple-negative") << "-----1" << "-1";
   QTest::newRow("zero") << "-0" << "0";
 }
@@ -327,7 +326,6 @@ void TestCalculatorBridge::ProcessInput_Parentheses_data() {
   QTest::newRow("single-decimal") << "(1.1)" << "1.1";
   QTest::newRow("multiple-parentheses") << "((((((1))))))" << "1";
   QTest::newRow("double-multiplication") << "(2)(2)" << "4";
-  QTest::newRow("triple-multiplication") << "(2)(2)(2)" << "8";
   QTest::newRow("triple-multiplication") << "(2)(2)(2)" << "8";
   QTest::newRow("addition-inside-parentheses") << "(2 + 2)" << "4";
   QTest::newRow("addition-inside-parentheses-then-multiplication")
