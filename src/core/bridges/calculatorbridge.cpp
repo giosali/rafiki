@@ -12,24 +12,23 @@
 
 std::vector<FeatureObject*> CalculatorBridge::ProcessInput(
   FeatureModel* feature_model, const QString& input) {
-  auto result = CalculatorBridge::ShuntingYardAlgorithm::TryParse(
-    input.trimmed().toStdString());
-  if (!result.has_value()) {
+  if (auto result = CalculatorBridge::ShuntingYardAlgorithm::TryParse(
+        input.trimmed().toStdString());
+      result.has_value()) {
+    auto model = static_cast<CalculatorModel*>(feature_model);
+    return {new CalculatorObject{model, result.value()}};
+  } else {
     return {};
   }
-
-  auto model = static_cast<CalculatorModel*>(feature_model);
-  return {new CalculatorObject{model, result.value()}};
 }
 
 std::optional<std::string> CalculatorBridge::ShuntingYardAlgorithm::TryParse(
   const std::string& input) {
-  auto postfix_queue = ParseInfixExpression(input);
-  if (!postfix_queue.has_value()) {
+  if (auto queue = ParseInfixExpression(input); queue.has_value()) {
+    return ParsePostfixExpression(queue.value());
+  } else {
     return std::nullopt;
   }
-
-  return ParsePostfixExpression(postfix_queue.value());
 }
 
 int CalculatorBridge::ShuntingYardAlgorithm::FindSurplus(double d) {
