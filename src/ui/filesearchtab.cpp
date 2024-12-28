@@ -13,8 +13,8 @@ FileSearchTab::FileSearchTab(QWidget* parent)
   ui_->setupUi(this);
 
   // Checks or unchecks QCheckBox control.
-  auto models = Indexer::GetInstance().GetModels<FileSystemEntryModel>();
-  if (!models.empty()) {
+  if (auto models = Indexer::GetInstance().GetModels<FileSystemEntryModel>();
+      !models.empty()) {
     auto model = models[0];
     ui_->enabled_check_box->setChecked(model->GetIsEnabled());
   }
