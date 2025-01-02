@@ -23,11 +23,13 @@ class Settings {
   int GetSearchResultIconSize() const;
   int GetSearchResultListMaxCount() const;
   int GetSearchResultTitleMaxHeight() const;
+  QString GetThemeFilename() const;
   std::unordered_map<uint64_t, uint64_t> GetUseCounts() const;
   void RemoveDisabledFeatureModelId(uint64_t id);
   void RemoveUseCount(uint64_t id);
   void Save() const;
   void SetAvailableId(uint64_t value);
+  void SetThemeFilename(const QString& value);
   void Update(const QJsonDocument& document);
 
  private:
@@ -45,5 +47,6 @@ class Settings {
   int search_result_icon_size_{44};
   int search_result_list_max_count_{6};
   int search_result_title_max_height_{25};
+  QString theme_filename_{"dark-theme.json"};
   std::unordered_map<uint64_t, uint64_t> use_counts_{};
 };

@@ -56,6 +56,8 @@ int Settings::GetSearchResultTitleMaxHeight() const {
   return search_result_title_max_height_;
 }
 
+QString Settings::GetThemeFilename() const { return theme_filename_; }
+
 std::unordered_map<uint64_t, uint64_t> Settings::GetUseCounts() const {
   return use_counts_;
 }
@@ -94,12 +96,17 @@ void Settings::Save() const {
     {"defaultModels", default_models},
     {"disabledModels", disabled_models},
     {"ignoredDirectoryNames", ignored_directory_names},
+    {"themeFilename", theme_filename_},
     {"useCounts", use_counts},
   };
   File::Write(Paths::GetPath(Paths::Json::kUserSettings), object);
 }
 
 void Settings::SetAvailableId(uint64_t value) { available_id_ = value; }
+
+void Settings::SetThemeFilename(const QString& value) {
+  theme_filename_ = value;
+}
 
 void Settings::Update(const QJsonDocument& document) {
   auto object = document.object();
@@ -130,6 +137,10 @@ void Settings::Update(const QJsonDocument& document) {
     for (const auto& value : object[key].toArray()) {
       AddIgnoredDirectoryName(value.toString().toStdString());
     }
+  }
+
+  if (auto key = "themeFilename"; object.contains(key)) {
+    theme_filename_ = object[key].toString();
   }
 
   if (auto key = "useCounts"; object.contains(key)) {
