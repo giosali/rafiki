@@ -30,6 +30,9 @@ int main(int argc, char* argv[]) {
   QApplication::setOrganizationDomain(application_name + ".com");
   QApplication::setQuitOnLastWindowClosed(false);
 
+  auto& indexer = Indexer::GetInstance();
+  indexer.Initialize();
+
   auto w = MainWindow{};
   auto arguments = QApplication::arguments();
   w.ProcessCommandLineArguments(arguments, false);
@@ -74,9 +77,6 @@ int main(int argc, char* argv[]) {
   if (translator.load(filename)) {
     a.installTranslator(&translator);
   }
-
-  auto& indexer = Indexer::GetInstance();
-  indexer.Initialize();
 
   w.CreateTrayIcon();
   w.show();
