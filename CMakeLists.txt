@@ -63,6 +63,7 @@ set(PROJECT_SOURCES
         src/core/paths.cpp
         src/core/server.cpp
         src/core/settings.cpp
+        src/core/theme.cpp
         src/core/utilities.cpp
         src/main.cpp
         src/ui/calculatortab.cpp
