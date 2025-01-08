@@ -70,28 +70,12 @@
       <translation type=""></translation>
     </message>
     <message>
-      <source>https://google.com/search?q=%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://google.com</source>
-      <translation type=""></translation>
-    </message>
-    <message>
       <source>Visit the Google homepage</source>
       <translation type=""></translation>
     </message>
     <!-- DuckDuckGo -->
     <message>
       <source>Search DuckDuckGo for '%1'</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://duckduckgo.com/?q=%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://duckduckgo.com</source>
       <translation type=""></translation>
     </message>
     <message>
@@ -104,28 +88,12 @@
       <translation type=""></translation>
     </message>
     <message>
-      <source>https://amazon.com/s?k=%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://amazon.com</source>
-      <translation type=""></translation>
-    </message>
-    <message>
       <source>Visit the Amazon homepage</source>
       <translation type=""></translation>
     </message>
     <!-- eBay -->
     <message>
       <source>Search eBay for '%1'</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://ebay.com/sch/i.html?_nkw=%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://ebay.com</source>
       <translation type=""></translation>
     </message>
     <message>
@@ -138,28 +106,12 @@
       <translation type=""></translation>
     </message>
     <message>
-      <source>https://facebook.com/search/top?q=%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://facebook.com</source>
-      <translation type=""></translation>
-    </message>
-    <message>
       <source>Visit the Facebook homepage</source>
       <translation type=""></translation>
     </message>
     <!-- GitHub -->
     <message>
       <source>Search GitHub for '%1'</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://github.com/search?q=%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://github.com</source>
       <translation type=""></translation>
     </message>
     <message>
@@ -172,28 +124,12 @@
       <translation type=""></translation>
     </message>
     <message>
-      <source>https://instagram.com/%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://instagram.com</source>
-      <translation type=""></translation>
-    </message>
-    <message>
       <source>Visit the Instagram homepage</source>
       <translation type=""></translation>
     </message>
     <!-- Pinterest -->
     <message>
       <source>Search Pinterest for '%1'</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://pinterest.com/search/pins/?q=%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://pinterest.com</source>
       <translation type=""></translation>
     </message>
     <message>
@@ -206,28 +142,12 @@
       <translation type=""></translation>
     </message>
     <message>
-      <source>https://reddit.com/r/%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://reddit.com</source>
-      <translation type=""></translation>
-    </message>
-    <message>
       <source>Visit the front page of Reddit</source>
       <translation type=""></translation>
     </message>
     <!-- TikTok -->
     <message>
       <source>Visit %1's TikTok profile</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://tiktok.com/@%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://tiktok.com</source>
       <translation type=""></translation>
     </message>
     <message>
@@ -240,28 +160,12 @@
       <translation type=""></translation>
     </message>
     <message>
-      <source>https://twitch.tv/%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://twitch.tv</source>
-      <translation type=""></translation>
-    </message>
-    <message>
       <source>Visit the Twitch homepage</source>
       <translation type=""></translation>
     </message>
     <!-- Wikipedia -->
     <message>
       <source>Search Wikipedia for '%1'</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://fr.wikipedia.org/wiki/Special:Search?search=%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://wikipedia.org</source>
       <translation type=""></translation>
     </message>
     <message>
@@ -274,14 +178,6 @@
       <translation type=""></translation>
     </message>
     <message>
-      <source>https://youtube.com/results?search_query=%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://youtube.com</source>
-      <translation type=""></translation>
-    </message>
-    <message>
       <source>Visit the YouTube homepage</source>
       <translation type=""></translation>
     </message>
@@ -291,23 +187,11 @@
       <translation type=""></translation>
     </message>
     <message>
-      <source>https://x.com/%1</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://x.com</source>
-      <translation type=""></translation>
-    </message>
-    <message>
       <source>Visit the X homepage</source>
       <translation type=""></translation>
     </message>
     <message>
       <source>Search X for '%1'</source>
-      <translation type=""></translation>
-    </message>
-    <message>
-      <source>https://x.com/search?q=%1</source>
       <translation type=""></translation>
     </message>
   </context>
