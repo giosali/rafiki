@@ -21,7 +21,7 @@ set(RES_FILES
 )
 set(TS_FILES
     translations/${CMAKE_PROJECT_NAME}_en.ts
-    translations/${CMAKE_PROJECT_NAME}_fr_fr.ts
+    translations/${CMAKE_PROJECT_NAME}_fr_FR.ts
     translations/${CMAKE_PROJECT_NAME}_FR.ts
     translations/${CMAKE_PROJECT_NAME}_US.ts
 )
