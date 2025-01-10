@@ -22,6 +22,10 @@ include_directories(
     ../include
 )
 
+set(RES_FILES
+    ../data/resources.qrc
+)
+
 set(PROJECT_SOURCES
     ../src/core/bridges/applicationbridge.cpp
     ../src/core/bridges/calculatorbridge.cpp
@@ -56,7 +60,11 @@ set(PROJECT_SOURCES
     ../src/core/indexer.cpp
     ../src/core/paths.cpp
     ../src/core/settings.cpp
+    ../src/core/theme.cpp
     ../src/core/utilities.cpp
+    ../src/ui/calculatortab.cpp
+    ../src/ui/generaltab.cpp
+    ../src/ui/filesearchtab.cpp
     ../src/ui/interactivelabel.cpp
     ../src/ui/settingswindow.cpp
     ../src/ui/websearchdialog.cpp
@@ -67,6 +75,7 @@ set(PROJECT_SOURCES
     utilities_test.cpp
     websearchbridge_test.cpp
     main.cpp
+    ${RES_FILES}
 )
 
 add_executable(${CMAKE_PROJECT_NAME} ${PROJECT_SOURCES})
