@@ -1,18 +1,13 @@
 #include <QApplication>
-#include <QFile>
 #include <QIcon>
-#include <QLocale>
 #include <QObject>
 #include <QString>
-#include <QTranslator>
 #include <QtEnvironmentVariables>
 #include <QtSystemDetection>
 #include <memory>
 
 #include "core/client.h"
-#include "core/indexer.h"
 #include "core/server.h"
-#include "core/settings.h"
 #include "ui/mainwindow.h"
 
 int main(int argc, char* argv[]) {
@@ -30,11 +25,8 @@ int main(int argc, char* argv[]) {
   QApplication::setOrganizationDomain(application_name + ".com");
   QApplication::setQuitOnLastWindowClosed(false);
 
-  auto& indexer = Indexer::GetInstance();
-  indexer.Initialize();
-
-  auto w = MainWindow{};
   auto arguments = QApplication::arguments();
+  auto w = MainWindow{};
   w.ProcessCommandLineArguments(arguments, false);
 
   auto server = Server{&a};
@@ -66,19 +58,8 @@ int main(int argc, char* argv[]) {
     QIcon::setFallbackSearchPaths(paths);
   }
 
-  auto filename = QString{":/translations/%1_%2.qm"}
-                    .arg(application_name.toLower())
-                    .arg(Settings::GetInstance().GetLocale());
-
-  // `translator` must be instantiated outside of the if loop for some reason,
-  // otherwise the translator will never be installed.
-  auto translator = QTranslator{};
-
-  if (translator.load(filename)) {
-    a.installTranslator(&translator);
-  }
-
   w.CreateTrayIcon();
+  w.UpdateTranslators();
   w.show();
   return a.exec();
 }

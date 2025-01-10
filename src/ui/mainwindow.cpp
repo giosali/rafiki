@@ -1,9 +1,12 @@
 #include "mainwindow.h"
 
+#include <qcoreapplication.h>
+
 #include <QAction>
 #include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QIcon>
+#include <QLocale>
 #include <QMenu>
 #include <QPoint>
 #include <QRect>
@@ -11,6 +14,7 @@
 #include <Qt>
 #include <QtGlobal>
 
+#include "../core/settings.h"
 #include "./ui_mainwindow.h"
 #include "searchbox.h"
 #include "searchresultlist.h"
@@ -20,11 +24,18 @@ MainWindow::MainWindow(QWidget* parent)
     : QMainWindow{parent}, ui_{std::make_unique<Ui::MainWindow>()} {
   ui_->setupUi(this);
 
+  setAttribute(Qt::WA_TranslucentBackground);
+  auto& theme = Theme::GetInstance();
+  auto& settings = Settings::GetInstance();
+  theme.LoadFile(settings.GetThemeFilename());
+  ApplyTheme(&theme);
+
   // Prevents child widgets from changing the width of the window.
   setMaximumWidth(width());
 
   auto box = new SearchBox(this);
   auto list = new SearchResultList(box, this);
+  list->ApplyTheme(&theme);
 
   // Prevents the window height from strangely expanding when input is cleared.
   setMinimumHeight(box->Height());
@@ -36,6 +47,10 @@ MainWindow::MainWindow(QWidget* parent)
           &SearchResultList::ProcessKeyPress);
   connect(box, &SearchBox::KeyReleased, list,
           &SearchResultList::ProcessKeyRelease);
+  connect(&theme, &Theme::Changed, this, &MainWindow::ApplyTheme);
+  connect(&theme, &Theme::Changed, list, &SearchResultList::ApplyTheme);
+  connect(&settings, &Settings::LocaleChanged, this,
+          &MainWindow::UpdateTranslators);
 
   centralWidget()->layout()->addWidget(box);
   centralWidget()->layout()->addWidget(list);
@@ -67,6 +82,14 @@ void MainWindow::CreateTrayIcon() {
           &MainWindow::ProcessActivationReason);
   tray_icon->setContextMenu(tray_menu);
   tray_icon->show();
+}
+
+void MainWindow::ApplyTheme(Theme* theme) {
+  auto stylesheet =
+    QString{"QWidget { background-color: %1; border-radius: %2px; }"}
+      .arg(theme->GetWindowBackgroundColor().name())
+      .arg(theme->GetBorderRadius());
+  centralWidget()->setStyleSheet(stylesheet);
 }
 
 void MainWindow::Hide() {
@@ -136,6 +159,43 @@ void MainWindow::SetHeight(int height) {
   // The minimum height of the window being already set prevents the window from
   // shrinking down all the way to 0, which is a good thing.
   resize(width(), minimumHeight() + height);
+}
+
+void MainWindow::UpdateTranslators() {
+  auto a = QCoreApplication::instance();
+  a->removeTranslator(&language_translator_);
+  a->removeTranslator(&territory_translator_);
+
+  auto& settings = Settings::GetInstance();
+  auto partial_filename =
+    QString{":/translations/%1_%2.qm"}.arg(a->applicationName().toLower());
+  auto territory = settings.GetTerritory();
+
+  if (auto filename =
+        partial_filename.arg(QLocale{settings.GetLanguage(), territory}.name());
+      language_translator_.load(filename)) {
+    a->installTranslator(&language_translator_);
+  }
+
+  if (auto filename = partial_filename.arg(QLocale::territoryToCode(territory));
+      territory_translator_.load(filename)) {
+    a->installTranslator(&territory_translator_);
+  }
+}
+
+void MainWindow::changeEvent(QEvent* event) {
+  switch (event->type()) {
+    case QEvent::LanguageChange: {
+      // Reloads web search models with tr() function calls to ensure their
+      // translations are also updated.
+      auto& indexer = Indexer::GetInstance();
+      indexer.Clear();
+      indexer.Initialize();
+      break;
+    }
+    default:
+      break;
+  }
 }
 
 bool MainWindow::event(QEvent* event) {
