@@ -73,7 +73,6 @@ void GeneralTab::UpdateTerritory(int index) {
   auto& settings = Settings::GetInstance();
   settings.SetTerritory(territory);
   settings.Save();
-  qDebug() << territory;
 }
 
 void GeneralTab::UpdateTheme(int index) {
