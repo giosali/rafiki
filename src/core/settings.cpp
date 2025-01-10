@@ -1,5 +1,6 @@
 #include "settings.h"
 
+#include <QCoreApplication>
 #include <QJsonArray>
 #include <QJsonObject>
 
@@ -42,7 +43,7 @@ std::unordered_set<std::string> Settings::GetIgnoredDirectoryNames() const {
   return ignored_directory_names_;
 }
 
-QString Settings::GetLocale() const { return locale_; }
+QLocale::Language Settings::GetLanguage() const { return language_; }
 
 int Settings::GetSearchResultIconSize() const {
   return search_result_icon_size_;
@@ -55,6 +56,8 @@ int Settings::GetSearchResultListMaxCount() const {
 int Settings::GetSearchResultTitleMaxHeight() const {
   return search_result_title_max_height_;
 }
+
+QLocale::Territory Settings::GetTerritory() const { return territory_; }
 
 QString Settings::GetThemeFilename() const { return theme_filename_; }
 
@@ -96,6 +99,8 @@ void Settings::Save() const {
     {"defaultModels", default_models},
     {"disabledModels", disabled_models},
     {"ignoredDirectoryNames", ignored_directory_names},
+    {"language", QString::number(language_)},
+    {"territory", QString::number(territory_)},
     {"themeFilename", theme_filename_},
     {"useCounts", use_counts},
   };
@@ -103,6 +108,16 @@ void Settings::Save() const {
 }
 
 void Settings::SetAvailableId(uint64_t value) { available_id_ = value; }
+
+void Settings::SetLanguage(QLocale::Language value) {
+  language_ = value;
+  emit LocaleChanged();
+}
+
+void Settings::SetTerritory(QLocale::Territory value) {
+  territory_ = value;
+  emit LocaleChanged();
+}
 
 void Settings::SetThemeFilename(const QString& value) {
   theme_filename_ = value;
@@ -137,6 +152,15 @@ void Settings::Update(const QJsonDocument& document) {
     for (const auto& value : object[key].toArray()) {
       AddIgnoredDirectoryName(value.toString().toStdString());
     }
+  }
+
+  if (auto key = "language"; object.contains(key)) {
+    language_ = static_cast<QLocale::Language>(object[key].toString().toInt());
+  }
+
+  if (auto key = "territory"; object.contains(key)) {
+    territory_ =
+      static_cast<QLocale::Territory>(object[key].toString().toInt());
   }
 
   if (auto key = "themeFilename"; object.contains(key)) {
