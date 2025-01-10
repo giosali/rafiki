@@ -10,6 +10,7 @@
 #include "../core/models/featuremodel.h"
 #include "calculatortab.h"
 #include "filesearchtab.h"
+#include "generaltab.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+  <class>GeneralTab</class>
+  <widget class="QWidget" name="GeneralTab">
+    <property name="styleSheet">
+      <string notr="true">
+        QVBoxLayout QLabel { font-size: 9px; margin: 0px; max-height: 40px; }
+      </string>
+    </property>
+    <layout class="QVBoxLayout">
+      <property name="alignment">
+        <enum>Qt::AlignHCenter | Qt::AlignTop</enum>
+      </property>
+      <item>
+        <widget class="QLabel">
+          <property name="font">
+            <font>
+              <pointsize>32</pointsize>
+            </font>
+          </property>
+          <property name="text">
+            <string>Rafiki</string>
+          </property>
+        </widget>
+      </item>
+      <item>
+        <layout class="QFormLayout">
+          <property name="formAlignment">
+            <enum>Qt::AlignHCenter</enum>
+          </property>
+          <item row="0" column="0">
+            <widget class="QLabel">
+              <property name="text">
+                <string>Hotkey</string>
+              </property>
+            </widget>
+          </item>
+          <item row="0" column="1">
+            <widget class="QLabel">
+              <property name="openExternalLinks">
+                <bool>true</bool>
+              </property>
+              <property name="text">
+                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a
+                  href=&quot;https://example.com&quot;&gt;How to set up a hotkey on
+                  GNOME on Wayland&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+              </property>
+            </widget>
+          </item>
+          <item row="1" column="0">
+            <widget class="QLabel">
+              <property name="text">
+                <string>Language</string>
+              </property>
+            </widget>
+          </item>
+          <item row="1" column="1">
+            <widget class="QComboBox" name="language_combo_box" />
+          </item>
+          <item row="2" column="0">
+            <widget class="QLabel">
+              <property name="text">
+                <string>Territory</string>
+              </property>
+            </widget>
+          </item>
+          <item row="2" column="1">
+            <widget class="QComboBox" name="territory_combo_box" />
+          </item>
+          <item row="3" column="0">
+            <widget class="QLabel">
+              <property name="text">
+                <string>Theme</string>
+              </property>
+            </widget>
+          </item>
+          <item row="3" column="1">
+            <widget class="QComboBox" name="theme_combo_box">
+              <item>
+                <property name="text">
+                  <string>Dark</string>
+                </property>
+              </item>
+              <item>
+                <property name="text">
+                  <string>Light</string>
+                </property>
+              </item>
+            </widget>
+          </item>
+        </layout>
+      </item>
+    </layout>
+  </widget>
+</ui>
