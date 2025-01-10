@@ -70,6 +70,7 @@ set(PROJECT_SOURCES
         src/main.cpp
         src/ui/calculatortab.cpp
         src/ui/filesearchtab.cpp
+        src/ui/generaltab.cpp
         src/ui/interactivelabel.cpp
         src/ui/mainwindow.cpp
         src/ui/mainwindow.ui
