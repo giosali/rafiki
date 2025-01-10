@@ -13,6 +13,7 @@
 #include "../core/indexer.h"
 #include "../core/objects/featureobject.h"
 #include "../core/settings.h"
+#include "../core/theme.h"
 #include "mainwindow.h"
 #include "searchbox.h"
 
@@ -27,6 +28,7 @@ class SearchResultList : public QListWidget {
  public slots:
   void ActivateItem(QListWidgetItem* item);
   void AdjustSize(int height);
+  void ApplyTheme(Theme* theme);
   void CheckSelectedItem(QListWidgetItem* current, QListWidgetItem* previous);
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);

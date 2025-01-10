@@ -28,23 +28,6 @@ SearchResultList::SearchResultList(SearchBox* search_box, MainWindow* parent)
   setFocusPolicy(Qt::NoFocus);
   setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
 
-  // Sets the highlight color.
-  auto palette = this->palette();
-  palette.setColor(QPalette::Highlight, QColor{200, 98, 30});
-  setPalette(palette);
-
-  // Styles the scrollbar.
-  // https://doc.qt.io/qt-6/stylesheet-examples.html#customizing-qscrollbar
-  auto stylesheet = QString{
-    "QScrollBar:vertical { background: none; border: none; "
-    "margin: 0px; "
-    "width: 4px; } QScrollBar::handle:vertical { background: gray; } "
-    "QScrollBar::add-line:vertical { "
-    "background: "
-    "none; border: none; } QScrollBar::sub-line:vertical { background: "
-    "none; border: none; }"};
-  setStyleSheet(stylesheet);
-
   // This is required to properly enable mouse events.
   setMouseTracking(true);
 
@@ -71,6 +54,26 @@ void SearchResultList::ActivateItem(QListWidgetItem* item) {
 }
 
 void SearchResultList::AdjustSize(int height) { setFixedHeight(height); }
+
+void SearchResultList::ApplyTheme(Theme* theme) {
+  // Styles the scrollbar.
+  // https://doc.qt.io/qt-6/stylesheet-examples.html#customizing-qscrollbar
+  auto stylesheet =
+    QString{
+      "QScrollBar:vertical { background: none; border: none; "
+      "margin: 0px; "
+      "width: 4px; } QScrollBar::handle:vertical { background: gray; } "
+      "QScrollBar::add-line:vertical { "
+      "background: "
+      "none; border: none; } QScrollBar::sub-line:vertical { background: "
+      "none; border: none; } QListWidget { border-radius: %1; } "
+      "QListWidget::item:selected { background-color: %2; border-radius: "
+      "%3px; }"}
+      .arg(theme->GetBorderRadius())
+      .arg(theme->GetSelectionColor().name())
+      .arg(theme->GetBorderRadius());
+  setStyleSheet(stylesheet);
+}
 
 void SearchResultList::CheckSelectedItem(QListWidgetItem* current,
                                          QListWidgetItem* previous) {
