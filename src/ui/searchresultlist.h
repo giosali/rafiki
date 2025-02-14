@@ -8,20 +8,19 @@
 #include <QPointF>
 #include <QString>
 #include <QThread>
+#include <QWidget>
 #include <vector>
 
 #include "../core/indexer.h"
 #include "../core/objects/featureobject.h"
 #include "../core/settings.h"
 #include "../core/theme.h"
-#include "mainwindow.h"
-#include "searchbox.h"
 
 class SearchResultList : public QListWidget {
   Q_OBJECT
 
  public:
-  SearchResultList(SearchBox* search_box, MainWindow* parent = nullptr);
+  SearchResultList(QWidget* parent = nullptr);
 
   ~SearchResultList();
 
@@ -43,6 +42,8 @@ class SearchResultList : public QListWidget {
   void KeyPressReceived(const QKeyCombination& combination);
   void KeyReleaseReceived(const QKeyCombination& combination);
   void TextReceived(const QString& input);
+  void NewSearchBoxTextRequested(const QString& text);
+  void HideRequested();
 
  protected:
   void mouseMoveEvent(QMouseEvent* event) override;
@@ -53,8 +54,6 @@ class SearchResultList : public QListWidget {
   int Height() const;
 
   bool entered_;
-  MainWindow* main_window_;
-  SearchBox* search_box_;
   QPointF starting_drag_position_;
   bool user_selected_item_;
   QThread worker_thread_;

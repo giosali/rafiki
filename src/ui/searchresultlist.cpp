@@ -17,8 +17,7 @@
 #include "searchresult.h"
 #include "searchresultitem.h"
 
-SearchResultList::SearchResultList(SearchBox* search_box, MainWindow* parent)
-    : QListWidget{parent}, main_window_{parent}, search_box_{search_box} {
+SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
   // Component should be hidden on initialization.
   parent == nullptr ? setFixedHeight(0) : setFixedSize(parent->width(), 0);
 
@@ -262,9 +261,11 @@ void SearchResultList::AddItem(FeatureObject* object, const QString& text,
   connect(this, &SearchResultList::KeyReleaseReceived, widget,
           &SearchResult::ProcessKeyRelease);
 
-  connect(object, &FeatureObject::NewSearchBoxTextRequested, search_box_,
-          &SearchBox::SetText);
-  connect(object, &FeatureObject::Hidden, main_window_, &MainWindow::Hide);
+  connect(
+    object, &FeatureObject::NewSearchBoxTextRequested, this,
+    [this](const QString& text) { emit NewSearchBoxTextRequested(text); });
+  connect(object, &FeatureObject::Hidden, this,
+          [this] { emit HideRequested(); });
 
   auto item = new SearchResultItem(object->GetId(), this);
 
