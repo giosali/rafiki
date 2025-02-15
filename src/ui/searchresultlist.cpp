@@ -18,8 +18,8 @@
 #include "searchresultitem.h"
 
 SearchResultList::SearchResultList(QWidget* parent) : QListWidget{parent} {
-  // Component should be hidden on initialization.
-  parent == nullptr ? setFixedHeight(0) : setFixedSize(parent->width(), 0);
+  // Hides component on initialization.
+  setFixedHeight(0);
 
   // Removes thin border around component.
   setFrameStyle(QFrame::NoFrame);
