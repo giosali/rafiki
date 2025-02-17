@@ -139,6 +139,12 @@ target_compile_definitions(${CMAKE_PROJECT_NAME}
         CMAKE_EXPORT_COMPILE_COMMANDS=1
 )
 
+# This is necessary for compiling designer files that reference customw widgets
+# without accompanying designer files.
+target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
+    ${CMAKE_SOURCE_DIR}/src/ui
+)
+
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an
 # explicit, fixed bundle identifier manually though.

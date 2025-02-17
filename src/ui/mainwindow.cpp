@@ -1,7 +1,5 @@
 #include "mainwindow.h"
 
-#include <qcoreapplication.h>
-
 #include <QAction>
 #include <QCommandLineParser>
 #include <QCoreApplication>
@@ -23,37 +21,39 @@
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow{parent}, ui_{std::make_unique<Ui::MainWindow>()} {
   ui_->setupUi(this);
-
   setAttribute(Qt::WA_TranslucentBackground);
-  auto& theme = Theme::GetInstance();
-  auto& settings = Settings::GetInstance();
-  theme.LoadFile(settings.GetThemeFilename());
-  ApplyTheme(&theme);
 
   // Prevents child widgets from changing the width of the window.
   setMaximumWidth(width());
 
-  auto box = new SearchBox(this);
-  auto list = new SearchResultList(box, this);
-  list->ApplyTheme(&theme);
+  // Prevents the window height from strangely expanding when input is
+  // cleared.
+  setMinimumHeight(ui_->search_box->Height());
 
-  // Prevents the window height from strangely expanding when input is cleared.
-  setMinimumHeight(box->Height());
+  auto& theme = Theme::GetInstance();
+  auto& settings = Settings::GetInstance();
 
-  connect(this, &MainWindow::Deactivated, box, &SearchBox::Clear);
-  connect(list, &SearchResultList::ItemsChanged, this, &MainWindow::SetHeight);
-  connect(box, &SearchBox::TextChanged, list, &SearchResultList::ProcessText);
-  connect(box, &SearchBox::KeyPressed, list,
+  connect(this, &MainWindow::Deactivated, ui_->search_box, &SearchBox::Clear);
+  connect(ui_->search_list, &SearchResultList::ItemsChanged, this,
+          &MainWindow::SetHeight);
+  connect(ui_->search_box, &SearchBox::TextChanged, ui_->search_list,
+          &SearchResultList::ProcessText);
+  connect(ui_->search_box, &SearchBox::KeyPressed, ui_->search_list,
           &SearchResultList::ProcessKeyPress);
-  connect(box, &SearchBox::KeyReleased, list,
+  connect(ui_->search_box, &SearchBox::KeyReleased, ui_->search_list,
           &SearchResultList::ProcessKeyRelease);
   connect(&theme, &Theme::Changed, this, &MainWindow::ApplyTheme);
-  connect(&theme, &Theme::Changed, list, &SearchResultList::ApplyTheme);
+  connect(&theme, &Theme::Changed, ui_->search_list,
+          &SearchResultList::ApplyTheme);
   connect(&settings, &Settings::LocaleChanged, this,
           &MainWindow::UpdateTranslators);
 
-  centralWidget()->layout()->addWidget(box);
-  centralWidget()->layout()->addWidget(list);
+  connect(ui_->search_list, &SearchResultList::NewSearchBoxTextRequested,
+          ui_->search_box, &SearchBox::SetText);
+  connect(ui_->search_list, &SearchResultList::HideRequested, this,
+          &MainWindow::Hide);
+
+  theme.LoadFile(settings.GetThemeFilename());
 }
 
 MainWindow::~MainWindow() {}

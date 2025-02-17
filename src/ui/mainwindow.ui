@@ -18,16 +18,16 @@
     </property>
     <widget class="QWidget" name="centralwidget">
       <layout class="QGridLayout" name="gridLayout">
-        <property name="leftMargin">
+        <property name="bottomMargin">
           <number>0</number>
         </property>
-        <property name="topMargin">
+        <property name="leftMargin">
           <number>0</number>
         </property>
         <property name="rightMargin">
           <number>0</number>
         </property>
-        <property name="bottomMargin">
+        <property name="topMargin">
           <number>0</number>
         </property>
         <property name="spacing">
@@ -38,11 +38,27 @@
             <property name="spacing">
               <number>0</number>
             </property>
+            <item>
+              <widget class="SearchBox" name="search_box" native="true"></widget>
+            </item>
+            <item>
+              <widget class="SearchResultList" name="search_list" native="true" />
+            </item>
           </layout>
         </item>
       </layout>
     </widget>
   </widget>
+  <customwidgets>
+    <customwidget>
+      <class>SearchBox</class>
+    </customwidget>
+    <customwidget>
+      <class>SearchResultList</class>
+      <extends>QListWidget</extends>
+      <header>searchresultlist.h</header>
+    </customwidget>
+  </customwidgets>
   <resources />
   <connections />
 </ui>

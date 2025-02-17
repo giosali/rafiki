@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "../core/theme.h"
+#include "searchbox.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -37,6 +38,7 @@ class MainWindow : public QMainWindow {
 
  signals:
   void Deactivated();
+  void TextReceived(const QString& text);
 
  protected:
   void changeEvent(QEvent* event) override;
