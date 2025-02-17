@@ -8,7 +8,7 @@
 SearchBox::SearchBox(QWidget* parent)
     : QWidget{parent}, ui_{std::make_unique<Ui::SearchBox>()} {
   ui_->setupUi(this);
-  setFixedHeight(Height());
+  ApplyTheme();
 
   connect(ui_->searchBox, &QLineEdit::textChanged, [this](const QString& text) {
     // This block is exclusively for the FileSystemEntryObject.
@@ -26,6 +26,15 @@ SearchBox::~SearchBox() {}
 int SearchBox::Height() const { return ui_->layout->sizeHint().height(); }
 
 QString SearchBox::GetText() const { return ui_->searchBox->text(); }
+
+void SearchBox::ApplyTheme() {
+  auto stylesheet =
+    "QLineEdit { border: none; font-size: 32px; padding: 12px 8px; }";
+  ui_->searchBox->setStyleSheet(stylesheet);
+
+  // It might be safe to remove this.
+  setFixedHeight(Height());
+}
 
 void SearchBox::Clear() { ui_->searchBox->clear(); }
 

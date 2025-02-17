@@ -31,16 +31,11 @@
       </property>
       <item>
         <widget class="QLineEdit" name="searchBox">
-          <property name="font">
-            <font>
-              <pointsize>26</pointsize>
-            </font>
-          </property>
-          <property name="styleSheet">
-            <string notr="true">QLineEdit {
-              border: none;
-              padding: 12px 8px;
-              }</string>
+          <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+            </sizepolicy>
           </property>
         </widget>
       </item>

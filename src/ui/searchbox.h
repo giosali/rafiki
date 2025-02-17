@@ -24,6 +24,7 @@ class SearchBox : public QWidget {
   QString GetText() const;
 
  public slots:
+  void ApplyTheme();
   void Clear();
   void SetText(const QString& text);
 
