@@ -12,6 +12,8 @@ Theme& Theme::GetInstance() {
 
 int Theme::GetBorderRadius() const { return border_radius_; }
 
+int Theme::GetFontSize() const { return font_size_; }
+
 QColor Theme::GetSelectionColor() const { return selection_color_; }
 
 QColor Theme::GetWindowBackgroundColor() const {
@@ -34,8 +36,13 @@ void Theme::LoadFile(const QString& filename) {
   }
 
   auto object = document.object();
+
   if (auto key = "borderRadius"; object.contains(key)) {
     border_radius_ = object[key].toInt();
+  }
+
+  if (auto key = "fontSize"; object.contains(key)) {
+    font_size_ = object[key].toInt();
   }
 
   if (auto key = "selectionColor"; object.contains(key)) {
