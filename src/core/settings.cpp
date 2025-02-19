@@ -65,6 +65,8 @@ std::unordered_map<uint64_t, uint64_t> Settings::GetUseCounts() const {
   return use_counts_;
 }
 
+void Settings::Initialize() { Update(File::Read(Paths::Json::kUserSettings)); }
+
 void Settings::RemoveDisabledFeatureModelId(uint64_t id) {
   disabled_feature_model_ids_.erase(id);
 }

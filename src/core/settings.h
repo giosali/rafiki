@@ -30,6 +30,7 @@ class Settings : public QObject {
   QLocale::Territory GetTerritory() const;
   QString GetThemeFilename() const;
   std::unordered_map<uint64_t, uint64_t> GetUseCounts() const;
+  void Initialize();
   void RemoveDisabledFeatureModelId(uint64_t id);
   void RemoveUseCount(uint64_t id);
   void Save() const;
