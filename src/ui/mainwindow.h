@@ -25,16 +25,12 @@ class MainWindow : public QMainWindow {
   ~MainWindow();
 
   void CreateTrayIcon();
+  void Show();
 
  public slots:
-  void ApplyTheme(Theme* theme);
   void Hide();
-  void OpenSettingsWindow();
-  void ProcessActivationReason(QSystemTrayIcon::ActivationReason reason);
   void ProcessCommandLineArguments(const QStringList& arguments,
                                    bool from_server);
-  void SetHeight(int height);
-  void UpdateTranslators();
 
  signals:
   void Deactivated();
@@ -50,4 +46,11 @@ class MainWindow : public QMainWindow {
   QTranslator language_translator_{};
   QTranslator territory_translator_{};
   std::unique_ptr<Ui::MainWindow> ui_;
+
+ private slots:
+  void ApplyTheme(Theme* theme);
+  void OpenSettingsWindow();
+  void ProcessActivationReason(QSystemTrayIcon::ActivationReason reason);
+  void SetHeight(int height);
+  void UpdateTranslators();
 };
