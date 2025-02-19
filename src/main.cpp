@@ -8,6 +8,7 @@
 
 #include "core/client.h"
 #include "core/server.h"
+#include "core/settings.h"
 #include "ui/mainwindow.h"
 
 int main(int argc, char* argv[]) {
@@ -24,6 +25,10 @@ int main(int argc, char* argv[]) {
   QApplication::setOrganizationName(application_name);
   QApplication::setOrganizationDomain(application_name + ".com");
   QApplication::setQuitOnLastWindowClosed(false);
+
+  // Settings must be initialized before initializing MainWindow.
+  auto& settings = Settings::GetInstance();
+  settings.Initialize();
 
   auto arguments = QApplication::arguments();
   auto w = MainWindow{};
@@ -59,7 +64,6 @@ int main(int argc, char* argv[]) {
   }
 
   w.CreateTrayIcon();
-  w.UpdateTranslators();
-  w.show();
+  w.Show();
   return a.exec();
 }
