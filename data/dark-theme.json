@@ -2,6 +2,7 @@
   "borderRadius": 10,
   "fontSize": 32,
   "selectionColor": "#c8621e",
+  "viewForegroundColor": "#000000",
   "windowBackgroundColor": "#242424",
   "windowForegroundColor": "#ffffff"
 }

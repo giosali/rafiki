@@ -12,6 +12,7 @@ class Theme final : public QObject {
   int GetBorderRadius() const;
   int GetFontSize() const;
   QColor GetSelectionColor() const;
+  QColor GetViewForegroundColor() const;
   QColor GetWindowBackgroundColor() const;
   QColor GetWindowForegroundColor() const;
   void LoadFile(const QString& filename);
@@ -28,6 +29,7 @@ class Theme final : public QObject {
   int border_radius_{};
   int font_size_{};
   QColor selection_color_{};
+  QColor view_foreground_color_{};
   QColor window_background_color_{};
   QColor window_foreground_color_{};
 };

@@ -16,6 +16,8 @@ int Theme::GetFontSize() const { return font_size_; }
 
 QColor Theme::GetSelectionColor() const { return selection_color_; }
 
+QColor Theme::GetViewForegroundColor() const { return view_foreground_color_; }
+
 QColor Theme::GetWindowBackgroundColor() const {
   return window_background_color_;
 }
@@ -47,6 +49,10 @@ void Theme::LoadFile(const QString& filename) {
 
   if (auto key = "selectionColor"; object.contains(key)) {
     selection_color_ = object[key].toString();
+  }
+
+  if (auto key = "viewForegroundColor"; object.contains(key)) {
+    view_foreground_color_ = object[key].toString();
   }
 
   if (auto key = "windowBackgroundColor"; object.contains(key)) {
