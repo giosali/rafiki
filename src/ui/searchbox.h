@@ -6,6 +6,8 @@
 #include <QWidget>
 #include <memory>
 
+#include "../core/theme.h"
+
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class SearchBox;
@@ -24,7 +26,7 @@ class SearchBox : public QWidget {
   QString GetText() const;
 
  public slots:
-  void ApplyTheme();
+  void ApplyTheme(Theme* theme);
   void Clear();
   void SetText(const QString& text);
 
