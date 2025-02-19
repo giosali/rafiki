@@ -6,7 +6,6 @@
 
 #include "INIReader.h"
 #include "fetcher.h"
-#include "file.h"
 #include "models/applicationmodel.h"
 #include "models/calculatormodel.h"
 #include "models/filesystementrymodel.h"
@@ -15,7 +14,6 @@
 #include "models/trashmodel.h"
 #include "models/urlmodel.h"
 #include "models/websearchmodel.h"
-#include "paths.h"
 #include "settings.h"
 
 Indexer& Indexer::GetInstance() {
@@ -127,13 +125,11 @@ void Indexer::IndexModel(std::unique_ptr<FeatureModel> model) {
 }
 
 void Indexer::Initialize() {
-  auto& settings = Settings::GetInstance();
-  auto document = File::Read(Paths::Json::kUserSettings);
-  settings.Update(document);
-
   IndexApplications();
   IndexGenericModels();
   IndexWebSearches();
+
+  auto& settings = Settings::GetInstance();
 
   for (auto id : settings.GetDisabledFeatureModelids()) {
     models_map_.at(id)->SetIsEnabled(false);
