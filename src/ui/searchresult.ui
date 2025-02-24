@@ -16,11 +16,7 @@
         <number>6</number>
       </property>
       <item>
-        <widget class="QLabel" name="icon">
-          <property name="text">
-            <string></string>
-          </property>
-        </widget>
+        <widget class="QLabel" name="icon" />
       </item>
       <item>
         <layout class="QVBoxLayout" name="verticalLayout">
@@ -35,9 +31,6 @@
                   <bold>true</bold>
                 </font>
               </property>
-              <property name="text">
-                <string>TextLabel</string>
-              </property>
             </widget>
           </item>
           <item>
@@ -47,9 +40,6 @@
                   <pointsize>10</pointsize>
                   <bold>false</bold>
                 </font>
-              </property>
-              <property name="text">
-                <string>TextLabel</string>
               </property>
             </widget>
           </item>
@@ -78,9 +68,6 @@
               <pointsize>10</pointsize>
               <fontweight>Medium</fontweight>
             </font>
-          </property>
-          <property name="text">
-            <string></string>
           </property>
         </widget>
       </item>
