@@ -41,4 +41,7 @@ class SearchBox : public QWidget {
 
  private:
   std::unique_ptr<Ui::SearchBox> ui_;
+
+ private slots:
+  void ProcessText(const QString& text);
 };

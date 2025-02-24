@@ -29,7 +29,6 @@ MainWindow::MainWindow(QWidget* parent)
   // the SearchBox to have the visually correct height. I'm not entirely sure
   // why, however.
   auto& theme = Theme::GetInstance();
-  connect(&theme, &Theme::Changed, this, &MainWindow::ApplyTheme);
   connect(&theme, &Theme::Changed, ui_->search_box, &SearchBox::ApplyTheme);
   connect(&theme, &Theme::Changed, ui_->search_list,
           &SearchResultList::ApplyTheme);
@@ -201,14 +200,6 @@ void MainWindow::ToggleVisibility() {
   } else {
     Hide();
   }
-}
-
-void MainWindow::ApplyTheme(Theme* theme) {
-  auto stylesheet =
-    QString{"QWidget { background-color: %1; border-radius: %2px; }"}
-      .arg(theme->GetWindowBackgroundColor().name())
-      .arg(theme->GetBorderRadius());
-  centralWidget()->setStyleSheet(stylesheet);
 }
 
 void MainWindow::OpenSettingsWindow() {

@@ -1,5 +1,6 @@
 #include "searchbox.h"
 
+#include <QStyle>
 #include <Qt>
 
 #include "../core/models/filesystementrymodel.h"
@@ -9,15 +10,8 @@ SearchBox::SearchBox(QWidget* parent)
     : QWidget{parent}, ui_{std::make_unique<Ui::SearchBox>()} {
   ui_->setupUi(this);
 
-  connect(ui_->searchBox, &QLineEdit::textChanged, [this](const QString& text) {
-    // This block is exclusively for the FileSystemEntryObject.
-    if (text == " ") {
-      ui_->searchBox->setText(FileSystemEntryModel::kCommand + " ");
-      return;
-    }
-
-    emit TextChanged(text);
-  });
+  connect(ui_->searchBox, &QLineEdit::textChanged, this,
+          &SearchBox::ProcessText);
 }
 
 SearchBox::~SearchBox() {}
@@ -27,9 +21,29 @@ int SearchBox::Height() const { return ui_->layout->sizeHint().height(); }
 QString SearchBox::GetText() const { return ui_->searchBox->text(); }
 
 void SearchBox::ApplyTheme(Theme* theme) {
-  auto stylesheet =
-    QString{"QLineEdit { border: none; font-size: %1px; padding: 12px 8px; }"}
-      .arg(theme->GetFontSize());
+  auto stylesheet = QString{R"(
+    QLineEdit {
+      background-color: %1;
+      border: none;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-top-left-radius: %2px;
+      border-top-right-radius: %3px;
+      color: %4;
+      font-size: %5px;
+      padding: 12px 8px;
+    }
+
+    QLineEdit[text=""] {
+      border-radius: %6px;
+    }
+  )"}
+                      .arg(theme->GetWindowBackgroundColor().name())
+                      .arg(theme->GetBorderRadius())
+                      .arg(theme->GetBorderRadius())
+                      .arg(theme->GetViewForegroundColor().name())
+                      .arg(theme->GetFontSize())
+                      .arg(theme->GetBorderRadius());
   ui_->searchBox->setStyleSheet(stylesheet);
 
   // It might be safe to remove this.
@@ -74,5 +88,34 @@ void SearchBox::keyReleaseEvent(QKeyEvent* event) {
       break;
     default:
       break;
+  }
+}
+
+void SearchBox::ProcessText(const QString& text) {
+  // This should be initialized to true since the QLineEdit will be empty when
+  // it appears for the first time.
+  static bool is_box_empty = true;
+
+  // Changes the theming of the SearchBox based on whether or not the
+  // SearchBox's internal QLineEdit contains text.
+  // This helps to stave off excessive and unnecessary `unpolish` and `polish`
+  // calls.
+  if (text.isEmpty() && !is_box_empty) {
+    is_box_empty = true;
+    auto style = ui_->searchBox->style();
+    style->unpolish(ui_->searchBox);
+    style->polish(ui_->searchBox);
+  } else if (!text.isEmpty() && is_box_empty) {
+    is_box_empty = false;
+    auto style = ui_->searchBox->style();
+    style->unpolish(ui_->searchBox);
+    style->polish(ui_->searchBox);
+  }
+
+  // This block is exclusively for the FileSystemEntryObject.
+  if (text == " ") {
+    ui_->searchBox->setText(FileSystemEntryModel::kCommand + " ");
+  } else {
+    emit TextChanged(text);
   }
 }

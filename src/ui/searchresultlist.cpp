@@ -57,20 +57,45 @@ void SearchResultList::AdjustSize(int height) { setFixedHeight(height); }
 void SearchResultList::ApplyTheme(Theme* theme) {
   // Styles the scrollbar.
   // https://doc.qt.io/qt-6/stylesheet-examples.html#customizing-qscrollbar
-  auto stylesheet =
-    QString{
-      "QScrollBar:vertical { background: none; border: none; "
-      "margin: 0px; "
-      "width: 4px; } QScrollBar::handle:vertical { background: gray; } "
-      "QScrollBar::add-line:vertical { "
-      "background: "
-      "none; border: none; } QScrollBar::sub-line:vertical { background: "
-      "none; border: none; } QListWidget { border-radius: %1; } "
-      "QListWidget::item:selected { background-color: %2; border-radius: "
-      "%3px; }"}
-      .arg(theme->GetBorderRadius())
-      .arg(theme->GetSelectionColor().name())
-      .arg(theme->GetBorderRadius());
+  auto stylesheet = QString{R"(
+    QScrollBar:vertical {
+      background: transparent;
+      border: none;
+      margin: 0px;
+      width: 4px;
+    }
+
+    QScrollBar::handle:vertical { 
+      background: gray;
+    }
+      
+    QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {
+      background: none;
+      border: none;
+    }
+
+    QLabel {
+      color: %1;
+    }
+
+    QListWidget {
+      background-color: %2;
+      color: blue;
+      border-bottom-left-radius: %3px;
+      border-bottom-right-radius: %4px;
+    }
+
+    QListWidget::item:selected {
+      background-color: %5;
+      border-radius: %6px;
+    }
+  )"}
+                      .arg(theme->GetViewForegroundColor().name())
+                      .arg(theme->GetWindowBackgroundColor().name())
+                      .arg(theme->GetBorderRadius())
+                      .arg(theme->GetBorderRadius())
+                      .arg(theme->GetSelectionColor().name())
+                      .arg(theme->GetBorderRadius());
   setStyleSheet(stylesheet);
 }
 
