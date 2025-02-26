@@ -10,9 +10,6 @@
         <height>300</height>
       </rect>
     </property>
-    <property name="windowTitle">
-      <string>Form</string>
-    </property>
     <layout class="QHBoxLayout" name="layout">
       <property name="spacing">
         <number>0</number>
@@ -30,7 +27,7 @@
         <number>0</number>
       </property>
       <item>
-        <widget class="QLineEdit" name="searchBox">
+        <widget class="QLineEdit" name="line_edit">
           <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>

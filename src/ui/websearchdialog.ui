@@ -20,9 +20,9 @@
       <item row="0" column="0">
         <layout class="QVBoxLayout">
           <item>
-            <layout class="QFormLayout" name="formLayout">
+            <layout class="QFormLayout">
               <item row="0" column="0">
-                <widget class="QLabel" name="urlLabel">
+                <widget class="QLabel">
                   <property name="text">
                     <string>URL*</string>
                   </property>
@@ -34,7 +34,7 @@
                     <number>0</number>
                   </property>
                   <item>
-                    <widget class="QLineEdit" name="urlLineEdit">
+                    <widget class="QLineEdit" name="url">
                       <property name="placeholderText">
                         <string>https://google.com/search?q=%1</string>
                       </property>
@@ -65,7 +65,7 @@
                 </layout>
               </item>
               <item row="1" column="0">
-                <widget class="QLabel" name="titleLabel">
+                <widget class="QLabel">
                   <property name="text">
                     <string>Title*</string>
                   </property>
@@ -77,7 +77,7 @@
                     <number>0</number>
                   </property>
                   <item>
-                    <widget class="QLineEdit" name="titleLineEdit">
+                    <widget class="QLineEdit" name="title">
                       <property name="placeholderText">
                         <string>Search Google for '%1'</string>
                       </property>
@@ -108,14 +108,14 @@
                 </layout>
               </item>
               <item row="2" column="0">
-                <widget class="QLabel" name="placeholderLabel">
+                <widget class="QLabel">
                   <property name="text">
                     <string>Placeholder*</string>
                   </property>
                 </widget>
               </item>
               <item row="2" column="1">
-                <widget class="QComboBox" name="placeholderComboBox">
+                <widget class="QComboBox" name="placeholder">
                   <property name="maximumWidth">
                     <number>50</number>
                   </property>
@@ -132,28 +132,28 @@
                 </widget>
               </item>
               <item row="3" column="0">
-                <widget class="QLabel" name="commandLabel">
+                <widget class="QLabel">
                   <property name="text">
                     <string>Command*</string>
                   </property>
                 </widget>
               </item>
               <item row="3" column="1">
-                <widget class="QLineEdit" name="commandLineEdit">
+                <widget class="QLineEdit" name="command">
                   <property name="placeholderText">
                     <string>google</string>
                   </property>
                 </widget>
               </item>
               <item row="4" column="0">
-                <widget class="QLabel" name="iconLabel">
+                <widget class="QLabel">
                   <property name="text">
                     <string>Icon</string>
                   </property>
                 </widget>
               </item>
               <item row="4" column="1">
-                <widget class="InteractiveLabel" name="interactiveIconLabel" native="true">
+                <widget class="InteractiveLabel" name="icon_label">
                   <property name="scaledContents">
                     <bool>true</bool>
                   </property>
@@ -176,21 +176,21 @@
                 </widget>
               </item>
               <item row="5" column="0">
-                <widget class="QLabel" name="altUrlLabel">
+                <widget class="QLabel">
                   <property name="text">
                     <string>Alt URL</string>
                   </property>
                 </widget>
               </item>
               <item row="5" column="1">
-                <widget class="QLineEdit" name="altUrlLineEdit">
+                <widget class="QLineEdit" name="alt_url">
                   <property name="placeholderText">
                     <string>https://google.com</string>
                   </property>
                 </widget>
               </item>
               <item row="6" column="0">
-                <widget class="QLabel" name="altTitleLabel">
+                <widget class="QLabel">
                   <property name="text">
                     <string>Alt Title</string>
                   </property>
@@ -202,7 +202,7 @@
                     <number>0</number>
                   </property>
                   <item>
-                    <widget class="QLineEdit" name="altTitleLineEdit">
+                    <widget class="QLineEdit" name="alt_title">
                       <property name="placeholderText">
                         <string>Go to the Google homepage</string>
                       </property>
@@ -247,7 +247,7 @@
                 </spacer>
               </item>
               <item row="8" column="1">
-                <widget class="QDialogButtonBox" name="buttonBox">
+                <widget class="QDialogButtonBox" name="button_box">
                   <property name="standardButtons">
                     <set>QDialogButtonBox::Cancel|QDialogButtonBox::Save</set>
                   </property>

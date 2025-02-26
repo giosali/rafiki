@@ -22,8 +22,8 @@ SearchResult::SearchResult(FeatureObject* object, const QString& text,
   ui_->setupUi(this);
 
   // Padding around the search result.
-  ui_->horizontalLayout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
-                                            kHorizontalMargin, kVerticalMargin);
+  ui_->layout->setContentsMargins(kHorizontalMargin, kVerticalMargin,
+                                  kHorizontalMargin, kVerticalMargin);
 
   // Sets height of the QLabel called `icon` to the same height of its QPixmap.
   auto icon_size = Settings::GetInstance().GetSearchResultIconSize();

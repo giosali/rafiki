@@ -19,28 +19,28 @@
 WebSearchDialog::WebSearchDialog(QWidget* parent)
     : QDialog{parent}, ui_{std::make_unique<Ui::WebSearchDialog>()} {
   ui_->setupUi(this);
-  ui_->interactiveIconLabel->setAlignment(Qt::AlignCenter);
-  ui_->buttonBox->button(QDialogButtonBox::Save)->setEnabled(false);
+  ui_->icon_label->setAlignment(Qt::AlignCenter);
+  ui_->button_box->button(QDialogButtonBox::Save)->setEnabled(false);
   ToggleSaveButton(false);  // Disabled when adding a WebSearch.
 
-  connect(ui_->buttonBox, &QDialogButtonBox::accepted, this, &QDialog::accept);
-  connect(ui_->buttonBox, &QDialogButtonBox::rejected, this, &QDialog::reject);
+  connect(ui_->button_box, &QDialogButtonBox::accepted, this, &QDialog::accept);
+  connect(ui_->button_box, &QDialogButtonBox::rejected, this, &QDialog::reject);
   connect(this, &QDialog::accepted, this, &WebSearchDialog::AcceptWebSearch);
-  connect(ui_->urlLineEdit, &QLineEdit::textChanged, this,
+  connect(ui_->url, &QLineEdit::textChanged, this,
           &WebSearchDialog::CheckFields);
-  connect(ui_->titleLineEdit, &QLineEdit::textChanged, this,
+  connect(ui_->title, &QLineEdit::textChanged, this,
           &WebSearchDialog::CheckFields);
-  connect(ui_->commandLineEdit, &QLineEdit::textChanged, this,
+  connect(ui_->command, &QLineEdit::textChanged, this,
           &WebSearchDialog::CheckFields);
-  connect(ui_->altUrlLineEdit, &QLineEdit::textChanged, this,
+  connect(ui_->alt_url, &QLineEdit::textChanged, this,
           &WebSearchDialog::CheckFields);
-  connect(ui_->altTitleLineEdit, &QLineEdit::textChanged, this,
+  connect(ui_->alt_title, &QLineEdit::textChanged, this,
           &WebSearchDialog::CheckFields);
-  connect(ui_->interactiveIconLabel, &InteractiveLabel::Clicked, this,
+  connect(ui_->icon_label, &InteractiveLabel::Clicked, this,
           &WebSearchDialog::OpenFile);
-  connect(ui_->interactiveIconLabel, &InteractiveLabel::MouseEntered,
+  connect(ui_->icon_label, &InteractiveLabel::MouseEntered,
           []() { QGuiApplication::setOverrideCursor(Qt::PointingHandCursor); });
-  connect(ui_->interactiveIconLabel, &InteractiveLabel::MouseLeft,
+  connect(ui_->icon_label, &InteractiveLabel::MouseLeft,
           &QGuiApplication::restoreOverrideCursor);
 }
 
@@ -60,31 +60,31 @@ WebSearchDialog::WebSearchDialog(uint64_t id, QWidget* parent)
   id_ = id;
 
   // Fills in fields before showing the dialog to the user.
-  ui_->urlLineEdit->setText(model->GetUrl());
-  ui_->titleLineEdit->setText(model->GetTitle());
-  ui_->placeholderComboBox->setCurrentText(model->GetTitlePlaceholder());
+  ui_->url->setText(model->GetUrl());
+  ui_->title->setText(model->GetTitle());
+  ui_->placeholder->setCurrentText(model->GetTitlePlaceholder());
   // ui_->placeholderLabel->setText(model->GetTitlePlaceholder());
-  ui_->commandLineEdit->setText(model->GetCommand());
-  ui_->interactiveIconLabel->setPixmap(model->GetIcon());
-  ui_->altUrlLineEdit->setText(model->GetAltUrl());
-  ui_->altTitleLineEdit->setText(model->GetAltTitle());
+  ui_->command->setText(model->GetCommand());
+  ui_->icon_label->setPixmap(model->GetIcon());
+  ui_->alt_url->setText(model->GetAltUrl());
+  ui_->alt_title->setText(model->GetAltTitle());
 }
 
 WebSearchDialog::~WebSearchDialog() {}
 
 void WebSearchDialog::AcceptWebSearch() {
-  auto url = ui_->urlLineEdit->text();
-  auto title = ui_->titleLineEdit->text();
-  auto title_placeholder = ui_->placeholderComboBox->currentText();
-  auto command = ui_->commandLineEdit->text();
+  auto url = ui_->url->text();
+  auto title = ui_->title->text();
+  auto title_placeholder = ui_->placeholder->currentText();
+  auto command = ui_->command->text();
 
   if (url.isEmpty() || title.isEmpty() || title_placeholder.isEmpty() ||
       command.isEmpty()) {
     return;
   }
 
-  auto alt_url = ui_->altUrlLineEdit->text();
-  auto alt_title = ui_->altTitleLineEdit->text();
+  auto alt_url = ui_->alt_url->text();
+  auto alt_title = ui_->alt_title->text();
 
   // Fails if one is empty and the other not.
   if ((alt_url.isEmpty() && !alt_title.isEmpty()) ||
@@ -154,24 +154,24 @@ void WebSearchDialog::CheckFields(const QString& text) {
   // the command, and then sets the command edit widget to the clean command. We
   // return early because programmatically setting the text will trigger this
   // slot function again.
-  auto command = ui_->commandLineEdit->text();
+  auto command = ui_->command->text();
   if (command.contains(' ') || !command.isLower()) {
     auto clean_command = command.simplified().replace(" ", "").toLower();
-    ui_->commandLineEdit->setText(clean_command);
+    ui_->command->setText(clean_command);
     return;
   }
 
   // Disables save button if any of the main fields are empty.
-  auto url = ui_->urlLineEdit->text();
-  auto title = ui_->titleLineEdit->text();
+  auto url = ui_->url->text();
+  auto title = ui_->title->text();
   if (url.isEmpty() || title.isEmpty() || command.isEmpty()) {
     ToggleSaveButton(false);
     return;
   }
 
   // Disables save button if only one of the alt fields is filled.
-  auto alt_url_empty = ui_->altUrlLineEdit->text().isEmpty();
-  auto alt_title_empty = ui_->altTitleLineEdit->text().isEmpty();
+  auto alt_url_empty = ui_->alt_url->text().isEmpty();
+  auto alt_title_empty = ui_->alt_title->text().isEmpty();
   if ((alt_url_empty && !alt_title_empty) ||
       (!alt_url_empty && alt_title_empty)) {
     ToggleSaveButton(false);
@@ -182,7 +182,7 @@ void WebSearchDialog::CheckFields(const QString& text) {
 }
 
 void WebSearchDialog::CleanCommandField(const QString& text) {
-  ui_->commandLineEdit->setText(text.simplified().replace(" ", "").toLower());
+  ui_->command->setText(text.simplified().replace(" ", "").toLower());
 }
 
 void WebSearchDialog::OpenFile() {
@@ -190,10 +190,10 @@ void WebSearchDialog::OpenFile() {
         this, "Open Image", QString{}, "Image (*.png *.jpg *.svg)");
       !filename.isEmpty()) {
     new_icon_path_ = filename;
-    ui_->interactiveIconLabel->setPixmap(filename);
+    ui_->icon_label->setPixmap(filename);
   }
 }
 
 void WebSearchDialog::ToggleSaveButton(bool enable) const {
-  ui_->buttonBox->button(QDialogButtonBox::Save)->setEnabled(enable);
+  ui_->button_box->button(QDialogButtonBox::Save)->setEnabled(enable);
 }

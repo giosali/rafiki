@@ -16,8 +16,8 @@
     <property name="windowTitle">
       <string>Rafiki</string>
     </property>
-    <widget class="QWidget" name="centralwidget">
-      <layout class="QGridLayout" name="gridLayout">
+    <widget class="QWidget">
+      <layout class="QGridLayout">
         <property name="bottomMargin">
           <number>0</number>
         </property>
@@ -34,15 +34,15 @@
           <number>0</number>
         </property>
         <item row="0" column="0">
-          <layout class="QVBoxLayout" name="verticalLayout">
+          <layout class="QVBoxLayout">
             <property name="spacing">
               <number>0</number>
             </property>
             <item>
-              <widget class="SearchBox" name="search_box" native="true"></widget>
+              <widget class="SearchBox" name="search_box"></widget>
             </item>
             <item>
-              <widget class="SearchResultList" name="search_list" native="true" />
+              <widget class="SearchResultList" name="search_list" />
             </item>
           </layout>
         </item>

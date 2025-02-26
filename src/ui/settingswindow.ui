@@ -21,19 +21,19 @@
               <number>0</number>
             </property>
             <item>
-              <widget class="QTabWidget" name="mainTabWidget">
-                <widget class="GeneralTab" name="general_tab" native="true">
+              <widget class="QTabWidget">
+                <widget class="GeneralTab">
                   <attribute name="title">
                     <string>General</string>
                   </attribute>
                 </widget>
-                <widget class="QWidget" name="featuresTab">
+                <widget class="QWidget">
                   <attribute name="title">
                     <string>Features</string>
                   </attribute>
                   <layout class="QVBoxLayout">
                     <item>
-                      <widget class="QTabWidget" name="featuresSubTabWidget">
+                      <widget class="QTabWidget">
                         <widget class="WebSearchesTab" name="web_searches_tab">
                           <attribute name="title">
                             <string>Web Searches</string>
@@ -44,12 +44,12 @@
                             <string>Your Web Searches</string>
                           </attribute>
                         </widget>
-                        <widget class="CalculatorTab" name="calculator_tab" native="true">
+                        <widget class="CalculatorTab" name="calculator_tab">
                           <attribute name="title">
                             <string>Calculator</string>
                           </attribute>
                         </widget>
-                        <widget class="FileSearchTab" name="file_search_tab" native="true">
+                        <widget class="FileSearchTab" name="file_search_tab">
                           <attribute name="title">
                             <string>File Search</string>
                           </attribute>

@@ -10,7 +10,7 @@ SearchBox::SearchBox(QWidget* parent)
     : QWidget{parent}, ui_{std::make_unique<Ui::SearchBox>()} {
   ui_->setupUi(this);
 
-  connect(ui_->searchBox, &QLineEdit::textChanged, this,
+  connect(ui_->line_edit, &QLineEdit::textChanged, this,
           &SearchBox::ProcessText);
 }
 
@@ -18,7 +18,7 @@ SearchBox::~SearchBox() {}
 
 int SearchBox::Height() const { return ui_->layout->sizeHint().height(); }
 
-QString SearchBox::GetText() const { return ui_->searchBox->text(); }
+QString SearchBox::GetText() const { return ui_->line_edit->text(); }
 
 void SearchBox::ApplyTheme(Theme* theme) {
   auto stylesheet = QString{R"(
@@ -44,15 +44,15 @@ void SearchBox::ApplyTheme(Theme* theme) {
                       .arg(theme->GetViewForegroundColor().name())
                       .arg(theme->GetFontSize())
                       .arg(theme->GetBorderRadius());
-  ui_->searchBox->setStyleSheet(stylesheet);
+  ui_->line_edit->setStyleSheet(stylesheet);
 
   // It might be safe to remove this.
   setFixedHeight(Height());
 }
 
-void SearchBox::Clear() { ui_->searchBox->clear(); }
+void SearchBox::Clear() { ui_->line_edit->clear(); }
 
-void SearchBox::SetText(const QString& text) { ui_->searchBox->setText(text); }
+void SearchBox::SetText(const QString& text) { ui_->line_edit->setText(text); }
 
 void SearchBox::keyPressEvent(QKeyEvent* event) {
   auto combination = event->keyCombination();
@@ -102,19 +102,19 @@ void SearchBox::ProcessText(const QString& text) {
   // calls.
   if (text.isEmpty() && !is_box_empty) {
     is_box_empty = true;
-    auto style = ui_->searchBox->style();
-    style->unpolish(ui_->searchBox);
-    style->polish(ui_->searchBox);
+    auto style = ui_->line_edit->style();
+    style->unpolish(ui_->line_edit);
+    style->polish(ui_->line_edit);
   } else if (!text.isEmpty() && is_box_empty) {
     is_box_empty = false;
-    auto style = ui_->searchBox->style();
-    style->unpolish(ui_->searchBox);
-    style->polish(ui_->searchBox);
+    auto style = ui_->line_edit->style();
+    style->unpolish(ui_->line_edit);
+    style->polish(ui_->line_edit);
   }
 
   // This block is exclusively for the FileSystemEntryObject.
   if (text == " ") {
-    ui_->searchBox->setText(FileSystemEntryModel::kCommand + " ");
+    ui_->line_edit->setText(FileSystemEntryModel::kCommand + " ");
   } else {
     emit TextChanged(text);
   }
