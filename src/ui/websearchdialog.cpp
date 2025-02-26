@@ -97,7 +97,7 @@ void WebSearchDialog::AcceptWebSearch() {
   if (new_icon_path_.isNull()) {
     icon_path = is_being_created ? ":/icons/url.svg" : current_icon_path_;
   } else {
-    // Moves previosu icon to trash.
+    // Moves previous icon to trash. It's okay for fileName to be null or empty.
     QFile::moveToTrash(current_icon_path_);
 
     auto icon_dir = Paths::GetPath(Paths::Directory::kUserIcons);
