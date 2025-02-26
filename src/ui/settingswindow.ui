@@ -34,95 +34,15 @@
                   <layout class="QVBoxLayout">
                     <item>
                       <widget class="QTabWidget" name="featuresSubTabWidget">
-                        <widget class="QWidget" name="webSearchesTab">
+                        <widget class="WebSearchesTab" name="web_searches_tab">
                           <attribute name="title">
                             <string>Web Searches</string>
                           </attribute>
-                          <layout class="QHBoxLayout">
-                            <item>
-                              <widget class="QTableWidget" name="webSearchesTableWidget">
-                                <property name="editTriggers">
-                                  <set>QAbstractItemView::NoEditTriggers</set>
-                                </property>
-                                <property name="alternatingRowColors">
-                                  <bool>true</bool>
-                                </property>
-                                <property name="focusPolicy">
-                                  <enum>Qt::NoFocus</enum>
-                                </property>
-                                <property name="selectionBehavior">
-                                  <enum>QAbstractItemView::SelectRows</enum>
-                                </property>
-                                <property name="selectionMode">
-                                  <enum>QAbstractItemView::SingleSelection</enum>
-                                </property>
-                              </widget>
-                            </item>
-                          </layout>
                         </widget>
-                        <widget class="QWidget" name="yourWebSearchesTab">
+                        <widget class="YourWebSearchesTab" name="your_web_searches_tab">
                           <attribute name="title">
                             <string>Your Web Searches</string>
                           </attribute>
-                          <layout class="QVBoxLayout">
-                            <item>
-                              <widget class="QTableWidget" name="yourWebSearchesTableWidget">
-                                <property name="editTriggers">
-                                  <set>QAbstractItemView::NoEditTriggers</set>
-                                </property>
-                                <property name="alternatingRowColors">
-                                  <bool>true</bool>
-                                </property>
-                                <property name="focusPolicy">
-                                  <enum>Qt::NoFocus</enum>
-                                </property>
-                                <property name="selectionBehavior">
-                                  <enum>QAbstractItemView::SelectRows</enum>
-                                </property>
-                                <property name="selectionMode">
-                                  <enum>QAbstractItemView::SingleSelection</enum>
-                                </property>
-                              </widget>
-                            </item>
-                            <item>
-                              <layout class="QHBoxLayout">
-                                <item>
-                                  <spacer>
-                                    <property name="orientation">
-                                      <enum>Qt::Horizontal</enum>
-                                    </property>
-                                    <property name="sizeHint" stdset="0">
-                                      <size>
-                                        <width>40</width>
-                                        <height>20</height>
-                                      </size>
-                                    </property>
-                                  </spacer>
-                                </item>
-                                <item>
-                                  <widget class="QPushButton" name="editWebSearchButton">
-                                    <property name="text">
-                                      <string>Edit</string>
-                                    </property>
-                                  </widget>
-                                </item>
-                                <item>
-                                  <widget class="QPushButton" name="addWebSearchButton">
-                                    <property name="text">
-                                      <string>Add</string>
-                                    </property>
-                                  </widget>
-                                </item>
-                                <item>
-                                  <widget class="QPushButton" name="deleteWebSearchButton">
-                                    <property name="text">
-                                      <string>Delete</string>
-                                    </property>
-                                  </widget>
-                                </item>
-                              </layout>
-                            </item>
-                          </layout>
                         </widget>
                         <widget class="CalculatorTab" name="calculator_tab" native="true">
                           <attribute name="title">
@@ -154,6 +74,12 @@
     </customwidget>
     <customwidget>
       <class>GeneralTab</class>
+    </customwidget>
+    <customwidget>
+      <class>WebSearchesTab</class>
+    </customwidget>
+    <customwidget>
+      <class>YourWebSearchesTab</class>
     </customwidget>
   </customwidgets>
   <resources />

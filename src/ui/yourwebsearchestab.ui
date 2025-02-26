@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+  <class>YourWebSearchesTab</class>
+  <widget class="QWidget" name="YourWebSearchesTab">
+    <layout class="QVBoxLayout">
+      <item>
+        <widget class="QTableWidget" name="table">
+          <property name="alternatingRowColors">
+            <bool>true</bool>
+          </property>
+          <property name="editTriggers">
+            <set>QAbstractItemView::NoEditTriggers</set>
+          </property>
+          <property name="focusPolicy">
+            <enum>Qt::NoFocus</enum>
+          </property>
+          <property name="selectionBehavior">
+            <enum>QAbstractItemView::SelectRows</enum>
+          </property>
+          <property name="selectionMode">
+            <enum>QAbstractItemView::SingleSelection</enum>
+          </property>
+        </widget>
+      </item>
+      <item>
+        <layout class="QHBoxLayout">
+          <item>
+            <spacer>
+              <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+                <size>
+                  <width>40</width>
+                  <height>20</height>
+                </size>
+              </property>
+            </spacer>
+          </item>
+          <item>
+            <widget class="QPushButton" name="edit_button">
+              <property name="text">
+                <string>Edit</string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="add_button">
+              <property name="text">
+                <string>Add</string>
+              </property>
+            </widget>
+          </item>
+          <item>
+            <widget class="QPushButton" name="delete_button">
+              <property name="text">
+                <string>Delete</string>
+              </property>
+            </widget>
+          </item>
+        </layout>
+      </item>
+    </layout>
+  </widget>
+</ui>

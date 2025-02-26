@@ -1,8 +1,6 @@
 #pragma once
 
-#include <QCloseEvent>
 #include <QMainWindow>
-#include <QShowEvent>
 #include <Qt>
 #include <cstdint>
 #include <memory>
@@ -11,6 +9,8 @@
 #include "calculatortab.h"
 #include "filesearchtab.h"
 #include "generaltab.h"
+#include "websearchestab.h"
+#include "yourwebsearchestab.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -27,19 +27,10 @@ class SettingsWindow : public QMainWindow {
   ~SettingsWindow();
 
  public slots:
-  void AddWebSearch(bool checked) const;
-  void DeleteWebSearch(bool checked) const;
   void DisableModel(FeatureModel* model) const;
-  void EditWebSearch(bool checked) const;
   void EnableModel(FeatureModel* model) const;
-  void SetEnabledButtons() const;
   void ToggleModel(Qt::CheckState state, uint64_t id) const;
 
  private:
-  void ClearWebSearches() const;
-  void LoadWebSearches() const;
-  void OpenWebSearchDialog(uint64_t id) const;
-  void SaveWebSearches() const;
-
   std::unique_ptr<Ui::SettingsWindow> ui_;
 };

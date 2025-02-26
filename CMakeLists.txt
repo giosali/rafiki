@@ -84,6 +84,10 @@ set(PROJECT_SOURCES
         src/ui/settingswindow.ui
         src/ui/websearchdialog.cpp
         src/ui/websearchdialog.ui
+        src/ui/websearchestab.cpp
+        src/ui/websearchestab.ui
+        src/ui/yourwebsearchestab.cpp
+        src/ui/yourwebsearchestab.ui
         ${RES_FILES}
         ${TS_FILES}
 )
