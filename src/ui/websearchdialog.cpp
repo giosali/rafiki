@@ -63,7 +63,6 @@ WebSearchDialog::WebSearchDialog(uint64_t id, QWidget* parent)
   ui_->url->setText(model->GetUrl());
   ui_->title->setText(model->GetTitle());
   ui_->placeholder->setCurrentText(model->GetTitlePlaceholder());
-  // ui_->placeholderLabel->setText(model->GetTitlePlaceholder());
   ui_->command->setText(model->GetCommand());
   ui_->icon_label->setPixmap(model->GetIcon());
   ui_->alt_url->setText(model->GetAltUrl());
