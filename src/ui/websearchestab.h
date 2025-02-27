@@ -20,7 +20,7 @@ class WebSearchesTab : public QWidget {
   ~WebSearchesTab();
 
  signals:
-  void WebSearchToggled(Qt::CheckState state, uint64_t id);
+  void ModelToggled(Qt::CheckState state, uint64_t id);
 
  private:
   void ClearWebSearches() const;

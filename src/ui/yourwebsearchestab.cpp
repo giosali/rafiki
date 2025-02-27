@@ -94,9 +94,8 @@ void YourWebSearchesTab::LoadWebSearches() {
     check_box->setCheckState(model->GetIsEnabled() ? Qt::Checked
                                                    : Qt::Unchecked);
 
-    connect(
-      check_box, &QCheckBox::checkStateChanged,
-      [this, id](Qt::CheckState state) { emit WebSearchToggled(state, id); });
+    connect(check_box, &QCheckBox::checkStateChanged,
+            [this, id](Qt::CheckState state) { emit ModelToggled(state, id); });
 
     check_box_layout->addWidget(check_box);
     check_box_layout->setAlignment(Qt::AlignCenter);

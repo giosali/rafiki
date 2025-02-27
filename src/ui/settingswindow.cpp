@@ -17,10 +17,10 @@ SettingsWindow::SettingsWindow(QWidget* parent)
           &SettingsWindow::ToggleModel);
   connect(ui_->miscellaneous_tab, &MiscellaneousTab::ModelToggled, this,
           &SettingsWindow::ToggleModel);
-  connect(ui_->web_searches_tab, &WebSearchesTab::WebSearchToggled, this,
+  connect(ui_->web_searches_tab, &WebSearchesTab::ModelToggled, this,
           &SettingsWindow::ToggleModel);
-  connect(ui_->your_web_searches_tab, &YourWebSearchesTab::WebSearchToggled,
-          this, &SettingsWindow::ToggleModel);
+  connect(ui_->your_web_searches_tab, &YourWebSearchesTab::ModelToggled, this,
+          &SettingsWindow::ToggleModel);
 }
 
 SettingsWindow::~SettingsWindow() {}
