@@ -5,7 +5,6 @@
 #include <cstdint>
 #include <memory>
 
-#include "../core/models/featuremodel.h"
 #include "calculatortab.h"
 #include "filesearchtab.h"
 #include "generaltab.h"
@@ -28,8 +27,6 @@ class SettingsWindow : public QMainWindow {
   ~SettingsWindow();
 
  public slots:
-  void DisableModel(FeatureModel* model) const;
-  void EnableModel(FeatureModel* model) const;
   void ToggleModel(Qt::CheckState state, uint64_t id) const;
 
  private:

@@ -25,32 +25,21 @@ SettingsWindow::SettingsWindow(QWidget* parent)
 
 SettingsWindow::~SettingsWindow() {}
 
-void SettingsWindow::DisableModel(FeatureModel* model) const {
-  model->SetIsEnabled(false);
-
-  auto& settings = Settings::GetInstance();
-  settings.AddDisabledFeatureModelId(model->GetId());
-  settings.Save();
-}
-
-void SettingsWindow::EnableModel(FeatureModel* model) const {
-  model->SetIsEnabled(true);
-
-  auto& settings = Settings::GetInstance();
-  settings.RemoveDisabledFeatureModelId(model->GetId());
-  settings.Save();
-}
-
 void SettingsWindow::ToggleModel(Qt::CheckState state, uint64_t id) const {
   auto model = Indexer::GetInstance().GetModel(id);
+  auto& settings = Settings::GetInstance();
   switch (state) {
     case Qt::Unchecked:
-      DisableModel(model);
+      model->SetIsEnabled(false);
+      settings.AddDisabledFeatureModelId(model->GetId());
       break;
     case Qt::Checked:
-      EnableModel(model);
+      model->SetIsEnabled(true);
+      settings.RemoveDisabledFeatureModelId(model->GetId());
       break;
     default:
       break;
   }
+
+  settings.Save();
 }
