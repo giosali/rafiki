@@ -4,8 +4,6 @@
 #include <Qt>
 #include <memory>
 
-#include "../core/models/featuremodel.h"
-
 QT_BEGIN_NAMESPACE
 namespace Ui {
 class FileSearchTab;
@@ -21,8 +19,7 @@ class FileSearchTab : public QWidget {
   ~FileSearchTab();
 
  signals:
-  void ModelDisabled(FeatureModel* model);
-  void ModelEnabled(FeatureModel* model);
+  void ModelToggled(Qt::CheckState state, uint64_t id);
 
  private:
   std::unique_ptr<Ui::FileSearchTab> ui_;

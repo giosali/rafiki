@@ -15,8 +15,7 @@ FileSearchTab::FileSearchTab(QWidget* parent)
   // Checks or unchecks QCheckBox control.
   if (auto models = Indexer::GetInstance().GetModels<FileSystemEntryModel>();
       !models.empty()) {
-    auto model = models[0];
-    ui_->enabled_check_box->setChecked(model->GetIsEnabled());
+    ui_->enabled_check_box->setChecked(models[0]->GetIsEnabled());
   }
 
   // Fills the QTextEdit control with ignored directory names.
@@ -33,21 +32,9 @@ FileSearchTab::FileSearchTab(QWidget* parent)
 FileSearchTab::~FileSearchTab() {}
 
 void FileSearchTab::ToggleFileSystemEntryModel(Qt::CheckState state) {
-  auto models = Indexer::GetInstance().GetModels<FileSystemEntryModel>();
-  if (models.empty()) {
-    return;
-  }
-
-  auto model = models[0];
-  switch (state) {
-    case Qt::Unchecked:
-      emit ModelDisabled(model);
-      break;
-    case Qt::Checked:
-      emit ModelEnabled(model);
-      break;
-    default:
-      break;
+  if (auto models = Indexer::GetInstance().GetModels<FileSystemEntryModel>();
+      !models.empty()) {
+    emit ModelToggled(state, models[0]->GetId());
   }
 }
 
