@@ -54,6 +54,11 @@
                             <string>File Search</string>
                           </attribute>
                         </widget>
+                        <widget class="MiscellaneousTab" name="miscellaneous_tab">
+                          <attribute name="title">
+                            <string>Miscellaneous</string>
+                          </attribute>
+                        </widget>
                       </widget>
                     </item>
                   </layout>
@@ -74,6 +79,9 @@
     </customwidget>
     <customwidget>
       <class>GeneralTab</class>
+    </customwidget>
+    <customwidget>
+      <class>MiscellaneousTab</class>
     </customwidget>
     <customwidget>
       <class>WebSearchesTab</class>

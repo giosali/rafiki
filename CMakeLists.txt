@@ -74,6 +74,8 @@ set(PROJECT_SOURCES
         src/ui/interactivelabel.cpp
         src/ui/mainwindow.cpp
         src/ui/mainwindow.ui
+        src/ui/miscellaneoustab.cpp
+        src/ui/miscellaneoustab.ui
         src/ui/searchbox.cpp
         src/ui/searchbox.ui
         src/ui/searchresult.cpp

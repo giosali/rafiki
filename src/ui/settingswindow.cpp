@@ -15,6 +15,8 @@ SettingsWindow::SettingsWindow(QWidget* parent)
           &SettingsWindow::DisableModel);
   connect(ui_->file_search_tab, &FileSearchTab::ModelEnabled, this,
           &SettingsWindow::EnableModel);
+  connect(ui_->miscellaneous_tab, &MiscellaneousTab::ModelToggled, this,
+          &SettingsWindow::ToggleModel);
   connect(ui_->web_searches_tab, &WebSearchesTab::WebSearchToggled, this,
           &SettingsWindow::ToggleModel);
   connect(ui_->your_web_searches_tab, &YourWebSearchesTab::WebSearchToggled,

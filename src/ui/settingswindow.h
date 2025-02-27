@@ -9,6 +9,7 @@
 #include "calculatortab.h"
 #include "filesearchtab.h"
 #include "generaltab.h"
+#include "miscellaneoustab.h"
 #include "websearchestab.h"
 #include "yourwebsearchestab.h"
 
