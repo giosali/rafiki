@@ -11,6 +11,8 @@ SettingsWindow::SettingsWindow(QWidget* parent)
   // Ensures the window is deleted and all resources released upon closure.
   setAttribute(Qt::WA_DeleteOnClose);
 
+  connect(ui_->calculator_tab, &CalculatorTab::ModelToggled, this,
+          &SettingsWindow::ToggleModel);
   connect(ui_->file_search_tab, &FileSearchTab::ModelToggled, this,
           &SettingsWindow::ToggleModel);
   connect(ui_->miscellaneous_tab, &MiscellaneousTab::ModelToggled, this,
