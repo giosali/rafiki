@@ -25,6 +25,9 @@ WebSearchModel::WebSearchModel(const QJsonObject& object)
   } else {
     SetCommand(object["command"].toString());
 
+    // If the "icon" property doesn't begin with ":/icons/", then that means the
+    // application should determine if a light-mode or dark-mode version should
+    // be used based on the application's current theme.
     auto icon = object["icon"].toString();
     SetIcon(icon.startsWith(":/icons/") ? icon : Paths::FormatIconPath(icon));
 
