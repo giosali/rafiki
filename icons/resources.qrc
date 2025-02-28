@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/icons">
+        <file>dark/github.svg</file>
+        <file>dark/x.png</file>
+        <file>light/github.svg</file>
+        <file>light/x.png</file>
         <file>amazon.svg</file>
         <file>calculator.png</file>
         <file>duckduckgo.svg</file>
@@ -8,7 +12,6 @@
         <file>file.svg</file>
         <file>filesystementry.svg</file>
         <file>folder.svg</file>
-        <file>github.svg</file>
         <file>google.png</file>
         <file>instagram.png</file>
         <file>pinterest.svg</file>
@@ -22,7 +25,6 @@
         <file>twitch.svg</file>
         <file>url.svg</file>
         <file>wikipedia.svg</file>
-        <file>x.svg</file>
         <file>youtube.png</file>
     </qresource>
 </RCC>
