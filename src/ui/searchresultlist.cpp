@@ -46,14 +46,6 @@ SearchResultList::~SearchResultList() {
   worker_thread_.wait();
 }
 
-void SearchResultList::ActivateItem(QListWidgetItem* item) {
-  if (starting_drag_position_ == mapFromGlobal(QCursor::pos())) {
-    emit KeyPressReceived(QKeyCombination{Qt::Key_Return});
-  }
-}
-
-void SearchResultList::AdjustSize(int height) { setFixedHeight(height); }
-
 void SearchResultList::ApplyTheme(Theme* theme) {
   // Styles the scrollbar.
   // https://doc.qt.io/qt-6/stylesheet-examples.html#customizing-qscrollbar
@@ -97,18 +89,6 @@ void SearchResultList::ApplyTheme(Theme* theme) {
                       .arg(theme->GetSelectionColor().name())
                       .arg(theme->GetBorderRadius());
   setStyleSheet(stylesheet);
-}
-
-void SearchResultList::CheckSelectedItem(QListWidgetItem* current,
-                                         QListWidgetItem* previous) {
-  // Ensures an item will always be selected.
-  if (current == nullptr) {
-    if (previous != nullptr) {
-      setCurrentItem(previous);
-    } else if (count() > 0) {
-      setCurrentRow(0);
-    }
-  }
 }
 
 void SearchResultList::ProcessText(const QString& text) {
@@ -173,53 +153,6 @@ void SearchResultList::ProcessKeyPress(const QKeyCombination& combination) {
 
 void SearchResultList::ProcessKeyRelease(const QKeyCombination& combination) {
   emit KeyReleaseReceived(combination);
-}
-
-void SearchResultList::ProcessObjects(std::vector<FeatureObject*> objects,
-                                      const QString& text,
-                                      bool set_row_to_zero) {
-  if (set_row_to_zero) {
-    user_selected_item_ = false;
-  }
-
-  auto row = 0;
-  if (auto current_row = currentRow();
-      current_row == -1 || !user_selected_item_) {
-    clear();  // Helps prevent flicker.
-
-    for (size_t i = 0; i < objects.size(); ++i) {
-      AddItem(objects[i], text, i);
-    }
-  } else {
-    auto current_id =
-      static_cast<SearchResultItem*>(item(current_row))->GetId();
-
-    clear();  // Helps prevent flicker.
-
-    // Ensures we don't check for matching IDs since there can only be one
-    // match.
-    bool found_id = false;
-
-    for (size_t i = 0; i < objects.size(); ++i) {
-      auto object = objects[i];
-      AddItem(object, text, i);
-
-      if (!found_id && object->GetId() == current_id) {
-        row = i;
-        found_id = true;
-      }
-    }
-  }
-
-  setCurrentRow(row);
-  emit ItemsChanged(Height());
-
-  // Worker thread is no longer needed at this point.
-  worker_thread_.exit();
-}
-
-void SearchResultList::SetUserSelectedItem(bool value) {
-  user_selected_item_ = value;
 }
 
 void SearchResultList::mouseMoveEvent(QMouseEvent* event) {
@@ -311,6 +244,69 @@ int SearchResultList::Height() const {
     std::min(count(), Settings::GetInstance().GetSearchResultListMaxCount());
   auto total_height = min_num_rows * row_height;
   return total_height;
+}
+
+void SearchResultList::ActivateItem(QListWidgetItem* item) {
+  if (starting_drag_position_ == mapFromGlobal(QCursor::pos())) {
+    emit KeyPressReceived(QKeyCombination{Qt::Key_Return});
+  }
+}
+
+void SearchResultList::AdjustSize(int height) { setFixedHeight(height); }
+
+void SearchResultList::CheckSelectedItem(QListWidgetItem* current,
+                                         QListWidgetItem* previous) {
+  // Ensures an item will always be selected.
+  if (current == nullptr) {
+    if (previous != nullptr) {
+      setCurrentItem(previous);
+    } else if (count() > 0) {
+      setCurrentRow(0);
+    }
+  }
+}
+
+void SearchResultList::ProcessObjects(std::vector<FeatureObject*> objects,
+                                      const QString& text,
+                                      bool set_row_to_zero) {
+  if (set_row_to_zero) {
+    user_selected_item_ = false;
+  }
+
+  auto row = 0;
+  if (auto current_row = currentRow();
+      current_row == -1 || !user_selected_item_) {
+    clear();  // Helps prevent flicker.
+
+    for (size_t i = 0; i < objects.size(); ++i) {
+      AddItem(objects[i], text, i);
+    }
+  } else {
+    auto current_id =
+      static_cast<SearchResultItem*>(item(current_row))->GetId();
+
+    clear();  // Helps prevent flicker.
+
+    // Ensures we don't check for matching IDs since there can only be one
+    // match.
+    bool found_id = false;
+
+    for (size_t i = 0; i < objects.size(); ++i) {
+      auto object = objects[i];
+      AddItem(object, text, i);
+
+      if (!found_id && object->GetId() == current_id) {
+        row = i;
+        found_id = true;
+      }
+    }
+  }
+
+  setCurrentRow(row);
+  emit ItemsChanged(Height());
+
+  // Worker thread is no longer needed at this point.
+  worker_thread_.exit();
 }
 
 namespace searchresultlist {

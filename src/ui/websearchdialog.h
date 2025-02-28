@@ -25,10 +25,7 @@ class WebSearchDialog : public QDialog {
   ~WebSearchDialog();
 
  public slots:
-  void AcceptWebSearch();
-  void CheckFields(const QString& text);
   void CleanCommandField(const QString& text);
-  void OpenFile();
 
  signals:
   void Accepted();
@@ -36,8 +33,13 @@ class WebSearchDialog : public QDialog {
  private:
   void ToggleSaveButton(bool enable) const;
 
-  QString current_icon_path_;
+  QString current_icon_path_{};
   uint64_t id_{};
-  QString new_icon_path_;
+  QString new_icon_path_{};
   std::unique_ptr<Ui::WebSearchDialog> ui_{nullptr};
+
+ private slots:
+  void AcceptWebSearch();
+  void CheckFields(const QString& text);
+  void OpenFile();
 };

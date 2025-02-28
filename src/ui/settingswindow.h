@@ -26,9 +26,9 @@ class SettingsWindow : public QMainWindow {
 
   ~SettingsWindow();
 
- public slots:
-  void ToggleModel(Qt::CheckState state, uint64_t id) const;
-
  private:
   std::unique_ptr<Ui::SettingsWindow> ui_;
+
+ private slots:
+  void ToggleModel(Qt::CheckState state, uint64_t id) const;
 };

@@ -25,16 +25,10 @@ class SearchResultList : public QListWidget {
   ~SearchResultList();
 
  public slots:
-  void ActivateItem(QListWidgetItem* item);
-  void AdjustSize(int height);
   void ApplyTheme(Theme* theme);
-  void CheckSelectedItem(QListWidgetItem* current, QListWidgetItem* previous);
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
-  void ProcessObjects(std::vector<FeatureObject*> objects, const QString& text,
-                      bool set_row_to_zero);
   void ProcessText(const QString& text);
-  void SetUserSelectedItem(bool value);
 
  signals:
   void ItemDragged();
@@ -53,10 +47,17 @@ class SearchResultList : public QListWidget {
   void AddItem(FeatureObject* object, const QString& text, int index);
   int Height() const;
 
-  bool entered_;
-  QPointF starting_drag_position_;
-  bool user_selected_item_;
+  bool entered_{};
+  QPointF starting_drag_position_{};
+  bool user_selected_item_{};
   QThread worker_thread_;
+
+ private slots:
+  void ActivateItem(QListWidgetItem* item);
+  void AdjustSize(int height);
+  void CheckSelectedItem(QListWidgetItem* current, QListWidgetItem* previous);
+  void ProcessObjects(std::vector<FeatureObject*> objects, const QString& text,
+                      bool set_row_to_zero);
 };
 
 namespace searchresultlist {

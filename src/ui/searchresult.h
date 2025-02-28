@@ -32,7 +32,6 @@ class SearchResult : public QWidget {
 
  public slots:
   void Drag();
-  void Drop(const QString& text);
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
   void SetIsSelected(int current_row);
@@ -55,9 +54,12 @@ class SearchResult : public QWidget {
   static const int kVerticalMargin;
 
   FeatureObject* feature_object_{nullptr};
-  int index_;
-  bool is_selected_;
-  int parent_width_;
-  QString previous_shortcut_;
+  int index_{};
+  bool is_selected_{};
+  int parent_width_{};
+  QString previous_shortcut_{};
   std::unique_ptr<Ui::SearchResult> ui_;
+
+ private slots:
+  void Drop(const QString& text);
 };

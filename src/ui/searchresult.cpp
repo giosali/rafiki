@@ -109,23 +109,6 @@ void SearchResult::Drag() {
   }
 }
 
-void SearchResult::Drop(const QString& text) {
-  // Drag and drop will only apply to local files on user's machine.
-  auto url = QUrl::fromLocalFile(text);
-
-  // Takes the icon from the current search result and uses it as the icon for
-  // the drop and drag action.
-  auto drag = std::make_unique<QDrag>(this);
-  auto icon = QIcon(ui_->icon->pixmap());
-  drag->setPixmap(icon.pixmap(22));
-
-  auto mime_data = std::make_unique<QMimeData>();
-  mime_data->setUrls(QList<QUrl>({url}));
-
-  drag->setMimeData(mime_data.release());
-  drag->exec(Qt::CopyAction | Qt::MoveAction);
-}
-
 void SearchResult::ProcessKeyPress(const QKeyCombination& combination) {
   if (is_selected_) {
     emit KeyPressed(combination);
@@ -188,3 +171,20 @@ const QString SearchResult::kShortcutModifierKey = "CTRL + ";
 const int SearchResult::kShortcutRightMargin = 10;
 
 const int SearchResult::kVerticalMargin = 6;
+
+void SearchResult::Drop(const QString& text) {
+  // Drag and drop will only apply to local files on user's machine.
+  auto url = QUrl::fromLocalFile(text);
+
+  // Takes the icon from the current search result and uses it as the icon for
+  // the drop and drag action.
+  auto drag = std::make_unique<QDrag>(this);
+  auto icon = QIcon(ui_->icon->pixmap());
+  drag->setPixmap(icon.pixmap(22));
+
+  auto mime_data = std::make_unique<QMimeData>();
+  mime_data->setUrls(QList<QUrl>({url}));
+
+  drag->setMimeData(mime_data.release());
+  drag->exec(Qt::CopyAction | Qt::MoveAction);
+}

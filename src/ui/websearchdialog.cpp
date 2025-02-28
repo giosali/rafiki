@@ -71,6 +71,14 @@ WebSearchDialog::WebSearchDialog(uint64_t id, QWidget* parent)
 
 WebSearchDialog::~WebSearchDialog() {}
 
+void WebSearchDialog::CleanCommandField(const QString& text) {
+  ui_->command->setText(text.simplified().replace(" ", "").toLower());
+}
+
+void WebSearchDialog::ToggleSaveButton(bool enable) const {
+  ui_->button_box->button(QDialogButtonBox::Save)->setEnabled(enable);
+}
+
 void WebSearchDialog::AcceptWebSearch() {
   auto url = ui_->url->text();
   auto title = ui_->title->text();
@@ -180,10 +188,6 @@ void WebSearchDialog::CheckFields(const QString& text) {
   ToggleSaveButton(true);
 }
 
-void WebSearchDialog::CleanCommandField(const QString& text) {
-  ui_->command->setText(text.simplified().replace(" ", "").toLower());
-}
-
 void WebSearchDialog::OpenFile() {
   if (auto filename = QFileDialog::getOpenFileName(
         this, "Open Image", QString{}, "Image (*.png *.jpg *.svg)");
@@ -191,8 +195,4 @@ void WebSearchDialog::OpenFile() {
     new_icon_path_ = filename;
     ui_->icon_label->setPixmap(filename);
   }
-}
-
-void WebSearchDialog::ToggleSaveButton(bool enable) const {
-  ui_->button_box->button(QDialogButtonBox::Save)->setEnabled(enable);
 }
