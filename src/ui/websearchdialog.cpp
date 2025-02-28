@@ -71,10 +71,6 @@ WebSearchDialog::WebSearchDialog(uint64_t id, QWidget* parent)
 
 WebSearchDialog::~WebSearchDialog() {}
 
-void WebSearchDialog::CleanCommandField(const QString& text) {
-  ui_->command->setText(text.simplified().replace(" ", "").toLower());
-}
-
 void WebSearchDialog::ToggleSaveButton(bool enable) const {
   ui_->button_box->button(QDialogButtonBox::Save)->setEnabled(enable);
 }

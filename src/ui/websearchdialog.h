@@ -24,9 +24,6 @@ class WebSearchDialog : public QDialog {
 
   ~WebSearchDialog();
 
- public slots:
-  void CleanCommandField(const QString& text);
-
  signals:
   void Accepted();
 
