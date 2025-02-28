@@ -5,12 +5,12 @@
 #include <cstdint>
 #include <memory>
 
-#include "calculatortab.h"
-#include "filesearchtab.h"
-#include "generaltab.h"
-#include "miscellaneoustab.h"
-#include "websearchestab.h"
-#include "yourwebsearchestab.h"
+#include "calculatortab.h"       // Necessary
+#include "filesearchtab.h"       // Necessary
+#include "generaltab.h"          // Necessary
+#include "miscellaneoustab.h"    // Necessary
+#include "websearchestab.h"      // Necessary
+#include "yourwebsearchestab.h"  // Necessary
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

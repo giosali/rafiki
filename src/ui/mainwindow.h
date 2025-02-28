@@ -8,7 +8,7 @@
 #include <memory>
 
 #include "../core/theme.h"
-#include "searchbox.h"
+#include "searchbox.h"  // Necessary
 
 QT_BEGIN_NAMESPACE
 namespace Ui {

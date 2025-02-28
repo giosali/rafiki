@@ -7,7 +7,7 @@
 #include <cstdint>
 #include <memory>
 
-#include "interactivelabel.h"
+#include "interactivelabel.h"  // Necessary
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
