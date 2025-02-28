@@ -6,6 +6,7 @@
 #include <QString>
 #include <QStringList>
 #include <QTableWidgetItem>
+#include <algorithm>
 
 #include "../core/indexer.h"
 #include "../core/models/websearchmodel.h"
@@ -35,9 +36,13 @@ void WebSearchesTab::ClearWebSearches() const {
 }
 
 void WebSearchesTab::LoadWebSearches() {
-  auto& indexer = Indexer::GetInstance();
-  auto web_search_models = indexer.GetModels<WebSearchModel>();
-  for (const auto& model : web_search_models) {
+  auto models = Indexer::GetInstance().GetModels<WebSearchModel>();
+  std::sort(models.begin(), models.end(),
+            [](WebSearchModel* model1, WebSearchModel* model2) {
+              return model1->GetCommand() < model2->GetCommand();
+            });
+
+  for (const auto& model : models) {
     if (model->GetIsCustom()) {
       continue;
     }
