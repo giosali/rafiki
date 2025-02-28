@@ -27,7 +27,6 @@ class MainWindow : public QMainWindow {
   void Show();
 
  public slots:
-  void Hide();
   void ProcessCommandLineArguments(const QStringList& arguments,
                                    bool from_server);
 
@@ -47,6 +46,7 @@ class MainWindow : public QMainWindow {
   std::unique_ptr<Ui::MainWindow> ui_;
 
  private slots:
+  void Hide();
   void OpenSettingsWindow();
   void ProcessActivationReason(QSystemTrayIcon::ActivationReason reason);
   void SetHeight(int height);

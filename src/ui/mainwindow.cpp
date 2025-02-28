@@ -99,11 +99,6 @@ void MainWindow::Show() {
   show();
 }
 
-void MainWindow::Hide() {
-  hide();
-  emit Deactivated();
-}
-
 void MainWindow::ProcessCommandLineArguments(const QStringList& arguments,
                                              bool from_server) {
   auto parser = QCommandLineParser{};
@@ -200,6 +195,11 @@ void MainWindow::ToggleVisibility() {
   } else {
     Hide();
   }
+}
+
+void MainWindow::Hide() {
+  hide();
+  emit Deactivated();
 }
 
 void MainWindow::OpenSettingsWindow() {
