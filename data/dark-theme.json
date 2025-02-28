@@ -1,6 +1,7 @@
 {
   "borderRadius": 10,
   "fontSize": 32,
+  "isLightMode": false,
   "selectionColor": "#c8621e",
   "viewForegroundColor": "#ffffff",
   "windowBackgroundColor": "#242424",

@@ -14,6 +14,8 @@ int Theme::GetBorderRadius() const { return border_radius_; }
 
 int Theme::GetFontSize() const { return font_size_; }
 
+bool Theme::GetIsLightMode() const { return is_light_mode_; }
+
 QColor Theme::GetSelectionColor() const { return selection_color_; }
 
 QColor Theme::GetViewForegroundColor() const { return view_foreground_color_; }
@@ -45,6 +47,10 @@ void Theme::LoadFile(const QString& filename) {
 
   if (auto key = "fontSize"; object.contains(key)) {
     font_size_ = object[key].toInt();
+  }
+
+  if (auto key = "isLightMode"; object.contains(key)) {
+    is_light_mode_ = object[key].toBool();
   }
 
   if (auto key = "selectionColor"; object.contains(key)) {

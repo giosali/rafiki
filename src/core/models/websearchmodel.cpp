@@ -3,6 +3,7 @@
 #include <memory>
 
 #include "../bridges/websearchbridge.h"
+#include "../core/paths.h"
 #include "../visitors/featurevisitor.h"
 
 WebSearchModel::WebSearchModel(const QJsonObject& object)
@@ -23,7 +24,10 @@ WebSearchModel::WebSearchModel(const QJsonObject& object)
     }
   } else {
     SetCommand(object["command"].toString());
-    SetIcon(object["icon"].toString());
+
+    auto icon = object["icon"].toString();
+    SetIcon(icon.startsWith(":/icons/") ? icon : Paths::FormatIconPath(icon));
+
     SetId(object["id"].toString().toULongLong());
     SetTitle(tr(object["title"].toString().toStdString().c_str()));
     SetTitlePlaceholder(object["placeholder"].toString());

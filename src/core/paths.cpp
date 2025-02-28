@@ -3,7 +3,14 @@
 #include <QStandardPaths>
 #include <QtSystemDetection>
 
+#include "../core/theme.h"
 #include "utilities.h"
+
+QString Paths::FormatIconPath(const QString& filename) {
+  auto is_light_mode = Theme::GetInstance().GetIsLightMode();
+  auto prefix = QString{is_light_mode ? ":/icons/light/" : ":/icons/dark/"};
+  return prefix + filename;
+}
 
 QString Paths::GetPath(Directory d) {
   auto path = QString{};

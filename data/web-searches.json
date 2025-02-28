@@ -62,7 +62,7 @@
   {
     "id": "6",
     "command": "github",
-    "icon": ":/icons/github.svg",
+    "icon": "github.svg",
     "url": "https://github.com/search?q=%1",
     "title": "Search GitHub for '%1'",
     "placeholder": "...",
@@ -158,7 +158,7 @@
   {
     "id": "14",
     "command": "x",
-    "icon": ":/icons/x.svg",
+    "icon": "x.png",
     "url": "https://x.com/%1",
     "title": "Visit %1's X profile",
     "placeholder": "_",
@@ -170,7 +170,7 @@
   {
     "id": "15",
     "command": "x",
-    "icon": ":/icons/x.svg",
+    "icon": "x.png",
     "url": "https://x.com/search?q=%1",
     "title": "Search X for '%1'",
     "placeholder": "..."
