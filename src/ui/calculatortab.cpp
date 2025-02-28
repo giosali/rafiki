@@ -5,7 +5,7 @@
 #include "./ui_calculatortab.h"
 
 CalculatorTab::CalculatorTab(QWidget* parent)
-    : QWidget{parent}, ui_{std::make_unique<Ui::CalculatorTab>()} {
+    : ToggleTab{parent}, ui_{std::make_unique<Ui::CalculatorTab>()} {
   ui_->setupUi(this);
 
   // Checks or unchecks QCheckBox control.

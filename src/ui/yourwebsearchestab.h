@@ -1,9 +1,8 @@
 #pragma once
 
-#include <QWidget>
-#include <Qt>
-#include <cstdint>
 #include <memory>
+
+#include "toggletab.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -11,16 +10,13 @@ class YourWebSearchesTab;
 }
 QT_END_NAMESPACE
 
-class YourWebSearchesTab : public QWidget {
+class YourWebSearchesTab : public ToggleTab {
   Q_OBJECT
 
  public:
   YourWebSearchesTab(QWidget* parent = nullptr);
 
   ~YourWebSearchesTab();
-
- signals:
-  void ModelToggled(Qt::CheckState state, uint64_t id);
 
  private:
   void ClearWebSearches() const;

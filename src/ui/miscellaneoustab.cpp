@@ -6,7 +6,7 @@
 #include "./ui_miscellaneoustab.h"
 
 MiscellaneousTab::MiscellaneousTab(QWidget* parent)
-    : QWidget{parent}, ui_{std::make_unique<Ui::MiscellaneousTab>()} {
+    : ToggleTab{parent}, ui_{std::make_unique<Ui::MiscellaneousTab>()} {
   ui_->setupUi(this);
 
   if (auto models = Indexer::GetInstance().GetModels<RefreshModel>();

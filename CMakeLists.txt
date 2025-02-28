@@ -84,6 +84,7 @@ set(PROJECT_SOURCES
         src/ui/searchresultlist.cpp
         src/ui/settingswindow.cpp
         src/ui/settingswindow.ui
+        src/ui/toggletab.cpp
         src/ui/websearchdialog.cpp
         src/ui/websearchdialog.ui
         src/ui/websearchestab.cpp

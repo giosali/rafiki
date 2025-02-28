@@ -9,7 +9,7 @@
 #include "./ui_filesearchtab.h"
 
 FileSearchTab::FileSearchTab(QWidget* parent)
-    : QWidget{parent}, ui_{std::make_unique<Ui::FileSearchTab>()} {
+    : ToggleTab{parent}, ui_{std::make_unique<Ui::FileSearchTab>()} {
   ui_->setupUi(this);
 
   // Checks or unchecks QCheckBox control.

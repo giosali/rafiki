@@ -1,8 +1,8 @@
 #pragma once
 
-#include <QWidget>
-#include <Qt>
 #include <memory>
+
+#include "toggletab.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -10,16 +10,13 @@ class FileSearchTab;
 }
 QT_END_NAMESPACE
 
-class FileSearchTab : public QWidget {
+class FileSearchTab : public ToggleTab {
   Q_OBJECT
 
  public:
   FileSearchTab(QWidget* parent = nullptr);
 
   ~FileSearchTab();
-
- signals:
-  void ModelToggled(Qt::CheckState state, uint64_t id);
 
  private:
   std::unique_ptr<Ui::FileSearchTab> ui_;

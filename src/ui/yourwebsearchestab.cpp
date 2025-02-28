@@ -18,7 +18,7 @@
 #include "websearchdialog.h"
 
 YourWebSearchesTab::YourWebSearchesTab(QWidget* parent)
-    : QWidget{parent}, ui_{std::make_unique<Ui::YourWebSearchesTab>()} {
+    : ToggleTab{parent}, ui_{std::make_unique<Ui::YourWebSearchesTab>()} {
   ui_->setupUi(this);
 
   auto columns = QStringList{"Icon", "Command", "Example", "Enabled"};

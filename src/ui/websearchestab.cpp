@@ -12,7 +12,7 @@
 #include "./ui_websearchestab.h"
 
 WebSearchesTab::WebSearchesTab(QWidget* parent)
-    : QWidget{parent}, ui_{std::make_unique<Ui::WebSearchesTab>()} {
+    : ToggleTab{parent}, ui_{std::make_unique<Ui::WebSearchesTab>()} {
   ui_->setupUi(this);
 
   auto columns = QStringList{"Icon", "Command", "Example", "Enabled"};
