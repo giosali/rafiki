@@ -12,6 +12,7 @@
 #include <Qt>
 #include <QtGlobal>
 
+#include "../core/indexer.h"
 #include "../core/settings.h"
 #include "./ui_mainwindow.h"
 #include "searchresultlist.h"
@@ -29,6 +30,7 @@ MainWindow::MainWindow(QWidget* parent)
   // the SearchBox to have the visually correct height. I'm not entirely sure
   // why, however.
   auto& theme = Theme::GetInstance();
+  connect(&theme, &Theme::Changed, this, &MainWindow::ApplyTheme);
   connect(&theme, &Theme::Changed, ui_->search_box, &SearchBox::ApplyTheme);
   connect(&theme, &Theme::Changed, ui_->search_list,
           &SearchResultList::ApplyTheme);
@@ -195,6 +197,16 @@ void MainWindow::ToggleVisibility() {
   } else {
     Hide();
   }
+}
+
+void MainWindow::ApplyTheme(Theme* theme) {
+  // Because the icons are hard-coded whenever the indexer is initialized, if
+  // the user changes the theme from a dark theme to a light theme, then the
+  // indexer must be reinitialized in order for the appropriate icons to be
+  // applied.
+  auto& indexer = Indexer::GetInstance();
+  indexer.Clear();
+  indexer.Initialize();
 }
 
 void MainWindow::Hide() {

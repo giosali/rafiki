@@ -7,6 +7,7 @@
 #include <QTranslator>
 #include <memory>
 
+#include "../core/theme.h"
 #include "searchbox.h"
 
 QT_BEGIN_NAMESPACE
@@ -46,6 +47,7 @@ class MainWindow : public QMainWindow {
   std::unique_ptr<Ui::MainWindow> ui_;
 
  private slots:
+  void ApplyTheme(Theme* theme);
   void Hide();
   void OpenSettingsWindow();
   void ProcessActivationReason(QSystemTrayIcon::ActivationReason reason);
