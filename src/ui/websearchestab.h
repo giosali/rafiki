@@ -19,7 +19,6 @@ class WebSearchesTab : public ToggleTab {
   ~WebSearchesTab();
 
  private:
-  void ClearWebSearches() const;
   void LoadWebSearches();
 
   std::unique_ptr<Ui::WebSearchesTab> ui_;

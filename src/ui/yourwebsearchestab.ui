@@ -5,8 +5,14 @@
     <layout class="QVBoxLayout">
       <item>
         <widget class="QTableWidget" name="table">
+          <attribute name="verticalHeaderVisible">
+            <bool>false</bool>
+          </attribute>
           <property name="alternatingRowColors">
             <bool>true</bool>
+          </property>
+          <property name="columnCount">
+            <number>4</number>
           </property>
           <property name="editTriggers">
             <set>QAbstractItemView::NoEditTriggers</set>
@@ -20,6 +26,26 @@
           <property name="selectionMode">
             <enum>QAbstractItemView::SingleSelection</enum>
           </property>
+          <column>
+            <property name="text">
+              <string>Icon</string>
+            </property>
+          </column>
+          <column>
+            <property name="text">
+              <string>Command</string>
+            </property>
+          </column>
+          <column>
+            <property name="text">
+              <string>Example</string>
+            </property>
+          </column>
+          <column>
+            <property name="text">
+              <string>Enabled</string>
+            </property>
+          </column>
         </widget>
       </item>
       <item>

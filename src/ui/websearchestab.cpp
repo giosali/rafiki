@@ -16,11 +16,6 @@ WebSearchesTab::WebSearchesTab(QWidget* parent)
     : ToggleTab{parent}, ui_{std::make_unique<Ui::WebSearchesTab>()} {
   ui_->setupUi(this);
 
-  auto columns = QStringList{"Icon", "Command", "Example", "Enabled"};
-
-  ui_->table->setColumnCount(columns.size());
-  ui_->table->verticalHeader()->hide();
-  ui_->table->setHorizontalHeaderLabels(columns);
   ui_->table->horizontalHeader()->setSectionResizeMode(
     QHeaderView::ResizeToContents);
   ui_->table->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
@@ -29,11 +24,6 @@ WebSearchesTab::WebSearchesTab(QWidget* parent)
 }
 
 WebSearchesTab::~WebSearchesTab() {}
-
-void WebSearchesTab::ClearWebSearches() const {
-  ui_->table->clearContents();
-  ui_->table->setRowCount(0);
-}
 
 void WebSearchesTab::LoadWebSearches() {
   auto models = Indexer::GetInstance().GetModels<WebSearchModel>();

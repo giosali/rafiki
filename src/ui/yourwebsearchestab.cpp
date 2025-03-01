@@ -22,11 +22,6 @@ YourWebSearchesTab::YourWebSearchesTab(QWidget* parent)
     : ToggleTab{parent}, ui_{std::make_unique<Ui::YourWebSearchesTab>()} {
   ui_->setupUi(this);
 
-  auto columns = QStringList{"Icon", "Command", "Example", "Enabled"};
-
-  ui_->table->setColumnCount(columns.size());
-  ui_->table->verticalHeader()->hide();
-  ui_->table->setHorizontalHeaderLabels(columns);
   ui_->table->horizontalHeader()->setSectionResizeMode(
     QHeaderView::ResizeToContents);
   ui_->table->horizontalHeader()->setSectionResizeMode(2, QHeaderView::Stretch);
