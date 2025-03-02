@@ -25,6 +25,8 @@ WebSearchesTab::WebSearchesTab(QWidget* parent)
 
 WebSearchesTab::~WebSearchesTab() {}
 
+void WebSearchesTab::TranslateUi() { ui_->retranslateUi(this); }
+
 void WebSearchesTab::LoadWebSearches() {
   auto models = Indexer::GetInstance().GetModels<WebSearchModel>();
   std::sort(models.begin(), models.end(),

@@ -19,7 +19,7 @@
             </font>
           </property>
           <property name="text">
-            <string>Rafiki</string>
+            <string notr="true">Rafiki</string>
           </property>
         </widget>
       </item>
@@ -31,7 +31,7 @@
           <item row="0" column="0">
             <widget class="QLabel">
               <property name="text">
-                <string>Hotkey</string>
+                <string notr="false">Hotkey</string>
               </property>
             </widget>
           </item>
@@ -41,36 +41,56 @@
                 <bool>true</bool>
               </property>
               <property name="text">
-                <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;a
-                  href=&quot;https://example.com&quot;&gt;How to set up a hotkey on
-                  GNOME on Wayland&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                <string notr="false"><![CDATA[<a href="https://example.com">How to set up a hotkey on GNOME on Wayland</a>]]></string>
               </property>
             </widget>
           </item>
           <item row="1" column="0">
             <widget class="QLabel">
               <property name="text">
-                <string>Language</string>
+                <string notr="false">Language</string>
               </property>
             </widget>
           </item>
           <item row="1" column="1">
-            <widget class="QComboBox" name="language_combo_box" />
+            <widget class="QComboBox" name="language_combo_box">
+              <item>
+                <property name="text">
+                  <string notr="false">English</string>
+                </property>
+              </item>
+              <item>
+                <property name="text">
+                  <string notr="false">French</string>
+                </property>
+              </item>
+            </widget>
           </item>
           <item row="2" column="0">
             <widget class="QLabel">
               <property name="text">
-                <string>Territory</string>
+                <string notr="false">Territory</string>
               </property>
             </widget>
           </item>
           <item row="2" column="1">
-            <widget class="QComboBox" name="territory_combo_box" />
+            <widget class="QComboBox" name="territory_combo_box">
+              <item>
+                <property name="text">
+                  <string notr="false">France</string>
+                </property>
+              </item>
+              <item>
+                <property name="text">
+                  <string notr="false">United States</string>
+                </property>
+              </item>
+            </widget>
           </item>
           <item row="3" column="0">
             <widget class="QLabel">
               <property name="text">
-                <string>Theme</string>
+                <string notr="false">Theme</string>
               </property>
             </widget>
           </item>
@@ -78,12 +98,12 @@
             <widget class="QComboBox" name="theme_combo_box">
               <item>
                 <property name="text">
-                  <string>Dark</string>
+                  <string notr="false">Dark</string>
                 </property>
               </item>
               <item>
                 <property name="text">
-                  <string>Light</string>
+                  <string notr="false">Light</string>
                 </property>
               </item>
             </widget>

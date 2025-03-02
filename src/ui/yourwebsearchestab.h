@@ -18,6 +18,9 @@ class YourWebSearchesTab : public ToggleTab {
 
   ~YourWebSearchesTab();
 
+ public slots:
+  void TranslateUi();
+
  private:
   void ClearWebSearches() const;
   void LoadWebSearches();

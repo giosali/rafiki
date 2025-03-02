@@ -13,28 +13,23 @@ GeneralTab::GeneralTab(QWidget* parent)
 
   auto& settings = Settings::GetInstance();
 
-  // Populates combo box containing languages and sets user's current language.
+  // Sets active item to user's current language.
   auto user_language = settings.GetLanguage();
   const auto languages = GetSupportedLanguages();
   for (size_t i = 0; i < languages.size(); ++i) {
-    auto language = languages[i];
-    ui_->language_combo_box->addItem(QLocale::languageToString(language));
-
-    if (user_language == language) {
+    if (user_language == languages[i]) {
       ui_->language_combo_box->setCurrentIndex(i);
+      break;
     }
   }
 
-  // Populates combo box containing territories and sets user's current
-  // territory.
+  // Sets active item user's current territory.
   auto user_territory = settings.GetTerritory();
   const auto territories = GetSupportedTerritories();
   for (size_t i = 0; i < territories.size(); ++i) {
-    auto territory = territories[i];
-    ui_->territory_combo_box->addItem(QLocale::territoryToString(territory));
-
-    if (user_territory == territory) {
+    if (user_territory == territories[i]) {
       ui_->territory_combo_box->setCurrentIndex(i);
+      break;
     }
   }
 
@@ -44,6 +39,7 @@ GeneralTab::GeneralTab(QWidget* parent)
     ui_->theme_combo_box->setCurrentIndex(1);
   }
 
+  connect(&settings, &Settings::LocaleChanged, this, &GeneralTab::TranslateUi);
   connect(ui_->language_combo_box, &QComboBox::currentIndexChanged, this,
           &GeneralTab::UpdateLanguage);
   connect(ui_->territory_combo_box, &QComboBox::currentIndexChanged, this,
@@ -62,17 +58,22 @@ std::vector<QLocale::Territory> GeneralTab::GetSupportedTerritories() const {
   return {QLocale::France, QLocale::UnitedStates};
 }
 
+void GeneralTab::TranslateUi() { ui_->retranslateUi(this); }
+
 void GeneralTab::UpdateLanguage(int index) {
-  auto& settings = Settings::GetInstance();
-  settings.SetLanguage(GetSupportedLanguages()[index]);
-  settings.Save();
+  if (index > -1) {
+    auto& settings = Settings::GetInstance();
+    settings.SetLanguage(GetSupportedLanguages()[index]);
+    settings.Save();
+  }
 }
 
 void GeneralTab::UpdateTerritory(int index) {
-  auto territory = GetSupportedTerritories()[index];
-  auto& settings = Settings::GetInstance();
-  settings.SetTerritory(territory);
-  settings.Save();
+  if (index > -1) {
+    auto& settings = Settings::GetInstance();
+    settings.SetTerritory(GetSupportedTerritories()[index]);
+    settings.Save();
+  }
 }
 
 void GeneralTab::UpdateTheme(int index) {

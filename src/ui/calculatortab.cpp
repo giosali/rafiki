@@ -20,6 +20,8 @@ CalculatorTab::CalculatorTab(QWidget* parent)
 
 CalculatorTab::~CalculatorTab() {}
 
+void CalculatorTab::TranslateUi() { ui_->retranslateUi(this); }
+
 void CalculatorTab::ToggleCalculatorModel(Qt::CheckState state) {
   if (auto models = Indexer::GetInstance().GetModels<CalculatorModel>();
       !models.empty()) {

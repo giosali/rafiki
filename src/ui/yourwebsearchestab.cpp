@@ -41,6 +41,8 @@ YourWebSearchesTab::YourWebSearchesTab(QWidget* parent)
 
 YourWebSearchesTab::~YourWebSearchesTab() {}
 
+void YourWebSearchesTab::TranslateUi() { ui_->retranslateUi(this); }
+
 void YourWebSearchesTab::ClearWebSearches() const {
   ui_->table->clearContents();
   ui_->table->setRowCount(0);

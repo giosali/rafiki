@@ -11,7 +11,7 @@
       </rect>
     </property>
     <property name="windowTitle">
-      <string>Settings - Rafiki</string>
+      <string notr="false">Settings - Rafiki</string>
     </property>
     <widget class="QWidget">
       <layout class="QGridLayout">
@@ -24,39 +24,39 @@
               <widget class="QTabWidget">
                 <widget class="GeneralTab">
                   <attribute name="title">
-                    <string>General</string>
+                    <string notr="false">General</string>
                   </attribute>
                 </widget>
                 <widget class="QWidget">
                   <attribute name="title">
-                    <string>Features</string>
+                    <string notr="false">Features</string>
                   </attribute>
                   <layout class="QVBoxLayout">
                     <item>
                       <widget class="QTabWidget">
                         <widget class="WebSearchesTab" name="web_searches_tab">
                           <attribute name="title">
-                            <string>Web Searches</string>
+                            <string notr="false">Web Searches</string>
                           </attribute>
                         </widget>
                         <widget class="YourWebSearchesTab" name="your_web_searches_tab">
                           <attribute name="title">
-                            <string>Your Web Searches</string>
+                            <string notr="false">Your Web Searches</string>
                           </attribute>
                         </widget>
                         <widget class="CalculatorTab" name="calculator_tab">
                           <attribute name="title">
-                            <string>Calculator</string>
+                            <string notr="false">Calculator</string>
                           </attribute>
                         </widget>
                         <widget class="FileSearchTab" name="file_search_tab">
                           <attribute name="title">
-                            <string>File Search</string>
+                            <string notr="false">File Search</string>
                           </attribute>
                         </widget>
                         <widget class="MiscellaneousTab" name="miscellaneous_tab">
                           <attribute name="title">
-                            <string>Miscellaneous</string>
+                            <string notr="false">Miscellaneous</string>
                           </attribute>
                         </widget>
                       </widget>

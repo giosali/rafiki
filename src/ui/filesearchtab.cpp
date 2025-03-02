@@ -31,6 +31,8 @@ FileSearchTab::FileSearchTab(QWidget* parent)
 
 FileSearchTab::~FileSearchTab() {}
 
+void FileSearchTab::TranslateUi() { ui_->retranslateUi(this); }
+
 void FileSearchTab::ToggleFileSystemEntryModel(Qt::CheckState state) {
   if (auto models = Indexer::GetInstance().GetModels<FileSystemEntryModel>();
       !models.empty()) {

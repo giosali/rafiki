@@ -195,4 +195,224 @@
       <translation>Rechercher « %1 » sur X</translation>
     </message>
   </context>
+  <context>
+    <name>SettingsWindow</name>
+    <message>
+      <source>Settings - Rafiki</source>
+      <translation>Paramètres - Rafiki</translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation>Général</translation>
+    </message>
+    <message>
+      <source>Features</source>
+      <translation>Fonctionnalités</translation>
+    </message>
+    <message>
+      <source>Web Searches</source>
+      <translation>Recherches Web</translation>
+    </message>
+    <message>
+      <source>Your Web Searches</source>
+      <translation>Vos Recherches Web</translation>
+    </message>
+    <message>
+      <source>Calculator</source>
+      <translation>Calculatrice</translation>
+    </message>
+    <message>
+      <source>File Search</source>
+      <translation type="">Recherche de Fichiers</translation>
+    </message>
+    <message>
+      <source>Miscellaneous</source>
+      <translation>Divers</translation>
+    </message>
+  </context>
+  <context>
+    <name>GeneralTab</name>
+    <message>
+      <source>Hotkey</source>
+      <translation>Raccourci clavier</translation>
+    </message>
+    <message>
+      <source><![CDATA[<a href="https://example.com">How to set up a hotkey on GNOME on Wayland</a>]]></source>
+      <translation><![CDATA[<a href="https://example.com">Comment créer un raccourci clavier sous GNOME avec Wayland</a>]]></translation>
+    </message>
+    <message>
+      <source>Language</source>
+      <translation>Langue</translation>
+    </message>
+    <message>
+      <source>Territory</source>
+      <translation>Territoire</translation>
+    </message>
+    <message>
+      <source>Theme</source>
+      <translation>Thème</translation>
+    </message>
+    <message>
+      <source>Dark</source>
+      <translation>Sombre</translation>
+    </message>
+    <message>
+      <source>Light</source>
+      <translation>Clair</translation>
+    </message>
+    <message>
+      <source>English</source>
+      <translation>Anglais</translation>
+    </message>
+    <message>
+      <source>French</source>
+      <translation>Français</translation>
+    </message>
+    <message>
+      <source>France</source>
+      <translation>France</translation>
+    </message>
+    <message>
+      <source>United States</source>
+      <translation>États-Unis</translation>
+    </message>
+  </context>
+  <context>
+    <name>WebSearchesTab</name>
+    <message>
+      <source>Icon</source>
+      <translation>Icône</translation>
+    </message>
+    <message>
+      <source>Command</source>
+      <translation>Commande</translation>
+    </message>
+    <message>
+      <source>Example</source>
+      <translation>Exemple</translation>
+    </message>
+    <message>
+      <source>Enabled</source>
+      <translation>Activé</translation>
+    </message>
+  </context>
+  <context>
+    <name>YourWebSearchesTab</name>
+    <message>
+      <source>Icon</source>
+      <translation>Icône</translation>
+    </message>
+    <message>
+      <source>Command</source>
+      <translation>Commande</translation>
+    </message>
+    <message>
+      <source>Example</source>
+      <translation>Exemple</translation>
+    </message>
+    <message>
+      <source>Enabled</source>
+      <translation>Activé</translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation>Modifier</translation>
+    </message>
+    <message>
+      <source>Add</source>
+      <translation>Créer</translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation>Supprimer</translation>
+    </message>
+  </context>
+  <context>
+    <name>CalculatorTab</name>
+    <message>
+      <source>Enabled</source>
+      <translation>Activé</translation>
+    </message>
+  </context>
+  <context>
+    <name>FileSearchTab</name>
+    <message>
+      <source>Enabled</source>
+      <translation>Activé</translation>
+    </message>
+    <message>
+      <source>Ignored directories</source>
+      <translation>Répertoires ignorés</translation>
+    </message>
+    <message>
+      <source>A list of directory names to ignore separated by newlines.</source>
+      <translation>Une liste de noms de répertoires à ignorer séparés par des nouvelles lignes.</translation>
+    </message>
+  </context>
+  <context>
+    <name>MiscellaneousTab</name>
+    <message>
+      <source>Command</source>
+      <translation>Commande</translation>
+    </message>
+    <message>
+      <source>Enabled</source>
+      <translation>Activé</translation>
+    </message>
+  </context>
+  <context>
+    <name>WebSearchDialog</name>
+    <message>
+      <source>Web Search</source>
+      <translation>Recherche Web</translation>
+    </message>
+    <message>
+      <source><![CDATA[The sequence <b><i>%1</i></b> will be replaced by your query. URLs are <b>not</b> required to contain this sequence.]]></source>
+      <translation><![CDATA[La séquence <b><i>%1</i></b> sera remplacée par votre requête. Cette séquence <b>n'est pas</b> obligatoire dans les URLs.]]></translation>
+    </message>
+    <message>
+      <source>Title*</source>
+      <translation>Titre*</translation>
+    </message>
+    <message>
+      <source>Search Google for '%1'</source>
+      <translation>Rechercher « %1 » sur Google</translation>
+    </message>
+    <message>
+      <source><![CDATA[The sequence <b><i>%1</i></b> will be replaced by either your query or the placeholder. This sequence is <b>not</b> required in the title.]]></source>
+      <translation><![CDATA[La séquence <b><i>%1</i></b> sera remplacée soit par votre requête, soit par le paramètre fictif. Cette séquence <b>n'est pas</b> obligatoire dans le titre.]]></translation>
+    </message>
+    <message>
+      <source>Placeholder*</source>
+      <translation>Paramètre fictif*</translation>
+    </message>
+    <message>
+      <source>Command*</source>
+      <translation>Commande*</translation>
+    </message>
+    <message>
+      <source>Icon</source>
+      <translation>Icône</translation>
+    </message>
+    <message>
+      <source>Click to add</source>
+      <translation>Cliquer pour ajouter</translation>
+    </message>
+    <message>
+      <source>Alt URL</source>
+      <translation>URL alternative</translation>
+    </message>
+    <message>
+      <source>Alt Title</source>
+      <translation>Titre alternatif</translation>
+    </message>
+    <message>
+      <source>Go to the Google homepage</source>
+      <translation>Consulter la page d'accueil de Google</translation>
+    </message>
+    <message>
+      <source><![CDATA[This appears when the web search is selected and the Alt key is pressed. "Alt URL" and "Alt Title" are only optional if they are both empty.]]></source>
+      <translation><![CDATA[Ceci apparaît quand la recherche web est sélectionnée et la touche Alt enfoncée. « URL alternative » et « Titre alternatif » ne sont facultatifs que s'ils sont tous deux vides.]]></translation>
+    </message>
+  </context>
 </TS>

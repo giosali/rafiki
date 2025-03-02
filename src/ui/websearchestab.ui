@@ -28,22 +28,22 @@
           </property>
           <column>
             <property name="text">
-              <string>Icon</string>
+              <string notr="false">Icon</string>
             </property>
           </column>
           <column>
             <property name="text">
-              <string>Command</string>
+              <string notr="false">Command</string>
             </property>
           </column>
           <column>
             <property name="text">
-              <string>Example</string>
+              <string notr="false">Example</string>
             </property>
           </column>
           <column>
             <property name="text">
-              <string>Enabled</string>
+              <string notr="false">Enabled</string>
             </property>
           </column>
         </widget>

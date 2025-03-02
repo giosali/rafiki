@@ -31,4 +31,5 @@ class SettingsWindow : public QMainWindow {
 
  private slots:
   void ToggleModel(Qt::CheckState state, uint64_t id) const;
+  void TranslateUi();
 };

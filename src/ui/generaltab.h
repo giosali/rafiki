@@ -27,6 +27,7 @@ class GeneralTab : public QWidget {
   std::unique_ptr<Ui::GeneralTab> ui_;
 
  private slots:
+  void TranslateUi();
   void UpdateLanguage(int index);
   void UpdateTerritory(int index);
   void UpdateTheme(int index);

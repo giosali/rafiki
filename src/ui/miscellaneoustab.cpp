@@ -27,6 +27,8 @@ MiscellaneousTab::MiscellaneousTab(QWidget* parent)
 
 MiscellaneousTab::~MiscellaneousTab() {}
 
+void MiscellaneousTab::TranslateUi() { ui_->retranslateUi(this); }
+
 void MiscellaneousTab::ToggleRefreshModel(Qt::CheckState state) {
   if (auto models = Indexer::GetInstance().GetModels<RefreshModel>();
       !models.empty()) {

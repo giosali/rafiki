@@ -18,6 +18,9 @@ class CalculatorTab : public ToggleTab {
 
   ~CalculatorTab();
 
+ public slots:
+  void TranslateUi();
+
  private:
   std::unique_ptr<Ui::CalculatorTab> ui_;
 

@@ -11,7 +11,7 @@
       </rect>
     </property>
     <property name="windowTitle">
-      <string>Web Search</string>
+      <string notr="false">Web Search</string>
     </property>
     <property name="modal">
       <bool>true</bool>
@@ -24,7 +24,7 @@
               <item row="0" column="0">
                 <widget class="QLabel">
                   <property name="text">
-                    <string>URL*</string>
+                    <string notr="true">URL*</string>
                   </property>
                 </widget>
               </item>
@@ -36,7 +36,7 @@
                   <item>
                     <widget class="QLineEdit" name="url">
                       <property name="placeholderText">
-                        <string>https://google.com/search?q=%1</string>
+                        <string notr="false">https://google.com/search?q=%1</string>
                       </property>
                     </widget>
                   </item>
@@ -54,8 +54,7 @@
                         <number>40</number>
                       </property>
                       <property name="text">
-                        <string>The sequence '%1' will be replaced by your query. This sequence is
-                          not required in the URL.</string>
+                        <string notr="false"><![CDATA[The sequence <b><i>%1</i></b> will be replaced by your query. URLs are <b>not</b> required to contain this sequence.]]></string>
                       </property>
                       <property name="wordWrap">
                         <bool>true</bool>
@@ -67,7 +66,7 @@
               <item row="1" column="0">
                 <widget class="QLabel">
                   <property name="text">
-                    <string>Title*</string>
+                    <string notr="false">Title*</string>
                   </property>
                 </widget>
               </item>
@@ -79,7 +78,7 @@
                   <item>
                     <widget class="QLineEdit" name="title">
                       <property name="placeholderText">
-                        <string>Search Google for '%1'</string>
+                        <string notr="false">Search Google for '%1'</string>
                       </property>
                     </widget>
                   </item>
@@ -97,8 +96,7 @@
                         <number>40</number>
                       </property>
                       <property name="text">
-                        <string>The sequence '%1' will be replaced by either your query or the
-                          placeholder. This sequence is not required in the title.</string>
+                        <string notr="false"><![CDATA[The sequence <b><i>%1</i></b> will be replaced by either your query or the placeholder. This sequence is <b>not</b> required in the title.]]></string>
                       </property>
                       <property name="wordWrap">
                         <bool>true</bool>
@@ -110,7 +108,7 @@
               <item row="2" column="0">
                 <widget class="QLabel">
                   <property name="text">
-                    <string>Placeholder*</string>
+                    <string notr="false">Placeholder*</string>
                   </property>
                 </widget>
               </item>
@@ -121,12 +119,12 @@
                   </property>
                   <item>
                     <property name="text">
-                      <string>...</string>
+                      <string notr="true">...</string>
                     </property>
                   </item>
                   <item>
                     <property name="text">
-                      <string>_</string>
+                      <string notr="true">_</string>
                     </property>
                   </item>
                 </widget>
@@ -134,21 +132,21 @@
               <item row="3" column="0">
                 <widget class="QLabel">
                   <property name="text">
-                    <string>Command*</string>
+                    <string notr="false">Command*</string>
                   </property>
                 </widget>
               </item>
               <item row="3" column="1">
                 <widget class="QLineEdit" name="command">
                   <property name="placeholderText">
-                    <string>google</string>
+                    <string notr="true">google</string>
                   </property>
                 </widget>
               </item>
               <item row="4" column="0">
                 <widget class="QLabel">
                   <property name="text">
-                    <string>Icon</string>
+                    <string notr="false">Icon</string>
                   </property>
                 </widget>
               </item>
@@ -171,28 +169,31 @@
                     </font>
                   </property>
                   <property name="text">
-                    <string>Click to add</string>
+                    <string notr="false">Click to add</string>
+                  </property>
+                  <property name="wordWrap">
+                    <bool>true</bool>
                   </property>
                 </widget>
               </item>
               <item row="5" column="0">
                 <widget class="QLabel">
                   <property name="text">
-                    <string>Alt URL</string>
+                    <string notr="false">Alt URL</string>
                   </property>
                 </widget>
               </item>
               <item row="5" column="1">
                 <widget class="QLineEdit" name="alt_url">
                   <property name="placeholderText">
-                    <string>https://google.com</string>
+                    <string notr="true">https://google.com</string>
                   </property>
                 </widget>
               </item>
               <item row="6" column="0">
                 <widget class="QLabel">
                   <property name="text">
-                    <string>Alt Title</string>
+                    <string notr="false">Alt Title</string>
                   </property>
                 </widget>
               </item>
@@ -204,7 +205,7 @@
                   <item>
                     <widget class="QLineEdit" name="alt_title">
                       <property name="placeholderText">
-                        <string>Go to the Google homepage</string>
+                        <string notr="false">Go to the Google homepage</string>
                       </property>
                     </widget>
                   </item>
@@ -222,9 +223,7 @@
                         <number>40</number>
                       </property>
                       <property name="text">
-                        <string>This appears when the web search is selected and the Alt key is
-                          pressed. "Alt URL" and "Alt Title" are only optional if they are both
-                          empty.</string>
+                        <string notr="false"><![CDATA[This appears when the web search is selected and the Alt key is pressed. "Alt URL" and "Alt Title" are only optional if they are both empty.]]></string>
                       </property>
                       <property name="wordWrap">
                         <bool>true</bool>

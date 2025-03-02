@@ -28,22 +28,22 @@
           </property>
           <column>
             <property name="text">
-              <string>Icon</string>
+              <string notr="false">Icon</string>
             </property>
           </column>
           <column>
             <property name="text">
-              <string>Command</string>
+              <string notr="false">Command</string>
             </property>
           </column>
           <column>
             <property name="text">
-              <string>Example</string>
+              <string notr="false">Example</string>
             </property>
           </column>
           <column>
             <property name="text">
-              <string>Enabled</string>
+              <string notr="false">Enabled</string>
             </property>
           </column>
         </widget>
@@ -66,21 +66,21 @@
           <item>
             <widget class="QPushButton" name="edit_button">
               <property name="text">
-                <string>Edit</string>
+                <string notr="false">Edit</string>
               </property>
             </widget>
           </item>
           <item>
             <widget class="QPushButton" name="add_button">
               <property name="text">
-                <string>Add</string>
+                <string notr="false">Add</string>
               </property>
             </widget>
           </item>
           <item>
             <widget class="QPushButton" name="delete_button">
               <property name="text">
-                <string>Delete</string>
+                <string notr="false">Delete</string>
               </property>
             </widget>
           </item>

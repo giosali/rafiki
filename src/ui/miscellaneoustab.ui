@@ -15,21 +15,21 @@
           <item row="0" column="0">
             <widget class="QLabel">
               <property name="text">
-                <string>Command</string>
+                <string notr="false">Command</string>
               </property>
             </widget>
           </item>
           <item row="0" column="1">
             <widget class="QLabel">
               <property name="text">
-                <string>refresh</string>
+                <string notr="true">refresh</string>
               </property>
             </widget>
           </item>
           <item row="1" column="0">
             <widget class="QLabel">
               <property name="text">
-                <string>Enabled</string>
+                <string notr="false">Enabled</string>
               </property>
             </widget>
           </item>
@@ -55,21 +55,21 @@
           <item row="3" column="0">
             <widget class="QLabel">
               <property name="text">
-                <string>Command</string>
+                <string notr="false">Command</string>
               </property>
             </widget>
           </item>
           <item row="3" column="1">
             <widget class="QLabel">
               <property name="text">
-                <string>trash</string>
+                <string notr="true">trash</string>
               </property>
             </widget>
           </item>
           <item row="4" column="0">
             <widget class="QLabel">
               <property name="text">
-                <string>Enabled</string>
+                <string notr="false">Enabled</string>
               </property>
             </widget>
           </item>

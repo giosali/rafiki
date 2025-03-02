@@ -18,6 +18,9 @@ class MiscellaneousTab : public ToggleTab {
 
   ~MiscellaneousTab();
 
+ public slots:
+  void TranslateUi();
+
  private:
   std::unique_ptr<Ui::MiscellaneousTab> ui_;
 

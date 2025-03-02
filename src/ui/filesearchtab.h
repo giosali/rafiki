@@ -18,6 +18,9 @@ class FileSearchTab : public ToggleTab {
 
   ~FileSearchTab();
 
+ public slots:
+  void TranslateUi();
+
  private:
   std::unique_ptr<Ui::FileSearchTab> ui_;
 

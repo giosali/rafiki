@@ -195,4 +195,224 @@
       <translation type=""></translation>
     </message>
   </context>
+  <context>
+    <name>SettingsWindow</name>
+    <message>
+      <source>Settings - Rafiki</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>General</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Features</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Web Searches</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Your Web Searches</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Calculator</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>File Search</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Miscellaneous</source>
+      <translation type=""></translation>
+    </message>
+  </context>
+  <context>
+    <name>GeneralTab</name>
+    <message>
+      <source>Hotkey</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source><![CDATA[<a href="https://example.com">How to set up a hotkey on GNOME on Wayland</a>]]></source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Language</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>English</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>French</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Territory</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>France</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>United States</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Theme</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Dark</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Light</source>
+      <translation type=""></translation>
+    </message>
+  </context>
+  <context>
+    <name>WebSearchesTab</name>
+    <message>
+      <source>Icon</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Command</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Example</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Enabled</source>
+      <translation type=""></translation>
+    </message>
+  </context>
+  <context>
+    <name>YourWebSearchesTab</name>
+    <message>
+      <source>Icon</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Command</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Example</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Enabled</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Edit</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Add</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Delete</source>
+      <translation type=""></translation>
+    </message>
+  </context>
+  <context>
+    <name>CalculatorTab</name>
+    <message>
+      <source>Enabled</source>
+      <translation type=""></translation>
+    </message>
+  </context>
+  <context>
+    <name>FileSearchTab</name>
+    <message>
+      <source>Enabled</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Ignored directories</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>A list of directory names to ignore separated by newlines.</source>
+      <translation type=""></translation>
+    </message>
+  </context>
+  <context>
+    <name>MiscellaneousTab</name>
+    <message>
+      <source>Command</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Enabled</source>
+      <translation type=""></translation>
+    </message>
+  </context>
+  <context>
+    <name>WebSearchDialog</name>
+    <message>
+      <source>Web Search</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source><![CDATA[The sequence <b><i>%1</i></b> will be replaced by your query. URLs are <b>not</b> required to contain this sequence.]]></source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Title*</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Search Google for '%1'</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source><![CDATA[The sequence <b><i>%1</i></b> will be replaced by either your query or the placeholder. This sequence is <b>not</b> required in the title.]]></source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Placeholder*</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Command*</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Icon</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Click to add</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Alt URL</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Alt Title</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source>Go to the Google homepage</source>
+      <translation type=""></translation>
+    </message>
+    <message>
+      <source><![CDATA[This appears when the web search is selected and the Alt key is pressed. "Alt URL" and "Alt Title" are only optional if they are both empty.]]></source>
+      <translation type=""></translation>
+    </message>
+  </context>
 </TS>
