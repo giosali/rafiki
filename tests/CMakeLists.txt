@@ -67,8 +67,12 @@ set(PROJECT_SOURCES
     ../src/ui/generaltab.cpp
     ../src/ui/filesearchtab.cpp
     ../src/ui/interactivelabel.cpp
+    ../src/ui/miscellaneoustab.cpp
     ../src/ui/settingswindow.cpp
+    ../src/ui/toggletab.cpp
     ../src/ui/websearchdialog.cpp
+    ../src/ui/websearchestab.cpp
+    ../src/ui/yourwebsearchestab.cpp
     calculatorbridge_test.cpp
     htrie_map_test.cpp
     indexer_test.cpp
