@@ -56,7 +56,7 @@ std::unordered_set<std::string> ApplicationModel::Tokenize() const {
   auto tokens = FeatureModel::Tokenize();
 
   for (const auto& keyword : keywords_) {
-    tokens.insert(keyword.toLower().toStdString());
+    tokens.insert(Utilities::RemoveAccents(keyword).toLower().toStdString());
   }
 
   // Keeps track of uppercase letters to convert, for example, ProtonVPN to
@@ -64,7 +64,7 @@ std::unordered_set<std::string> ApplicationModel::Tokenize() const {
   auto acronym = QString{};
   auto capitalized_strings = std::vector<QString>{};
   auto capitalized_string = QString{};
-  for (auto ch : GetCommand()) {
+  for (auto ch : Utilities::RemoveAccents(GetCommand())) {
     if (ch.isUpper()) {
       // Handles acronymizing the command.
       acronym += ch;

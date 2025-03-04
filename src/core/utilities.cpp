@@ -6,6 +6,16 @@ QString Utilities::Combine(const QString& p1, const QString& p2) {
   return QDir::cleanPath(p1 + QDir::separator() + p2);
 }
 
+QString Utilities::RemoveAccents(const QString& input) {
+  auto result = QString{};
+  for (const QChar& ch : input) {
+    auto decomposed = ch.decomposition();
+    result += (decomposed.isEmpty() ? ch : decomposed[0]);
+  }
+
+  return result;
+}
+
 std::vector<QString> Utilities::Split(const QString& str,
                                       const QChar& delimiter, int maxsplit) {
   auto tokens = std::vector<QString>{};

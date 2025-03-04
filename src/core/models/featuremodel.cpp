@@ -3,6 +3,7 @@
 #include <QFile>
 #include <utility>
 
+#include "../core/utilities.h"
 #include "../settings.h"
 
 QString FeatureModel::FormatCommand() const {
@@ -16,7 +17,7 @@ bool FeatureModel::ReceivesInput() const { return title_.contains("%1"); }
 
 std::unordered_set<std::string> FeatureModel::Tokenize() const {
   return std::unordered_set<std::string>{
-    FormatCommand().toLower().toStdString()};
+    Utilities::RemoveAccents(FormatCommand()).toLower().toStdString()};
 }
 
 QString FeatureModel::GetAltDescription() const { return alt_description_; }

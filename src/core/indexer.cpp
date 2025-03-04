@@ -4,6 +4,7 @@
 #include <string>
 #include <utility>
 
+#include "../core/utilities.h"
 #include "INIReader.h"
 #include "fetcher.h"
 #include "models/applicationmodel.h"
@@ -60,7 +61,7 @@ void Indexer::DeleteModel(uint64_t id) {
 }
 
 std::unordered_set<uint64_t> Indexer::GetIds(const QString& input) const {
-  auto key = input.toLower().toStdString();
+  auto key = Utilities::RemoveAccents(input).toLower().toStdString();
 
   if (auto i = key.find_first_not_of(' '); i != 0) {
     // Means that the input consists of only spaces, and so an empty set will be
