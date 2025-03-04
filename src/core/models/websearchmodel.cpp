@@ -13,10 +13,12 @@ WebSearchModel::WebSearchModel(const QJsonObject& object)
   SetTitlePlaceholder(object["placeholder"].toString());
 
   auto icon = object["icon"].toString();
+  auto title = object["title"].toString();
+  auto url = object["url"].toString();
   if (object.contains("isCustom") && object["isCustom"].toBool()) {
     SetIcon(icon);
-    SetTitle(object["title"].toString());
-    SetUrl(object["url"].toString());
+    SetTitle(title);
+    SetUrl(url);
 
     if (object.contains("alt")) {
       auto alt = object["alt"].toObject();
@@ -29,8 +31,8 @@ WebSearchModel::WebSearchModel(const QJsonObject& object)
     // be used based on the application's current theme.
     SetIcon(icon.startsWith(":/icons/") ? icon : Paths::FormatIconPath(icon));
 
-    SetTitle(tr(object["title"].toString().toStdString().c_str()));
-    SetUrl(tr(object["url"].toString().toStdString().c_str()));
+    SetTitle(tr(title.toStdString().c_str()));
+    SetUrl(tr(url.toStdString().c_str()));
 
     if (object.contains("alt")) {
       auto alt = object["alt"].toObject();
