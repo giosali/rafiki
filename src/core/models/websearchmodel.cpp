@@ -8,13 +8,14 @@
 
 WebSearchModel::WebSearchModel(const QJsonObject& object)
     : FeatureModel{std::make_unique<WebSearchBridge>()} {
-  if (object.contains("isCustom") &&
-      (is_custom_ = object["isCustom"].toBool())) {
-    SetCommand(object["command"].toString());
-    SetIcon(object["icon"].toString());
-    SetId(object["id"].toString().toULongLong());
+  SetCommand(object["command"].toString());
+  SetId(object["id"].toString().toULongLong());
+  SetTitlePlaceholder(object["placeholder"].toString());
+
+  auto icon = object["icon"].toString();
+  if (object.contains("isCustom") && object["isCustom"].toBool()) {
+    SetIcon(icon);
     SetTitle(object["title"].toString());
-    SetTitlePlaceholder(object["placeholder"].toString());
     SetUrl(object["url"].toString());
 
     if (object.contains("alt")) {
@@ -23,17 +24,12 @@ WebSearchModel::WebSearchModel(const QJsonObject& object)
       alt_url_ = alt["url"].toString();
     }
   } else {
-    SetCommand(object["command"].toString());
-
     // If the "icon" property doesn't begin with ":/icons/", then that means the
     // application should determine if a light-mode or dark-mode version should
     // be used based on the application's current theme.
-    auto icon = object["icon"].toString();
     SetIcon(icon.startsWith(":/icons/") ? icon : Paths::FormatIconPath(icon));
 
-    SetId(object["id"].toString().toULongLong());
     SetTitle(tr(object["title"].toString().toStdString().c_str()));
-    SetTitlePlaceholder(object["placeholder"].toString());
     SetUrl(tr(object["url"].toString().toStdString().c_str()));
 
     if (object.contains("alt")) {
