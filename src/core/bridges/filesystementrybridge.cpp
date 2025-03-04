@@ -3,6 +3,7 @@
 #include <QIcon>
 #include <algorithm>
 #include <filesystem>
+#include <system_error>
 
 #include "../models/filesystementrymodel.h"
 #include "../objects/filesystementryobject.h"
@@ -31,9 +32,10 @@ std::vector<FeatureObject*> FileSystemEntryBridge::ProcessInput(
   auto paths_size = paths.size();
   auto objects = std::vector<FeatureObject*>{};
   objects.reserve(paths_size);
+  auto ec = std::error_code{};
   for (size_t i = 0; i < paths_size; ++i) {
     auto path = paths[i];
-    auto is_directory = std::filesystem::is_directory(path);
+    auto is_directory = std::filesystem::is_directory(path, ec);
     auto icon = QIcon{is_directory ? ":/icons/folder.svg" : ":/icons/file.svg"};
 
     if (auto extension = path.extension(); kMimeTypePairs.contains(extension)) {
@@ -72,8 +74,10 @@ std::vector<std::filesystem::path> FileSystemEntryBridge::Finder::Iterate(
   auto entries = std::vector<std::filesystem::path>{};
   auto other_dirs = std::vector<std::filesystem::path>{};
 
+  auto ec = std::error_code{};
   for (const auto& entry : std::filesystem::directory_iterator{
-         path, std::filesystem::directory_options::skip_permission_denied}) {
+         path, std::filesystem::directory_options::skip_permission_denied,
+         ec}) {
     auto filename = entry.path().filename().string();
     if (filename[0] == '.') {
       continue;
@@ -124,8 +128,10 @@ std::vector<std::filesystem::path> FileSystemEntryBridge::Finder::Reiterate(
   std::vector<std::filesystem::path>& entries) {
   auto dirs = std::vector<std::filesystem::path>{};
 
+  auto ec = std::error_code{};
   for (const auto& entry : std::filesystem::directory_iterator{
-         path, std::filesystem::directory_options::skip_permission_denied}) {
+         path, std::filesystem::directory_options::skip_permission_denied,
+         ec}) {
     auto filename = entry.path().filename().string();
     if (filename[0] == '.') {
       continue;

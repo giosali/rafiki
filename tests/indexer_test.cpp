@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 #include <QTest>
 #include <memory>
+#include <system_error>
 #include <utility>
 
 #include "INIReader.h"
@@ -14,7 +15,8 @@
 
 std::filesystem::path TestIndexer::GetParentPath() const {
   // Passing "/proc/self/exe" to std::filesystem::canonical is Linux-specific.
-  return std::filesystem::canonical("/proc/self/exe").parent_path();
+  auto ec = std::error_code{};
+  return std::filesystem::canonical("/proc/self/exe", ec).parent_path();
 }
 
 void TestIndexer::DeleteModel() {

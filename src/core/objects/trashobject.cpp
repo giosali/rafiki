@@ -27,29 +27,30 @@ void TrashObject::ProcessKeyPress(const QKeyCombination& combination) {
 void TrashObject::ProcessKeyRelease(const QKeyCombination& combination) {}
 
 void TrashObject::EmptyTrash() const {
-  if (!std::filesystem::exists(path_)) {
+  auto ec = std::error_code{};
+  if (!std::filesystem::exists(path_, ec)) {
     return;
   }
 
   auto subdirs =
     std::vector<std::filesystem::path>{path_ / "files", path_ / "info"};
   for (const auto& subdir : subdirs) {
-    if (!std::filesystem::exists(subdir)) {
+    if (!std::filesystem::exists(subdir, ec)) {
       continue;
     }
 
     // Removes files from user's Trash through std::filesystem.
     for (const auto& entry : std::filesystem::directory_iterator{
-           subdir,
-           std::filesystem::directory_options::skip_permission_denied}) {
-      auto ec = std::error_code{};
+           subdir, std::filesystem::directory_options::skip_permission_denied,
+           ec}) {
       std::filesystem::remove_all(entry, ec);
     }
 
     // Checks for unsuccessful deletion attempts of files.
     if (size_t file_count = std::distance(
           std::filesystem::directory_iterator{
-            subdir, std::filesystem::directory_options::skip_permission_denied},
+            subdir, std::filesystem::directory_options::skip_permission_denied,
+            ec},
           {});
         file_count == 0) {
       continue;
