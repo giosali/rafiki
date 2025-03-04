@@ -19,6 +19,7 @@ find_package(Qt6 REQUIRED COMPONENTS
 
 include_directories(
     ../src
+    ../src/core
     ../include
 )
 
