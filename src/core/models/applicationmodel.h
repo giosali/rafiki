@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QCoreApplication>
+#include <QLocale>
 #include <filesystem>
 #include <vector>
 
@@ -12,7 +13,7 @@ class ApplicationModel final : public FeatureModel {
 
  public:
   explicit ApplicationModel(const std::filesystem::path& desktop_entry_path,
-                            const INIReader& reader);
+                            const INIReader& reader, const QLocale& locale);
 
   void Accept(FeatureVisitor& v) override;
   bool ReceivesInput() const override;

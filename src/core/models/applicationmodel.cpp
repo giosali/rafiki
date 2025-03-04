@@ -9,14 +9,27 @@
 #include "../visitors/featurevisitor.h"
 
 ApplicationModel::ApplicationModel(
-  const std::filesystem::path& desktop_entry_path, const INIReader& reader)
+  const std::filesystem::path& desktop_entry_path, const INIReader& reader,
+  const QLocale& locale)
     : FeatureModel{std::make_unique<ApplicationBridge>()} {
   // https://specifications.freedesktop.org/desktop-entry-spec/latest/exec-variables.html
   auto section = "Desktop Entry";
-  auto name_val = reader.Get(section, "Name", {});
+  auto name_val =
+    reader.Get(section, QString{"Name[%1]"}.arg(locale.name()).toStdString(),
+               reader.Get(section,
+                          QString{"Name[%1]"}
+                            .arg(QLocale::languageToCode(locale.language()))
+                            .toStdString(),
+                          reader.Get(section, "Name", {})));
   auto icon_val = reader.Get(section, "Icon", {});
   auto exec_val = reader.Get(section, "Exec", {});
-  auto keywords_val = reader.Get(section, "Keywords", {});
+  auto keywords_val = reader.Get(
+    section, QString{"Keywords[%1]"}.arg(locale.name()).toStdString(),
+    reader.Get(section,
+               QString{"Keywords[%1]"}
+                 .arg(QLocale::languageToCode(locale.language()))
+                 .toStdString(),
+               reader.Get(section, "Keywords", {})));
 
   auto name = QString::fromStdString(name_val);
   auto icon = QString::fromStdString(icon_val);

@@ -125,11 +125,11 @@ void Indexer::IndexModel(std::unique_ptr<FeatureModel> model) {
 }
 
 void Indexer::Initialize() {
-  IndexApplications();
+  auto& settings = Settings::GetInstance();
+
+  IndexApplications(QLocale{settings.GetLanguage(), settings.GetTerritory()});
   IndexGenericModels();
   IndexWebSearches();
-
-  auto& settings = Settings::GetInstance();
 
   for (auto id : settings.GetDisabledFeatureModelids()) {
     models_map_.at(id)->SetIsEnabled(false);
@@ -189,9 +189,8 @@ void Indexer::UpdateTrie(uint64_t id,
   }
 }
 
-void Indexer::IndexApplications() {
-  auto fetcher = Fetcher{};
-  for (const auto& path : fetcher.FetchDesktopEntryPaths()) {
+void Indexer::IndexApplications(const QLocale& locale) {
+  for (const auto& path : Fetcher{}.FetchDesktopEntryPaths()) {
     auto reader = INIReader{path};
     if (reader.ParseError() < 0) {
       continue;
@@ -207,7 +206,7 @@ void Indexer::IndexApplications() {
     }
 
     // Maps ID to Application instance.
-    IndexModel(std::make_unique<ApplicationModel>(path, reader));
+    IndexModel(std::make_unique<ApplicationModel>(path, reader, locale));
   }
 }
 

@@ -3,6 +3,7 @@
 #include <QFile>
 #include <QIODeviceBase>
 #include <QJsonDocument>
+#include <QLocale>
 #include <QTest>
 #include <memory>
 #include <system_error>
@@ -24,7 +25,7 @@ void TestIndexer::DeleteModel() {
   auto path = GetParentPath() / "firefox.desktop";
   auto reader = INIReader(path);
   QVERIFY(!(reader.ParseError() < 0));
-  auto model = std::make_unique<ApplicationModel>(path, reader);
+  auto model = std::make_unique<ApplicationModel>(path, reader, QLocale{});
   auto id = model->GetId();
   auto& indexer = Indexer::GetInstance();
   indexer.IndexModel(std::move(model));
@@ -43,7 +44,8 @@ void TestIndexer::DeleteModel() {
 void TestIndexer::GetIds_InputfulModel() {
   // Setup
   auto path = GetParentPath() / "firefox.desktop";
-  auto model = std::make_unique<ApplicationModel>(path, INIReader(path));
+  auto model =
+    std::make_unique<ApplicationModel>(path, INIReader(path), QLocale{});
   auto id = model->GetId();
   auto& indexer = Indexer::GetInstance();
   indexer.IndexModel(std::move(model));

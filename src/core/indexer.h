@@ -1,5 +1,6 @@
 #pragma once
 
+#include <QLocale>
 #include <QString>
 #include <cstdint>
 #include <memory>
@@ -39,7 +40,7 @@ class Indexer final {
   Indexer() = default;
   Indexer(const Indexer&) = delete;
 
-  void IndexApplications();
+  void IndexApplications(const QLocale& locale);
   void IndexGenericModels();
   void IndexWebSearches();
   Indexer operator=(const Indexer&) = delete;
