@@ -1,7 +1,6 @@
 #include "mainwindow.h"
 
 #include <QAction>
-#include <QCommandLineParser>
 #include <QCoreApplication>
 #include <QIcon>
 #include <QLocale>
@@ -101,45 +100,13 @@ void MainWindow::Show() {
   show();
 }
 
-void MainWindow::ProcessCommandLineArguments(const QStringList& arguments,
-                                             bool from_server) {
-  auto parser = QCommandLineParser{};
-
-  // Sets up default options.
-  parser.addHelpOption();
-  parser.addVersionOption();
-
-  // Sets up custom options.
-  auto toggle_option = QCommandLineOption{
-    "toggle", "Toggles the visibility of the main input window."};
-  parser.addOption(toggle_option);
-  auto quit_option = QCommandLineOption{"quit", "Quits the application."};
-  parser.addOption(quit_option);
-
-  // It's necessary to parse arguments this way rather than use
-  // `parser.process(app)` because the `process` function won't handle
-  // arguments passed via the local socket.
-  if (!parser.parse(arguments)) {
-    return;
-  }
-
-  if (parser.isSet("help")) {
-    parser.showHelp();
-  } else if (parser.isSet("version")) {
-    parser.showVersion();
-  }
-
-  // The custom options shouldn't be handled if the args aren't from the server.
-  if (!from_server) {
-    return;
-  }
-
-  if (parser.isSet(toggle_option)) {
-    ToggleVisibility();
-  }
-
-  if (parser.isSet(quit_option)) {
-    QCoreApplication::quit();
+void MainWindow::ToggleVisibility() {
+  if (isHidden()) {
+    show();
+    activateWindow();
+    raise();
+  } else {
+    Hide();
   }
 }
 
@@ -187,16 +154,6 @@ bool MainWindow::event(QEvent* event) {
   }
 
   return QMainWindow::event(event);
-}
-
-void MainWindow::ToggleVisibility() {
-  if (isHidden()) {
-    show();
-    activateWindow();
-    raise();
-  } else {
-    Hide();
-  }
 }
 
 void MainWindow::ApplyTheme(Theme* theme) {

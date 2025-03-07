@@ -2,7 +2,6 @@
 
 #include <QEvent>
 #include <QMainWindow>
-#include <QStringList>
 #include <QSystemTrayIcon>
 #include <QTranslator>
 #include <memory>
@@ -26,10 +25,7 @@ class MainWindow : public QMainWindow {
 
   void CreateTrayIcon();
   void Show();
-
- public slots:
-  void ProcessCommandLineArguments(const QStringList& arguments,
-                                   bool from_server);
+  void ToggleVisibility();
 
  signals:
   void Deactivated();
@@ -40,8 +36,6 @@ class MainWindow : public QMainWindow {
   bool event(QEvent* event) override;
 
  private:
-  void ToggleVisibility();
-
   QTranslator language_translator_{};
   QTranslator territory_translator_{};
   std::unique_ptr<Ui::MainWindow> ui_;
