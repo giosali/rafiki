@@ -3,7 +3,7 @@
 #include <QIODeviceBase>
 #include <QLocalSocket>
 
-QString Server::kServerName = QStringLiteral("rafiki");
+const QString Server::kServerName = QStringLiteral("rafiki");
 
 Server::Server(QObject* parent) : QObject{parent}, server_{this} {
   QObject::connect(&server_, &QLocalServer::newConnection, this,

@@ -8,7 +8,7 @@ class Server : public QObject {
   Q_OBJECT
 
  public:
-  static QString kServerName;
+  const static QString kServerName;
 
   explicit Server(QObject* parent = nullptr);
 
