@@ -83,6 +83,8 @@ void MainWindow::Show() {
           &MainWindow::SetHeight);
   connect(ui_->search_box, &SearchBox::TextChanged, ui_->search_list,
           &SearchResultList::ProcessText);
+  connect(ui_->search_box, &SearchBox::KeyPressed, this,
+          &MainWindow::ProcessKeyPress);
   connect(ui_->search_box, &SearchBox::KeyPressed, ui_->search_list,
           &SearchResultList::ProcessKeyPress);
   connect(ui_->search_box, &SearchBox::KeyReleased, ui_->search_list,
@@ -169,6 +171,7 @@ void MainWindow::ApplyTheme(Theme* theme) {
 void MainWindow::Hide() {
   hide();
   emit Deactivated();
+  setWindowOpacity(1);
 }
 
 void MainWindow::OpenSettingsWindow() {
@@ -181,6 +184,23 @@ void MainWindow::ProcessActivationReason(
   switch (reason) {
     case QSystemTrayIcon::ActivationReason::MiddleClick:
       ToggleVisibility();
+      break;
+    default:
+      break;
+  }
+}
+
+void MainWindow::ProcessKeyPress(const QKeyCombination& combination) {
+  auto key = combination.key();
+  switch (key) {
+    case Qt::Key_Escape:
+      Hide();
+      break;
+    case Qt::Key_T:
+      if (combination.keyboardModifiers() & Qt::ControlModifier) {
+        setWindowOpacity(windowOpacity() == 1 ? 0.4 : 1);
+      }
+
       break;
     default:
       break;

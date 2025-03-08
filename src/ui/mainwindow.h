@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QEvent>
+#include <QKeyCombination>
 #include <QMainWindow>
 #include <QSystemTrayIcon>
 #include <QTranslator>
@@ -45,6 +46,7 @@ class MainWindow : public QMainWindow {
   void Hide();
   void OpenSettingsWindow();
   void ProcessActivationReason(QSystemTrayIcon::ActivationReason reason);
+  void ProcessKeyPress(const QKeyCombination& combination);
   void SetHeight(int height);
   void UpdateTranslators();
 };

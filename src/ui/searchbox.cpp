@@ -65,6 +65,8 @@ void SearchBox::keyPressEvent(QKeyEvent* event) {
       }
 
       [[fallthrough]];
+    case Qt::Key_T:
+    case Qt::Key_Escape:
     case Qt::Key_Up:
     case Qt::Key_Down:
     case Qt::Key_1:
