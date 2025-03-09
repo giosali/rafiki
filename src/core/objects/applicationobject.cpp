@@ -3,6 +3,7 @@
 #include <QDesktopServices>
 #include <QFileInfo>
 #include <QProcess>
+#include <QRegularExpression>
 #include <QStandardPaths>
 #include <QUrl>
 #include <cstdlib>
@@ -53,7 +54,8 @@ void ApplicationObject::ProcessKeyPress(const QKeyCombination& combination) {
       } else if (auto model = dynamic_cast<const ApplicationModel*>(GetModel());
                  model != nullptr) {
         // Fallback to QProcess.
-        auto exec = model->GetExec();
+        auto exec =
+          model->GetExec().remove(QRegularExpression{"%[fFuUdDnNickvm]"});
         auto exec_parts = exec.split(' ', Qt::SkipEmptyParts);
         if (exec_parts.isEmpty()) {
           qWarning() << "exec_parts is empty";
