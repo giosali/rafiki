@@ -333,7 +333,7 @@ void Worker::ProcessText(const QString& text) {
   std::sort(objects.begin(), objects.end(),
             [](const auto lhs, const auto rhs) { return *lhs < *rhs; });
 
-  if (objects.empty()) {
+  if (auto instance = QApplication::instance(); objects.empty()) {
     visitor.SetNoParse(true);
     const auto default_ids = settings_.GetDefaultFeatureModelIds();
     for (size_t i = 0; i < default_ids.size(); ++i) {
@@ -345,7 +345,7 @@ void Worker::ProcessText(const QString& text) {
 
     // TODO: find more efficient way of moving QObject instead of looping.
     for (const auto& i : objects) {
-      i->moveToThread(QApplication::instance()->thread());
+      i->moveToThread(instance->thread());
     }
 
     // `results` are default results
@@ -354,7 +354,7 @@ void Worker::ProcessText(const QString& text) {
   } else {
     // TODO: find more efficient way of moving QObject instead of looping.
     for (const auto& i : objects) {
-      i->moveToThread(QApplication::instance()->thread());
+      i->moveToThread(instance->thread());
     }
 
     emit ObjectsReadied(objects, text, last_results_were_defaults);
