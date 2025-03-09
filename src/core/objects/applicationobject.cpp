@@ -7,7 +7,6 @@
 #include <QStandardPaths>
 #include <QUrl>
 #include <cstdlib>
-#include <filesystem>
 #include <thread>
 
 #include "../models/applicationmodel.h"
@@ -23,26 +22,15 @@ void ApplicationObject::ProcessKeyPress(const QKeyCombination& combination) {
       FeatureObject::ProcessKeyPress(combination);
       break;
     case Qt::Key_Return: {
-      if (combination.keyboardModifiers() & Qt::AltModifier) {
-        // TODO: inform user that the action did not work.
-        auto description = GetDescription();
-        if (description.isEmpty()) {
-          break;
-        }
-
-        emit Hidden();
-        auto path = std::filesystem::path{description.toStdString()};
-        auto parent = path.parent_path();
-        auto dir = QUrl::fromLocalFile(QString::fromStdString(parent));
-        QDesktopServices::openUrl(dir);
-        FeatureObject::ProcessKeyPress(combination);
-        break;
-      }
-
       emit Hidden();
 
-      // `gtk-launch` is much quicker than using QProcess.
-      if (!QStandardPaths::findExecutable("gtk-launch").isEmpty()) {
+      if (combination.keyboardModifiers() & Qt::AltModifier) {
+        auto parent_path = QFileInfo{GetDescription()}.path();
+        auto directory = QUrl::fromLocalFile(parent_path);
+        QDesktopServices::openUrl(directory);
+      } else if (!QStandardPaths::findExecutable("gtk-launch").isEmpty()) {
+        // `gtk-launch` is much quicker than using QProcess.
+
         // The command in "exec" does not execute when running through VSCode.
         // The command needs to be passed by value rather than reference
         // otherwise it will contain garbage characters/gibberish.
