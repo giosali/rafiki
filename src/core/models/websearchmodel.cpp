@@ -15,7 +15,8 @@ WebSearchModel::WebSearchModel(const QJsonObject& object)
   auto icon = object["icon"].toString();
   auto title = object["title"].toString();
   auto url = object["url"].toString();
-  if (object.contains("isCustom") && object["isCustom"].toBool()) {
+  if (object.contains("isCustom") &&
+      (is_custom_ = object["isCustom"].toBool())) {
     SetIcon(icon);
     SetTitle(title);
     SetUrl(url);
