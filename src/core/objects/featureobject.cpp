@@ -1,6 +1,9 @@
 #include "featureobject.h"
 
+#include <QDateTime>
 #include <Qt>
+#include <QtGlobal>
+#include <limits>
 
 #include "../models/featuremodel.h"
 #include "../settings.h"
@@ -46,13 +49,15 @@ uint64_t FeatureObject::GetId() const { return id_; }
 QString FeatureObject::GetTitle() const { return title_; }
 
 bool FeatureObject::operator<(const FeatureObject& rhs) const {
-  // First, compare by count in descending order.
-  if (auto luc = model_->GetUseCount(), ruc = rhs.model_->GetUseCount();
-      luc != ruc) {
-    return luc > ruc;
+  // First, compare by score in descending order.
+  if (auto ls = model_->CalculateScore(), rs = rhs.model_->CalculateScore();
+      !qFuzzyCompare(ls, rs)) {
+    // This is the proper way to compare if one double is greater than the
+    // other.
+    return ls - rs > std::numeric_limits<double>::epsilon();
   }
 
-  // If counts are equal, compare by title in ascending order.
+  // If scores are equal, compare by title in ascending order.
   return title_ < rhs.title_;
 }
 
@@ -66,12 +71,15 @@ void FeatureObject::ProcessKeyPress(const QKeyCombination& combination) {
 
       break;
     case Qt::Key_Return: {
-      auto use_count = model_->GetUseCount() + 1;
-      model_->SetUseCount(use_count);
-
+      auto current_timestamp = QDateTime::currentSecsSinceEpoch();
       auto& settings = Settings::GetInstance();
-      settings.AddUseCount(id_, use_count);
+      settings.AddUsageTime(id_, current_timestamp);
       settings.Save();
+
+      // We set the usage timestamps on the model after saving and adding to the
+      // settings file because the settings file will handle the maximum number
+      // of timestamps being tracked at any given time.
+      model_->SetTimestamps(settings.GetUsageTimes()[id_]);
       break;
     }
     default:

@@ -21,8 +21,13 @@ void Settings::AddIgnoredDirectoryName(const std::string& name) {
   ignored_directory_names_.insert(name);
 }
 
-void Settings::AddUseCount(uint64_t id, uint64_t count) {
-  use_counts_[id] = count;
+void Settings::AddUsageTime(uint64_t id, uint64_t timestamp) {
+  auto& timestamps = usage_times_[id];
+  timestamps.push_back(timestamp);
+  if (timestamps.size() > 30) {
+    // Removes the first element from the vector.
+    timestamps.erase(timestamps.begin());
+  }
 }
 
 void Settings::ClearIgnoredDirectoryNames() {
@@ -61,8 +66,9 @@ QLocale::Territory Settings::GetTerritory() const { return territory_; }
 
 QString Settings::GetThemeFilename() const { return theme_filename_; }
 
-std::unordered_map<uint64_t, uint64_t> Settings::GetUseCounts() const {
-  return use_counts_;
+std::unordered_map<uint64_t, std::vector<uint64_t>> Settings::GetUsageTimes()
+  const {
+  return usage_times_;
 }
 
 void Settings::Initialize() { Update(File::Read(Paths::Json::kUserSettings)); }
@@ -71,7 +77,7 @@ void Settings::RemoveDisabledFeatureModelId(uint64_t id) {
   disabled_feature_model_ids_.erase(id);
 }
 
-void Settings::RemoveUseCount(uint64_t id) { use_counts_.erase(id); }
+void Settings::RemoveUsageTimes(uint64_t id) { usage_times_.erase(id); }
 
 void Settings::Save() const {
   auto default_models = QJsonArray{};
@@ -89,11 +95,15 @@ void Settings::Save() const {
     ignored_directory_names.append(QString::fromStdString(name));
   }
 
-  auto use_counts = QJsonObject{};
-  for (const auto& pair : use_counts_) {
+  auto usage_times = QJsonObject{};
+  for (const auto& pair : usage_times_) {
     auto id = QString::number(pair.first);
-    auto count = QString::number(pair.second);
-    use_counts.insert(id, count);
+    auto timestamps = QJsonArray{};
+    for (auto time : pair.second) {
+      timestamps.append(QString::number(time));
+    }
+
+    usage_times.insert(id, timestamps);
   }
 
   auto object = QJsonObject{
@@ -104,7 +114,7 @@ void Settings::Save() const {
     {"language", QString::number(language_)},
     {"territory", QString::number(territory_)},
     {"themeFilename", theme_filename_},
-    {"useCounts", use_counts},
+    {"usageTimes", usage_times},
   };
   File::Write(Paths::GetPath(Paths::Json::kUserSettings), object);
 }
@@ -169,13 +179,18 @@ void Settings::Update(const QJsonDocument& document) {
     theme_filename_ = object[key].toString();
   }
 
-  if (auto key = "useCounts"; object.contains(key)) {
-    auto use_counts = object[key].toObject();
-    for (const auto& key : use_counts.keys()) {
-      auto value = use_counts.value(key);
+  if (auto key = "usageTimes"; object.contains(key)) {
+    auto usage_times = object[key].toObject();
+    for (const auto& key : usage_times.keys()) {
+      auto value = usage_times.value(key);
       auto id = key.toULongLong();
-      auto count = value.toString().toULongLong();
-      use_counts_.insert({id, count});
+
+      auto timestamps = std::vector<uint64_t>{};
+      for (const auto& time : value.toArray()) {
+        timestamps.push_back(time.toString().toULongLong());
+      }
+
+      usage_times_.insert({id, timestamps});
     }
   }
 }

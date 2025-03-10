@@ -136,8 +136,8 @@ void Indexer::Initialize() {
     models_map_.at(id)->SetIsEnabled(false);
   }
 
-  for (auto [id, count] : settings.GetUseCounts()) {
-    models_map_.at(id)->SetUseCount(count);
+  for (auto [id, timestamps] : settings.GetUsageTimes()) {
+    models_map_.at(id)->SetTimestamps(timestamps);
   }
 }
 

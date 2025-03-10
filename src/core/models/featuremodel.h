@@ -7,6 +7,7 @@
 #include <memory>
 #include <string>
 #include <unordered_set>
+#include <vector>
 
 #include "../bridges/featurebridge.h"
 #include "../visitors/featurevisitable.h"
@@ -20,6 +21,7 @@ class FeatureModel : public FeatureVisitable {
   virtual QString FormatCommand() const;
   virtual bool ReceivesInput() const;
   virtual std::unordered_set<std::string> Tokenize() const;
+  double CalculateScore() const;
   QString GetAltTitle() const;
   QString GetAltDescription() const;
   QString GetCommand() const;
@@ -28,11 +30,11 @@ class FeatureModel : public FeatureVisitable {
   QPixmap GetIcon() const;
   uint64_t GetId() const;
   bool GetIsEnabled() const;
+  std::vector<uint64_t> GetTimestamps() const;
   QString GetTitle() const;
   QString GetTitlePlaceholder() const;
-  uint64_t GetUseCount() const;
   void SetIsEnabled(bool value);
-  void SetUseCount(uint64_t value);
+  void SetTimestamps(const std::vector<uint64_t>& value);
 
  protected:
   void SetAltDescription(const QString& value);
@@ -45,6 +47,9 @@ class FeatureModel : public FeatureVisitable {
   void SetTitlePlaceholder(const QString& value);
 
  private:
+  constexpr static double kDecayBase{0.5};  // Base for exponential decay.
+  constexpr static double kHalfLife{7 * 24 * 60 * 60};  // 7 days in seconds.
+
   QString alt_title_{};
   QString alt_description_{};
   QString command_{};
@@ -53,7 +58,8 @@ class FeatureModel : public FeatureVisitable {
   QPixmap icon_{};
   uint64_t id_{};
   bool is_enabled_{true};
+  double score_{};
+  std::vector<uint64_t> timestamps_{};
   QString title_{};
   QString title_placeholder_{};
-  uint64_t use_count_{};
 };

@@ -17,7 +17,7 @@ class Settings : public QObject {
   static Settings& GetInstance();
   void AddDisabledFeatureModelId(uint64_t id);
   void AddIgnoredDirectoryName(const std::string& name);
-  void AddUseCount(uint64_t id, uint64_t count);
+  void AddUsageTime(uint64_t id, uint64_t timestamp);
   void ClearIgnoredDirectoryNames();
   uint64_t GetAvailableId() const;
   std::vector<uint64_t> GetDefaultFeatureModelIds() const;
@@ -29,10 +29,10 @@ class Settings : public QObject {
   int GetSearchResultTitleMaxHeight() const;
   QLocale::Territory GetTerritory() const;
   QString GetThemeFilename() const;
-  std::unordered_map<uint64_t, uint64_t> GetUseCounts() const;
+  std::unordered_map<uint64_t, std::vector<uint64_t>> GetUsageTimes() const;
   void Initialize();
   void RemoveDisabledFeatureModelId(uint64_t id);
-  void RemoveUseCount(uint64_t id);
+  void RemoveUsageTimes(uint64_t id);
   void Save() const;
   void SetAvailableId(uint64_t value);
   void SetLanguage(QLocale::Language value);
@@ -60,5 +60,5 @@ class Settings : public QObject {
   int search_result_title_max_height_{25};
   QLocale::Territory territory_{QLocale::Territory::UnitedStates};
   QString theme_filename_{"dark-theme.json"};
-  std::unordered_map<uint64_t, uint64_t> use_counts_{};
+  std::unordered_map<uint64_t, std::vector<uint64_t>> usage_times_{};
 };

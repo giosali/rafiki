@@ -141,7 +141,7 @@ void YourWebSearchesTab::DeleteWebSearch(bool checked) {
 
       auto& settings = Settings::GetInstance();
       settings.RemoveDisabledFeatureModelId(id);
-      settings.RemoveUseCount(id);
+      settings.RemoveUsageTimes(id);
       settings.Save();
 
       auto& indexer = Indexer::GetInstance();
