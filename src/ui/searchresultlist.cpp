@@ -278,7 +278,7 @@ void SearchResultList::ProcessObjects(std::vector<FeatureObject*> objects,
       current_row == -1 || !user_selected_item_) {
     clear();  // Helps prevent flicker.
 
-    for (size_t i = 0; i < objects.size(); ++i) {
+    for (size_t i = 0, l = objects.size(); i < l; ++i) {
       AddItem(objects[i], text, i);
     }
   } else {
@@ -291,7 +291,7 @@ void SearchResultList::ProcessObjects(std::vector<FeatureObject*> objects,
     // match.
     bool found_id = false;
 
-    for (size_t i = 0; i < objects.size(); ++i) {
+    for (size_t i = 0, l = objects.size(); i < l; ++i) {
       auto object = objects[i];
       AddItem(object, text, i);
 
@@ -328,12 +328,7 @@ void Worker::ProcessText(const QString& text) {
     }
   }
 
-  // Handles the results of query processing.
-  auto objects = visitor.GetFeatureObjects();
-  std::sort(objects.begin(), objects.end(),
-            [](const auto lhs, const auto rhs) { return *lhs < *rhs; });
-
-  if (auto instance = QApplication::instance(); objects.empty()) {
+  if (auto objects = visitor.GetFeatureObjects(); objects.empty()) {
     visitor.SetNoParse(true);
     const auto default_ids = settings_.GetDefaultFeatureModelIds();
     for (size_t i = 0; i < default_ids.size(); ++i) {
@@ -344,6 +339,7 @@ void Worker::ProcessText(const QString& text) {
     objects = visitor.GetFeatureObjects();
 
     // TODO: find more efficient way of moving QObject instead of looping.
+    auto instance = QApplication::instance();
     for (const auto& i : objects) {
       i->moveToThread(instance->thread());
     }
@@ -352,12 +348,21 @@ void Worker::ProcessText(const QString& text) {
     emit ObjectsReadied(objects, text, !last_results_were_defaults);
     last_results_were_defaults = true;
   } else {
+    // Maximum number of results is set 15 here.
+    auto sorted_objects = std::vector<FeatureObject*>{};
+    sorted_objects.resize(std::min(objects.size(), size_t{15}));
+    std::partial_sort_copy(
+      objects.begin(), objects.end(), sorted_objects.begin(),
+      sorted_objects.end(),
+      [](const auto lhs, const auto rhs) { return *lhs < *rhs; });
+
     // TODO: find more efficient way of moving QObject instead of looping.
-    for (const auto& i : objects) {
+    auto instance = QApplication::instance();
+    for (const auto& i : sorted_objects) {
       i->moveToThread(instance->thread());
     }
 
-    emit ObjectsReadied(objects, text, last_results_were_defaults);
+    emit ObjectsReadied(sorted_objects, text, last_results_were_defaults);
     last_results_were_defaults = false;
   }
 }
