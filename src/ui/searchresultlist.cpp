@@ -266,9 +266,9 @@ void SearchResultList::CheckSelectedItem(QListWidgetItem* current,
   }
 }
 
-void SearchResultList::ProcessObjects(std::vector<FeatureObject*> objects,
-                                      const QString& text,
-                                      bool set_row_to_zero) {
+void SearchResultList::ProcessObjects(
+  const std::vector<FeatureObject*>& objects, const QString& text,
+  bool set_row_to_zero) {
   if (set_row_to_zero) {
     user_selected_item_ = false;
   }
@@ -278,7 +278,7 @@ void SearchResultList::ProcessObjects(std::vector<FeatureObject*> objects,
       current_row == -1 || !user_selected_item_) {
     clear();  // Helps prevent flicker.
 
-    for (size_t i = 0, l = objects.size(); i < l; ++i) {
+    for (size_t i = 0; i < objects.size(); ++i) {
       AddItem(objects[i], text, i);
     }
   } else {
@@ -291,7 +291,7 @@ void SearchResultList::ProcessObjects(std::vector<FeatureObject*> objects,
     // match.
     bool found_id = false;
 
-    for (size_t i = 0, l = objects.size(); i < l; ++i) {
+    for (size_t i = 0; i < objects.size(); ++i) {
       auto object = objects[i];
       AddItem(object, text, i);
 
