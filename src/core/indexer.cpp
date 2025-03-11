@@ -31,11 +31,11 @@ void Indexer::Clear() {
 }
 
 void Indexer::DeleteModel(uint64_t id) {
-  if (!models_map_.contains(id)) {
+  auto model = GetModel(id);
+  if (model == nullptr) {
     return;
   }
 
-  auto model = GetModel(id);
   auto& trie =
     model->ReceivesInput() ? input_models_trie_ : inputless_models_trie_;
   for (const auto& token : model->Tokenize()) {
@@ -101,7 +101,8 @@ std::unordered_set<uint64_t> Indexer::GetIds(const QString& input) const {
 }
 
 FeatureModel* Indexer::GetModel(uint64_t id) const {
-  return models_map_.at(id).get();
+  auto it = models_map_.find(id);
+  return it != models_map_.end() ? it->second.get() : nullptr;
 }
 
 void Indexer::IndexModel(std::unique_ptr<FeatureModel> model) {
@@ -133,11 +134,25 @@ void Indexer::Initialize() {
   IndexWebSearches();
 
   for (auto id : settings.GetDisabledFeatureModelids()) {
-    models_map_.at(id)->SetIsEnabled(false);
+    if (auto model = GetModel(id); model != nullptr) {
+      model->SetIsEnabled(false);
+    }
+    // Removes unnecessary, leftover disabled IDs.
+    else {
+      settings.RemoveDisabledFeatureModelId(id);
+      settings.Save();
+    }
   }
 
   for (auto [id, timestamps] : settings.GetUsageTimes()) {
-    models_map_.at(id)->SetTimestamps(timestamps);
+    if (auto model = GetModel(id); model != nullptr) {
+      model->SetTimestamps(timestamps);
+    }
+    // Removes unnecessary, leftover usage times.
+    else {
+      settings.RemoveUsageTimes(id);
+      settings.Save();
+    }
   }
 }
 
@@ -181,10 +196,15 @@ void Indexer::UpdateTrie(uint64_t id,
     }
   }
 
+  auto model = GetModel(id);
+  if (model == nullptr) {
+    return;
+  }
+
   // Adds new tokens.
+  auto receives_input = model->ReceivesInput();
   for (const auto& token : new_tokens) {
-    auto pair = (GetModel(id)->ReceivesInput() ? input_models_trie_
-                                               : inputless_models_trie_)
+    auto pair = (receives_input ? input_models_trie_ : inputless_models_trie_)
                   .insert(token, std::unordered_set<uint64_t>{});
     pair.first->insert(id);
   }
