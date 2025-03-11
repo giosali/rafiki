@@ -19,7 +19,6 @@ class WebSearchDialog : public QDialog {
   Q_OBJECT
 
  public:
-  explicit WebSearchDialog(QWidget* parent = nullptr);
   explicit WebSearchDialog(uint64_t id, QWidget* parent = nullptr);
 
   ~WebSearchDialog();
@@ -28,10 +27,15 @@ class WebSearchDialog : public QDialog {
   void Accepted();
 
  private:
-  void ToggleSaveButton(bool enable) const;
+  bool AreAltFieldsValid(const QString& alt_url,
+                         const QString& alt_title) const;
+  bool AreRequiredFieldsValid(const QString& url, const QString& title,
+                              const QString& title_placeholder,
+                              const QString& command) const;
 
   QString current_icon_path_{};
   uint64_t id_{};
+  bool is_new_{true};
   QString new_icon_path_{};
   std::unique_ptr<Ui::WebSearchDialog> ui_{nullptr};
 

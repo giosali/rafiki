@@ -24,7 +24,7 @@ class YourWebSearchesTab : public ToggleTab {
  private:
   void ClearWebSearches() const;
   void LoadWebSearches();
-  void OpenWebSearchDialog(uint64_t id);
+  void OpenWebSearchDialog(uint64_t id = 0);
   void SaveWebSearches() const;
 
   std::unique_ptr<Ui::YourWebSearchesTab> ui_;

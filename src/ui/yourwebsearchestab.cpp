@@ -108,7 +108,7 @@ void YourWebSearchesTab::LoadWebSearches() {
 }
 
 void YourWebSearchesTab::OpenWebSearchDialog(uint64_t id) {
-  auto dialog = id == 0 ? WebSearchDialog{} : WebSearchDialog{id};
+  auto dialog = WebSearchDialog{id};
   auto dialog_code = dialog.exec();
   switch (dialog_code) {
     case QDialog::Accepted:
@@ -130,7 +130,7 @@ void YourWebSearchesTab::SaveWebSearches() const {
   File::Write(Paths::GetPath(Paths::Json::kUserWebSearches), array);
 }
 
-void YourWebSearchesTab::AddWebSearch(bool checked) { OpenWebSearchDialog(0); }
+void YourWebSearchesTab::AddWebSearch(bool checked) { OpenWebSearchDialog(); }
 
 void YourWebSearchesTab::DeleteWebSearch(bool checked) {
   auto items = ui_->table->selectedItems();

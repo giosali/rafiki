@@ -19,7 +19,6 @@ class Settings : public QObject {
   void AddIgnoredDirectoryName(const std::string& name);
   void AddUsageTime(uint64_t id, uint64_t timestamp);
   void ClearIgnoredDirectoryNames();
-  uint64_t GetAvailableId() const;
   std::vector<uint64_t> GetDefaultFeatureModelIds() const;
   std::unordered_set<uint64_t> GetDisabledFeatureModelids() const;
   std::unordered_set<std::string> GetIgnoredDirectoryNames() const;
@@ -34,7 +33,6 @@ class Settings : public QObject {
   void RemoveDisabledFeatureModelId(uint64_t id);
   void RemoveUsageTimes(uint64_t id);
   void Save() const;
-  void SetAvailableId(uint64_t value);
   void SetLanguage(QLocale::Language value);
   void SetTerritory(QLocale::Territory value);
   void SetThemeFilename(const QString& value);

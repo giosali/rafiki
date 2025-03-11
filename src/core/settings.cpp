@@ -34,8 +34,6 @@ void Settings::ClearIgnoredDirectoryNames() {
   ignored_directory_names_.clear();
 }
 
-uint64_t Settings::GetAvailableId() const { return available_id_; }
-
 std::vector<uint64_t> Settings::GetDefaultFeatureModelIds() const {
   return default_feature_model_ids_;
 }
@@ -118,8 +116,6 @@ void Settings::Save() const {
   };
   File::Write(Paths::GetPath(Paths::Json::kUserSettings), object);
 }
-
-void Settings::SetAvailableId(uint64_t value) { available_id_ = value; }
 
 void Settings::SetLanguage(QLocale::Language value) {
   language_ = value;
