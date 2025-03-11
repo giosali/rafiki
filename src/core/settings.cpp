@@ -105,7 +105,6 @@ void Settings::Save() const {
   }
 
   auto object = QJsonObject{
-    {"availableId", QString::number(available_id_)},
     {"defaultModels", default_models},
     {"disabledModels", disabled_models},
     {"ignoredDirectoryNames", ignored_directory_names},
@@ -135,10 +134,6 @@ void Settings::Update(const QJsonDocument& document) {
   auto object = document.object();
   if (object.isEmpty()) {
     return;
-  }
-
-  if (auto key = "availableId"; object.contains(key)) {
-    available_id_ = object[key].toString().toULongLong();
   }
 
   if (auto key = "defaultModels"; object.contains(key)) {

@@ -47,7 +47,6 @@ class Settings : public QObject {
 
   Settings operator=(const Settings&) = delete;
 
-  uint64_t available_id_{0x8000};  // WM_APP
   std::vector<uint64_t> default_feature_model_ids_{1, 2, 3};
   std::unordered_set<uint64_t> disabled_feature_model_ids_{};
   std::unordered_set<std::string> ignored_directory_names_{"node_modules",
