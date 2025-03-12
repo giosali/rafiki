@@ -27,16 +27,18 @@ class WebSearchDialog : public QDialog {
   void Accepted();
 
  private:
+  const static QString kFallbackIcon;
+
   bool AreAltFieldsValid(const QString& alt_url,
                          const QString& alt_title) const;
   bool AreRequiredFieldsValid(const QString& url, const QString& title,
                               const QString& title_placeholder,
                               const QString& command) const;
+  QString SaveIcon(const QString& path) const;
 
-  QString current_icon_path_{};
+  QString icon_path_{};
   uint64_t id_{};
   bool is_new_{true};
-  QString new_icon_path_{};
   std::unique_ptr<Ui::WebSearchDialog> ui_{nullptr};
 
  private slots:

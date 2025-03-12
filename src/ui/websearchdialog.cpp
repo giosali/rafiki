@@ -1,19 +1,20 @@
 #include "websearchdialog.h"
 
 #include <QDialogButtonBox>
+#include <QDir>
 #include <QFile>
 #include <QFileDialog>
 #include <QFileInfo>
 #include <QGuiApplication>
+#include <QImage>
 #include <QJsonObject>
 #include <QPushButton>
 #include <algorithm>
 #include <iterator>
 
-#include "../core/file.h"
 #include "../core/indexer.h"
 #include "../core/models/websearchmodel.h"
-#include "../core/utilities.h"
+#include "../core/paths.h"
 #include "./ui_websearchdialog.h"
 
 WebSearchDialog::WebSearchDialog(uint64_t id, QWidget* parent)
@@ -45,9 +46,6 @@ WebSearchDialog::WebSearchDialog(uint64_t id, QWidget* parent)
            model != nullptr) {
     ui_->button_box->button(QDialogButtonBox::Save)->setEnabled(true);
 
-    // In-constructor member initialization; this is important.
-    current_icon_path_ = model->GetIconPath();
-
     // Fills in fields before showing the dialog to the user.
     ui_->url->setText(model->GetUrl());
     ui_->title->setText(model->GetTitle());
@@ -56,6 +54,8 @@ WebSearchDialog::WebSearchDialog(uint64_t id, QWidget* parent)
     ui_->icon_label->setPixmap(model->GetIcon());
     ui_->alt_url->setText(model->GetAltUrl());
     ui_->alt_title->setText(model->GetAltTitle());
+
+    icon_path_ = model->GetIconPath();
   }
   // Something went wrong so the dialog should be forcequit.
   else {
@@ -86,6 +86,8 @@ WebSearchDialog::WebSearchDialog(uint64_t id, QWidget* parent)
 
 WebSearchDialog::~WebSearchDialog() {}
 
+const QString WebSearchDialog::kFallbackIcon{":/icons/url.svg"};
+
 bool WebSearchDialog::AreAltFieldsValid(const QString& alt_url,
                                         const QString& alt_title) const {
   // Both alt fields must filled if one if them is filled.
@@ -107,6 +109,34 @@ bool WebSearchDialog::AreRequiredFieldsValid(const QString& url,
          !command.isEmpty();
 }
 
+QString WebSearchDialog::SaveIcon(const QString& path) const {
+  auto original = QImage{path};
+  if (original.isNull() || path == kFallbackIcon) {
+    return kFallbackIcon;
+  }
+
+  auto icon_dir = QDir{Paths::GetPath(Paths::Directory::kUserIcons)};
+  auto icon_name = QString{"%1.%2"}.arg(id_).arg(QFileInfo{path}.suffix());
+  auto new_path = icon_dir.filePath(icon_name);
+
+  // Creates all necessary parent directories.
+  QDir{}.mkpath(icon_dir.path());
+
+  // Resizes new image to a width of 128 only if it's greater than 128.
+  if (original.width() > 128) {
+    auto resized = original.scaledToWidth(128, Qt::SmoothTransformation);
+    if (!resized.save(new_path)) {
+      return kFallbackIcon;
+    }
+  } else {
+    if (!original.save(new_path)) {
+      return kFallbackIcon;
+    }
+  }
+
+  return new_path;
+}
+
 void WebSearchDialog::AcceptWebSearch() {
   auto url = ui_->url->text();
   auto title = ui_->title->text();
@@ -119,26 +149,12 @@ void WebSearchDialog::AcceptWebSearch() {
     return;
   }
 
-  auto icon_path = QString{};
-  if (new_icon_path_.isNull()) {
-    icon_path = is_new_ ? ":/icons/url.svg" : current_icon_path_;
-  } else {
-    // Moves previous icon to trash. It's okay for fileName to be null or empty.
-    QFile::moveToTrash(current_icon_path_);
-
-    auto icon_dir = Paths::GetPath(Paths::Directory::kUserIcons);
-    auto icon_name =
-      QString{"%1.%2"}.arg(id_).arg(QFileInfo{new_icon_path_}.suffix());
-    icon_path = Utilities::Combine(icon_dir, icon_name);
-
-    // Saves new icon to config directory.
-    File::Copy(new_icon_path_, icon_path);
-  }
+  icon_path_ = SaveIcon(icon_path_);
 
   // A WebSearchModel instance is being created.
   if (auto& indexer = Indexer::GetInstance(); is_new_) {
     auto object = QJsonObject{{"command", command},
-                              {"icon", icon_path},
+                              {"icon", icon_path_},
                               {"id", QString::number(id_)},
                               {"title", title},
                               {"placeholder", title_placeholder},
@@ -154,12 +170,16 @@ void WebSearchDialog::AcceptWebSearch() {
     indexer.IndexModel(std::make_unique<WebSearchModel>(object));
   }
   // A WebSearchModel instance is being edited.
-  else {
-    auto model = dynamic_cast<WebSearchModel*>(indexer.GetModel(id_));
+  else if (auto model = dynamic_cast<WebSearchModel*>(indexer.GetModel(id_));
+           model != nullptr) {
     auto old_tokens = model->Tokenize();
 
+    // Moves previous icon to trash. It's okay for fileName to be null or empty.
+    auto old_icon_path = model->GetIconPath();
+    QFile::moveToTrash(old_icon_path);
+
     model->SetCommand(command);
-    model->SetIcon(icon_path);
+    model->SetIcon(icon_path_);
     model->SetTitle(title);
     model->SetTitlePlaceholder(title_placeholder);
     model->SetUrl(url);
@@ -195,9 +215,9 @@ void WebSearchDialog::CheckFields(const QString& text) {
 
 void WebSearchDialog::OpenFile() {
   if (auto filename = QFileDialog::getOpenFileName(
-        this, "Open Image", QString{}, "Image (*.png *.jpg *.svg)");
+        this, "Open Image", QString{}, "Image (*.png *.jpg)");
       !filename.isEmpty()) {
-    new_icon_path_ = filename;
+    icon_path_ = filename;
     ui_->icon_label->setPixmap(filename);
   }
 }
