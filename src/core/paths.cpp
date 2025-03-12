@@ -1,10 +1,10 @@
 #include "paths.h"
 
+#include <QDir>
 #include <QStandardPaths>
 #include <QtSystemDetection>
 
 #include "../core/theme.h"
-#include "utilities.h"
 
 QString Paths::FormatIconPath(const QString& filename) {
   auto is_light_mode = Theme::GetInstance().GetIsLightMode();
@@ -23,7 +23,7 @@ QString Paths::GetPath(Directory d) {
       path = "://data";
       break;
     case Directory::kUserIcons:
-      path = Utilities::Combine(GetPath(Directory::kAppConfig), "icons");
+      path = QDir{GetPath(Directory::kAppConfig)}.filePath("icons");
       break;
   }
 
@@ -48,5 +48,5 @@ QString Paths::GetPath(Json f) {
       break;
   }
 
-  return Utilities::Combine(directory, filename);
+  return QDir{directory}.filePath(filename);
 }

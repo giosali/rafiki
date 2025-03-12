@@ -6,8 +6,6 @@ class TestUtilities : public QObject {
   Q_OBJECT
 
  private slots:
-  void Combine();
-  void Combine_data();
   void RemoveAccents();
   void RemoveAccents_data();
   void Split_QString();

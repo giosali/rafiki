@@ -7,26 +7,6 @@
 
 #include "core/utilities.h"
 
-void TestUtilities::Combine() {
-  QFETCH(QString, p1);
-  QFETCH(QString, p2);
-  QFETCH(QString, expected);
-
-  auto actual = Utilities::Combine(p1, p2);
-  QCOMPARE(actual, expected);
-}
-
-void TestUtilities::Combine_data() {
-  QTest::addColumn<QString>("p1");
-  QTest::addColumn<QString>("p2");
-  QTest::addColumn<QString>("expected");
-
-  QTest::newRow("no-terminating-separator")
-    << "/home/user" << "hello.txt" << "/home/user/hello.txt";
-  QTest::newRow("terminating-separator")
-    << "/home/user/" << "hello.txt" << "/home/user/hello.txt";
-}
-
 void TestUtilities::RemoveAccents() {
   QFETCH(QString, input);
   QFETCH(QString, expected);
