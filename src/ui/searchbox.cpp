@@ -12,13 +12,21 @@ SearchBox::SearchBox(QWidget* parent)
 
   connect(ui_->line_edit, &QLineEdit::textChanged, this,
           &SearchBox::ProcessText);
+  connect(ui_->line_edit, &CustomLineEdit::KeyPressed,
+          [this](const QKeyCombination& combination) {
+            emit KeyPressed(combination);
+          });
+  connect(ui_->line_edit, &CustomLineEdit::KeyReleased,
+          [this](const QKeyCombination& combination) {
+            emit KeyReleased(combination);
+          });
 }
 
 SearchBox::~SearchBox() {}
 
-int SearchBox::Height() const { return ui_->layout->sizeHint().height(); }
-
 QString SearchBox::GetText() const { return ui_->line_edit->text(); }
+
+int SearchBox::Height() const { return ui_->layout->sizeHint().height(); }
 
 void SearchBox::ApplyTheme(Theme* theme) {
   auto stylesheet = QString{R"(
@@ -53,45 +61,6 @@ void SearchBox::ApplyTheme(Theme* theme) {
 void SearchBox::Clear() { ui_->line_edit->clear(); }
 
 void SearchBox::SetText(const QString& text) { ui_->line_edit->setText(text); }
-
-void SearchBox::keyPressEvent(QKeyEvent* event) {
-  auto combination = event->keyCombination();
-  switch (combination.key()) {
-    case Qt::Key_Tab:
-    case Qt::Key_Return:
-    case Qt::Key_Alt:
-      if (event->isAutoRepeat()) {
-        return;
-      }
-
-      [[fallthrough]];
-    case Qt::Key_T:
-    case Qt::Key_Escape:
-    case Qt::Key_Up:
-    case Qt::Key_Down:
-    case Qt::Key_1:
-    case Qt::Key_2:
-    case Qt::Key_3:
-    case Qt::Key_4:
-    case Qt::Key_5:
-    case Qt::Key_6:
-      emit KeyPressed(combination);
-      break;
-    default:
-      break;
-  }
-}
-
-void SearchBox::keyReleaseEvent(QKeyEvent* event) {
-  auto combination = event->keyCombination();
-  switch (combination.key()) {
-    case Qt::Key_Alt:
-      emit KeyReleased(combination);
-      break;
-    default:
-      break;
-  }
-}
 
 void SearchBox::ProcessText(const QString& text) {
   // This should be initialized to true since the QLineEdit will be empty when

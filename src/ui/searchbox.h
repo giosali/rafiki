@@ -1,12 +1,12 @@
 #pragma once
 
 #include <QKeyCombination>
-#include <QKeyEvent>
 #include <QString>
 #include <QWidget>
 #include <memory>
 
 #include "../core/theme.h"
+#include "customlineedit.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -22,8 +22,8 @@ class SearchBox : public QWidget {
 
   ~SearchBox();
 
-  int Height() const;
   QString GetText() const;
+  int Height() const;
 
  public slots:
   void ApplyTheme(Theme* theme);
@@ -34,10 +34,6 @@ class SearchBox : public QWidget {
   void KeyPressed(const QKeyCombination& combination);
   void KeyReleased(const QKeyCombination& combination);
   void TextChanged(const QString& text);
-
- protected:
-  void keyPressEvent(QKeyEvent* event) override;
-  void keyReleaseEvent(QKeyEvent* event) override;
 
  private:
   std::unique_ptr<Ui::SearchBox> ui_;

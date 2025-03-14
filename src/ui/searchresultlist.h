@@ -28,14 +28,14 @@ class SearchResultList : public QListWidget {
   void ApplyTheme(Theme* theme);
   void ProcessKeyPress(const QKeyCombination& combination);
   void ProcessKeyRelease(const QKeyCombination& combination);
-  void ProcessText(const QString& text);
+  void ProcessText(const QString& text, bool force_default_results = false);
 
  signals:
   void ItemDragged();
   void ItemsChanged(int height);
   void KeyPressReceived(const QKeyCombination& combination);
   void KeyReleaseReceived(const QKeyCombination& combination);
-  void TextReceived(const QString& input);
+  void TextReceived(const QString& input, bool force_default_results);
   void NewSearchBoxTextRequested(const QString& text);
   void HideRequested();
 
@@ -65,7 +65,7 @@ class Worker : public QObject {
   Q_OBJECT
 
  public slots:
-  void ProcessText(const QString& text);
+  void ProcessText(const QString& text, bool force_default_results);
 
  signals:
   void ObjectsReadied(const std::vector<FeatureObject*>& objects,

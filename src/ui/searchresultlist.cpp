@@ -91,7 +91,8 @@ void SearchResultList::ApplyTheme(Theme* theme) {
   setStyleSheet(stylesheet);
 }
 
-void SearchResultList::ProcessText(const QString& text) {
+void SearchResultList::ProcessText(const QString& text,
+                                   bool force_default_results) {
   // This is necessary for when CPU intensive operations are currently underway.
   // Most of the time, this will be redundant.
   worker_thread_.exit();
@@ -116,7 +117,7 @@ void SearchResultList::ProcessText(const QString& text) {
           &SearchResultList::ProcessObjects);
   worker_thread_.start();
 
-  emit TextReceived(text);
+  emit TextReceived(text, force_default_results);
 }
 
 void SearchResultList::ProcessKeyPress(const QKeyCombination& combination) {
@@ -310,7 +311,7 @@ void SearchResultList::ProcessObjects(
 }
 
 namespace searchresultlist {
-void Worker::ProcessText(const QString& text) {
+void Worker::ProcessText(const QString& text, bool force_default_results) {
   // When the user:
   // - ***is just now*** receiving default search results
   // - deletes all input
@@ -322,12 +323,15 @@ void Worker::ProcessText(const QString& text) {
 
   // Handles query processing.
   auto visitor = ObjectVisitor{text};
-  for (auto id : indexer_.GetIds(text)) {
-    if (auto model = indexer_.GetModel(id); model->GetIsEnabled()) {
-      model->Accept(visitor);
+  if (!force_default_results) {
+    for (auto id : indexer_.GetIds(text)) {
+      if (auto model = indexer_.GetModel(id); model->GetIsEnabled()) {
+        model->Accept(visitor);
+      }
     }
   }
 
+  // Handles default results.
   if (auto objects = visitor.GetFeatureObjects(); objects.empty()) {
     visitor.SetNoParse(true);
     const auto default_ids = settings_.GetDefaultFeatureModelIds();
@@ -347,7 +351,9 @@ void Worker::ProcessText(const QString& text) {
     // `results` are default results
     emit ObjectsReadied(objects, text, !last_results_were_defaults);
     last_results_were_defaults = true;
-  } else {
+  }
+  // Handles found results.
+  else {
     // Maximum number of results is set 15 here.
     auto sorted_objects = std::vector<FeatureObject*>{};
     sorted_objects.resize(std::min(objects.size(), size_t{15}));

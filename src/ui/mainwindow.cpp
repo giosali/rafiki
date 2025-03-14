@@ -82,7 +82,9 @@ void MainWindow::Show() {
   connect(ui_->search_list, &SearchResultList::ItemsChanged, this,
           &MainWindow::SetHeight);
   connect(ui_->search_box, &SearchBox::TextChanged, ui_->search_list,
-          &SearchResultList::ProcessText);
+          [this](const QString& text) {
+            ui_->search_list->ProcessText(text, false);
+          });
   connect(ui_->search_box, &SearchBox::KeyPressed, this,
           &MainWindow::ProcessKeyPress);
   connect(ui_->search_box, &SearchBox::KeyPressed, ui_->search_list,
@@ -191,10 +193,15 @@ void MainWindow::ProcessActivationReason(
 }
 
 void MainWindow::ProcessKeyPress(const QKeyCombination& combination) {
-  auto key = combination.key();
-  switch (key) {
+  switch (combination.key()) {
     case Qt::Key_Escape:
       Hide();
+      break;
+    case Qt::Key_K:
+      if (combination.keyboardModifiers() & Qt::ControlModifier) {
+        ui_->search_list->ProcessText(ui_->search_box->GetText(), true);
+      }
+
       break;
     case Qt::Key_T:
       if (combination.keyboardModifiers() & Qt::ControlModifier) {

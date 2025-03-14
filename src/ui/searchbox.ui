@@ -27,7 +27,7 @@
         <number>0</number>
       </property>
       <item>
-        <widget class="QLineEdit" name="line_edit">
+        <widget class="CustomLineEdit" name="line_edit">
           <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
               <horstretch>0</horstretch>
@@ -38,6 +38,11 @@
       </item>
     </layout>
   </widget>
+  <customwidgets>
+    <customwidget>
+      <class>CustomLineEdit</class>
+    </customwidget>
+  </customwidgets>
   <resources />
   <connections />
 </ui>
