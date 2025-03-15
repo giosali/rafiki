@@ -73,8 +73,7 @@ std::vector<QJsonObject> Fetcher::FetchWebSearchObjects() const {
   auto paths = std::array<Paths::Json, 2>{Paths::Json::kWebSearches,
                                           Paths::Json::kUserWebSearches};
   for (const auto& path : paths) {
-    auto document = File::Read(path);
-    if (document.isArray()) {
+    if (auto document = File::Read(path); document.isArray()) {
       for (const auto& value : document.array()) {
         if (value.isObject()) {
           objects.push_back(value.toObject());

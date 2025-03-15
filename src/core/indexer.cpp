@@ -241,8 +241,8 @@ void Indexer::IndexGenericModels() {
 }
 
 void Indexer::IndexWebSearches() {
-  auto fetcher = Fetcher{};
-  for (const auto& object : fetcher.FetchWebSearchObjects()) {
+  for (const auto& object : Fetcher{}.FetchWebSearchObjects()) {
+    new WebSearchModel{object};
     IndexModel(std::make_unique<WebSearchModel>(object));
   }
 }
