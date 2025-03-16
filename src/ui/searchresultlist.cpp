@@ -343,9 +343,9 @@ void Worker::ProcessText(const QString& text, bool force_default_results) {
     objects = visitor.GetFeatureObjects();
 
     // TODO: find more efficient way of moving QObject instead of looping.
-    auto instance = QApplication::instance();
+    auto thread = QApplication::instance()->thread();
     for (const auto& i : objects) {
-      i->moveToThread(instance->thread());
+      i->moveToThread(thread);
     }
 
     // `results` are default results
@@ -363,9 +363,9 @@ void Worker::ProcessText(const QString& text, bool force_default_results) {
       [](const auto lhs, const auto rhs) { return *lhs < *rhs; });
 
     // TODO: find more efficient way of moving QObject instead of looping.
-    auto instance = QApplication::instance();
+    auto thread = QApplication::instance()->thread();
     for (const auto& i : sorted_objects) {
-      i->moveToThread(instance->thread());
+      i->moveToThread(thread);
     }
 
     emit ObjectsReadied(sorted_objects, text, last_results_were_defaults);
