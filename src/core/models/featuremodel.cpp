@@ -80,11 +80,9 @@ void FeatureModel::SetDescription(const QString& value) {
 }
 
 void FeatureModel::SetIcon(const QString& value) {
-  auto icon = QFile::exists(value) ? QIcon{value} : QIcon::fromTheme(value);
-  if (icon.isNull()) {
-    icon = QIcon{":/icons/question-mark.png"};
-  }
-
+  auto icon = QFile::exists(value)
+                ? QIcon{value}
+                : QIcon::fromTheme(value, QIcon{":/icons/question-mark.png"});
   icon_ = icon.pixmap(Settings::GetInstance().GetSearchResultIconSize());
 }
 
