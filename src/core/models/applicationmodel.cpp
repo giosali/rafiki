@@ -33,7 +33,7 @@ ApplicationModel::ApplicationModel(
   auto name = QString::fromStdString(name_val);
   auto icon = QString::fromStdString(icon_val);
   auto exec = QString::fromStdString(exec_val);
-  auto keywords = Utilities::Split(QString::fromStdString(keywords_val), ';');
+  auto keywords = QString::fromStdString(keywords_val).split(';');
 
   SetAltDescription(tr("Open containing folder"));
   SetCommand(name);

@@ -2,8 +2,8 @@
 
 #include <QCoreApplication>
 #include <QLocale>
+#include <QStringList>
 #include <filesystem>
-#include <vector>
 
 #include "INIReader.h"
 #include "featuremodel.h"
@@ -22,5 +22,5 @@ class ApplicationModel final : public FeatureModel {
 
  private:
   QString exec_;
-  std::vector<QString> keywords_;
+  QStringList keywords_;
 };
