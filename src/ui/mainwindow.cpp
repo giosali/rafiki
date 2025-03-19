@@ -2,6 +2,7 @@
 
 #include <QAction>
 #include <QCoreApplication>
+#include <QFileSystemWatcher>
 #include <QIcon>
 #include <QLocale>
 #include <QMenu>
@@ -11,6 +12,7 @@
 #include <Qt>
 #include <QtGlobal>
 
+#include "../core/fetcher.h"
 #include "../core/indexer.h"
 #include "../core/settings.h"
 #include "./ui_mainwindow.h"
@@ -77,6 +79,16 @@ void MainWindow::CreateTrayIcon() {
 void MainWindow::Show() {
   // Settings should have already been initialized by this point.
   auto& settings = Settings::GetInstance();
+
+  // Watches for changes to desktop entry files.
+  auto watcher = new QFileSystemWatcher{this};
+  connect(watcher, &QFileSystemWatcher::directoryChanged, this,
+          &MainWindow::ReloadApplications);
+  for (const auto& dir : Fetcher{}.FetchDesktopEntryDirectoryPaths()) {
+    if (!watcher->addPath(QString::fromStdString(dir))) {
+      qWarning() << "Unable to watch path:" << dir.string();
+    }
+  }
 
   connect(this, &MainWindow::Deactivated, ui_->search_box, &SearchBox::Clear);
   connect(ui_->search_list, &SearchResultList::ItemsChanged, this,
@@ -212,6 +224,16 @@ void MainWindow::ProcessKeyPress(const QKeyCombination& combination) {
     default:
       break;
   }
+}
+
+void MainWindow::ReloadApplications(const QString& path) {
+  // Forces QIcon to reload its theme cache so that the corresponding
+  // application icons will be able be found.
+  QIcon::setThemeName(QIcon::themeName());
+
+  auto& indexer = Indexer::GetInstance();
+  indexer.Clear();
+  indexer.Initialize();
 }
 
 void MainWindow::SetHeight(int height) {

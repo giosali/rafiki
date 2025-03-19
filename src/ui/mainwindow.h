@@ -3,6 +3,7 @@
 #include <QEvent>
 #include <QKeyCombination>
 #include <QMainWindow>
+#include <QString>
 #include <QSystemTrayIcon>
 #include <QTranslator>
 #include <memory>
@@ -47,6 +48,7 @@ class MainWindow : public QMainWindow {
   void OpenSettingsWindow();
   void ProcessActivationReason(QSystemTrayIcon::ActivationReason reason);
   void ProcessKeyPress(const QKeyCombination& combination);
+  void ReloadApplications(const QString& path);
   void SetHeight(int height);
   void UpdateTranslators();
 };
