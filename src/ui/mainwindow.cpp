@@ -131,9 +131,7 @@ void MainWindow::changeEvent(QEvent* event) {
     case QEvent::LanguageChange: {
       // Reloads web search models with tr() function calls to ensure their
       // translations are also updated.
-      auto& indexer = Indexer::GetInstance();
-      indexer.Clear();
-      indexer.Initialize();
+      Indexer::GetInstance().Reinitialize();
       break;
     }
     default:
@@ -177,9 +175,7 @@ void MainWindow::ApplyTheme(Theme* theme) {
   // the user changes the theme from a dark theme to a light theme, then the
   // indexer must be reinitialized in order for the appropriate icons to be
   // applied.
-  auto& indexer = Indexer::GetInstance();
-  indexer.Clear();
-  indexer.Initialize();
+  Indexer::GetInstance().Reinitialize();
 }
 
 void MainWindow::Hide() {
@@ -231,9 +227,7 @@ void MainWindow::ReloadApplications(const QString& path) {
   // application icons will be able be found.
   QIcon::setThemeName(QIcon::themeName());
 
-  auto& indexer = Indexer::GetInstance();
-  indexer.Clear();
-  indexer.Initialize();
+  Indexer::GetInstance().Reinitialize();
 }
 
 void MainWindow::SetHeight(int height) {

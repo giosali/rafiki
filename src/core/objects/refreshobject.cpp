@@ -17,9 +17,7 @@ void RefreshObject::ProcessKeyPress(const QKeyCombination& combination) {
       // This must be called prior to clearing and initializing the indexer.
       FeatureObject::ProcessKeyPress(combination);
 
-      auto& indexer = Indexer::GetInstance();
-      indexer.Clear();
-      indexer.Initialize();
+      Indexer::GetInstance().Reinitialize();
       break;
     }
     default:

@@ -156,6 +156,11 @@ void Indexer::Initialize() {
   }
 }
 
+void Indexer::Reinitialize() {
+  Clear();
+  Initialize();
+}
+
 void Indexer::UpdateTrie(uint64_t id,
                          const std::unordered_set<std::string>& old_tokens,
                          const std::unordered_set<std::string>& new_tokens) {
