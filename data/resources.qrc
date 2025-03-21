@@ -2,7 +2,6 @@
   <qresource prefix="/data">
     <file>dark-theme.json</file>
     <file>light-theme.json</file>
-    <file>rafiki.desktop</file>
     <file>tlds-alpha-by-domain.txt</file>
     <file>web-searches.json</file>
   </qresource>

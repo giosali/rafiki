@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Rafiki
+GenericName=Application Launcher
+Comment=Launch Applications and Boost Productivity
+Exec=rafiki
+Icon=rafiki
+Terminal=false
+Type=Application
+StartupNotify=true
+Categories=Utility;
