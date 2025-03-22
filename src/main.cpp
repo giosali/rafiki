@@ -98,18 +98,17 @@ int main(int argc, char* argv[]) {
   QApplication::setOrganizationDomain(application_name + ".com");
   QApplication::setQuitOnLastWindowClosed(false);
 
-  // Settings must be initialized before initializing MainWindow.
-  auto& settings = Settings::GetInstance();
-  settings.Initialize();
-
-  auto w = MainWindow{};
-
   auto paths = QIcon::fallbackSearchPaths();
   if (auto path = QString{"/usr/share/pixmaps"}; !paths.contains(path)) {
     paths.append(path);
     QIcon::setFallbackSearchPaths(paths);
   }
 
+  // Settings must be initialized before initializing MainWindow.
+  auto& settings = Settings::GetInstance();
+  settings.Initialize();
+
+  auto w = MainWindow{};
   w.CreateTrayIcon();
   w.Show();
   return a.exec();
