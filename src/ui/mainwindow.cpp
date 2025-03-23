@@ -27,6 +27,16 @@ MainWindow::MainWindow(QWidget* parent)
   // Prevents child widgets from changing the width of the window.
   setMaximumWidth(width());
 
+  // Watches for changes to desktop entry files.
+  auto watcher = new QFileSystemWatcher{this};
+  connect(watcher, &QFileSystemWatcher::directoryChanged, this,
+          &MainWindow::ReloadApplications);
+  for (const auto& dir : Fetcher{}.FetchDesktopEntryDirectoryPaths()) {
+    if (!watcher->addPath(QString::fromStdString(dir))) {
+      qWarning() << "Unable to watch path:" << dir.string();
+    }
+  }
+
   // Everything related to the Theme instance needs to be set here in order for
   // the SearchBox to have the visually correct height. I'm not entirely sure
   // why, however.
@@ -46,6 +56,27 @@ MainWindow::MainWindow(QWidget* parent)
   setMinimumHeight(ui_->search_box->Height());
 
   UpdateTranslators();
+
+  connect(this, &MainWindow::Deactivated, ui_->search_box, &SearchBox::Clear);
+  connect(ui_->search_list, &SearchResultList::ItemsChanged, this,
+          &MainWindow::SetHeight);
+  connect(ui_->search_box, &SearchBox::TextChanged, ui_->search_list,
+          [this](const QString& text) {
+            ui_->search_list->ProcessText(text, false);
+          });
+  connect(ui_->search_box, &SearchBox::KeyPressed, this,
+          &MainWindow::ProcessKeyPress);
+  connect(ui_->search_box, &SearchBox::KeyPressed, ui_->search_list,
+          &SearchResultList::ProcessKeyPress);
+  connect(ui_->search_box, &SearchBox::KeyReleased, ui_->search_list,
+          &SearchResultList::ProcessKeyRelease);
+  connect(&settings, &Settings::LocaleChanged, this,
+          &MainWindow::UpdateTranslators);
+
+  connect(ui_->search_list, &SearchResultList::NewSearchBoxTextRequested,
+          ui_->search_box, &SearchBox::SetText);
+  connect(ui_->search_list, &SearchResultList::HideRequested, this,
+          &MainWindow::Hide);
 }
 
 MainWindow::~MainWindow() {}
@@ -74,46 +105,6 @@ void MainWindow::CreateTrayIcon() {
           &MainWindow::ProcessActivationReason);
   tray_icon->setContextMenu(tray_menu);
   tray_icon->show();
-}
-
-void MainWindow::Show() {
-  // Settings should have already been initialized by this point.
-  auto& settings = Settings::GetInstance();
-
-  // Watches for changes to desktop entry files.
-  auto watcher = new QFileSystemWatcher{this};
-  connect(watcher, &QFileSystemWatcher::directoryChanged, this,
-          &MainWindow::ReloadApplications);
-  for (const auto& dir : Fetcher{}.FetchDesktopEntryDirectoryPaths()) {
-    if (!watcher->addPath(QString::fromStdString(dir))) {
-      qWarning() << "Unable to watch path:" << dir.string();
-    }
-  }
-
-  connect(this, &MainWindow::Deactivated, ui_->search_box, &SearchBox::Clear);
-  connect(ui_->search_list, &SearchResultList::ItemsChanged, this,
-          &MainWindow::SetHeight);
-  connect(ui_->search_box, &SearchBox::TextChanged, ui_->search_list,
-          [this](const QString& text) {
-            ui_->search_list->ProcessText(text, false);
-          });
-  connect(ui_->search_box, &SearchBox::KeyPressed, this,
-          &MainWindow::ProcessKeyPress);
-  connect(ui_->search_box, &SearchBox::KeyPressed, ui_->search_list,
-          &SearchResultList::ProcessKeyPress);
-  connect(ui_->search_box, &SearchBox::KeyReleased, ui_->search_list,
-          &SearchResultList::ProcessKeyRelease);
-  connect(&settings, &Settings::LocaleChanged, this,
-          &MainWindow::UpdateTranslators);
-
-  connect(ui_->search_list, &SearchResultList::NewSearchBoxTextRequested,
-          ui_->search_box, &SearchBox::SetText);
-  connect(ui_->search_list, &SearchResultList::HideRequested, this,
-          &MainWindow::Hide);
-
-  // Displays the actual window. This was previously invoked in the main.cpp
-  // file.
-  show();
 }
 
 void MainWindow::ToggleVisibility() {

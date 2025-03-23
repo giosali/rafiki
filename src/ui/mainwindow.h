@@ -26,7 +26,6 @@ class MainWindow : public QMainWindow {
   ~MainWindow();
 
   void CreateTrayIcon();
-  void Show();
   void ToggleVisibility();
 
  signals:

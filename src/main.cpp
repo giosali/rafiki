@@ -117,6 +117,5 @@ int main(int argc, char* argv[]) {
 
   auto w = MainWindow{};
   w.CreateTrayIcon();
-  w.Show();
   return a.exec();
 }
