@@ -17,6 +17,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include)
 
 set(RES_FILES
     data/resources.qrc
+    fonts/resources.qrc
     icons/resources.qrc
 )
 set(TS_FILES

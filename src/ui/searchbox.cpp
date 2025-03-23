@@ -1,5 +1,6 @@
 #include "searchbox.h"
 
+#include <QFontDatabase>
 #include <QStyle>
 #include <Qt>
 
@@ -39,6 +40,7 @@ void SearchBox::ApplyTheme(Theme* theme) {
       border-top-right-radius: %3px;
       color: %4;
       font-size: %5px;
+      font-weight: 500;
       padding: 12px 8px;
     }
 

@@ -1,5 +1,6 @@
 #include <QApplication>
 #include <QCommandLineParser>
+#include <QFontDatabase>
 #include <QIcon>
 #include <QObject>
 #include <QString>
@@ -103,6 +104,12 @@ int main(int argc, char* argv[]) {
     paths.append(path);
     QIcon::setFallbackSearchPaths(paths);
   }
+
+  // Handles fonts.
+  QFontDatabase::addApplicationFont(
+    ":/fonts/Inter-Italic-VariableFont_opsz,wght.ttf");
+  QFontDatabase::addApplicationFont(":/fonts/Inter-VariableFont_opsz,wght.ttf");
+  a.setFont(QFont{"Inter"});
 
   // Settings must be initialized before initializing MainWindow.
   auto& settings = Settings::GetInstance();
