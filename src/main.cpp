@@ -4,6 +4,7 @@
 #include <QIcon>
 #include <QObject>
 #include <QString>
+#include <QStringList>
 #include <QtEnvironmentVariables>
 #include <QtSystemDetection>
 #include <memory>
@@ -99,11 +100,20 @@ int main(int argc, char* argv[]) {
   QApplication::setOrganizationDomain(application_name + ".com");
   QApplication::setQuitOnLastWindowClosed(false);
 
-  auto paths = QIcon::fallbackSearchPaths();
-  if (auto path = QString{"/usr/share/pixmaps"}; !paths.contains(path)) {
-    paths.append(path);
-    QIcon::setFallbackSearchPaths(paths);
+  // Handles icons.
+  // https://askubuntu.com/questions/6009/where-are-icons-stored
+  auto search_paths = QIcon::themeSearchPaths();
+  auto fallback_search_paths = QIcon::fallbackSearchPaths();
+  auto icon_paths = QStringList{} << "/usr/share/pixmaps"
+                                  << "/usr/share/app-install/icons"
+                                  << "/usr/share/icons";
+  for (const auto& path : icon_paths) {
+    if (!search_paths.contains(path) && !fallback_search_paths.contains(path)) {
+      fallback_search_paths.append(path);
+    }
   }
+
+  QIcon::setFallbackSearchPaths(icon_paths);
 
   // Handles fonts.
   QFontDatabase::addApplicationFont(
