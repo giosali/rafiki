@@ -237,8 +237,8 @@
       <translation>Raccourci clavier</translation>
     </message>
     <message>
-      <source><![CDATA[<a href="https://example.com">How to set up a hotkey on GNOME on Wayland</a>]]></source>
-      <translation><![CDATA[<a href="https://example.com">Comment créer un raccourci clavier sous GNOME avec Wayland</a>]]></translation>
+      <source><![CDATA[<a href="https://github.com/giosali/rafiki/wiki/Setting-up-a-hotkey">How to set up a hotkey on GNOME on Wayland</a>]]></source>
+      <translation><![CDATA[<a href="https://github.com/giosali/rafiki/wiki/Setting-up-a-hotkey">Comment créer un raccourci clavier sous GNOME avec Wayland</a>]]></translation>
     </message>
     <message>
       <source>Language</source>

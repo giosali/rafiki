@@ -41,7 +41,7 @@
                 <bool>true</bool>
               </property>
               <property name="text">
-                <string notr="false"><![CDATA[<a href="https://example.com">How to set up a hotkey on GNOME on Wayland</a>]]></string>
+                <string notr="false"><![CDATA[<a href="https://github.com/giosali/rafiki/wiki/Setting-up-a-hotkey">How to set up a hotkey on GNOME on Wayland</a>]]></string>
               </property>
             </widget>
           </item>

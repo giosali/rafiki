@@ -237,7 +237,7 @@
       <translation type=""></translation>
     </message>
     <message>
-      <source><![CDATA[<a href="https://example.com">How to set up a hotkey on GNOME on Wayland</a>]]></source>
+      <source><![CDATA[<a href="https://github.com/giosali/rafiki/wiki/Setting-up-a-hotkey">How to set up a hotkey on GNOME on Wayland</a>]]></source>
       <translation type=""></translation>
     </message>
     <message>
